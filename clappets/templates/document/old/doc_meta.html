@@ -1,0 +1,113 @@
+{% extends "base.html" %} {% block title %}Documentor{% endblock %} {% block documentor_active %}is-active{% endblock documentor_active %} {% block content %}
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-9">
+        <div id="app">
+            <nav class="breadcrumb" aria-label="breadcrumbs">
+            <ul>
+              <li><a href="../../../../..">Projects</a></li>
+              <li><a href="../../../..">[[ doc_meta["meta"]["projectID"] ]]</a></li>
+              <li><a href="../../..">[[ doc_meta["meta"]["discipline"] ]]</a></li>
+              <li><a href="../..">[[ doc_meta["meta"]["docCategory"] ]]</a></li>
+              <li><a href="..">[[ doc_meta["meta"]["docSubCategory"] ]]</a></li>
+              <li><a href="#">[[ doc_meta["meta"]["docClass"] ]]</a></li>
+            </ul>
+            </nav>
+          <p class="title is-3">Add Document</p>
+          <p class="subtitle is-5">Document Instance</p>
+          <table class="table is-striped" style="width:100%">
+            <tr>
+              <td style="width:20%">Project ID</td>
+              <td style="width:10%">[[ doc_meta["meta"]['projectID'] ]]</td>
+              <td style="width:70%">[[ doc_meta["meta"]['project_title'] ]]</td>
+            </tr>
+            <tr>
+              <td>Discipline</td>
+              <td>[[ doc_meta["meta"]['discipline'] ]]</td>
+              <td>[[ doc_meta["meta"]['discipline_title'] ]]</td>
+            </tr>
+            <tr>
+              <td>Doc. Category</td>
+              <td>[[ doc_meta["meta"]['docCategory'] ]]</td>
+              <td>[[ doc_meta["meta"]['docCategory_title'] ]]</td>
+            </tr>
+            <tr>
+              <td>Doc. Sub Category</td>
+              <td>[[ doc_meta["meta"]['docSubCategory'] ]]</td>
+              <td>[[ doc_meta["meta"]['docSubCategory_title'] ]]</td>
+            </tr>
+            <tr>
+              <td>Doc. Class</td>
+              <td>[[ doc_meta["meta"]['docClass'] ]]</td>
+              <td>[[ doc_meta["meta"]['docClass_title'] ]]</td>
+            </tr>
+            <tr>
+              <td>Doc. Instance</td>
+              <td colspan="2"><input class="input is-small" v-model="doc_meta['meta']['docInstance']"></input>
+              </td>
+            </tr>
+            <tr>
+              <td>Doc. Instance Title</td>
+              <td colspan="2"><input class="input is-small" v-model="doc_meta['meta']['docInstance_title']"></input>
+              </td>
+            </tr>
+            <tr>
+              <td>Doc. ID</td>
+              <td colspan="2">[[ doc_id]] </input>
+              </td>
+            </tr>
+          </table>
+          <article class="message is-small is-danger" v-show="errorBoxActive" v-cloak>
+            <div class="message-header">
+              <p>Errors</p>
+              <button class="delete is-small" aria-label="delete" @click="hideErrorBox"></button>
+            </div>
+            <div class="message-body">
+              <p>[[ error_status]]</p>
+              <p class="help is-danger">[[errors]]</p>
+            </div>
+          </article>
+          <article class="message is-small is-success" v-show="msgBoxActive" v-cloak>
+            <div class="message-header">
+              <p>Message</p>
+              <button class="delete is-small" aria-label="delete" @click="hideMsgBox"></button>
+            </div>
+            <div class="message-body">
+              <p class="help is-success">[[message]]</p>
+            </div>
+          </article>
+          <p>
+            <a class="button" @click="add_resource('doc_meta')">Add Document</a>
+            <a class="button" href="..">Back</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %} {% block script_bottom %} {{ super() }}
+
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    delimiters: ['[[', ']]'],
+    mixins: [app_common],
+    data: {
+      api_url: {
+          "doc_meta" : "/api/documentor/document"
+      },
+      doc_meta: {{doc_meta | safe }},
+    },
+    computed: {
+      doc_id: function() {
+        meta = this.doc_meta["meta"]
+        id = meta["projectID"] + "-" + meta["discipline"] + "-" + meta["docCategory"] + "-" + meta["docSubCategory"] + "-" + meta["docClass"] + "-" + meta["docInstance"]
+        return id
+      }
+    },
+    methods: {}
+  })
+</script>
+
+{% endblock script_bottom %}

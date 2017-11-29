@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block title %}Documentor{% endblock %}
+{% block documentor_active %}is-active{% endblock documentor_active %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-9">
+                <div id="app">
+                  <div class="box" style="width:100%">
+                    <h4 class="title is-4" v-if="action =='add'" v-cloak>Add Project</h4>
+                    <h4 class="title is-4" v-if="action =='edit'" v-cloak>Edit Project</h4>
+                    <h4 class="title is-4" v-if="action =='view'">View Project</h4>
+                  </div>
+
+                  <table class="table is-striped" style="width:100%;">
+                    <tr>
+                      <th>Parameter</td>
+                      <th>Value</td>
+                    </tr>
+                    <tr>
+                        <td>Project ID</td>
+                        <td><input type="text" class="input" v-model="project['_id']" :readonly = "id_isReadonly"></input></td>
+                    </tr>
+                    <tr>
+                        <td>Project Title</td>
+                        <td><input type="text" class="input" v-model="project['title']" :readonly = "isReadonly"></input></td>
+                    </tr>
+                    <tr>
+                        <td>Admin ID</td>
+                        <td><input type="text" class="input" v-model="project['admin_id']" :readonly = "isReadonly"></input></td>
+                    </tr>
+                  </table>
+                  <article class="message is-small is-danger" v-show="errorBoxActive" v-cloak>
+                      <div class="message-header">
+                          <p>Errors</p>
+                          <button class="delete is-small" aria-label="delete" @click="hideErrorBox"></button>
+                      </div>
+                      <div class="message-body">
+                          <p>[[ error_status]]</p>
+                          <p class="help is-danger">[[errors]]</p>
+                      </div>
+                  </article>
+                  <article class="message is-small is-success" v-show="msgBoxActive" v-cloak>
+                    <div class="message-header">
+                      <p>Message</p>
+                      <button class="delete is-small" aria-label="delete" @click="hideMsgBox"></button>
+                    </div>
+                    <div class="message-body">
+                      <p class="help is-success">[[message]]</p>
+                    </div>
+                  </article>
+
+                    <p>
+                        <a class="button"  @click="add_resource('project')" v-if="action =='add'">Submit</a>
+                        <a class="button"  @click="update_resource('project', project['_id'])" v-if="action =='edit'">Update</a>
+                        <a class="button"  href="/htm/documentor/project/">Go to List</a>
+                    </p>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+
+
+{% block script_bottom %}
+{{ super() }}
+
+<script type="text/javascript">
+var app = new Vue({
+    el: '#app',
+    delimiters : ['[[',']]'],
+    mixins: [app_common],
+    data: {
+        action : "{{ action }}",
+        api_url : {
+            "project" : "/api/documentor/project/"
+        },
+        project : {{ project | safe }},
+    },
+
+    computed: {
+
+    },
+
+    methods: {}
+})
+</script>
+
+{% endblock script_bottom %}

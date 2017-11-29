@@ -1,0 +1,60 @@
+{% extends "base.html" %} {% block title %}Documentor{% endblock %} {% block documentor_active %}is-active{% endblock documentor_active %} {% block content %}
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-9">
+        <div id="app">
+          <p class="title is-3">Documenter</p>
+          <p class="subtitle is-5">Control Panel</p>
+          <div class="columns is-centered">
+              <div class="column is-6">
+                  <p><a href="/htm/documentor/project/" class="button is-primary" style="width:100%;">View Projects</a></p>
+              </div>
+          </div>
+          <div class="columns is-centered">
+              <div class="column is-6">
+                  <p><a href="/htm/documentor/project/add/" class="button is-primary" style="width:100%;">Add New Project</a></p>
+              </div>
+          </div>
+          <div class="columns is-centered">
+              <div class="column is-6">
+                  <p><a href="/htm/documentor/document/" class="button is-primary" style="width:100%;">View Documents</a></p>
+              </div>
+          </div>
+          <div class="columns is-centered">
+              <div class="column is-6">
+                  <p><a href="/htm/documentor/document/add/" class="button is-primary" style="width:100%;">Add New Document</a></p>
+              </div>
+          </div>
+          <div class="columns is-centered">
+              <div class="column is-6">
+                  <p><a href="/htm/documentor/user/" class="button is-primary" style="width:100%;">Users</a></p>
+              </div>
+          </div>
+          <div class="columns is-centered">
+              <div class="column is-6">
+                  <p><a href="/htm/documentor/vendor/" class="button is-primary" style="width:100%;">Vendors</a></p>
+              </div>
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %} {% block script_bottom %} {{ super() }}
+
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    delimiters: ['[[', ']]'],
+    mixins: [app_common],
+    data: {},
+    computed: {},
+    methods: {}
+  })
+</script>
+
+{% endblock script_bottom %}

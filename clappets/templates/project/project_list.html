@@ -1,0 +1,51 @@
+{% extends "base.html" %} {% block title %}Documentor{% endblock %} {% block documentor_active %}is-active{% endblock documentor_active %} {% block content %}
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-9">
+        <div id="app">
+          <div class="box" style="width:100%">
+            <h4 class="title is-4">Projects</h4>
+          </div>
+          <table class="table is-striped" style="width:100%">
+            <tr>
+              <th style="width:20%">Project No.</td>
+              <th style="width:60%">Project title</td>
+              <th style="width:20%">Action</td>
+            </tr>
+            <tr v-for="project in project_list">
+              <td v-text="project['_id']"></td>
+              <td v-text="project['title']"></td>
+              <td>
+                <a :href=" '/htm/documentor/project/edit/' + project['_id'] +'/'" style="display: inline-block; width:50px;">✎</a>
+                <a style="display: inline-block; width:50px;" @click="delete_resource('project', project['_id'])">🗑</a>
+              </td>
+            </tr>
+          </table>
+          <a class="button" aria-label="delete" href="/htm/documentor/project/add/">Add New Project</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %} {% block script_bottom %} {{ super() }}
+
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    delimiters: ['[[', ']]'],
+    mixins: [app_common],
+    data: {
+    //    api_resource_url : "/api/documentor/project/",
+        api_url : {
+            "project" : "/api/documentor/project/"
+        },
+
+      project_list: {{project_list | safe }},
+    },
+    computed: {},
+    methods: {}
+  })
+</script>
+
+{% endblock script_bottom %}

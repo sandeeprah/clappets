@@ -1,0 +1,24 @@
+{
+  "_id": "",
+  "meta": {
+    "projectID": "",
+    "project_title": "",
+    "discipline": "",
+    "docCategory": "",
+    "docSubCategory": "",
+    "docClass": "",
+    "docClass_title": "",
+    "docInstance": "",
+    "docInstance_title": "",
+    "rev": "",
+    "status": "",
+    "performer": "",
+    "reviewer": "",
+    "approver": ""
+  },
+
+  "units": {},
+  "input": {},
+  "result": {},
+  "errors": {}
+}

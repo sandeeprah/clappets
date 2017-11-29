@@ -1,0 +1,76 @@
+{% extends "document/base.html" %} {% block content %}
+<div class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-6">
+        <table class="table is-bordered" style="width:100%">
+          <tr>
+            <th colspan="3">Input</th>
+          </tr>
+          <tr>
+            <td style="width:60%"><i>Parameter</i></td>
+            <td style="width:20%"><i>Unit</i></td>
+            <td style="width:20%"><i>Value</i></td>
+          </tr>
+          <tr>
+            <td>Flow Rate (Q)</td>
+            <td>[[ gUL('flow') ]]</td>
+            <td><input class="input nobrd" type="text" v-model="doc['input']['Q']" /></td>
+          </tr>
+          <tr>
+            <td>Differential Head (H)</td>
+            <td>[[ gUL('length') ]]</td>
+            <td><input class="input nobrd" type="text" v-model="doc['input']['H']" /></td>
+          </tr>
+          <tr>
+            <td>Density (rho)</td>
+            <td>[[ gUL('density') ]]</td>
+            <td><input class="input nobrd " type="text" v-model="doc['input']['rho']" /></td>
+          </tr>
+          <tr>
+            <td>Efficiency (eta)</td>
+            <td>%</td>
+            <td><input class="input nobrd" type="text" v-model="doc['input']['eta']" /></td>
+          </tr>
+        </table>
+
+        <table class="table is-bordered" style="width:100%">
+          <tr>
+            <th colspan="3">Output</th>
+          </tr>
+          <tr>
+            <td style="width:60%"><i>Parameter</i></td>
+            <td style="width:20%"><i>Unit</i></td>
+            <td style="width:20%"><i>Value</i></td>
+          </tr>
+          <tr>
+            <td>Hydraulic Power (Phydraulic)</td>
+            <td>[[ gUL('power') ]]</td>
+            <td><span>[[ doc['result']['Phyd'] ]]</span></td>
+          </tr>
+          <tr>
+            <td>Pump Power (P)</td>
+            <td>[[ gUL('power') ]] </td>
+            <td><span>[[ doc['result']['P'] ]]</span></td>
+          </tr>
+          <tr>
+            <td>Rec.Motor Rating (Pmotor)</td>
+            <td>[[ gUL('power') ]]</td>
+            <td><span>[[ doc['result']['Pmotor'] ]]</span></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="columns">
+        <div class="column">
+            <table class="table is-bordered" style="width:100%;">
+                <tr>
+                    <td>1</td>
+                    <td>2</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

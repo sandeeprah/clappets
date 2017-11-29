@@ -1,0 +1,40 @@
+{
+  "_id": "",
+  "meta": {
+    "projectID": "0000",
+    "project_title": "Demo",
+    "discipline" : "mec",
+    "docCategory": "cal",
+    "docSubCategory": "pmp",
+    "docClass": "power",
+    "docClass_title": "Pump Power Calculations",
+    "docInstance": "1",
+    "docInstance_title": "Power Calculation for Crude Charge Pump",
+    "rev": "",
+    "status": "",
+    "performer": "",
+    "reviewer": "",
+    "approver": ""
+  },
+
+  "units": {
+    "flow": "m3/hr",
+    "length": "m",
+    "density": "kg/m3",
+    "power": "kW"
+  },
+
+  "input": {
+    "Q": "20",
+    "H": "50",
+    "rho": "1000",
+    "eta": "65"
+  },
+
+  "result": {
+    "Phyd": "10",
+    "P": "15",
+    "Pmotor": "25"
+  },
+  "errors": {}
+}

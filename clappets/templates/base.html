@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<!-- saved from url=(0064)https://dansup.github.io/bulma-templates/templates/skeleton.html -->
+<html class="has-navbar-fixed-top">
+
+<head>
+  {% block head %}
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{% endblock %}</title>
+  <meta name="author" content="Sandeep Raheja">
+  <meta name="description" content="{% block meta_description %}{% endblock meta_description %}" />
+  <meta name="keywords" content="{% block meta_keywords %}{% endblock meta_keywords %}" /> {% endblock head %} {% block css %}
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bulma.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/clappets.css') }}"> {% endblock css %} {% block extra_styles %} {% endblock extra_styles %} {% block script_top %} {% endblock script_top %}
+
+<style>
+{% block style %}
+{% endblock style %}
+</style>
+
+
+</head>
+
+<body>
+  {% block body %} {% block page_header %}
+  <nav class="navbar is-fixed-top is-primary" id="top" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="#">clappets.com</a>
+      <button class="button navbar-burger" data-target="navMenu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+    <div class="navbar-menu" id="navMenu">
+      <div class="navbar-start">
+        <a href="/index" class="navbar-item">Home</a>
+        <a href="/htm/document/" class="navbar-item">docuMentor</a>
+        <a href="#" class="navbar-item">Calculations</a>
+        <a href="#" class="navbar-item">Directory</a>
+        <a href="#" class="navbar-item">Admin</a>
+      </div>
+      <div class="navbar-end">
+        <a href="#" class="navbar-item is-right">Help</a>
+      </div>
+    </div>
+  </nav>
+
+  {% endblock page_header %} {% block content %} {% endblock content %} {% block page_footer %}
+  <div class="container">
+    <footer>
+      <p>Copyright &copy; all rights reserved</p>
+    </footer>
+  </div>
+  {% endblock page_footer %} {% endblock body %} {% block script_bottom %}
+  <script type="text/javascript" src="{{ url_for('static', filename='js/bulma.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/vue.js') }}"></script>
+  <script src="https://unpkg.com/axios@0.16.2/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/lodash@4.17.2/lodash.min.js"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/units.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/clappets.js') }}"></script>
+  {% endblock script_bottom %}
+</body>
+
+</html>

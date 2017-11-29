@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project Doc</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bulma.css', _external=True) }}" media="screen, print" >
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/clappets.css', _external=True)}}" media="screen, print" _external=True>
+
+<style>
+{% block style %}
+{% endblock style %}
+</style>
+</head>
+
+<body>
+  <div id="app">
+    <nav class="navbar is-fixed-top is-primary hideprint" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="#"> docuMENTOR</a>
+        <button class="button navbar-burger" data-target="navMenu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+      </div>
+
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-start">
+          <a href="/" class="navbar-item">Home</a>
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">Document</a>
+            <div class="navbar-dropdown">
+              <a class="navbar-item" @click="newDoc()">New</a>
+              <a class="navbar-item" @click="openModal('uploadModalisActive')">Open</a>
+              <a class="navbar-item" @click="saveDoc()">Save</a>
+              <hr class="navbar-divider">
+              <a class="navbar-item" @click="openDocDB()">Open from DB</a>
+              <a class="navbar-item" @click="saveDocDB()">Save to DB</a>
+              <a class="navbar-item" @click="openModal('saveAsModalisActive')">Save As to DB</a>
+              <a class="navbar-item" @click="deleteDocDB()">Delete from DB</a>
+              <hr class="navbar-divider">
+              <a class="navbar-item">Export Web Page</a>
+              <a class="navbar-item" @click="print()">Print</a>
+            </div>
+          </div>
+          <a class="navbar-item" @click="openModal('infoModalisActive')">Doc. Info.</a>
+          <a class="navbar-item" @click="openModal('unitsModalisActive')">Units</a>
+          <a class="navbar-item" @click="calculate()">Calculate</a>
+          <a class="navbar-item" @click="openModal('macroModalisActive')">Macros</a>
+        </div>
+        <div class="navbar-end">
+          <a href="#" class="navbar-item is-right">Help</a>
+        </div>
+      </div>
+    </nav>
+    <div class="modal hideprint" v-bind:class="{'is-active': infoModalisActive}">
+      <div class="modal-background">
+      </div>
+      <div class="modal-content" style="background-color:white; height: 360px; overflow:auto;padding:20px;">
+        <h4 class="title is-4">Document Info</h4>
+        <div style="height:180px; overflow:auto;">
+          <table class="table" style="width:100%;">
+            <tr>
+              <td style="width:30%">
+                Project ID
+              </td>
+              <td style="width:70%">
+                [[ doc['meta']['projectID'] ]]
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Project Title
+              </td>
+              <td>
+                [[ doc['meta']['project_title'] ]]
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Discipline
+              </td>
+              <td>
+                [[ doc['meta']['discipline'] ]]
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Document Category
+              </td>
+              <td>
+                [[ doc['meta']['docCategory'] ]]
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Doc Sub Category
+              </td>
+              <td>
+                [[ doc['meta']['docSubCategory'] ]]
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Doc Class
+              </td>
+              <td>
+                [[ doc['meta']['docClass'] ]]
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Doc Instance
+              </td>
+              <td>
+                [[ doc['meta']['docInstance'] ]]
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Doc No.
+              </td>
+              <td>
+                [[ doc['_id'] ]]
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Doc Instance Title
+              </td>
+              <td>
+                <input type="text" class="input" v-model="doc['meta']['docInstance_title']">
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="field is-grouped is-grouped-centered">
+          <p class="control">
+            <button class="button is-primary" @click="closeModal('infoModalisActive')" style="width:6em">Done</a>
+            </p>
+          </div>
+      </div>
+    </div>
+
+    <div class="modal hideprint" v-bind:class="{'is-active': unitsModalisActive}">
+      <div class="modal-background">
+      </div>
+      <div class="modal-content" style="background-color:white; height: 360px; overflow:auto;padding:20px;">
+          <h4 class="title is-4">Units</h4>
+          <div style="height:180px; overflow:auto;">
+            <table class="table" style="width:100%;">
+              <tr v-for="dimension in dimensions_used ">
+                <td style="width:50%">
+                  [[ dimension ]]
+                </td>
+                <td style="width:50%">
+                  <div class="select" style="width:100%">
+                    <select v-model="doc.units[dimension]" style="width:100%;">
+                            <option v-for="unit in getUnits(dimension)" :value="unit['unit']" v-text="unit['label']" style="width:100%"></option>
+                    </select>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        <div class="field is-grouped is-grouped-centered">
+          <p class="control">
+            <button class="button is-primary" @click="closeModal('unitsModalisActive')" style="width:6em">Done</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal hideprint" v-bind:class="{'is-active': macroModalisActive}">
+      <div class="modal-background">
+      </div>
+      <div class="modal-content" style="background-color:white; height: 360px; overflow:auto; padding:20px;">
+          <h4 class="title is-4">Units</h4>
+          <div style="height:180px; overflow:auto;">
+            <table class="table" style="width:100%;">
+              <tr v-for="dimension in dimensions_used ">
+                <td style="width:50%">
+                  [[ dimension ]]
+                </td>
+                <td style="width:50%">
+                  <div class="select" style="width:100%">
+                    <select v-model="doc.units[dimension]" style="width:100%;">
+                        <option v-for="unit in getUnits(dimension)" :value="unit['unit']" v-text="unit['label']" style="width:100%"></option>
+                    </select>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        <div class="field is-grouped is-grouped-centered">
+          <p class="control">
+            <button class="button is-primary" @click="closeModal('macroModalisActive')" style="width:6em">Done</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal hideprint" v-bind:class="{'is-active': selectionModalisActive}">
+      <div class="modal-background">
+      </div>
+      <div class="modal-content" style="background-color:white; height: 360px; overflow:auto;padding:20px;">
+          <h3 class="title is-4" style="margin-bottom:10px;">[[ selectionMenu['title'] ]]</h3>
+          <h5 class="title is-6" style="margin-bottom:10px;">[[ selectionMenu['subtitle'] ]]</h5>
+          <div style="height:180px; overflow:auto;">
+            <table class="table is-bordered" style="width:100%;">
+              <tr>
+                <th style="width:20%;">Name</th>
+                <th style="width:60%;">Title</th>
+                <th style="width:20%;">Action</th>
+              </tr>
+              <tr v-for="subfolder in selectionMenu['subfolder_list']">
+                <td>
+                  [[ subfolder['name'] ]]
+                </td>
+                <td>
+                  [[ subfolder['title'] ]]
+                </td>
+                <td>
+                  <a @click="execQuery(subfolder['url'])"> Select >> </a>
+                </td>
+              </tr>
+            </table>
+          </div>
+        <div class="field is-grouped is-grouped-centered">
+          <p class="control">
+            <button class="button is-primary" @click="closeModal('selectionModalisActive')" style="width:6em">Cancel</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal hideprint" v-bind:class="{'is-active': saveAsModalisActive}">
+      <div class="modal-background"></div>
+      <div class="modal-content" style="background-color:white; height: 360px; overflow:auto; padding:20px;">
+          <h4 class="title is-4">Save As</h4>
+          <div style="height:180px; overflow:auto;">
+            <table class="table" style="width:100%;">
+              <tr>
+                <td style="width:50%">
+                  Project ID
+                </td>
+                <td style="width:50%">
+                  <input class="input" v-model="doc['meta']['projectID']">
+                </td>
+              </tr>
+              <tr>
+                <td>Project Title</td>
+                <td><span>project title</span></td>
+              </tr>
+              <tr>
+                <td>Document Instance</td>
+                <td><input class="input" v-model="doc['meta']['docInstance']" /></td>
+              </tr>
+              <tr>
+                <td>Document Instance Title</td>
+                <td><input class="input" v-model="doc['meta']['docInstance_title']"></td>
+              </tr>
+              <tr>
+                <td>Document ID</td>
+                <td>
+                  <span>[[ doc_id ]]</span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        <div class="field is-grouped is-grouped-centered">
+          <p class="control">
+            <button class="button is-primary" @click="saveAsDocDB()" style="width:6em">OK</button>
+          </p>
+          <p class="control">
+            <button class="button is-light" @click="closeModal('saveAsModalisActive')" style="width:6em">Cancel</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal hideprint" v-bind:class="{'is-active': uploadModalisActive}">
+      <div class="modal-background">
+      </div>
+      <div class="modal-content" style="background-color:white; maximum-height: 480px; width: 600px; overflow:auto;">
+        <form action="/htm/document/" method="post" enctype="multipart/form-data" style="margin:20px;">
+          <h4 class="title is-4">Open Document</h4>
+          <div class="field">
+            <div class="control">
+              <input class="input" type="file" placeholder="" name="doc" required>
+            </div>
+          </div>
+          <div class="field is-grouped is-grouped-centered">
+            <p class="control">
+              <input class="button is-primary" type="submit" value="Submit">
+            </p>
+            <p class="control">
+              <a class="button is-light" @click="closeModal('uploadModalisActive')">Cancel</a>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div style="display:none;">
+      <a href="" ref="save_anchor">Save Anchor </a>
+    </div>
+
+    <div class="section hideprint" >
+      <div class="container">
+        <article class="hideprint messageis-small is-warning" v-show="warningisActive" v-cloak>
+          <div class="message-header">
+            <p>Warning</p>
+            <button class="delete is-small" aria-label="delete" @click="hideWarning"></button>
+        </div>
+        <div class="message-body">
+          <p class="help is-warning">[[warningMessage]]</p>
+        </div>
+        </article>
+        <article class="hideprint messageis-small is-danger" v-show="errorisActive" v-cloak>
+          <div class="message-header">
+            <p>Errors : [[errorStatus]]</p>
+            <button class="delete is-small" aria-label="delete" @click="hideError"></button>
+          </div>
+          <div class="message-body">
+            <p class="help is-danger">[[ errorMessage]]</p>
+          </div>
+        </article>
+        <article class="hideprint messageis-small is-success" v-show="successisActive" v-cloak>
+          <div class="message-header">
+            <p>Success</p>
+            <button class="delete is-small" aria-label="delete" @click="hideSuccess"></button>
+          </div>
+          <div class="message-body">
+            <p class="help is-success">[[successMessage]]</p>
+          </div>
+        </article>
+
+
+      </div>
+    </div>
+
+<div id="titleBlock" class="section">
+    <div class="container">
+        <div class="datasheet">
+            <h4 class="title is-4">[[ doc.meta['docInstance_title'] ]]</h4>
+            <h6 class="subtitle is-6">[[ doc['_id'] ]]</h6>
+        </div>
+    </div>
+</div>
+
+    {% block content %}
+    <div class="section">
+      <div class="container">
+        <div class="box">
+          <p>
+            Welcome to docuMentor. This is a webbased editor for documents.
+          </p>
+          <p>
+            Open a new or existing document, located in the cloud or on your local disk to start.
+          </p>
+        </div>
+      </div>
+    </div>
+    {% endblock content %}
+    <!-- end of vue-js application div -->
+  </div>
+
+  <script type="text/javascript" src="{{ url_for('static', filename='js/vue.js', _external=True) }}"></script>
+  <script src="https://unpkg.com/axios@0.16.2/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/lodash@4.17.2/lodash.min.js"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/units.js', _external=True) }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/clappets.js', _external=True) }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/bulma.js', _external=True) }}"></script>
+
+  <script type="text/javascript">
+    var app = new Vue({
+      el: '#app',
+      delimiters: ['[[', ']]'],
+      mixins: [],
+      data: {
+        selectionModalisActive: false,
+        unitsModalisActive: false,
+        infoModalisActive: false,
+        saveAsModalisActive: false,
+        macroModalisActive: false,
+        uploadModalisActive: false,
+        selectionMenu: {},
+        warningMessage: "",
+        warningisActive: false,
+        errorStatus: "",
+        errorisActive: false,
+        successMessage: "",
+        successisActive: false,
+        errorMessage: {},
+        doc: {{doc | safe }}
+      },
+      computed: {
+        dimensions_used: function() {
+          dimensions = []
+          for (var dimension in this.doc.units) {
+            if (this.doc.units.hasOwnProperty(dimension)) {
+              dimensions.push(dimension);
+            }
+          }
+          return dimensions;
+        },
+        doc_id: function() {
+          meta = this.doc['meta'];
+          id = meta["projectID"] + "-" + meta["discipline"] + "-" + meta["docCategory"] + "-" + meta["docSubCategory"] + "-" + meta["docClass"] + "-" + meta["docInstance"];
+          return id;
+        }
+
+      },
+      methods: {
+
+        gUL: function(dimension) {
+          try {
+            unitUsed = this.doc.units[dimension]
+            unitLabel = getUnitLabel(dimension, unitUsed)
+            return unitLabel
+          } catch (err) {
+            console.log("Error occured in getUnitLabel trying to fetch unitUsed '" + unitUsed + "'")
+            return '';
+          }
+        },
+
+        getUnits: function(dimension) {
+          try {
+            return getUnits(dimension)
+          } catch (err) {
+            console.log("Error occured in getUnits with dimension = '" + dimension + "'");
+          }
+        },
+
+        openModal: function(modalisActive) {
+          this[modalisActive] = true;
+        },
+        closeModal: function(modalisActive) {
+          this[modalisActive] = false;
+        },
+
+        calculate: function() {
+          alert("you ran the calculation");
+        },
+
+        newDoc: function() {
+          this.execQuery("/api/document/tpl/");
+          app.selectionModalisActive = true;
+        },
+
+        saveDoc: function() {
+          mydata = JSON.stringify(this.doc, null, 2);
+          save_anchor = this.$refs['save_anchor']
+          save_anchor.download = "formData-" + new Date().getTime();
+          save_anchor.href = "data:text/plain," + encodeURIComponent(mydata);
+          save_anchor.click();
+        },
+
+
+        openDocDB: function() {
+          this.execQuery("/api/document/query/");
+          app.selectionModalisActive = true;
+        },
+
+        saveDocDB: function() {
+          var app = this;
+          this.resetMessages();
+          if (this.doc['_id'] == "") {
+            this.saveAsModalisActive = true;
+          } else {
+            url = "/api/document/db/" + this.doc["_id"] + "/";
+            axios.put(url, {
+                doc: app.doc
+              })
+              .then(function(response) {
+                console.log(response);
+                app.successMessage = response.data["_message"];
+                app.successisActive = true;
+              })
+              .catch(function(error) {
+                console.log(error);
+                app.errorStatus = error.response.status + " " + error.response.statusText;
+                app.errorMessage = error.response.data
+                app.errorisActive = true;
+              });
+          }
+        },
+
+        saveAsDocDB: function() {
+          this.saveAsModalisActive = false;
+          var app = this;
+          this.resetMessages()
+          url = "/api/document/db/"
+          axios.post(url, {
+              doc: app.doc
+            })
+            .then(function(response) {
+              console.log(response);
+              alert("Document Successfully Saved. Now reloading")
+              location.href = "/htm/document/db/" + response.data["_id"] + "/";
+              //app.doc["_id"] = response.data["_id"];
+              app.successMessage = response.data["_message"];
+              app.successisActive = true;
+            })
+            .catch(function(error) {
+              console.log(error);
+              app.errorStatus = error.response.status + " " + error.response.statusText;
+              app.errorMessage = error.response.data
+              app.errorisActive = true;
+            });
+        },
+
+        deleteDocDB: function() {
+          var app = this;
+          this.resetMessages();
+          if (this.doc['_id'] == "") {
+            alert("Document does not have a valid ID");
+            return;
+          } else {
+            url = "/api/document/db/" + this.doc["_id"] + "/";
+            axios.delete(url)
+              .then(function(response) {
+                console.log(response);
+                location.href = "/htm/document/"
+              })
+              .catch(function(error) {
+                console.log(error);
+                app.errorStatus = error.response.status + " " + error.response.statusText;
+                app.errorMessage = error.response.data
+                app.errorisActive = true;
+              });
+          }
+        },
+
+        print : function(){
+            window.print();
+        },
+
+        execQuery: function(query_url) {
+          if (query_url.substring(0, 4) == "/api") {
+            var app = this;
+            url = query_url
+            axios.get(url)
+              .then(function(response) {
+                app.selectionMenu = response.data;
+                console.log(response);
+              })
+              .catch(function(error) {
+                console.log(error);
+              });
+          } else if (query_url.substring(0, 4) == "/htm") {
+            location.href = query_url;
+          }
+        },
+
+        hideWarning: function() {
+          this.warningisActive = false;
+        },
+        hideError: function() {
+          this.errorisActive = false;
+        },
+        hideSuccess: function() {
+          this.successisActive = false;
+        },
+        resetMessages: function() {
+          this.warningMessage = "";
+          this.successMessage = "";
+          this.errorStatus = "";
+          this.errorMessage = "";
+          this.errorisActive = false;
+          this.warningisActive = false;
+          this.successisActive = false;
+        }
+      }
+    })
+  </script>
+
+
+</body>
+
+</html>

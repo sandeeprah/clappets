@@ -1,0 +1,44 @@
+{% extends "base.html" %} {% block title %}Documentor{% endblock %} {% block documentor_active %}is-active{% endblock documentor_active %} {% block content %}
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-9">
+        <div id="app">
+            <nav class="breadcrumb" aria-label="breadcrumbs">
+            <ul>
+              <li v-for="bc in document_list['breadcrumbs']"><a :href="bc['href']">[[ bc['name'] ]]</a></li>
+            </ul>
+            </nav>
+          <p class="title is-3">[[ document_list["title"] ]]</p>
+          <p class="subtitle is-5">[[ document_list["title_node"] ]]</p>
+          <table class="table is-striped" style="width:100%">
+            <tr>
+              <th style="width:30%">Name</td>
+                <th style="width:70%">Title</td>
+            </tr>
+            <tr v-for="item in document_list['list']">
+              <td v-text="item['name']"></td>
+              <td><a :href="item['name']">[[ item['title'] ]]</a></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %} {% block script_bottom %} {{ super() }}
+
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    delimiters: ['[[', ']]'],
+    mixins: [app_common],
+    data: {
+      document_list: {{ document_list | safe }},
+    },
+    computed: {},
+    methods: {}
+  })
+</script>
+
+{% endblock script_bottom %}

@@ -1,0 +1,31 @@
+<section class="section">
+  <div class="container">
+
+    <div id="app">
+      <div class="box" style="width:100%">
+        <h4 class="title is-4">Projects</h4>
+      </div>
+
+      <table class="table is-bordered" style="width:100%">
+        <tr>
+          <td style="width:20%">Project No.</td>
+          <td style="width:60%">Project title</td>
+          <td style="width:20%"></td>
+        </tr>
+        <tr v-for="project in project_list">
+          <td v-text="project['_id']"></td>
+          <td v-text="project['name']"></td>
+          <td>
+            <a :href=" '/documentor/htm/project/edit/' + project['_id'] " style="display: inline-block; width:50px;">✎</a>
+            <a style="display: inline-block; width:50px;" @click="delete_me(project['_id'])">🗑</a>
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="3"><a class="button is-small" aria-label="delete" href="/documentor/htm/project/add/def">Add New Project</button>
+  </td>
+          </tr>
+              </table>
+          </div>
+</div>
+</div>
