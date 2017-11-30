@@ -5,8 +5,8 @@ from flask import Flask, render_template
 from flask_pymongo import PyMongo
 
 app = Flask(__name__)
-app.config['MONGO_DOCUMENT_CLASS'] = OrderedDict
-mongo = PyMongo(app)
+#app.config['MONGO_DOCUMENT_CLASS'] = OrderedDict
+#mongo = PyMongo(app)
 
 '''
 In addition to the standard package loader, there is also a choice of loading from the root directory located in documentor
