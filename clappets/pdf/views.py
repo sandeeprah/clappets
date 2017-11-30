@@ -74,7 +74,8 @@ def pdf_dbDoc(doc_id):
             print(str(e))
             return (str(e))
         finally:
-            os.remove(options['header-html'])
+#            os.remove(options['header-html'])
+            pass
 
         response = build_response(pdf)
         return response
