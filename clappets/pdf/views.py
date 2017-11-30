@@ -4,13 +4,13 @@ import tempfile
 
 import pdfkit
 from flask import render_template, make_response
-from clappets import app, mongo
+from clappets import app, mongodb
 from clappets.document.utils import get_repository
 
 @app.route('/pdf/document/db/<doc_id>/', methods=['GET'])
 def pdf_dbDoc(doc_id):
     context = {}
-    documents = mongo.db["documents"]
+    documents = mongodb["documents"]
     doc = documents.find_one({"_id": doc_id})
     if (doc==None):
         return "Document not found"

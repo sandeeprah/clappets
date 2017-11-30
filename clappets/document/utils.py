@@ -2,7 +2,7 @@ import os
 import imp
 import json
 import pymongo
-from clappets import mongo
+from clappets import mongodb
 from collections import OrderedDict
 
 def generate_breadcrumbs(bcpath, rootname):
@@ -115,7 +115,7 @@ def get_folder_title(repository, discipline=None, docCategory=None, docSubCatego
 
 def get_project_title(projectID):
     try:
-        projects = mongo.db["projects"]
+        projects = mongodb["projects"]
         project = projects.find_one({"_id": projectID})
         name = project['title']
     except:

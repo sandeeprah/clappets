@@ -4,21 +4,21 @@ import pymongo
 
 from collections import OrderedDict
 from flask import request, render_template, jsonify, abort, make_response
-from clappets import app, mongo
+from clappets import app, mongodb
 #from clappets.documentor.core import sReq
 from clappets.utils import json_response
 from clappets.project.projectSchema import sProject
 
 @app.route('/api/documentor/project/', methods=['GET'])
 def api_get_projects():
-    projects = mongo.db['projects']
+    projects = mongodb['projects']
     project_list = list(projects.find())
     return json_response(project_list), 200
 
 @app.route('/api/documentor/project/<project_id>/', methods=['GET'])
 def api_get_project(project_id):
     errors = OrderedDict()
-    projects = mongo.db['projects']
+    projects = mongodb['projects']
     prj_id = project_id
     docMongo = projects.find_one({"_id": prj_id})
     if (docMongo== None):
@@ -44,7 +44,7 @@ def api_post_project():
             return json_response(errors), 400
         else:
             project = docParsed.data
-            projects = mongo.db['projects']
+            projects = mongodb['projects']
             try:
                 projects.insert_one(project)
             except pymongo.errors.DuplicateKeyError:
@@ -74,7 +74,7 @@ def api_put_project(project_id):
             return json_response(errors), 400
         else:
             project = docParsed.data
-            projects = mongo.db['projects']
+            projects = mongodb['projects']
             try:
                 projects.update({"_id" : project_id}, project)
             except Exception as e:
@@ -86,7 +86,7 @@ def api_put_project(project_id):
 @app.route('/api/documentor/project/<project_id>/', methods=['DELETE'])
 def api_delete_project(project_id):
     errors = OrderedDict()
-    projects = mongo.db["projects"]
+    projects = mongodb["projects"]
     try:
         projects.delete_one({"_id" : project_id})
     except Exception as e:
@@ -99,7 +99,7 @@ def api_delete_project(project_id):
 @app.route('/htm/documentor/project/', methods=['GET'])
 @app.route('/htm/documentor/project/list/', methods=['GET'])
 def htm_get_projects():
-    projects = mongo.db['projects']
+    projects = mongodb['projects']
     project_list = list(projects.find())
     project_list = json.dumps(project_list)
     return render_template("documentor/project/project_list.html", project_list= project_list)
@@ -122,7 +122,7 @@ def htm_add_project():
 
 @app.route('/htm/documentor/project/edit/<prj_id>/', methods=['GET'])
 def htm_edit_project(prj_id):
-    projects = mongo.db['projects']
+    projects = mongodb['projects']
     docMongo = projects.find_one({"_id": prj_id})
     if (docMongo== None):
         return "Document Not Found"
@@ -132,7 +132,7 @@ def htm_edit_project(prj_id):
 
 @app.route('/htm/documentor/project/view/<prj_id>/', methods=['GET'])
 def htm_view_project(prj_id):
-    projects = mongo.db['projects']
+    projects = mongodb['projects']
     docMongo = projects.find_one({"_id": prj_id})
     if (docMongo== None):
         return "Document Not Found"

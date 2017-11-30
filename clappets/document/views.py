@@ -5,7 +5,7 @@ import json
 from collections import OrderedDict
 from flask import render_template, request, abort
 import pymongo
-from clappets import app, mongo
+from clappets import app, mongodb
 from clappets.core import sDocPrj
 from clappets.utils import json_response
 from clappets.document.utils import load_schema, get_repository, get_folder_title, get_project_title, get_subfolder_names, get_subfolder_list
@@ -101,7 +101,7 @@ def api_document(project="", discipline="", docCategory="", docSubCategory="", d
     context = OrderedDict()
     context["title"] = "Open Document"
 
-    documents = mongo.db["documents"]
+    documents = mongodb["documents"]
 
     pipeline = [
     { "$match" : {"$and" :[{}]}}, # match all documents, the and operator has a list with only one element {} which means match all
@@ -249,14 +249,14 @@ def api_document(project="", discipline="", docCategory="", docSubCategory="", d
 
 @app.route('/api/document/db/', methods=['GET'])
 def api_get_documents():
-    documents = mongo.db['documents']
+    documents = mongodb['documents']
     document_list = list(documents.find())
     return json_response(document_list), 200
 
 @app.route('/api/document/db/<doc_id>/', methods=['GET'])
 def api_get_document(doc_id):
     errors = OrderedDict()
-    documents = mongo.db['documents']
+    documents = mongodb['documents']
     docMongo = documents.find_one({"_id": doc_id})
     if (docMongo== None):
         errors['operation'] = ['Document with Document ID as requested could not be found']
@@ -315,7 +315,7 @@ def api_post_document():
     docInstance = doc["meta"]["docInstance"]
     doc["_id"] = "-".join([projectID, discipline, docCategory, docSubCategory, docClass, docInstance])
     try:
-        documents = mongo.db['documents']
+        documents = mongodb['documents']
         documents.insert_one(doc)
     except pymongo.errors.DuplicateKeyError as e:
         errors['_message'] = ['Insert Failed as Document ID already exists. Change docInstance to make it unique']
@@ -382,7 +382,7 @@ def api_put_document(doc_id):
 
     doc = docParsed.data
     try:
-        documents = mongo.db['documents']
+        documents = mongodb['documents']
         documents.update({"_id" : doc["_id"]}, doc)
     except Exception as e:
         errors['_message'] = ['Database Connection Error.']
@@ -395,7 +395,7 @@ def api_put_document(doc_id):
 @app.route('/api/document/db/<doc_id>/', methods=['DELETE'])
 def api_delete_document(doc_id):
     errors = OrderedDict()
-    documents = mongo.db["documents"]
+    documents = mongodb["documents"]
     try:
         documents.delete_one({"_id" : doc_id})
     except Exception as e:
@@ -470,7 +470,7 @@ def htm_template(repository, discipline, docCategory, docSubCategory, docClass):
 @app.route('/htm/document/db/<doc_id>/', methods=['GET'])
 def htm_dbDoc(doc_id):
     context = {}
-    documents = mongo.db["documents"]
+    documents = mongodb["documents"]
     doc = documents.find_one({"_id": doc_id})
     if (doc==None):
         return "Document not found"
