@@ -65,13 +65,11 @@ def pdf_dbDoc(doc_id):
         context_header['title'] = title
         context_header['rev'] = rev
         context_header['doc_id'] = doc_id
-        add_pdf_header(options, context_header=context_header)
+#        add_pdf_header(options, context_header=context_header)
 
         try:
             pdf = pdfkit.from_string(main_content, False, options=options, configuration=config, css=css_path)
 #            pdf = pdfkit.from_url('http://127.0.0.1:5000/htm/document/db/1122-mec-dat-pmp-c01-1/', False ,options=options,configuration=config)
-
-
         except Exception as e:
             print(str(e))
             return (str(e))
