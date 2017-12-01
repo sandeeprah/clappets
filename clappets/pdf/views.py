@@ -72,9 +72,9 @@ def pdf_report():
     }
 
     this_folderpath = os.path.dirname(os.path.abspath(__file__))
-#    wkhtmltopdf_path = r'/home/appadmin/wkhtmltox/bin/wkhtmltopdf'
+    wkhtmltopdf_path = r'/home/appadmin/wkhtmltox/bin/wkhtmltopdf'
 #    wkhtmltopdf_path = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
-#    config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
+    config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
     this_folderpath = os.path.dirname(os.path.abspath(__file__))
     css_path = os.path.join(this_folderpath, 'print.css')
 
@@ -85,7 +85,7 @@ def pdf_report():
     add_pdf_header(options, context_header=context_header)
 
     try:
-        pdf = pdfkit.from_string(main_content, False, options=options, css=css_path)
+        pdf = pdfkit.from_string(main_content, False, configuration=config, options=options, css=css_path)
     except Exception as e:
         print(str(e))
         return (str(e))
