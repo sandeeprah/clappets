@@ -1,0 +1,13 @@
+[Unit]
+Description=Gunicorn instance to serve clappets
+After=network.target
+
+[Service]
+User=appadmin
+Group=www-data
+WorkingDirectory=/home/appadmin/clappets
+Environment="PATH=/home/appadmin/clappets/clappetsenv/bin"
+ExecStart=/home/appadmin/clappets/clappetsenv/bin/gunicorn --workers 3 --bind unix:clappets.sock -m 007 wsgi:app
+
+[Install]
+WantedBy=multi-user.target

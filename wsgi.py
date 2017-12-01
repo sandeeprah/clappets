@@ -1,6 +1,4 @@
 # the below wsgi works on digitalocean
-
-
 from clappets import app
 
 if __name__ == "__main__":
