@@ -1,7 +1,7 @@
 # the below wsgi works on digitalocean
 
 
-from myproject import app
+from clappets import app
 
 if __name__ == "__main__":
     app.run()
