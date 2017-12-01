@@ -55,7 +55,7 @@ def pdf_dbDoc(doc_id):
 
         this_folderpath = os.path.dirname(os.path.abspath(__file__))
         wkhtmltopdf_path = "/" + os.path.join("home", "wkhtmltox", "bin", "wkhtmltopdf")
-        wkhtmltopdf_path = r'/home/wkhtmltox/bin/wkhtmltopdf'
+        wkhtmltopdf_path = r'/home/appadmin/wkhtmltox/bin/wkhtmltopdf'
 #        wkhtmltopdf_path = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
         config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
         this_folderpath = os.path.dirname(os.path.abspath(__file__))
