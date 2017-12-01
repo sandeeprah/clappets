@@ -41,7 +41,7 @@
               <a class="navbar-item" @click="openModal('saveAsModalisActive')">Save As to DB</a>
               <a class="navbar-item" @click="deleteDocDB()">Delete from DB</a>
               <hr class="navbar-divider">
-              <a class="navbar-item">Export Web Page</a>
+              <a class="navbar-item" @click="pdf_download()">PDF Download</a>
               <a class="navbar-item" @click="print()">Print</a>
             </div>
           </div>
@@ -537,6 +537,26 @@
 
         print : function(){
             window.print();
+        },
+
+        pdf_download: function(){
+            alert("u want to download pdf report");
+            var app = this;
+            axios({
+                  method:'post',
+                  url:'/pdf/document/',
+                  responseType:'arraybuffer',
+                  data: {
+                      doc : app.doc
+                  }
+                })
+                .then(function(response) {
+                    let blob = new Blob([response.data], { type:   'application/pdf' } );
+                    let link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = 'PDF Report.pdf';
+                    link.click();
+                });
         },
 
         execQuery: function(query_url) {

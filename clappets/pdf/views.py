@@ -3,9 +3,100 @@ import json
 import tempfile
 
 import pdfkit
-from flask import render_template, make_response
+from flask import render_template, make_response, request
 from clappets import app, mongodb
 from clappets.document.utils import get_repository
+from clappets.core import sDocPrj
+from clappets.utils import json_response
+from collections import OrderedDict
+
+
+@app.route('/pdf/document/', methods=['POST'])
+def pdf_report():
+    errors = OrderedDict()
+    req = request.get_json()
+
+    #perform a series of checks an return error responses
+    #check if the request body contains 'doc'
+    if ('doc' not in req):
+        errors['_message'] = "'doc' missing in request"
+        return json_response(errors), 400
+
+    #check if the raw document conforms to the generic document schema for the project (basically meta check)
+    docRaw = req['doc']
+    basicSchema = sDocPrj()
+    docParsed = basicSchema.load(docRaw)
+    if (len(docParsed.errors) > 0):
+        errors["_message"] = "The Document Meta Information has errors"
+        errors["schema"] = docParsed.errors
+        return json_response(errors), 400
+
+    doc = docParsed.data
+    #check if the raw document conforms to the specific document schema for the class
+    projectID = doc['meta']['projectID']
+    repository = get_repository(projectID)
+    discipline = doc['meta']['discipline']
+    docCategory = doc['meta']['docCategory']
+    docSubCategory = doc['meta']['docSubCategory']
+    docClass = doc['meta']['docClass']
+    title = doc["meta"]["docInstance_title"]
+    rev = doc['meta']['rev']
+    doc_id = doc['_id']
+
+    path = os.path.join(repository, discipline, docCategory, docSubCategory, docClass, "doc.html")
+    template = "/".join(path.split(os.sep))
+    doc = json.dumps(doc, indent=4)
+    main_content = render_template(template, doc=doc)
+
+    options = {
+        'page-size' : 'A4',
+        'margin-top':'25mm',
+        'margin-bottom':'19mm',
+        'margin-left':'19mm',
+        'margin-right':'19mm',
+        'encoding':'UTF-8',
+        'print-media-type' : None,
+#            'header-left' : 'My Static Header',
+        'header-line' : None,
+        'header-font-size' : '8',
+        'header-font-name' : 'Calibri',
+        'header-spacing' : '5',
+        'footer-left' : "template_url : http://www.clappets.com/htm/document/tpl/mec/dat/pmp/c01/",
+        'footer-line' : None,
+        'footer-font-size' : '8',
+        'footer-font-name' : 'Calibri',
+        'footer-spacing' : '5',
+        'disable-smart-shrinking' : None,
+        'no-stop-slow-scripts' : None,
+        '--encoding': "utf-8"
+    }
+
+    this_folderpath = os.path.dirname(os.path.abspath(__file__))
+#    wkhtmltopdf_path = r'/home/appadmin/wkhtmltox/bin/wkhtmltopdf'
+#    wkhtmltopdf_path = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
+#    config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
+    this_folderpath = os.path.dirname(os.path.abspath(__file__))
+    css_path = os.path.join(this_folderpath, 'print.css')
+
+    context_header = {}
+    context_header['title'] = title
+    context_header['rev'] = rev
+    context_header['doc_id'] = doc_id
+    add_pdf_header(options, context_header=context_header)
+
+    try:
+        pdf = pdfkit.from_string(main_content, False, options=options, css=css_path)
+    except Exception as e:
+        print(str(e))
+        return (str(e))
+    finally:
+        os.remove(options['header-html'])
+
+    response = build_response(pdf)
+    return response
+
+
+
 
 @app.route('/pdf/document/db/<doc_id>/', methods=['GET'])
 def pdf_dbDoc(doc_id):
