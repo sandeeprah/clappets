@@ -22,16 +22,3 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
-
-
-window.onload = function() {
-    var http = getHTTPObject();
-    if (http) {
-        var anchors = document.getElementsByTagName("a");
-        for (var foo = 0; foo < anchors.length; foo++) {
-            if (anchors[foo].className == "httpauth") {
-                createForm(anchors[foo]);
-            }
-        }
-    }
-}
