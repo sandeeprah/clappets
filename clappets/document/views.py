@@ -273,7 +273,7 @@ def api_post_document():
     #perform a series of checks an return error responses
     #check if the request body contains 'doc'
     if ('doc' not in req):
-        errors['_message'] = "'doc' missing in request"
+        errors['message'] = "'doc' missing in request"
         return json_response(errors), 400
 
     #check if the raw document conforms to the generic document schema for the project (basically meta check)
@@ -281,7 +281,7 @@ def api_post_document():
     basicSchema = sDocPrj()
     docParsed = basicSchema.load(docRaw)
     if (len(docParsed.errors) > 0):
-        errors["_message"] = "The Document Meta Information has errors"
+        errors["message"] = "The Document Meta Information has errors"
         errors["schema"] = docParsed.errors
         return json_response(errors), 400
 
@@ -301,13 +301,13 @@ def api_post_document():
         schemaModuleFile = os.path.join(docClassFolder, "schema.py")
         docSchema = load_schema(schemaModuleFile)
     except FileNotFoundError as e:
-        errors["_message"] = "Schema File could not be found"
+        errors["message"] = "Schema File could not be found"
         errors["operation"] = str(e)
         return json_response(errors), 400
 
     docParsed = docSchema.load(docRaw)
     if (len(docParsed.errors) > 0):
-        errors['_message'] = "Document Contains Errors"
+        errors['message'] = "Document Contains Errors"
         errors["schema"] = docParsed.errors
         return json_response(errors), 400
 
@@ -319,15 +319,15 @@ def api_post_document():
         documents = mongodb['documents']
         documents.insert_one(doc)
     except pymongo.errors.DuplicateKeyError as e:
-        errors['_message'] = ['Insert Failed as Document ID already exists. Change docInstance to make it unique']
+        errors['message'] = ['Insert Failed as Document ID already exists. Change docInstance to make it unique']
         errors['operation'] = str(e)
         return json_response(errors), 400
     except Exception as e:
-        errors['_message'] = ['Database Connection Error.']
+        errors['message'] = ['Database Connection Error.']
         errors['operation'] = str(e)
         return json_response(errors), 400
 
-    return json_response({'_message' : 'Document Added Sucessfully', '_id' : doc['_id']}), 201
+    return json_response({'message' : 'Document Added Sucessfully', '_id' : doc['_id']}), 201
 
 @app.route('/api/document/db/<doc_id>/', methods=['PUT'])
 def api_put_document(doc_id):
@@ -337,7 +337,7 @@ def api_put_document(doc_id):
     #perform a series of checks an return error responses
     #check if the request body contains 'doc'
     if ('doc' not in req):
-        errors['_message'] = "'doc' missing in request"
+        errors['message'] = "'doc' missing in request"
         return json_response(errors), 400
 
         docRaw = req['resource']
@@ -351,7 +351,7 @@ def api_put_document(doc_id):
     basicSchema = sDocPrj()
     docParsed = basicSchema.load(docRaw)
     if (len(docParsed.errors) > 0):
-        errors["_message"] = "The Document Meta Information has errors"
+        errors["message"] = "The Document Meta Information has errors"
         errors["schema"] = docParsed.errors
         return json_response(errors), 400
 
@@ -371,13 +371,13 @@ def api_put_document(doc_id):
         schemaModuleFile = os.path.join(docClassFolder, "schema.py")
         docSchema = load_schema(schemaModuleFile)
     except FileNotFoundError as e:
-        errors["_message"] = "Schema File could not be found"
+        errors["message"] = "Schema File could not be found"
         errors["operation"] = str(e)
         return json_response(errors), 400
 
     docParsed = docSchema.load(docRaw)
     if (len(docParsed.errors) > 0):
-        errors['_message'] = "Document Contains Errors"
+        errors['message'] = "Document Contains Errors"
         errors["schema"] = docParsed.errors
         return json_response(errors), 400
 
@@ -386,11 +386,11 @@ def api_put_document(doc_id):
         documents = mongodb['documents']
         documents.update({"_id" : doc["_id"]}, doc)
     except Exception as e:
-        errors['_message'] = ['Database Connection Error.']
+        errors['message'] = ['Database Connection Error.']
         errors['operation'] = str(e)
         return json_response(errors), 400
 
-    return json_response({'_message' : 'Document Updated Sucessfully', '_id' : doc['_id']}), 201
+    return json_response({'message' : 'Document Updated Sucessfully', '_id' : doc['_id']}), 201
 
 
 @app.route('/api/document/db/<doc_id>/', methods=['DELETE'])
@@ -403,7 +403,7 @@ def api_delete_document(doc_id):
         errors['operation'] = str(e)
         return json_response(errors)
 
-    return json_response({'_message': "Deletion Successful"})
+    return json_response({'message': "Deletion Successful"})
 
 
 #then all htm views
@@ -428,7 +428,7 @@ def htm_Doc():
         basicSchema = sDocPrj()
         docParsed = basicSchema.load(docRaw)
         if (len(docParsed.errors) > 0):
-            errors["_message"] = "The Document Meta Information has errors"
+            errors["message"] = "The Document Meta Information has errors"
             errors["schema"] = docParsed.errors
             return json_response(errors), 400
 
