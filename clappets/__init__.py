@@ -2,19 +2,14 @@ import os
 import jinja2
 from collections import OrderedDict
 from flask import Flask, render_template
-from flask_pymongo import PyMongo
 import pymongo
+
 app = Flask(__name__)
-
-
 app.debug = True
 app.config['SECRET_KEY'] = 'super-secret'
 
-#app.config['MONGO_DOCUMENT_CLASS'] = OrderedDict
-#mongo = PyMongo(app)
-atlas_connection_string = "mongodb://webapp:yI6OmPNh4dPnAiv1@clappets-shard-00-00-h9b3z.mongodb.net:27017,clappets-shard-00-01-h9b3z.mongodb.net:27017,clappets-shard-00-02-h9b3z.mongodb.net:27017/clappetsdb?ssl=true&replicaSet=clappets-shard-0&authSource=admin"
-client = pymongo.MongoClient(atlas_connection_string)
-mongodb = client.clappetsdb
+client = pymongo.MongoClient(document_class = OrderedDict)
+mongodb = client["clappetsdb"]
 
 '''
 In addition to the standard package loader, there is also a choice of loading from the root directory located in documentor
