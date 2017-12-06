@@ -5,6 +5,11 @@ from flask import Flask, render_template
 from flask_pymongo import PyMongo
 import pymongo
 app = Flask(__name__)
+
+
+app.debug = True
+app.config['SECRET_KEY'] = 'super-secret'
+
 #app.config['MONGO_DOCUMENT_CLASS'] = OrderedDict
 #mongo = PyMongo(app)
 atlas_connection_string = "mongodb://webapp:yI6OmPNh4dPnAiv1@clappets-shard-00-00-h9b3z.mongodb.net:27017,clappets-shard-00-01-h9b3z.mongodb.net:27017,clappets-shard-00-02-h9b3z.mongodb.net:27017/clappetsdb?ssl=true&replicaSet=clappets-shard-0&authSource=admin"

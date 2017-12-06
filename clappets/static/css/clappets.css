@@ -21,7 +21,6 @@
         display: none;
         color: red;
     }
-
 }
 
 @media screen {
@@ -30,7 +29,11 @@
     }
 }
 
-.input {
+[v-cloak] {
+    display: none;
+}
+
+.inp {
     height: 1.5em;
     border: 0px;
     outline: 0px;
@@ -55,8 +58,6 @@
 tr, td, th, thead{
   page-break-inside: avoid;
 }
-
-
 
 div.datasheet {
     background-color: white;

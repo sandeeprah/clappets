@@ -1,0 +1,319 @@
+{% extends "base.html" %}
+{% block title %}docuMentor{% endblock title %}
+{% block navbar_left %}
+<div class="navbar-item has-dropdown is-hoverable">
+  <a class="navbar-link">Document</a>
+  <div class="navbar-dropdown">
+    <a class="navbar-item" @click="newDoc()">New</a>
+    <a class="navbar-item" @click="openModal('uploadModalisActive')">Open</a>
+    <a class="navbar-item" @click="saveDoc()">Save</a>
+    <hr class="navbar-divider">
+    <a class="navbar-item" @click="openDocDB()">Open from DB</a>
+    <a class="navbar-item" @click="saveDocDB()">Save to DB</a>
+    <a class="navbar-item" @click="openModal('saveAsModalisActive')">Save As to DB</a>
+    <a class="navbar-item" @click="deleteDocDB()">Delete from DB</a>
+    <hr class="navbar-divider">
+    <a class="navbar-item" @click="pdf_download()">PDF Download</a>
+    <a class="navbar-item" @click="print()">Print</a>
+  </div>
+</div>
+<a class="navbar-item" @click="openModal('infoModalisActive')">Doc. Info.</a>
+<a class="navbar-item" @click="openModal('unitsModalisActive')">Units</a>
+<a class="navbar-item" @click="calculate()">Calculate</a>
+<a class="navbar-item" @click="openModal('macroModalisActive')">Macros</a>
+{% endblock navbar_left %}
+
+{% block modals %}
+{{ super()}}
+
+<div class="modal hideprint" v-bind:class="{'is-active': infoModalisActive}">
+  <div class="modal-background">
+  </div>
+  <div class="modal-content" style="background-color:white; height: 360px; overflow:auto;padding:20px;">
+    <h4 class="title is-4">Document Info</h4>
+    <div style="height:180px; overflow:auto;">
+      <table class="table" style="width:100%;">
+        <tr>
+          <td style="width:30%">
+            Project ID
+          </td>
+          <td style="width:70%">
+            [[ doc['meta']['projectID'] ]]
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Project Title
+          </td>
+          <td>
+            [[ doc['meta']['project_title'] ]]
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Discipline
+          </td>
+          <td>
+            [[ doc['meta']['discipline'] ]]
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Document Category
+          </td>
+          <td>
+            [[ doc['meta']['docCategory'] ]]
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Doc Sub Category
+          </td>
+          <td>
+            [[ doc['meta']['docSubCategory'] ]]
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Doc Class
+          </td>
+          <td>
+            [[ doc['meta']['docClass'] ]]
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Doc Instance
+          </td>
+          <td>
+            [[ doc['meta']['docInstance'] ]]
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Doc No.
+          </td>
+          <td>
+            [[ doc['_id'] ]]
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Doc Instance Title
+          </td>
+          <td>
+            <input type="text" class="input" v-model="doc['meta']['docInstance_title']">
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="field is-grouped is-grouped-centered">
+      <p class="control">
+        <button class="button is-primary" @click="closeModal('infoModalisActive')" style="width:6em">Done</a>
+        </p>
+      </div>
+  </div>
+</div>
+
+
+<div class="modal hideprint" v-bind:class="{'is-active': unitsModalisActive}">
+  <div class="modal-background">
+  </div>
+  <div class="modal-content" style="background-color:white; height: 360px; overflow:auto;padding:20px;">
+      <h4 class="title is-4">Units</h4>
+      <div style="height:180px; overflow:auto;">
+        <table class="table" style="width:100%;">
+          <tr v-for="dimension in dimensions_used ">
+            <td style="width:50%">
+              [[ dimension ]]
+            </td>
+            <td style="width:50%">
+              <div class="select" style="width:100%">
+                <select v-model="doc.units[dimension]" style="width:100%;">
+                        <option v-for="unit in getUnits(dimension)" :value="unit['unit']" v-text="unit['label']" style="width:100%"></option>
+                </select>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    <div class="field is-grouped is-grouped-centered">
+      <p class="control">
+        <button class="button is-primary" @click="closeModal('unitsModalisActive')" style="width:6em">Done</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="modal hideprint" v-bind:class="{'is-active': macroModalisActive}">
+  <div class="modal-background">
+  </div>
+  <div class="modal-content" style="background-color:white; height: 360px; overflow:auto; padding:20px;">
+      <h4 class="title is-4">Units</h4>
+      <div style="height:180px; overflow:auto;">
+        <table class="table" style="width:100%;">
+          <tr v-for="dimension in dimensions_used ">
+            <td style="width:50%">
+              [[ dimension ]]
+            </td>
+            <td style="width:50%">
+              <div class="select" style="width:100%">
+                <select v-model="doc.units[dimension]" style="width:100%;">
+                    <option v-for="unit in getUnits(dimension)" :value="unit['unit']" v-text="unit['label']" style="width:100%"></option>
+                </select>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    <div class="field is-grouped is-grouped-centered">
+      <p class="control">
+        <button class="button is-primary" @click="closeModal('macroModalisActive')" style="width:6em">Done</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="modal hideprint" v-bind:class="{'is-active': selectionModalisActive}">
+  <div class="modal-background">
+  </div>
+  <div class="modal-content" style="background-color:white; height: 360px; overflow:auto;padding:20px;">
+      <h3 class="title is-4" style="margin-bottom:10px;">[[ selectionMenu['title'] ]]</h3>
+      <h5 class="title is-6" style="margin-bottom:10px;">[[ selectionMenu['subtitle'] ]]</h5>
+      <div style="height:180px; overflow:auto;">
+        <table class="table is-bordered" style="width:100%;">
+          <tr>
+            <th style="width:20%;">Name</th>
+            <th style="width:60%;">Title</th>
+            <th style="width:20%;">Action</th>
+          </tr>
+          <tr v-for="subfolder in selectionMenu['subfolder_list']">
+            <td>
+              [[ subfolder['name'] ]]
+            </td>
+            <td>
+              [[ subfolder['title'] ]]
+            </td>
+            <td>
+              <a @click="execQuery(subfolder['url'])"> Select >> </a>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <p class="help is-danger">[[ errorMessage]]</p>
+      </div>
+    
+    <div class="field is-grouped is-grouped-centered">
+      <p class="control">
+        <button class="button is-primary" @click="closeModal('selectionModalisActive')" style="width:6em">Cancel</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="modal hideprint" v-bind:class="{'is-active': saveAsModalisActive}">
+  <div class="modal-background"></div>
+  <div class="modal-content" style="background-color:white; height: 360px; overflow:auto; padding:20px;">
+      <h4 class="title is-4">Save As</h4>
+      <div style="height:180px; overflow:auto;">
+        <table class="table" style="width:100%;">
+          <tr>
+            <td style="width:50%">
+              Project ID
+            </td>
+            <td style="width:50%">
+              <input class="input" v-model="doc['meta']['projectID']">
+            </td>
+          </tr>
+          <tr>
+            <td>Project Title</td>
+            <td><span>project title</span></td>
+          </tr>
+          <tr>
+            <td>Document Instance</td>
+            <td><input class="input" v-model="doc['meta']['docInstance']" /></td>
+          </tr>
+          <tr>
+            <td>Document Instance Title</td>
+            <td><input class="input" v-model="doc['meta']['docInstance_title']"></td>
+          </tr>
+          <tr>
+            <td>Document ID</td>
+            <td>
+              <span>[[ doc_id ]]</span>
+            </td>
+          </tr>
+        </table>
+      </div>
+    <div class="field is-grouped is-grouped-centered">
+      <p class="control">
+        <button class="button is-primary" @click="saveAsDocDB()" style="width:6em">OK</button>
+      </p>
+      <p class="control">
+        <button class="button is-light" @click="closeModal('saveAsModalisActive')" style="width:6em">Cancel</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="modal hideprint" v-bind:class="{'is-active': uploadModalisActive}">
+  <div class="modal-background">
+  </div>
+  <div class="modal-content" style="background-color:white; maximum-height: 480px; width: 600px; overflow:auto;">
+    <form action="/htm/document/" method="post" enctype="multipart/form-data" style="margin:20px;">
+      <h4 class="title is-4">Open Document</h4>
+      <div class="field">
+        <div class="control">
+          <input class="input" type="file" placeholder="" name="doc" required>
+        </div>
+      </div>
+      <div class="field is-grouped is-grouped-centered">
+        <p class="control">
+          <input class="button is-primary" type="submit" value="Submit">
+        </p>
+        <p class="control">
+          <a class="button is-light" @click="closeModal('uploadModalisActive')">Cancel</a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div style="display:none;">
+  <a href="" ref="save_anchor">Save Anchor </a>
+</div>
+{% endblock modals %}
+
+
+
+{% block content %}
+<div class="section">
+  <div class="container">
+    <div class="box">
+      <p>
+        Welcome to docuMentor. This is a webbased editor for documents.
+      </p>
+      <p>
+        Open a new or existing document, located in the cloud or on your local disk to start.
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+
+{% block script_vueapp %}
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    delimiters: ['[[', ']]'],
+    mixins: [app_common],
+    data: {
+        doc : {{doc | safe }}
+    },
+    computed : {},
+    methods : {}
+  })
+</script>
+{% endblock script_vueapp %}

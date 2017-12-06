@@ -1,8 +1,10 @@
 from flask import request, render_template, jsonify, abort
+from flask_httpauth import HTTPBasicAuth
 from clappets import app
 from clappets.project import views
 from clappets.document import views
 from clappets.pdf import views
+from clappets import authentication
 
 @app.route('/')
 @app.route('/index')

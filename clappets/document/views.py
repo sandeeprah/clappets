@@ -6,6 +6,7 @@ from collections import OrderedDict
 from flask import render_template, request, abort
 import pymongo
 from clappets import app, mongodb
+from clappets.authentication import auth, basic_auth_token, token_auth
 from clappets.core import sDocPrj
 from clappets.utils import json_response
 from clappets.document.utils import load_schema, get_repository, get_folder_title, get_project_title, get_subfolder_names, get_subfolder_list
@@ -408,6 +409,7 @@ def api_delete_document(doc_id):
 #then all htm views
 
 @app.route('/htm/document/', methods=['GET', 'POST'])
+@auth.login_required
 def htm_Doc():
     if (request.method=='GET'):
         this_folderpath = os.path.dirname(os.path.abspath(__file__))
@@ -418,7 +420,7 @@ def htm_Doc():
             doc = json.dumps(doc_json, indent=4)
         except Exception as e:
             return "Error Occured" + str(e)
-        template = "/document/base.html"
+        template = "/document/document.html"
         return render_template(template, doc=doc)
     else:
         doc_file = request.files['doc']
@@ -446,7 +448,6 @@ def htm_Doc():
 
         doc = json.dumps(docRaw, indent=4)
         return render_template(template, doc=doc)
-#        return json_response(docRaw)
 
 
 
