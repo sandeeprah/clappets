@@ -6,7 +6,7 @@ from collections import OrderedDict
 from flask import render_template, request, abort
 import pymongo
 from clappets import app, mongodb
-from clappets.authentication import auth, basic_auth_token, token_auth
+from clappets.authentication import auth
 from clappets.core import sDocPrj
 from clappets.utils import json_response
 from clappets.document.utils import load_schema, get_repository, get_folder_title, get_project_title, get_subfolder_names, get_subfolder_list
@@ -272,12 +272,12 @@ def api_post_document():
 
     #perform a series of checks an return error responses
     #check if the request body contains 'doc'
-    if ('doc' not in req):
-        errors['message'] = "'doc' missing in request"
+    if ('resource' not in req):
+        errors['message'] = "'resource' missing in request"
         return json_response(errors), 400
 
     #check if the raw document conforms to the generic document schema for the project (basically meta check)
-    docRaw = req['doc']
+    docRaw = req['resource']
     basicSchema = sDocPrj()
     docParsed = basicSchema.load(docRaw)
     if (len(docParsed.errors) > 0):
@@ -327,7 +327,11 @@ def api_post_document():
         errors['operation'] = str(e)
         return json_response(errors), 400
 
-    return json_response({'message' : 'Document Added Sucessfully', '_id' : doc['_id']}), 201
+    response = {}
+    response["message"] = "Document Added Successfully"
+    response["_id"] = doc["_id"]
+    response["redirect_url"] = "/htm/document/db/"+doc["_id"]+"/"
+    return json_response(response), 201
 
 @app.route('/api/document/db/<doc_id>/', methods=['PUT'])
 def api_put_document(doc_id):
@@ -336,18 +340,12 @@ def api_put_document(doc_id):
 
     #perform a series of checks an return error responses
     #check if the request body contains 'doc'
-    if ('doc' not in req):
-        errors['message'] = "'doc' missing in request"
+    if ('resource' not in req):
+        errors['message'] = "'resource' missing in request"
         return json_response(errors), 400
 
-        docRaw = req['resource']
-        discipline = docRaw['meta']['discipline']
-        docCategory = docRaw['meta']['docCategory']
-        docSubCategory = docRaw['meta']['docSubCategory']
-        docClass = docRaw['meta']['docClass']
-
     #check if the raw document conforms to the generic document schema for the project (basically meta check)
-    docRaw = req['doc']
+    docRaw = req['resource']
     basicSchema = sDocPrj()
     docParsed = basicSchema.load(docRaw)
     if (len(docParsed.errors) > 0):
@@ -403,7 +401,10 @@ def api_delete_document(doc_id):
         errors['operation'] = str(e)
         return json_response(errors)
 
-    return json_response({'message': "Deletion Successful"})
+    response ={}
+    response["message"] = "Deletion Successful"
+    response["redirect_url"] = "/htm/document/"
+    return json_response(response)
 
 
 #then all htm views

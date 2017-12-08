@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}docuMentor{% endblock title %}
+
+{% block navbar_left %}
+<a class="navbar-item" @click="loadProtectedResource('/htm/project/')">Projects</a>
+<a class="navbar-item" @click="loadProtectedResource('/htm/user/')">Users</a>
+{% endblock navbar_left %}
+
+{% block content %}
+
+{% endblock content %}

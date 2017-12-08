@@ -1,4 +1,4 @@
-var app_common = {
+var app_doc = {
     data: {
         userAuthenticated : false,
         username: '',
@@ -10,30 +10,52 @@ var app_common = {
         warningisActive: false,
         errorMessage: "",
         errorisActive: false,
-        errorStatus:"",
-        errors : {},
-        selectionMenu: {},
+        errors : {}
 
+        selectionModalisActive: false,
+        unitsModalisActive: false,
+        infoModalisActive: false,
+        saveAsModalisActive: false,
+        macroModalisActive: false,
+        uploadModalisActive: false,
+        selectionMenu: {},
     },
-    computed : {
-        isReadonly: function() {
-            if (this.action == "view") {
-                return true;
-            } else {
-                return false;
+    computed: {
+        dimensions_used: function() {
+            dimensions = []
+            for (var dimension in this.doc.units) {
+                if (this.doc.units.hasOwnProperty(dimension)) {
+                    dimensions.push(dimension);
+                }
+            }
+            return dimensions;
+        },
+
+        doc_id: function() {
+            meta = this.doc['meta'];
+            id = meta["projectID"] + "-" + meta["discipline"] + "-" + meta["docCategory"] + "-" + meta["docSubCategory"] + "-" + meta["docClass"] + "-" + meta["docInstance"];
+            return id;
+        }
+    },
+    methods: {
+        gUL: function(dimension) {
+            try {
+                unitUsed = this.doc.units[dimension]
+                unitLabel = getUnitLabel(dimension, unitUsed)
+                return unitLabel
+            } catch (err) {
+                console.log("Error occured in getUnitLabel trying to fetch unitUsed '" + unitUsed + "'")
+                return '';
             }
         },
 
-        id_isReadonly: function() {
-            if ((this.action == "edit") || (this.action == "view")) {
-                return true;
-            } else {
-                return false;
+        getUnits: function(dimension) {
+            try {
+                return getUnits(dimension)
+            } catch (err) {
+                console.log("Error occured in getUnits with dimension = '" + dimension + "'");
             }
-        }
-    },
-
-    methods : {
+        },
 
         getErrs: function(path_array) {
             val = this.errors
@@ -57,18 +79,155 @@ var app_common = {
             this.resetMessages();
         },
 
+        calculate: function() {
+            alert("you ran the calculation");
+        },
+
+        newDoc: function() {
+            this.execQuery("/api/document/tpl/");
+            app.selectionModalisActive = true;
+        },
+
+        saveDoc: function() {
+            mydata = JSON.stringify(this.doc, null, 2);
+            save_anchor = this.$refs['save_anchor']
+            save_anchor.download = "formData-" + new Date().getTime();
+            save_anchor.href = "data:text/plain," + encodeURIComponent(mydata);
+            save_anchor.click();
+        },
+
+        openDocDB: function() {
+            this.execQuery("/api/document/query/");
+            app.selectionModalisActive = true;
+        },
+
+        saveDocDB: function() {
+            var app = this;
+            this.resetMessages();
+            if (this.doc['_id'] == "") {
+                this.saveAsModalisActive = true;
+            } else {
+                url = "/api/document/db/" + this.doc["_id"] + "/";
+                axios.put(url, {
+                        doc: app.doc
+                    })
+                    .then(function(response) {
+                        console.log(response);
+                        app.successMessage = response.data["message"];
+                        app.successisActive = true;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                        app.errorStatus = error.response.status + " " + error.response.statusText;
+                        app.errors = error.response.data
+                        app.errorisActive = true;
+                    });
+            }
+        },
+
+        saveAsDocDB: function() {
+            this.saveAsModalisActive = false;
+            var app = this;
+            this.resetMessages()
+            url = "/api/document/db/"
+            axios.post(url, {
+                    doc: app.doc
+                })
+                .then(function(response) {
+                    console.log(response);
+                    alert("Document Successfully Saved. Now reloading")
+                    location.href = "/htm/document/db/" + response.data["_id"] + "/";
+                    //app.doc["_id"] = response.data["_id"];
+                    app.successMessage = response.data["message"];
+                    app.successisActive = true;
+                })
+                .catch(function(error) {
+                    console.log(error);
+                    app.errorStatus = error.response.status + " " + error.response.statusText;
+                    app.errors = error.response.data
+                    app.errorisActive = true;
+                });
+        },
+
+        deleteDocDB: function() {
+            var app = this;
+            this.resetMessages();
+            if (this.doc['_id'] == "") {
+                alert("Document does not have a valid ID");
+                return;
+            } else {
+                url = "/api/document/db/" + this.doc["_id"] + "/";
+                axios.delete(url)
+                    .then(function(response) {
+                        console.log(response);
+                        location.href = "/htm/document/"
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                        app.errorStatus = error.response.status + " " + error.response.statusText;
+                        app.errors = error.response.data
+                        app.errorisActive = true;
+                    });
+            }
+        },
+
+        print: function() {
+            window.print();
+        },
+
+        pdf_download: function() {
+            var app = this;
+            axios({
+                    method: 'post',
+                    url: '/pdf/document/',
+                    responseType: 'arraybuffer',
+                    data: {
+                        doc: app.doc
+                    }
+                })
+                .then(function(response) {
+                    let blob = new Blob([response.data], {
+                        type: 'application/pdf'
+                    });
+                    let link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = 'PDF Report.pdf';
+                    link.click();
+                });
+        },
+
+
+        execQuery: function(query_url) {
+            if (query_url.substring(0, 4) == "/api") {
+                var app = this;
+                url = query_url;
+                axios({
+                      method:'get',
+                      url:query_url,
+                    })
+                    .then(function(response) {
+                        app.selectionMenu = response.data;
+                        console.log(response);
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                        app.errorMessage = error.response.data;
+                    });
+            } else if (query_url.substring(0, 4) == "/htm") {
+                location.href = query_url;
+            }
+        },
+
+
         hideWarning: function() {
             this.warningisActive = false;
         },
-
         hideError: function() {
             this.errorisActive = false;
         },
-
         hideSuccess: function() {
             this.successisActive = false;
         },
-
         resetMessages: function() {
             this.warningMessage = "";
             this.successMessage = "";
@@ -79,6 +238,7 @@ var app_common = {
             this.warningisActive = false;
             this.successisActive = false;
         },
+
 
         login: function(){
             var app = this;
@@ -197,161 +357,8 @@ var app_common = {
             xhr.send(null);
         }, //end of loadProtectedResource
 
-        get_resource_list: function(resource_name) {
-            var app = this;
-            this.resetMessages();
-            url = app.api_url[resource_name]
-            axios.get(url)
-                .then(function(response) {
-                    console.log(response);
-                    resource_list = resource_name + "_list";
-                    app[resource_list] = response.data;
-                })
-                .catch(function(error) {
-                    console.log(error);
-                    app.errorStatus = error.response.status + " " + error.response.statusText;
-                    app.errorMessage = error.response.data["message"];
-                    app.errors = error.response.data;
-                    app.errorisActive = true;
-                });
-        },
 
-        get_resource: function(resource_name, resource_id) {
-            var app = this;
-            this.resetMessages();
-            url = app.api_url[resource_name] + resource_id + "/"
-            axios.get(url)
-                .then(function(response) {
-                    app[resource_name] = response.data;
-                    console.log(response);
-                })
-                .catch(function(error) {
-                    console.log(error);
-                    app.errorStatus = error.response.status + " " + error.response.statusText;
-                    app.errorMessage = error.response.data["message"];
-                    app.errors = error.response.data;
-                    app.errorisActive = true;
-                });
-        },
-
-        add_resource: function(resource_name) {
-            var app = this;
-            this.resetMessages();
-            url = app.api_url[resource_name];
-            axios.post(url, {
-                    resource: app[resource_name]
-                })
-                .then(function(response) {
-                    console.log(response);
-                    app.successMessage = response.data["message"];
-                    app.successisActive = true;
-                    if (response.data.hasOwnProperty("redirect_url")){
-                        location.href = response.data["redirect_url"];
-                    }
-                })
-                .catch(function(error) {
-                    console.log(error);
-                    app.errorStatus = error.response.status + " " + error.response.statusText;
-                    app.errorMessage = error.response.data["message"];
-                    app.errors = error.response.data;
-                    app.errorisActive = true;
-                });
-        },
-
-        update_resource: function(resource_name, resource_id) {
-            var app = this;
-            this.resetMessages();
-            url = app.api_url[resource_name] + resource_id + '/'
-            axios.put(url, {
-                    resource: app[resource_name],
-                })
-                .then(function(response) {
-                    console.log(response);
-                    app.successMessage = response.data["message"];
-                    app.successisActive = true;
-                })
-                .catch(function(error) {
-                    console.log(error);
-                    app.errorStatus = error.response.status + " " + error.response.statusText;
-                    app.errorMessage = error.response.data["message"];
-                    app.errors = error.response.data;
-                    app.errorisActive = true;
-                });
-        },
-
-        delete_resource: function(resource_name, resource_id) {
-            if (confirm("Want to delete " + resource_id + " in " + resource_name)) {
-                var app = this;
-                this.resetMessages();
-                url = app.api_url[resource_name] + resource_id + '/';
-                axios.delete(url)
-                    .then(function(response) {
-                        console.log(response);
-                        app.successMessage = response.data["message"];
-                        app.successisActive = true;
-                        if (response.data.hasOwnProperty("redirect_url")){
-                            location.href = response.data["redirect_url"];
-                        }
-                    })
-                    .catch(function(error) {
-                        console.log(error);
-                        app.errorStatus = error.response.status + " " + error.response.statusText;
-                        app.errorMessage = error.response.data["message"];
-                        app.errors = error.response.data;
-                        app.errorisActive = true;
-                    });
-            }
-        },
-
-        execQuery: function(query_url) {
-            if (query_url.substring(0, 4) == "/api") {
-                var app = this;
-                url = query_url;
-                axios({
-                      method:'get',
-                      url:query_url,
-                    })
-                    .then(function(response) {
-                        app.selectionMenu = response.data;
-                        console.log(response);
-                    })
-                    .catch(function(error) {
-                        console.log(error);
-                        app.errorMessage = error.response.data;
-                    });
-            } else if (query_url.substring(0, 4) == "/htm") {
-                location.href = query_url;
-            }
-        },
-
-        print: function() {
-            window.print();
-        },
-
-        pdf_download: function(resource_name) {
-            var app = this;
-            axios({
-                    method: 'post',
-                    url : app.pdf_url[resource_name],
-                    responseType: 'arraybuffer',
-                    data: {
-                        resource : app[resource_name]
-                    }
-                })
-                .then(function(response) {
-                    let blob = new Blob([response.data], {
-                        type: 'application/pdf'
-                    });
-                    let link = document.createElement('a');
-                    link.href = window.URL.createObjectURL(blob);
-                    link.download = 'PDF Report.pdf';
-                    link.click();
-                });
-        },
-
-
-
-    },
+    },//end of methods
 
     beforeMount : function(){
         this.username = localStorage["username"];

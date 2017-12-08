@@ -13,7 +13,7 @@
     <a class="navbar-item" @click="openModal('saveAsModalisActive')">Save As to DB</a>
     <a class="navbar-item" @click="deleteDocDB()">Delete from DB</a>
     <hr class="navbar-divider">
-    <a class="navbar-item" @click="pdf_download()">PDF Download</a>
+    <a class="navbar-item" @click="pdf_download('doc')">PDF Download</a>
     <a class="navbar-item" @click="print()">Print</a>
   </div>
 </div>
@@ -203,7 +203,7 @@
       <div>
         <p class="help is-danger">[[ errorMessage]]</p>
       </div>
-    
+
     <div class="field is-grouped is-grouped-centered">
       <p class="control">
         <button class="button is-primary" @click="closeModal('selectionModalisActive')" style="width:6em">Cancel</a>
@@ -302,18 +302,22 @@
 </div>
 {% endblock content %}
 
+{% block script_bottom %}
+{{ super()}}
+<script type="text/javascript" src="{{ url_for('static', filename='js/clappetsDoc.js', _external=True) }}"></script>
+{% endblock script_bottom %}
 
 {% block script_vueapp %}
 <script type="text/javascript">
-  var app = new Vue({
-    el: '#app',
-    delimiters: ['[[', ']]'],
-    mixins: [app_common],
-    data: {
-        doc : {{doc | safe }}
-    },
-    computed : {},
-    methods : {}
-  })
+    var app = new Vue({
+        el: '#app',
+        delimiters : ['[[',']]'],
+        mixins: [app_common, app_doc],
+        data: {
+            doc : {{ doc | safe }},
+        },
+        computed: {},
+        methods: {}
+    });
 </script>
 {% endblock script_vueapp %}

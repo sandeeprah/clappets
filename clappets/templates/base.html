@@ -13,9 +13,9 @@
   <meta name="author" content="Sandeep Raheja">
   <meta name="description" content="{% block meta_description %}{% endblock meta_description %}" />
   <meta name="keywords" content="{% block meta_keywords %}{% endblock meta_keywords %}" /> {% endblock head %} {% block css %}
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}">
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bulma.css') }}">
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/clappets.css') }}"> {% endblock css %} {% block extra_styles %} {% endblock extra_styles %} {% block script_top %} {% endblock script_top %}
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css', _external=True) }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bulma.css', _external=True) }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/clappets.css', _external=True) }}"> {% endblock css %} {% block extra_styles %} {% endblock extra_styles %} {% block script_top %} {% endblock script_top %}
 </head>
 
 <body>
@@ -110,7 +110,7 @@
             </div>
           </div>
           <div>
-            <p class="help is-danger">[[ errorMessage]]</p>
+            <p class="help is-danger">[[errorMessage]]</p>
           </div>
           <div class="field is-grouped is-grouped-centered">
             <p class="control">
@@ -122,7 +122,7 @@
             </div>
 
             <p class="has-text-grey has-text-centered">
-              <a href="../">Sign Up</a> &nbsp;·&nbsp;
+              <a href="/htm/user/add/">Sign Up</a> &nbsp;·&nbsp;
               <a href="../">Forgot Password</a> &nbsp;·&nbsp;
             </p>
         </div>
@@ -146,7 +146,7 @@
   {% block page_footer %}
   <div class="container">
     <footer>
-      <p>Copyright &copy; all rights reserved</p>
+      <p></p>
     </footer>
   </div>
   {% endblock page_footer %}
@@ -154,12 +154,12 @@
 </div>
 
   {% block script_bottom %}
-  <script type="text/javascript" src="{{ url_for('static', filename='js/bulma.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='js/vue.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/bulma.js', _external=True) }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/vue.js', _external=True) }}"></script>
   <script src="https://unpkg.com/axios@0.16.2/dist/axios.min.js"></script>
   <script src="https://unpkg.com/lodash@4.17.2/lodash.min.js"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='js/units.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='js/clappets.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/units.js', _external=True) }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/clappets.js', _external=True) }}"></script>
   {% endblock script_bottom %}
 
   {% block script_vueapp %}

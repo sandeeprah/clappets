@@ -1,6 +1,5 @@
-{% extends "base.html" %}
-{% block title %}Documentor{% endblock %}
-{% block documentor_active %}is-active{% endblock documentor_active %}
+{% extends "admin.html" %}
+{% block title %}Admin-Project{% endblock %}
 
 {% block content %}
 <section class="section">
@@ -32,34 +31,12 @@
                         <td><input type="text" class="input" v-model="project['admin_id']" :readonly = "isReadonly"></input></td>
                     </tr>
                   </table>
-                  <article class="message is-small is-danger" v-show="errorBoxActive" v-cloak>
-                      <div class="message-header">
-                          <p>Errors</p>
-                          <button class="delete is-small" aria-label="delete" @click="hideErrorBox"></button>
-                      </div>
-                      <div class="message-body">
-                          <p>[[ error_status]]</p>
-                          <p class="help is-danger">[[errors]]</p>
-                      </div>
-                  </article>
-                  <article class="message is-small is-success" v-show="msgBoxActive" v-cloak>
-                    <div class="message-header">
-                      <p>Message</p>
-                      <button class="delete is-small" aria-label="delete" @click="hideMsgBox"></button>
-                    </div>
-                    <div class="message-body">
-                      <p class="help is-success">[[message]]</p>
-                    </div>
-                  </article>
-
                     <p>
                         <a class="button"  @click="add_resource('project')" v-if="action =='add'">Submit</a>
                         <a class="button"  @click="update_resource('project', project['_id'])" v-if="action =='edit'">Update</a>
-                        <a class="button"  href="/htm/documentor/project/">Go to List</a>
+                        <a class="button"  href="/htm/project/">Go to List</a>
                     </p>
-
                 </div>
-
             </div>
         </div>
     </div>
@@ -67,9 +44,7 @@
 {% endblock content %}
 
 
-
-{% block script_bottom %}
-{{ super() }}
+{% block script_vueapp %}
 
 <script type="text/javascript">
 var app = new Vue({
@@ -79,7 +54,7 @@ var app = new Vue({
     data: {
         action : "{{ action }}",
         api_url : {
-            "project" : "/api/documentor/project/"
+            "project" : "/api/project/"
         },
         project : {{ project | safe }},
     },
@@ -92,4 +67,4 @@ var app = new Vue({
 })
 </script>
 
-{% endblock script_bottom %}
+{% endblock script_vueapp %}

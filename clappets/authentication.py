@@ -2,20 +2,16 @@ from flask import g, request, render_template, jsonify, abort
 from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth, MultiAuth
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as JWT
-from clappets import app
+from clappets import app, mongodb
 from clappets.utils import json_response
 
 
 jwt = JWT(app.config['SECRET_KEY'], expires_in=3600)
 auth = HTTPBasicAuth()
-basic_auth = HTTPBasicAuth()
-token_auth = HTTPTokenAuth('Bearer')
-basic_auth_token = HTTPBasicAuth()
-multi_auth = MultiAuth(basic_auth, token_auth)
 
 users = {
-    "john": generate_password_hash("hello"),
-    "susan": generate_password_hash("bye")
+    "admin" : generate_password_hash("admin"),
+    "sraheja" : generate_password_hash("sraheja"),
 }
 
 
@@ -35,8 +31,32 @@ def verify_token(username, password):
         return True
     return False
 
+
 @app.route('/auth/', methods=['POST'])
 def getAuthToken():
+    req = request.get_json()
+    username = req["username"]
+    password = req["password"]
+    auth_response = {}
+    users = mongodb['users']
+    user = users.find_one({"_id": username})
+    if (user == None):
+        auth_response["message"] = "Invalid User Credentials"
+        return json_response(auth_response), 401
+    else:
+        authenticated = check_password_hash(user['password_hash'], password)
+        if authenticated:
+            access_token = jwt.dumps({'username': user['_id'] })
+            auth_response = {}
+            auth_response["access_token"] = access_token.decode('utf-8')
+            return json_response(auth_response)
+        else:
+            auth_response["message"] = "Invalid User Credentials"
+            return json_response(auth_response), 401
+
+
+@app.route('/auth2/', methods=['POST'])
+def getAuthToken2():
     req = request.get_json()
     username = req["username"]
     password = req["password"]
@@ -50,7 +70,6 @@ def getAuthToken():
         else:
             auth_response["message"] = "Invalid User Credentials"
             return json_response(auth_response), 401
-
     else:
         auth_response["message"] = "Invalid User Credentials"
         return json_response(auth_response), 401

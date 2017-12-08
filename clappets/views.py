@@ -2,6 +2,7 @@ from flask import request, render_template, jsonify, abort
 from flask_httpauth import HTTPBasicAuth
 from clappets import app
 from clappets.project import views
+from clappets.user import views
 from clappets.document import views
 from clappets.pdf import views
 from clappets import authentication
@@ -10,6 +11,10 @@ from clappets import authentication
 @app.route('/index')
 def index():
     return render_template("index.html")
+
+@app.route('/admin/')
+def admin():
+    return render_template("admin.html")
 
 @app.route('/test/demo/')
 @app.route('/test/demo/index')

@@ -1,5 +1,5 @@
 {% extends "admin.html" %}
-{% block title %}Admin-Project{% endblock %}
+{% block title %}Admin-User{% endblock %}
 {% block content %}
 <section class="section">
   <div class="container">
@@ -7,24 +7,24 @@
       <div class="column is-9">
         <div id="app">
           <div class="box" style="width:100%">
-            <h4 class="title is-4">Projects</h4>
+            <h4 class="title is-4">Users</h4>
           </div>
           <table class="table is-striped" style="width:100%">
             <tr>
-              <th style="width:20%">Project No.</td>
-              <th style="width:60%">Project title</td>
+              <th style="width:20%">Email</td>
+              <th style="width:60%">Full Name</td>
               <th style="width:20%">Action</td>
             </tr>
-            <tr v-for="project in project_list">
-              <td v-text="project['_id']"></td>
-              <td v-text="project['title']"></td>
+            <tr v-for="user in user_list">
+              <td v-text="user['_id']"></td>
+              <td> [[user['first_name'] ]] [[ user['last_name'] ]]</td>
               <td>
-                <a :href=" '/htm/project/edit/' + project['_id'] +'/'" style="display: inline-block; width:50px;">✎</a>
-                <a style="display: inline-block; width:50px;" @click="delete_resource('project', project['_id'])">🗑</a>
+                <a :href=" '/htm/user/edit/' + user['_id'] +'/'" style="display: inline-block; width:50px;">✎</a>
+                <a style="display: inline-block; width:50px;" @click="delete_resource('user', user['_id'])">🗑</a>
               </td>
             </tr>
           </table>
-          <a class="button" href="/htm/project/add/">Add New Project</a>
+          <a class="button" href="/htm/user/add/">Add New User</a>
         </div>
       </div>
     </div>
@@ -40,9 +40,9 @@
     mixins: [app_common],
     data: {
         api_url : {
-            "project" : "/api/project/"
+            "user" : "/api/user/"
         },
-      project_list: {{project_list | safe }},
+      user_list: {{user_list | safe }},
     },
     computed: {},
     method : {}

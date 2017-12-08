@@ -18,16 +18,16 @@ def pdf_report():
 
     #perform a series of checks an return error responses
     #check if the request body contains 'doc'
-    if ('doc' not in req):
-        errors['_message'] = "'doc' missing in request"
+    if ('resource' not in req):
+        errors['message'] = "'resource' missing in request"
         return json_response(errors), 400
 
     #check if the raw document conforms to the generic document schema for the project (basically meta check)
-    docRaw = req['doc']
+    docRaw = req['resource']
     basicSchema = sDocPrj()
     docParsed = basicSchema.load(docRaw)
     if (len(docParsed.errors) > 0):
-        errors["_message"] = "The Document Meta Information has errors"
+        errors["message"] = "The Document Meta Information has errors"
         errors["schema"] = docParsed.errors
         return json_response(errors), 400
 
@@ -68,6 +68,8 @@ def pdf_report():
         'footer-spacing' : '5',
         'disable-smart-shrinking' : None,
         'no-stop-slow-scripts' : None,
+        'javascript-delay': 5000,
+        'enable-javascript': None,
         '--encoding': "utf-8"
     }
 
