@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Message{% endblock %}
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-9">
+                <div id="app">
+                  <div class="box" style="width:100%">
+                    <h4 class="title is-4" v-cloak>{{ title }}</h4>
+                    <p>  {{ message }} </p>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

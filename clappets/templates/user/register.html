@@ -8,11 +8,8 @@
             <div class="column is-9">
                 <div id="app">
                   <div class="box" style="width:100%">
-                    <h4 class="title is-4" v-if="action =='add'" v-cloak>User Registration</h4>
-                    <h4 class="title is-4" v-if="action =='edit'" v-cloak>Edit User Account</h4>
-                    <h4 class="title is-4" v-if="action =='view'">User Account</h4>
+                    <h4 class="title is-4">User Registration</h4>
                   </div>
-
                   <table class="table is-striped" style="width:100%;">
                     <tr>
                       <th>Parameter</td>
@@ -47,9 +44,7 @@
                     </tr>
                   </table>
                     <p>
-                        <a class="button"  @click="add_resource('user')" v-if="action =='add'">Submit</a>
-                        <a class="button"  @click="update_resource('user', user['_id'])" v-if="action =='edit'">Update</a>
-                        <a class="button"  href="/htm/user/">Go to List</a>
+                        <a class="button"  @click="add_resource('user')">Submit</a>
                     </p>
                 </div>
             </div>
@@ -66,7 +61,6 @@ var app = new Vue({
     delimiters : ['[[',']]'],
     mixins: [app_common],
     data: {
-        action : "{{ action }}",
         api_url : {
             "user" : "/api/user/"
         },

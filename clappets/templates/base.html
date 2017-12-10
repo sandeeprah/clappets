@@ -76,7 +76,7 @@
             <button class="delete is-small" aria-label="delete" @click="hideError"></button>
           </div>
           <div class="message-body">
-            <p class="help is-danger">[[errorMessage]]</p>
+            <p class="help is-danger" v-html="errorMessage"></p>
           </div>
         </article>
         <article class="hideprint message is-small is-success" v-show="successisActive" v-cloak>
@@ -156,8 +156,6 @@
   {% block script_bottom %}
   <script type="text/javascript" src="{{ url_for('static', filename='js/bulma.js', _external=True) }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/vue.js', _external=True) }}"></script>
-  <script src="https://unpkg.com/axios@0.16.2/dist/axios.min.js"></script>
-  <script src="https://unpkg.com/lodash@4.17.2/lodash.min.js"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/units.js', _external=True) }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/clappets.js', _external=True) }}"></script>
   {% endblock script_bottom %}

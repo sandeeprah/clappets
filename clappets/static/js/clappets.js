@@ -34,16 +34,18 @@ var app_common = {
     },
 
     methods : {
-
         getErrs: function(path_array) {
-            val = this.errors
-            try {
-                for (var key of path_array) {
-                    val = val[key]
+            val = this.errors;
+            total_length = path_array.length;
+            try{
+                for (i = 0; i < total_length; i++) {
+                    key = path_array[i];
+                    val = val[key];
                 }
-                return val
-            } catch (err) {
-                return []
+                return val;
+            }
+            catch (err) {
+                return [];
             }
         },
 
@@ -80,30 +82,64 @@ var app_common = {
             this.successisActive = false;
         },
 
+        store_messages : function(){
+            localStorage["successMessage"] = this.successMessage;
+            localStorage["successisActive"] = this.successisActive;
+            localStorage["warningMessage"] = this.warningMessage;
+            localStorage["warningisActive"] = this.warningisActive;
+            localStorage["errorMessage"] = this.errorMessage;
+            localStorage["errorisActive"] = this.errorisActive;
+        },
+
+        retrieve_messages : function(){
+            this.successMessage = localStorage["successMessage"];
+            if (localStorage["successisActive"] =="true"){
+                this.successisActive = true;
+            }
+            else{
+                this.successisActive = false;
+            }
+            this.warningMessage = localStorage["warningMessage"];
+            if (localStorage["warningisActive"] =="true"){
+                this.warningisActive = true;
+            }
+            else{
+                this.warningisActive = false;
+            }
+            this.errorMessage = localStorage["errorMessage"];
+            if (localStorage["errorisActive"] =="true"){
+                this.errorisActive = true;
+            }
+            else{
+                this.errorisActive = false;
+            }
+        },
+
         login: function(){
             var app = this;
             app.resetMessages();
-            axios({
-                  method:'post',
-                  url:'/auth/',
-                  data: {
-                      username : app.username,
-                      password : app.password
-                  }
-                })
-                .then(function(response) {
-                    console.log(response.data);
+            var data = {};
+            data.username = app.username;
+            data.password = app.password;
+            var json_data = JSON.stringify(data);
+            url = "/auth/";
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', url, true);
+            xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+            xhr.onload = function(e){
+                if (xhr.readyState == 4 && xhr.status == "200"){
+                    response = JSON.parse(xhr.responseText);
                     app.userAuthenticated = true;
-                    localStorage.setItem('access_token', response.data['access_token']);
+                    localStorage.setItem('access_token', response['access_token']);
                     // use the token received to perform a basic authentication on login test. Browser will rememeber the Credentials
                     // for all future requests and dispatch tokens automatically.
                     url = "/login-test/";
                     token = localStorage["access_token"];
-                    var xhr = new XMLHttpRequest();
-                    xhr.open("GET", url, true, token, "unused");
-                    xhr.onload = function (e) {
-                      if (xhr.readyState === 4) {
-                        if (xhr.status === 200) {
+                    var xhr2 = new XMLHttpRequest();
+                    xhr2.open("GET", url, true, token, "unused");
+                    xhr2.onload = function (e) {
+                      if (xhr2.readyState === 4) {
+                        if (xhr2.status === 200) {
                             localStorage.setItem('username', app.username);
                             localStorage.setItem('userAuthenticated', app.userAuthenticated);
                             app.successMessage = "User Successfully Logged In"
@@ -111,32 +147,32 @@ var app_common = {
                             app.loginModalisActive = false;
 
                         } else {
-                          console.error(xhr.statusText);
+                          console.error(xhr2.statusText);
                           app.errorMessage = "Login Failed.";
                           app.errorisActive = true;
                         }
                       }
                     };
-                    xhr.onerror = function (e) {
-                      console.error(xhr.statusText);
+                    xhr2.onerror = function (e) {
+                      console.error(xhr2.statusText);
                       app.errorMessage = "Login Failed.";
                       app.errorisActive = true;
                     };
-                    xhr.send(null);
-                })
-                .catch(function(error) {
+                    xhr2.send(null);
+                }
+                else{
                     app.userAuthenticated = false;
                     localStorage.setItem('access_token', 'junk');
                     localStorage.setItem('username', app.username);
                     localStorage.setItem('userAuthenticated', app.userAuthenticated);
-                    console.log(error);
-                    app.errorStatus = error.response.status + " " + error.response.statusText;
-                    app.errors = error.response.data;
-                    app.errorMessage = app.getErrs(['message']);
-                    app.errorisActive = true;
-                });
+                    app.handle_errors(xhr);
+                }
+            };
+            xhr.onerror = function (e) {
+                app.handle_connection_errors();
+            };
+            xhr.send(json_data);
         },
-
 
         logout: function(){
             var app = this;
@@ -162,13 +198,10 @@ var app_common = {
                     app.errorisActive = true;
                 } else {
                   console.error(xhr.statusText);
-                  app.successMessage = "User successfully logged out";
-                  app.successisActive = true;
                   location.href = "/index";
                 }
               }
             };
-
             xhr.onerror = function (e) {
               console.error(xhr.statusText);
             };
@@ -197,132 +230,188 @@ var app_common = {
             xhr.send(null);
         }, //end of loadProtectedResource
 
-        get_resource_list: function(resource_name) {
+        get_resource_list : function(resource_name) {
             var app = this;
-            this.resetMessages();
-            url = app.api_url[resource_name]
-            axios.get(url)
-                .then(function(response) {
-                    console.log(response);
-                    resource_list = resource_name + "_list";
-                    app[resource_list] = response.data;
-                })
-                .catch(function(error) {
-                    console.log(error);
-                    app.errorStatus = error.response.status + " " + error.response.statusText;
-                    app.errorMessage = error.response.data["message"];
-                    app.errors = error.response.data;
-                    app.errorisActive = true;
-                });
+            app.resetMessages();
+            resource_list = resource_name + "_list";
+            url = app.api_url[resource_name];
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', url, true);
+            xhr.onload = function(e){
+                if (xhr.readyState == 4 && xhr.status == "200"){
+                    app.handle_success_with_content(xhr, resource_list);
+                }
+                else{
+                    app.handle_errors(xhr);
+                }
+            };
+            xhr.onerror = function (e) {
+                app.handle_connection_errors();
+            };
+            xhr.send(null);
         },
+
 
         get_resource: function(resource_name, resource_id) {
             var app = this;
-            this.resetMessages();
+            app.resetMessages();
             url = app.api_url[resource_name] + resource_id + "/"
-            axios.get(url)
-                .then(function(response) {
-                    app[resource_name] = response.data;
-                    console.log(response);
-                })
-                .catch(function(error) {
-                    console.log(error);
-                    app.errorStatus = error.response.status + " " + error.response.statusText;
-                    app.errorMessage = error.response.data["message"];
-                    app.errors = error.response.data;
-                    app.errorisActive = true;
-                });
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', url, true);
+            xhr.onload = function(e){
+                if (xhr.readyState == 4 && xhr.status == "200"){
+                    app.handle_success_with_content(xhr, resource_name);
+                }
+                else{
+                    app.handle_errors(xhr);
+                }
+            };
+            xhr.onerror = function (e) {
+                app.handle_connection_errors();
+            };
+            xhr.send(null);
         },
+
 
         add_resource: function(resource_name) {
             var app = this;
-            this.resetMessages();
+            app.resetMessages();
             url = app.api_url[resource_name];
-            axios.post(url, {
-                    resource: app[resource_name]
-                })
-                .then(function(response) {
-                    console.log(response);
-                    app.successMessage = response.data["message"];
-                    app.successisActive = true;
-                    if (response.data.hasOwnProperty("redirect_url")){
-                        location.href = response.data["redirect_url"];
-                    }
-                })
-                .catch(function(error) {
-                    console.log(error);
-                    app.errorStatus = error.response.status + " " + error.response.statusText;
-                    app.errorMessage = error.response.data["message"];
-                    app.errors = error.response.data;
-                    app.errorisActive = true;
-                });
+            var data = {};
+            data.resource = app[resource_name];
+            var json_data = JSON.stringify(data);
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', url, true);
+            xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+            xhr.onload = function(e){
+                if (xhr.readyState == 4 && xhr.status == "201"){
+                    app.handle_success_without_content(xhr);
+                }
+                else{
+                    app.handle_errors(xhr);
+                }
+            };
+            xhr.onerror = function (e) {
+                app.handle_connection_errors();
+            };
+            xhr.send(json_data);
         },
+
 
         update_resource: function(resource_name, resource_id) {
             var app = this;
-            this.resetMessages();
+            app.resetMessages();
+            var data = {};
+            data.resource = app[resource_name];
+            var json_data = JSON.stringify(data);
             url = app.api_url[resource_name] + resource_id + '/'
-            axios.put(url, {
-                    resource: app[resource_name],
-                })
-                .then(function(response) {
-                    console.log(response);
-                    app.successMessage = response.data["message"];
-                    app.successisActive = true;
-                })
-                .catch(function(error) {
-                    console.log(error);
-                    app.errorStatus = error.response.status + " " + error.response.statusText;
-                    app.errorMessage = error.response.data["message"];
-                    app.errors = error.response.data;
-                    app.errorisActive = true;
-                });
+            var xhr = new XMLHttpRequest();
+            xhr.open('PUT', url, true);
+            xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+            xhr.onload = function(e){
+                console.log(xhr.responseText);
+                if (xhr.readyState == 4 && xhr.status == "200"){
+                    app.handle_success_without_content(xhr);
+                }
+                else{
+                    app.handle_errors(xhr);
+                }
+            };
+            xhr.onerror = function (e) {
+                app.handle_connection_errors();
+            };
+            xhr.send(json_data);
         },
 
         delete_resource: function(resource_name, resource_id) {
             if (confirm("Want to delete " + resource_id + " in " + resource_name)) {
                 var app = this;
-                this.resetMessages();
+                app.resetMessages();
                 url = app.api_url[resource_name] + resource_id + '/';
-                axios.delete(url)
-                    .then(function(response) {
-                        console.log(response);
-                        app.successMessage = response.data["message"];
-                        app.successisActive = true;
-                        if (response.data.hasOwnProperty("redirect_url")){
-                            location.href = response.data["redirect_url"];
-                        }
-                    })
-                    .catch(function(error) {
-                        console.log(error);
-                        app.errorStatus = error.response.status + " " + error.response.statusText;
-                        app.errorMessage = error.response.data["message"];
-                        app.errors = error.response.data;
-                        app.errorisActive = true;
-                    });
+                var xhr = new XMLHttpRequest();
+                xhr.open('DELETE', url, true);
+                xhr.onload = function(e){
+                    if (xhr.readyState == 4 && xhr.status == "200"){
+                        app.handle_success_without_content(xhr);
+                    }
+                    else{
+                        app.handle_errors(xhr);
+                    }
+                };
+                xhr.onerror = function (e) {
+                    app.handle_connection_errors();
+                };
+                xhr.send(null);
             }
         },
+
+        handle_success_with_content : function(xhr, resource_name){
+            console.log(xhr.responseText);
+            response = JSON.parse(xhr.responseText);
+            this[resource_name] = response;
+            this.successMessage = "Data Loaded Successfully"
+            this.successisActive = true;
+        },
+
+        handle_success_without_content : function(xhr){
+            console.log(xhr.responseText);
+            response = JSON.parse(xhr.responseText);
+            this.successMessage = response["message"];
+            this.successisActive = true;
+            if (response.hasOwnProperty("redirect_url")){
+                location.href = response["redirect_url"];
+            }
+        },
+
+
+        handle_errors : function(xhr){
+            console.error(xhr.responseText);
+            this.errorStatus = xhr.status + " " + xhr.statusText;
+            try {
+                response = JSON.parse(xhr.responseText);
+                this.errors = response;
+                this.errorMessage = response["message"];
+                if (typeof this.errorMessage =='undefined'){
+                    this.errorMessage = xhr.responseText;
+                }
+            }
+            catch (e) {
+                this.errorMessage = xhr.responseText;
+            }
+            this.errorisActive = true;
+        },
+
+        handle_connection_errors : function(){
+            this.errorStatus = "Unknown Error";
+            this.errorMessage = "Server Response not received";
+            this.errorisActive = true;
+        },
+
 
         execQuery: function(query_url) {
             if (query_url.substring(0, 4) == "/api") {
                 var app = this;
                 url = query_url;
-                axios({
-                      method:'get',
-                      url:query_url,
-                    })
-                    .then(function(response) {
-                        app.selectionMenu = response.data;
-                        console.log(response);
-                    })
-                    .catch(function(error) {
-                        console.log(error);
-                        app.errorMessage = error.response.data;
-                    });
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', url, true);
+                xhr.onload = function(e){
+                    if (xhr.readyState == 4 && xhr.status == "200"){
+                        app.handle_success_with_content(xhr, "selectionMenu");
+                    }
+                    else{
+                        app.handle_errors(xhr);
+                    }
+                };
+                xhr.onerror = function (e) {
+                    app.handle_connection_errors();
+                };
+                xhr.send(null);
+
             } else if (query_url.substring(0, 4) == "/htm") {
                 location.href = query_url;
             }
         },
+
 
         print: function() {
             window.print();
@@ -330,37 +419,51 @@ var app_common = {
 
         pdf_download: function(resource_name) {
             var app = this;
-            axios({
-                    method: 'post',
-                    url : app.pdf_url[resource_name],
-                    responseType: 'arraybuffer',
-                    data: {
-                        resource : app[resource_name]
-                    }
-                })
-                .then(function(response) {
-                    let blob = new Blob([response.data], {
-                        type: 'application/pdf'
-                    });
-                    let link = document.createElement('a');
+            app.resetMessages();
+            url = app.pdf_url[resource_name];
+            var data = {};
+            data.resource = app[resource_name];
+            var json_data = JSON.stringify(data);
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', url, true);
+            xhr.responseType = "arraybuffer";
+            xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+            xhr.onload = function(e){
+                if (xhr.readyState == 4 && xhr.status == "200"){
+                    var blob = new Blob([xhr.response], {type: "application/pdf"});
+                    var link = document.createElement('a');
                     link.href = window.URL.createObjectURL(blob);
                     link.download = 'PDF Report.pdf';
                     link.click();
-                });
+                }
+                else{
+                    app.handle_errors(xhr);
+                }
+            };
+            xhr.onerror = function (e) {
+                app.handle_connection_errors();
+            };
+            xhr.send(json_data);
         },
-
-
 
     },
 
     beforeMount : function(){
-        this.username = localStorage["username"];
-        if (localStorage["userAuthenticated"]=="true"){
-            this.userAuthenticated = true;
-        }
-        else{
+        try{
+            this.username = localStorage.getItem("username");
+            if (localStorage.getItem("userAuthenticated")=="true"){
+                this.userAuthenticated = true;
+            }
+            else{
+                this.userAuthenticated = false;
+            }
+        }catch(e){
+            this.username = "";
             this.userAuthenticated = false;
         }
 
+        if (this.username=='null'){
+            this.username = "";
+        }
     }
 }

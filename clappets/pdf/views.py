@@ -70,12 +70,13 @@ def pdf_report():
         'no-stop-slow-scripts' : None,
         'javascript-delay': 5000,
         'enable-javascript': None,
+        'debug-javascript': None,
         '--encoding': "utf-8"
     }
 
     this_folderpath = os.path.dirname(os.path.abspath(__file__))
-    wkhtmltopdf_path = r'/home/appadmin/wkhtmltox/bin/wkhtmltopdf'
-#    wkhtmltopdf_path = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
+#    wkhtmltopdf_path = r'/home/appadmin/wkhtmltox/bin/wkhtmltopdf'
+    wkhtmltopdf_path = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
     config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
     this_folderpath = os.path.dirname(os.path.abspath(__file__))
     css_path = os.path.join(this_folderpath, 'print.css')

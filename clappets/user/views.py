@@ -6,7 +6,7 @@ from collections import OrderedDict
 from flask import request, render_template, jsonify, abort, make_response
 from clappets import app, mongodb
 #from clappets.documentor.core import sReq
-from clappets.utils import json_response
+from clappets.utils import json_response, sendMail
 from clappets.user.userSchema import sUser, sUserReg
 
 @app.route('/api/user/', methods=['GET'])
@@ -22,7 +22,7 @@ def api_get_user(user_id):
     users = mongodb['users']
     docMongo = users.find_one({"_id": user_id})
     if (docMongo== None):
-        errors['operation'] = ['user with user ID as requested could not be found']
+        errors['message'] = "user with user ID as requested could not be found"
         return json_response(errors), 404
     else:
         return json_response(docMongo)
@@ -57,7 +57,12 @@ def api_post_user():
                 errors['message'] = str(e)
                 return json_response(errors), 400
 
-            return json_response({'message' : 'user Added Sucessfully'}), 201
+            sendMail([user["email"]],'appadmin@clappets.com','Registration','We have received your registration request.')
+            response = {}
+            response["message"] = "User Registered Successfully"
+            response["redirect_url"] = "/htm/user/regstatus/"+user['_id']+"/"
+
+            return json_response(response), 201
 
 
 @app.route('/api/user/<user_id>/', methods=['PUT'])
@@ -83,7 +88,7 @@ def api_put_user(user_id):
             except Exception as e:
                 errors['message'] = str(e)
                 return json_response(errors), 400
-            return json_response({'message' : 'user Updated Sucessfully'}), 201
+            return json_response({'message' : 'user Updated Sucessfully'}), 200
 
 
 @app.route('/api/user/<user_id>/', methods=['DELETE'])
@@ -93,10 +98,13 @@ def api_delete_user(user_id):
     try:
         users.delete_one({"_id" : user_id})
     except Exception as e:
-        errors['operation'] = str(e)
+        errors['message'] = str(e)
         return json_response(errors)
 
-    return json_response({'_message': "Deletion Successful"})
+    response = {}
+    response["message"] = "Deletion Successful"
+    response["redirect_url"] = "/htm/user/"
+    return json_response(response)
 
 
 
@@ -162,4 +170,17 @@ def htm_view_user(prj_id):
 
 @app.route('/htm/user/regstatus/<user_id>/', methods=['GET'])
 def htm_get_userregstatus(user_id):
-        return render_template("user/regstatus.html", user_id=user_id)
+    users = mongodb['users']
+    user = users.find_one({"_id": user_id})
+    title = "User Mail ID Confirmation Status"
+    if (user == None):
+        message = "Username does not exist in database"
+    else:
+        confirmed = user['confirmed']
+        if confirmed=="Yes":
+            message = "User Mail ID is Confirmed"
+        else:
+            message = "User Email ID is not confirmed. User is required to confirm \
+ mail id by clicking on the link sent to his registered mail id."
+
+    return render_template("message.html", title=title, message=message)
