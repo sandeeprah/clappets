@@ -219,11 +219,11 @@ def confirm_email(user_id, token):
     title = "User Mail ID Confirmation Status"
 
     if user["confirmed"]:
-        message = 'Account already confirmed. Please login.'
+        message = 'Email ID already confirmed. Please login.'
     else:
         if (email == user["email"]):
             user["confirmed"] = True
-            message = 'Account already confirmed. Please login.'
+            message = 'Email ID is confirmed. Please login.'
         else:
             message = 'Email could  not be confirmed. Please register again.'
 
