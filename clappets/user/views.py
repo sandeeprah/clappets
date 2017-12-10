@@ -61,7 +61,7 @@ def api_post_user():
             token = generate_confirmation_token(user["email"])
             confirm_link = "https://www.clappets.com/user/confirm/"+user['_id']+"/"+token+"/"
             mailbody = "We have received your registration request. Please click on this link {}  to confirm your Email ID".format(confirm_link)
-            sendMail([user["email"]],'appadmin@clappets.com',mailbody)
+            sendMail([user["email"]],'appadmin@clappets.com','User Registration',mailbody)
             response = {}
             response["message"] = "User Registered Successfully"
             response["redirect_url"] = "/htm/user/regstatus/"+user['_id']+"/"
