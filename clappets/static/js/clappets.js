@@ -273,7 +273,7 @@ var app_common = {
         },
 
 
-        add_resource: function(resource_name) {
+        add_resource: function(resource_name, fn_success) {
             var app = this;
             app.resetMessages();
             url = app.api_url[resource_name];
@@ -286,6 +286,7 @@ var app_common = {
             xhr.onload = function(e){
                 if (xhr.readyState == 4 && xhr.status == "201"){
                     app.handle_success_without_content(xhr);
+                    fn_success();
                 }
                 else{
                     app.handle_errors(xhr);

@@ -1,5 +1,6 @@
 from marshmallow import Schema, fields, pprint, pre_load, validate, validates,  validates_schema, ValidationError
 from clappets.core import sDoc
+from clappets import mongodb
 
 class sUser (Schema):
     _id = fields.String(required=True)
@@ -27,3 +28,18 @@ class sUserReg (Schema):
     def validate_confirm_password(self, data):
         if data['confirm_password'] != data['password']:
             raise ValidationError('Passwords do not match','confirm_password')
+
+
+class sUserForgot (Schema):
+    _id = fields.String(required=True)
+
+    class Meta:
+        ordered=True
+
+    @validates("_id")
+    def validate_id(self, value):
+        user_id = value
+        Users = mongodb['users']
+        user = Users.find_one({"_id": user_id})
+        if (user== None):
+            raise ValidationError('User ID does not exist')

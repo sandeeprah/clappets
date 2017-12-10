@@ -1,13 +1,15 @@
 import json
 import os
 import pymongo
+import string
+import random
 from werkzeug.security import generate_password_hash
 from collections import OrderedDict
 from flask import request, render_template, jsonify, abort, make_response
 from clappets import app, mongodb
 #from clappets.documentor.core import sReq
 from clappets.utils import json_response, sendMail
-from clappets.user.userSchema import sUser, sUserReg
+from clappets.user.userSchema import sUser, sUserReg, sUserForgot
 from itsdangerous import URLSafeTimedSerializer
 
 @app.route('/api/user/', methods=['GET'])
@@ -148,6 +150,52 @@ def api_get_userregstatus(user_id):
  mail id by clicking on the link sent to his registered mail id."
             return json_response(response)
 
+@app.route('/api/user/forgot/', methods=['POST'])
+def api_forgotpasswd():
+    errors = OrderedDict()
+    req = request.get_json()
+    errors = {}
+    if ('resource' not in req):
+        errors['message'] = "'resource' missing in REST API request"
+        return json_response(errors), 400
+    else:
+        docRaw = req['resource']
+        docSchema = sUserForgot()
+        docParsed = docSchema.load(docRaw)
+        if (len(docParsed.errors) > 0):
+            errors['message'] = "There are errors in input"
+            errors['schema'] = docParsed.errors
+            return json_response(errors), 400
+        else:
+            user = docParsed.data
+            user_id = user["_id"]
+            users = mongodb['users']
+            user = users.find_one({"_id": user_id})
+            email = user["email"]
+            new_password = pw_gen()
+            html_template = """\
+            <html>
+              <head></head>
+              <body>
+                <p>Hi!<br>
+                   We have received your new passoword request. <br>
+                   Your new passoword is {}
+                   <br>
+                   Please remember to reset your password after login.
+                </p>
+                <p>
+                This mail is auto generated. Please do not reply to this mail.
+                </p>
+              </body>
+            </html>
+            """
+            mailbody = html_template.format(new_password)
+            sendMail([user["email"]],'appadmin@clappets.com','Password Reset',mailbody)
+            response = {}
+            response["message"] = "You will receive your new password on email. If you do not find the mail in your mail box\
+            please ensure to check your spam folder"
+            return json_response(response), 201
+
 
 @app.route('/htm/user/', methods=['GET'])
 @app.route('/htm/user/list/', methods=['GET'])
@@ -207,6 +255,7 @@ def htm_get_userregstatus(user_id):
     return render_template("message.html", title=title, message=message)
 
 
+
 @app.route('/htm/user/confirm/<user_id>/<token>/', methods=['GET'])
 def confirm_email(user_id, token):
     try:
@@ -231,6 +280,13 @@ def confirm_email(user_id, token):
     return render_template("message.html", title=title, message=message)
 
 
+
+@app.route('/htm/user/forgot/', methods=['GET'])
+def forgot_password():
+    return render_template("user/forgot_password.html")
+
+
+
 def generate_confirmation_token(email):
     serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
     return serializer.dumps(email, salt=app.config['SECURITY_PASSWORD_SALT'])
@@ -247,3 +303,7 @@ def confirm_token(token, expiration=3600):
     except:
         return False
     return email
+
+
+def pw_gen(size = 8, chars=string.ascii_letters + string.digits + string.punctuation):
+	return ''.join(random.choice(chars) for _ in range(size))
