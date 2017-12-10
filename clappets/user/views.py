@@ -8,6 +8,7 @@ from clappets import app, mongodb
 #from clappets.documentor.core import sReq
 from clappets.utils import json_response, sendMail
 from clappets.user.userSchema import sUser, sUserReg
+from itsdangerous import URLSafeTimedSerializer
 
 @app.route('/api/user/', methods=['GET'])
 def api_get_users():
@@ -57,7 +58,10 @@ def api_post_user():
                 errors['message'] = str(e)
                 return json_response(errors), 400
 
-            sendMail([user["email"]],'appadmin@clappets.com','Registration','We have received your registration request.')
+            token = generate_confirmation_token(user["email"])
+            confirm_link = "https://www.clappets.com/user/confirm/"+user['_id']+"/"+token+"/"
+            mailbody = "We have received your registration request. Please click on this link {}  to confirm your Email ID".format(confirm_link)
+            sendMail([user["email"]],'appadmin@clappets.com',mailbody)
             response = {}
             response["message"] = "User Registered Successfully"
             response["redirect_url"] = "/htm/user/regstatus/"+user['_id']+"/"
@@ -184,3 +188,40 @@ def htm_get_userregstatus(user_id):
  mail id by clicking on the link sent to his registered mail id."
 
     return render_template("message.html", title=title, message=message)
+
+
+
+def confirm_email(token):
+    try:
+        email = confirm_token(token)
+    except:
+        flash('The confirmation link is invalid or has expired.', 'danger')
+    user = User.query.filter_by(email=email).first_or_404()
+    if user.confirmed:
+        flash('Account already confirmed. Please login.', 'success')
+    else:
+        user.confirmed = True
+        user.confirmed_on = datetime.datetime.now()
+        db.session.add(user)
+        db.session.commit()
+        flash('You have confirmed your account. Thanks!', 'success')
+    return redirect(url_for('main.home'))
+
+
+
+def generate_confirmation_token(email):
+    serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+    return serializer.dumps(email, salt=app.config['SECURITY_PASSWORD_SALT'])
+
+
+def confirm_token(token, expiration=3600):
+    serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+    try:
+        email = serializer.loads(
+            token,
+            salt=app.config['SECURITY_PASSWORD_SALT'],
+            max_age=expiration
+        )
+    except:
+        return False
+    return email

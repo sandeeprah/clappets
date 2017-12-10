@@ -7,6 +7,7 @@ import pymongo
 app = Flask(__name__)
 app.debug = True
 app.config['SECRET_KEY'] = 'super-secret'
+app.config['SECURITY_PASSWORD_SALT'] = 'my_precious_two'
 
 client = pymongo.MongoClient(document_class = OrderedDict)
 mongodb = client["clappetsdb"]
