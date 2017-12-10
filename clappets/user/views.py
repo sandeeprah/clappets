@@ -47,7 +47,7 @@ def api_post_user():
         else:
             user = docParsed.data
             user['password_hash'] = generate_password_hash(user['password'])
-            user['confirmed'] = 'No'
+            user['confirmed'] = False
             users = mongodb['users']
             try:
                 users.insert_one(user)
@@ -140,7 +140,7 @@ def api_get_userregstatus(user_id):
     else:
         confirmed = user['confirmed']
         response = {}
-        if confirmed=="Yes":
+        if confirmed:
             response['status'] = "User is Confirmed"
             return json_response(response)
         else:
@@ -198,7 +198,7 @@ def htm_get_userregstatus(user_id):
         message = "Username does not exist in database"
     else:
         confirmed = user['confirmed']
-        if confirmed=="Yes":
+        if confirmed:
             message = "User Mail ID is Confirmed"
         else:
             message = "User Email ID is not confirmed. User is required to confirm \
