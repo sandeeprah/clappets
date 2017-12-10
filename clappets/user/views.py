@@ -224,6 +224,7 @@ def confirm_email(user_id, token):
         if (email == user["email"]):
             user["confirmed"] = True
             message = 'Email ID is confirmed. Please login.'
+            users.update({"_id" : user_id}, user)
         else:
             message = 'Email could  not be confirmed. Please register again.'
 
