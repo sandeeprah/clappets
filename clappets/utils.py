@@ -26,7 +26,7 @@ def sendMail(to, fro, subject, text, files=[],server="localhost"):
     msg['Date'] = formatdate(localtime=True)
     msg['Subject'] = subject
 
-    msg.attach( MIMEText(text) )
+    msg.attach( MIMEText(text, 'html') )
 
     for file in files:
         part = MIMEBase('application', "octet-stream")
