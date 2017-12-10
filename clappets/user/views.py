@@ -59,7 +59,7 @@ def api_post_user():
                 return json_response(errors), 400
 
             token = generate_confirmation_token(user["email"])
-            confirm_link = "https://www.clappets.com/user/confirm/"+user['_id']+"/"+token+"/"
+            confirm_link = "https://www.clappets.com/htm/user/confirm/"+user['_id']+"/"+token+"/"
 
 
             html_template = """\
@@ -69,6 +69,9 @@ def api_post_user():
                 <p>Hi!<br>
                    We have received your user registration request. <br>
                    Please click on the link to confirm your email id. <a href="{}">{}</a>
+                </p>
+                <p>
+                This mail is auto generated. Please do not reply to this mail.
                 </p>
               </body>
             </html>
@@ -204,23 +207,27 @@ def htm_get_userregstatus(user_id):
     return render_template("message.html", title=title, message=message)
 
 
-
-def confirm_email(token):
+@app.route('/htm/user/confirm/<user_id>/<token>/', methods=['GET'])
+def confirm_email(user_id, token):
     try:
         email = confirm_token(token)
     except:
         flash('The confirmation link is invalid or has expired.', 'danger')
-    user = User.query.filter_by(email=email).first_or_404()
-    if user.confirmed:
-        flash('Account already confirmed. Please login.', 'success')
-    else:
-        user.confirmed = True
-        user.confirmed_on = datetime.datetime.now()
-        db.session.add(user)
-        db.session.commit()
-        flash('You have confirmed your account. Thanks!', 'success')
-    return redirect(url_for('main.home'))
 
+    users = mongodb['users']
+    user = users.find_one({"_id": user_id})
+    title = "User Mail ID Confirmation Status"
+
+    if user["confirmed"]:
+        message = 'Account already confirmed. Please login.'
+    else:
+        if (email == user["email"]):
+            user["confirmed"] = True
+            message = 'Account already confirmed. Please login.'
+        else:
+            message = 'Email could  not be confirmed. Please register again.'
+
+    return render_template("message.html", title=title, message=message)
 
 
 def generate_confirmation_token(email):
