@@ -68,13 +68,13 @@ def api_post_user():
               <body>
                 <p>Hi!<br>
                    We have received your user registration request. <br>
-                   Please click on the link to confirm your email id. <a href="{}">link</a>
+                   Please click on the link to confirm your email id. <a href="{}">{}</a>
                 </p>
               </body>
             </html>
             """
 
-            mailbody = html_template.format(confirm_link)
+            mailbody = html_template.format(confirm_link, confirm_link)
             sendMail([user["email"]],'appadmin@clappets.com','User Registration',mailbody)
             response = {}
             response["message"] = "User Registered Successfully"
