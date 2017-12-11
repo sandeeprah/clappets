@@ -44,7 +44,7 @@
                     </tr>
                   </table>
                     <p>
-                        <a class="button"  @click="add_resource('user')">Submit</a>
+                        <a class="button" v-bind:class="{'is-loading':isLoading}" @click="add_resource('user')">Submit</a>
                     </p>
                 </div>
             </div>

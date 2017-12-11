@@ -13,6 +13,7 @@ var app_common = {
         errorStatus:"",
         errors : {},
         selectionMenu: {},
+        isLoading: false
 
     },
     computed : {
@@ -283,6 +284,7 @@ var app_common = {
             var xhr = new XMLHttpRequest();
             xhr.open('POST', url, true);
             xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+            app.isLoading = true;
             xhr.onload = function(e){
                 if (xhr.readyState == 4 && xhr.status == "201"){
                     app.handle_success_without_content(xhr);
@@ -352,6 +354,7 @@ var app_common = {
             this[resource_name] = response;
             this.successMessage = "Data Loaded Successfully"
             this.successisActive = true;
+            this.isLoading = false;
         },
 
         handle_success_without_content : function(xhr){
@@ -362,6 +365,7 @@ var app_common = {
             if (response.hasOwnProperty("redirect_url")){
                 location.href = response["redirect_url"];
             }
+            this.isLoading = false;
         },
 
 
@@ -380,12 +384,14 @@ var app_common = {
                 this.errorMessage = xhr.responseText;
             }
             this.errorisActive = true;
+            this.isLoading = false;
         },
 
         handle_connection_errors : function(){
             this.errorStatus = "Unknown Error";
             this.errorMessage = "Server Response not received";
             this.errorisActive = true;
+            this.isLoading = false;
         },
 
 
