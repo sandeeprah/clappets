@@ -80,10 +80,9 @@ def api_post_user():
             """
 
             mailbody = html_template.format(confirm_link, confirm_link)
-            sendMail([user["email"]],'appadmin@clappets.com','User Registration',mailbody)
             response = {}
-            response["message"] = "User Registered Successfully"
-            response["redirect_url"] = "/htm/user/regstatus/"+user['_id']+"/"
+            response["message"] = "User Registered Successfully. Please check your mailbox and click on the link to confirm your email id. In case you do not find the mail\
+            in the mailbox, please check your spam folder."
 
             return json_response(response), 201
 
@@ -131,25 +130,6 @@ def api_delete_user(user_id):
 
 
 
-@app.route('/api/user/regstatus/<user_id>/', methods=['GET'])
-def api_get_userregstatus(user_id):
-    errors = OrderedDict()
-    users = mongodb['users']
-    user = users.find_one({"_id": user_id})
-    if (user == None):
-        errors['message'] = ['user with user ID as requested could not be found']
-        return json_response(errors), 404
-    else:
-        confirmed = user['confirmed']
-        response = {}
-        if confirmed:
-            response['status'] = "User is Confirmed"
-            return json_response(response)
-        else:
-            response['status'] = "User Email ID is not confirmed. User is required to confirm \
- mail id by clicking on the link sent to his registered mail id."
-            return json_response(response)
-
 @app.route('/api/user/forgot/', methods=['POST'])
 def api_forgotpasswd():
     errors = OrderedDict()
@@ -173,6 +153,13 @@ def api_forgotpasswd():
             user = users.find_one({"_id": user_id})
             email = user["email"]
             new_password = pw_gen()
+            user['password_hash'] = generate_password_hash(user['password'])
+            try:
+                users.update({"_id" : user_id}, user)
+            except Exception as e:
+                errors['message'] = str(e)
+                return json_response(errors), 400
+
             html_template = """\
             <html>
               <head></head>
@@ -237,25 +224,6 @@ def htm_view_user(prj_id):
         return render_template("user/user.html", doc = doc, action="view")
 
 
-@app.route('/htm/user/regstatus/<user_id>/', methods=['GET'])
-def htm_get_userregstatus(user_id):
-    users = mongodb['users']
-    user = users.find_one({"_id": user_id})
-    title = "User Mail ID Confirmation Status"
-    if (user == None):
-        message = "Username does not exist in database"
-    else:
-        confirmed = user['confirmed']
-        if confirmed:
-            message = "User Mail ID is Confirmed"
-        else:
-            message = "User Email ID is not confirmed. User is required to confirm \
- mail id by clicking on the link sent to his registered mail id."
-
-    return render_template("message.html", title=title, message=message)
-
-
-
 @app.route('/htm/user/confirm/<user_id>/<token>/', methods=['GET'])
 def confirm_email(user_id, token):
     try:
@@ -284,8 +252,6 @@ def confirm_email(user_id, token):
 @app.route('/htm/user/forgot/', methods=['GET'])
 def forgot_password():
     return render_template("user/forgot_password.html")
-
-
 
 def generate_confirmation_token(email):
     serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
