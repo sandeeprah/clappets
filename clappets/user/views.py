@@ -80,6 +80,7 @@ def api_post_user():
             """
 
             mailbody = html_template.format(confirm_link, confirm_link)
+            sendMail([user["email"]],'appadmin@clappets.com','User Registration',mailbody)
             response = {}
             response["message"] = "User Registered Successfully. Please check your mailbox and click on the link to confirm your email id. In case you do not find the mail\
             in the mailbox, please check your spam folder."
