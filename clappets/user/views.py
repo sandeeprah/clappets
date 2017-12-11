@@ -154,7 +154,7 @@ def api_forgotpasswd():
             user = users.find_one({"_id": user_id})
             email = user["email"]
             new_password = pw_gen()
-            user['password_hash'] = generate_password_hash(user['new_password'])
+            user['password_hash'] = generate_password_hash(new_password)
             try:
                 users.update({"_id" : user_id}, user)
             except Exception as e:
