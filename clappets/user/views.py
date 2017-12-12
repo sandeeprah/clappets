@@ -5,11 +5,12 @@ import string
 import random
 from werkzeug.security import generate_password_hash
 from collections import OrderedDict
-from flask import request, render_template, jsonify, abort, make_response
+from flask import request, render_template, jsonify, abort, make_response, g
 from clappets import app, mongodb
+from clappets.authentication import auth
 #from clappets.documentor.core import sReq
 from clappets.utils import json_response, sendMail
-from clappets.user.userSchema import sUser, sUserReg, sUserForgot
+from clappets.user.userSchema import sUser, sUserReg, sUserForgot, sUserAccountUpdate
 from itsdangerous import URLSafeTimedSerializer
 
 @app.route('/api/user/', methods=['GET'])
@@ -80,10 +81,9 @@ def api_post_user():
             """
 
             mailbody = html_template.format(confirm_link, confirm_link)
-            sendMail([user["email"]],'appadmin@clappets.com','User Registration',mailbody)
+#            sendMail([user["email"]],'appadmin@clappets.com','User Registration',mailbody)
             response = {}
-            response["message"] = "User Registered Successfully. Please check your mailbox and click on the link to confirm your email id. In case you do not find the mail\
-            in the mailbox, please check your spam folder."
+            response["message"] = "User Registered Successfully."
 
             return json_response(response), 201
 
@@ -97,7 +97,7 @@ def api_put_user(user_id):
         return json_response(errors), 400
     else:
         docRaw = req['resource']
-        docSchema = sUser()
+        docSchema = sUserAccountUpdate()
         docParsed = docSchema.load(docRaw)
         if (len(docParsed.errors) > 0):
             errors['message'] = "user is not as per Schema"
@@ -105,13 +105,27 @@ def api_put_user(user_id):
             return json_response(errors), 400
         else:
             user = docParsed.data
+            user_id = user['_id']
+            update_doc = {
+            "$set" :
+                    {"first_name" : user['first_name'],
+                     "last_name" : user['last_name'],
+                     "email" : user['email'],
+                     }
+            }
+
+            if (user['change_password']):
+                user['password_hash'] = generate_password_hash(user['new_password'])
+                update_doc['$set']['password_hash'] = user['password_hash']
+
             users = mongodb['users']
             try:
-                users.update({"_id" : user_id}, user)
+                users.update({"_id" : user_id}, update_doc)
             except Exception as e:
                 errors['message'] = str(e)
                 return json_response(errors), 400
             return json_response({'message' : 'user Updated Sucessfully'}), 200
+
 
 
 @app.route('/api/user/<user_id>/', methods=['DELETE'])
@@ -178,7 +192,7 @@ def api_forgotpasswd():
             </html>
             """
             mailbody = html_template.format(new_password)
-            sendMail([user["email"]],'appadmin@clappets.com','Password Reset',mailbody)
+#            sendMail([user["email"]],'appadmin@clappets.com','Password Reset',mailbody)
             response = {}
             response["message"] = "You will receive your new password on email. If you do not find the mail in your mail box\
             please ensure to check your spam folder"
@@ -249,6 +263,25 @@ def confirm_email(user_id, token):
     return render_template("message.html", title=title, message=message)
 
 
+@app.route('/htm/user/account/', methods=['GET'])
+@auth.login_required
+def user_account():
+    user_id = g.user
+    users = mongodb['users']
+    docMongo = users.find({"_id": user_id}, {"password_hash":0, "confirmed":0, "confirm_password":0})[0]
+    if (docMongo== None):
+        return "Document Not Found"
+    else:
+        docMongo["change_password"] = False
+        docMongo["password"] = ""
+        docMongo["new_password"] = ""
+        docMongo["confirm_new_password"] = ""
+
+        user = json.dumps(docMongo)
+        return render_template("user/account.html", user = user)
+
+    print(user)
+    return render_template("user/account.html")
 
 @app.route('/htm/user/forgot/', methods=['GET'])
 def forgot_password():

@@ -1,0 +1,122 @@
+{% extends "base.html" %} {% block title %}User-Account{% endblock %} {% block content %}
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-6">
+        <div class="box" style="width:100%">
+          <h4 class="title is-4">User Account</h4>
+        </div>
+        <div v-show="!show_message">
+          <div class="field">
+            <label class="label">Username</label>
+            <div class="control has-icons-left">
+              <input class="input" type="text" placeholder="Username" v-model="user['_id']" readonly/>
+              <span class="icon is-small is-left">
+                    <i class="fa fa-user"></i>
+                </span>
+            </div>
+            <p class="help is-danger" v-for="err in getErrs(['schema','_id'])" v-cloak>[[ err ]]</p>
+          </div>
+          <div class="field">
+            <label class="label">Email</label>
+            <div class="control has-icons-left">
+              <input class="input" type="text" placeholder="Email" v-model="user['email']" />
+              <span class="icon is-small is-left">
+                    <i class="fa fa-envelope"></i>
+                </span>
+            </div>
+            <p class="help is-danger" v-for="err in getErrs(['schema','email'])" v-cloak>[[ err ]]</p>
+          </div>
+          <div class="field">
+            <label class="label">First Name</label>
+            <div class="control">
+              <input class="input" type="text" placeholder="First Name" v-model="user['first_name']" />
+            </div>
+            <p class="help is-danger" v-for="err in getErrs(['schema','first_name'])" v-cloak>[[ err ]]</p>
+          </div>
+          <div class="field">
+            <label class="label">Last Name</label>
+            <div class="control">
+              <input class="input" type="text" placeholder="Last Name" v-model="user['last_name']" />
+            </div>
+            <p class="help is-danger" v-for="err in getErrs(['schema','last_name'])" v-cloak>[[ err ]]</p>
+          </div>
+          <div class="field">
+            <div class="control">
+              <label class="checkbox">
+                  <input type="checkbox" v-model="user['change_password']"/>
+                        Change Password
+                  </label>
+            </div>
+          </div>
+          <div v-show="user['change_password']">
+              <div class="field">
+                <label class="label">Old Password</label>
+                <div class="control">
+                  <input class="input" type="password" placeholder="Password" v-model="user['password']" />
+                </div>
+                <p class="help is-danger" v-for="err in getErrs(['schema','password'])" v-cloak>[[ err ]]</p>
+              </div>
+              <div class="field">
+                <label class="label">New Password</label>
+                <div class="control">
+                  <input class="input" type="password" placeholder="Confirm Password" v-model="user['new_password']" />
+                </div>
+                <p class="help is-danger" v-for="err in getErrs(['schema','new_password'])" v-cloak>[[ err ]]</p>
+              </div>
+              <div class="field">
+                <label class="label">Confirm New Password</label>
+                <div class="control">
+                  <input class="input" type="password" placeholder="Confirm Password" v-model="user['confirm_new_password']" />
+                </div>
+                <p class="help is-danger" v-for="err in getErrs(['schema','confirm_new_password'])" v-cloak>[[ err ]]</p>
+              </div>
+          </div>
+          <p>&nbsp;</p>
+          <div class="field is-grouped">
+            <div class="control">
+              <button class="button is-primary" v-bind:class="{'is-loading': isLoading}" @click="update">Update</button>
+            </div>
+            <div class="control">
+              <a href="/index" class="button is-light">Cancel</a>
+            </div>
+          </div>
+        </div>
+        <article class="message" v-show="show_message" v-cloak>
+          <div class="message-body">
+            [[successMessage]]
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %} {% block script_vueapp %}
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    delimiters: ['[[', ']]'],
+    mixins: [app_common],
+    data: {
+      api_url: {
+        "user": "/api/user/"
+      },
+      user: {{ user|safe}},
+      show_message: false,
+    },
+
+
+    methods: {
+      update: function() {
+        var app = this;
+        app.update_resource("user", app.user['_id'], function() {
+          app.successisActive = false;
+          app.show_message = true;
+        });
+
+      }
+    }
+  })
+</script>
+
+{% endblock script_vueapp %}

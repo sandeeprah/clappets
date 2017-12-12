@@ -301,7 +301,7 @@ var app_common = {
         },
 
 
-        update_resource: function(resource_name, resource_id) {
+        update_resource: function(resource_name, resource_id, fn_success) {
             var app = this;
             app.resetMessages();
             var data = {};
@@ -315,6 +315,7 @@ var app_common = {
                 console.log(xhr.responseText);
                 if (xhr.readyState == 4 && xhr.status == "200"){
                     app.handle_success_without_content(xhr);
+                    fn_success();
                 }
                 else{
                     app.handle_errors(xhr);
