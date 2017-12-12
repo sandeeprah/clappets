@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Calculations{% endblock %}
+{% block calculations_active %}is-active{% endblock calculations_active %}
+{% block content %}
+<div class="section">
+    <div class="container">
+        <div class="box">
+            <h4 class="title is-4">Thermophysical Property Calculations</h4>
+        </div>
+        <div class="columns">
+          <div class="column">
+            <div class="card" >
+              <div class="card-content" style="height: 170px;">
+                <p>
+                  Get thermophysical properties of 100+ common industrial fluids.
+                </p>
+              </div>
+              <footer class="card-footer">
+                <p class="card-footer-item">
+                  <span><a href="/calcapi/thermochem/fluid" class="button is-primary">View>></a></span>
+                </p>
+              </footer>
+            </div>
+          </div>
+          <div class="column">
+            <div class="card">
+              <div class="card-content" style="height: 170px;">
+                <p>
+                  Get thermophysical properties of water/steam.
+                </p>
+              </div>
+              <footer class="card-footer">
+                <p class="card-footer-item">
+                  <span><a href="/calcapi/thermochem/water/" class="button is-primary">View>></a></span>
+                </p>
+              </footer>
+            </div>
+          </div>
+          <div class="column">
+            <div class="card">
+              <div class="card-content" style="height: 170px;">
+                <p> Get thermophysical properties of hydrocarbon mixtures. Gas compressibility can be determined using Peng-robinson, LeeKesler or Nelson Obert method.
+                </p>
+              </div>
+              <footer class="card-footer">
+                <p class="card-footer-item">
+                  <span><a href="/calcapi/thermochem/mixture/" class="button is-primary">View>></a></span>
+                </p>
+              </footer>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -192,7 +192,7 @@ def api_forgotpasswd():
             </html>
             """
             mailbody = html_template.format(new_password)
-#            sendMail([user["email"]],'appadmin@clappets.com','Password Reset',mailbody)
+            sendMail([user["email"]],'appadmin@clappets.com','Password Reset',mailbody)
             response = {}
             response["message"] = "You will receive your new password on email. If you do not find the mail in your mail box\
             please ensure to check your spam folder"

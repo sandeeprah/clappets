@@ -146,7 +146,7 @@ var app_common = {
                             app.successMessage = "User Successfully Logged In"
                             app.successisActive = true;
                             app.loginModalisActive = false;
-
+                            location.href = "/index";
                         } else {
                           console.error(xhr2.statusText);
                           app.errorMessage = "Login Failed.";
@@ -163,7 +163,7 @@ var app_common = {
                 }
                 else{
                     app.userAuthenticated = false;
-                    localStorage.setItem('access_token', 'junk');
+                    localStorage.setItem('access_token', 'anonymous');
                     localStorage.setItem('username', app.username);
                     localStorage.setItem('userAuthenticated', app.userAuthenticated);
                     app.handle_errors(xhr);
@@ -178,7 +178,7 @@ var app_common = {
         logout: function(){
             var app = this;
             app.resetMessages();
-            localStorage.setItem('access_token', 'junk');
+            localStorage.setItem('access_token', 'anonymous');
             localStorage.setItem('username', '');
             localStorage.setItem('userAuthenticated', false);
             token = localStorage["access_token"];
@@ -468,10 +468,12 @@ var app_common = {
         }catch(e){
             this.username = "";
             this.userAuthenticated = false;
+            localStorage.setItem('access_token', 'anonymous');
         }
 
-        if (this.username=='null'){
+        if (this.username==null){
             this.username = "";
+            localStorage.setItem('access_token', 'anonymous');
         }
     }
 }

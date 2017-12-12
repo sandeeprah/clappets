@@ -6,31 +6,15 @@ from clappets import app, mongodb
 from clappets.utils import json_response
 
 
-jwt = JWT(app.config['SECRET_KEY'], expires_in=3600)
+jwt = JWT(app.config['SECRET_KEY'], expires_in=360000)
 auth = HTTPBasicAuth()
+auth_relaxed = HTTPBasicAuth()
+auth_admin = HTTPBasicAuth()
 
 users = {
     "admin" : generate_password_hash("admin"),
     "sraheja" : generate_password_hash("sraheja"),
 }
-
-
-@auth.verify_password
-def verify_token(username, password):
-    '''
-    In the method chosen for authentication, basic authentication is used. Username is the JWT token and Password is not used.
-    '''
-    g.user = None
-    token = username
-    try:
-        data = jwt.loads(token)
-    except:
-        return False
-    if 'username' in data:
-        g.user = data['username']
-        return True
-    return False
-
 
 @app.route('/auth/', methods=['POST'])
 def getAuthToken():
@@ -53,6 +37,50 @@ def getAuthToken():
         else:
             auth_response["message"] = "Invalid User Credentials"
             return json_response(auth_response), 401
+
+
+
+@auth.verify_password
+def verify_token(username, password):
+    '''
+    In the method chosen for authentication, basic authentication is used. Username is the JWT token and Password is not used.
+    '''
+    g.user = None
+    token = username
+    try:
+        data = jwt.loads(token)
+    except:
+        return False
+    if 'username' in data:
+        g.user = data['username']
+        return True
+    return False
+
+
+
+@auth_relaxed.verify_password
+def verify_token_relaxed(username, password):
+    '''
+    In the method chosen for authentication, basic authentication is used. Username is the JWT token and Password is not used.
+    '''
+    g.user = None
+
+    if (username =="anonymous"):
+        return True
+    else:
+        token = username
+
+    try:
+        data = jwt.loads(token)
+    except:
+        return False
+
+    if 'username' in data:
+        g.user = data['username']
+        return True
+
+    return False
+
 
 
 @app.route('/auth2/', methods=['POST'])

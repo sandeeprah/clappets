@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block title %}Calculations{% endblock %}
+{% block calculations_active %}is-active{% endblock calculations_active %}
+{% block content %}
+<div class="section">
+    <div class="container">
+        <div class="box">
+            <h4 class="title is-4">Noise</h4>
+        </div>
+        <div class="columns">
+          <div class="column">
+            <div class="card" >
+              <div class="card-content" style="height: 170px;">
+                <p>
+                  Perform basic interconversions between Sound Power Level (PWL) and Sound Pressure Level (SPL) for a <i>point</i> source of sound.
+                </p>
+              </div>
+              <footer class="card-footer">
+                <p class="card-footer-item">
+                  <span><a href="/calcapi/noise/getSPL/" class="button is-primary">View>></a></span>
+                </p>
+              </footer>
+            </div>
+          </div>
+          <div class="column">
+            <div class="card">
+              <div class="card-content" style="height: 170px;">
+                <p>
+                  Add up noise levels available as Sound Pressure Levels at a point.
+                </p>
+              </div>
+              <footer class="card-footer">
+                <p class="card-footer-item">
+                  <span><a href="/calcapi/noise/noiseSummation/" class="button is-primary">View>></a></span>
+                </p>
+              </footer>
+            </div>
+          </div>
+          <div class="column">
+            <div class="card">
+              <div class="card-content" style="height: 170px;">
+                <p> Calculate Sound Pressure Level at a point due to multiple sources of noise(known power levels) located at ground level.
+                </p>
+              </div>
+              <footer class="card-footer">
+                <p class="card-footer-item">
+                  <span><a href="/calcapi/noise/noiseMap/" class="button is-primary">View>></a></span>
+                </p>
+              </footer>
+            </div>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column">
+            <div class="card" >
+              <div class="card-content" style="height: 170px;">
+                <p>Find attenuation with distance in Sound Pressure Level for a Point Source of sound.</p>
+              </div>
+              <footer class="card-footer">
+                <p class="card-footer-item">
+                  <span><a href="/calcapi/noise/distAttenPoint/" class="button is-primary">View>></a></span>
+                </p>
+              </footer>
+            </div>
+          </div>
+          <div class="column">
+            <div class="card">
+              <div class="card-content" style="height: 170px;">
+                <p>Find attenuation with distance in Sound Pressure Level for a Line Source of sound.</p>
+              </div>
+              <footer class="card-footer">
+                <p class="card-footer-item">
+                  <span><a href="/calcapi/noise/distAttenLine/" class="button is-primary">View>></a></span>
+                </p>
+              </footer>
+            </div>
+          </div>
+          <div class="column">
+            <div class="card">
+              <div class="card-content" style="height: 170px;">
+                <p>Find attenuation with distance in Sound Pressure Level for a planar wall Source of sound.</p>
+              </div>
+              <footer class="card-footer">
+                <p class="card-footer-item">
+                  <span><a href="/calcapi/noise/distAttenWall/" class="button is-primary">View>></a></span>
+                </p>
+              </footer>
+            </div>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column">
+            <div class="card" >
+              <div class="card-content" style="height: 170px;">
+                <p>Perform correction in noise level due to background noise.</p>
+              </div>
+              <footer class="card-footer">
+                <p class="card-footer-item">
+                  <span><a href="/calcapi/noise/correctBackNoise/" class="button is-primary">View>></a></span>
+                </p>
+              </footer>
+            </div>
+          </div>
+          <div class="column">
+            <div class="card">
+              <div class="card-content" style="height: 170px;">
+                <p>Perform correction in noise spectrum due to background noise spectrum.</p>
+              </div>
+              <footer class="card-footer">
+                <p class="card-footer-item">
+                  <span><a href="/calcapi/noise/correctSpectrum/" class="button is-primary">View>></a></span>
+                </p>
+              </footer>
+            </div>
+          </div>
+          <div class="column">
+            <div class="card">
+              <div class="card-content" style="height: 170px;">
+                <p>Find overall noise levels of a noise spectrum and A-weighted noise in dBA.</p>
+              </div>
+              <footer class="card-footer">
+                <p class="card-footer-item">
+                  <span><a href="/calcapi/noise/aWeightedNoise/" class="button is-primary">View>></a></span>
+                </p>
+              </footer>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Clappets.com</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/bulma.css">
+    <link rel="stylesheet" type="text/css" href="/static/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/calculator.css">
+
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <script type="text/javascript" src="/static/js/clappetsunits.js"></script>
+
+
+
+</head>
+
+<body>
+    <section class="section">
+        <div class="container">
+            <div class="columns is-centered" style="border-bottom:0px;">
+                <div class="column is-6">
+                    <nav class="breadcrumb is-right" aria-label="breadcrumbs">
+                        <ul>
+                            <li><a href="#"><span class="icon is-small">Home</a></li>
+                            <li><a href="#"><span>Calculations</span></a></li>
+                            <li><a href="#"><span>Noise</span></a></li>
+                        </ul>
+                    </nav>
+
+
+                    <h1 class="title is-3" style="text-align:center;">Noise Mapping</h1>
+                    <h2 class="title is-4" style="text-align:center;">(Ground Sources)</h2>
+                    <div id="app">
+                        <div class="tabs is-boxed">
+                            <ul>
+                                <li v-bind:class="{'is-active': calcPageActive}">
+                                    <a name="calc_menu" @click="activatePage">Calc</a>
+                                </li>
+                                <li v-bind:class="{'is-active': infoPageActive }">
+                                    <a name="info_menu" @click="activatePage">Info</a>
+                                </li>
+                                <li v-bind:class="{'is-active': unitsPageActive }">
+                                    <a name="units_menu" @click="activatePage">Units</a>
+                                </li>
+                                <li v-bind:class="{'is-active': helpPageActive }">
+                                    <a name="help_menu" @click="activatePage">Help</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="box" v-show="calcPageActive">
+                            <div class="columns">
+                                <div class="column">
+                                    <h5 class="title is-5">Inputs</h5>
+                                </div>
+                            </div>
+
+                            <div class="columns">
+                              <div class="column is-centered" style="overflow-x:auto;">
+                                <h6 class="title is-6">Ground Located Sources</h6>
+                                <table>
+                                  <tr>
+                                    <td style="min-width:100px;">&nbsp;</td>
+                                    <td style="min-width:50px;">#</td>
+                                    <td style="min-width:75px;">Tag#</td>
+                                    <td style="min-width:50px;">PWL(dB)</td>
+                                    <td style="min-width:50px;">X(m)</td>
+                                    <td style="min-width:50px;">Y(m)</td>
+                                  </tr>
+                                  <tr v-for="(source, index) in emissionPoints" v-bind:class="{active : index == activeindex}">
+                                    <td>
+                                      <div class="grdcontrol">
+                                        <div v-show="index==activeindex">
+                                        <a class="icon has-text-info" @click="removeItem(index)"><i class="fa fa-trash"></i></a>
+                                        <a class="icon has-text-info" @click="upItem(index)"><i class="fa fa-angle-up"></i></a>
+                                        <a class="icon has-text-info" @click="downItem(index)"><i class="fa fa-angle-down"></i></a>
+                                      </div>
+                                      </div>
+                                    </td>
+                                    <td><input class='grid' @focus = "setActiveIndex(index)" type="text" v-bind:value="index+1"></td>
+                                    <td><input class='grid' @focus = "setActiveIndex(index)" type="text" placeholder="Tag" v-model="emissionPoints[index]['tag']"></td>
+                                    <td><input class='grid' @focus = "setActiveIndex(index)" type="number" placeholder="PWL" v-model="emissionPoints[index]['pwl']"></td>
+                                    <td><input class='grid' @focus = "setActiveIndex(index)" type="number" placeholder="X" v-model="emissionPoints[index]['x']"></td>
+                                    <td><input class='grid' @focus = "setActiveIndex(index)" type="number" placeholder="Y" v-model="emissionPoints[index]['y']"></td>
+                                  </tr>
+                                </table>
+                                <div style="margin-top:10px;">
+                                  <a class="button is-primary is-small" v-on:click="addItem">Add Noise Source</a>
+                                  <p>&nbsp;</p>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-6">Listener Location (X)</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="text" placeholder="X" v-model="immisionPoints[0]['x']">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static">m</a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-info"></p>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-6">Listener Location (Y)</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="text" placeholder="Y" v-model="immisionPoints[0]['y']">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static">m</a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-info"></p>
+                                </div>
+                            </div>
+
+
+
+                            <div class="columns">
+                                <div class="column">
+                                    <h5 class="title is-5">Outputs</h4>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-6">Noise Level @ Listener</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="text" placeholder="Noise Level" readonly v-model="noiseField[0]['noise']">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static">dB</a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-info"></p>
+                                </div>
+                            </div>
+                            <article class="message is-small is-danger" v-show="errorBoxActive">
+                                <div class="message-header">
+                                    <p>Errors</p>
+                                    <button class="delete is-small" aria-label="delete" @click="hideErrorBox"></button>
+                                </div>
+                                <div class="message-body">
+                                    [[ error]]
+                                    <p>Emission Points Errors:</p>
+                                    <p class="help is-danger" v-for="(key, error) in emissionPoints_errors">[[key]]-[[ error ]]</p>
+                                    <p>Immision Points Errors:</p>
+                                    <p class="help is-danger" v-for="(key, error) in immisionPoints_errors">[[key]]-[[ error ]]</p>
+
+
+                                </div>
+                            </article>
+
+                        <a class="button is-primary" style="width:100%" v-on:click="calculate_result">Calculate</a>
+                        </div>
+
+
+                        <div class="box" v-show="infoPageActive">
+
+                            <div class="columns ">
+                                <div class="column is-4">Project</label>
+                                </div>
+                                <div class="column is-8">
+                                    <input class="input" type="text" name="" value="">
+                                </div>
+                            </div>
+                            <div class="columns ">
+                                <div class="column is-4">Client</label>
+                                </div>
+                                <div class="column is-8">
+                                    <input class="input" type="text" name="" value="">
+                                </div>
+                            </div>
+                            <div class="columns ">
+                                <div class="column is-4">Location</label>
+                                </div>
+                                <div class="column is-8">
+                                    <input class="input" type="text" name="" value="">
+                                </div>
+                            </div>
+                            <div class="columns ">
+                                <div class="column is-4">Item No.</label>
+                                </div>
+                                <div class="column is-8">
+                                    <input class="input" type="text" name="" value="">
+                                </div>
+                            </div>
+
+                            <div class="columns ">
+                                <div class="column is-4">Purpose</label>
+                                </div>
+                                <div class="column is-8">
+                                    <textarea class="textarea" rows="5" type="text" name="" value=""></textarea>
+                                </div>
+                            </div>
+
+                            <div class="columns ">
+                                <div class="column is-4">Conclusion</label>
+                                </div>
+                                <div class="column is-8">
+                                    <textarea class="textarea" rows="5" type="text" name="" value=""></textarea>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="box" v-show="unitsPageActive">
+
+                        </div>
+
+                        <div class="box" v-show="helpPageActive">
+                            There is help here.
+                        </div>
+
+                </div>
+            </div>
+        </div>
+      </div>
+  </section>
+
+
+    <script src="/static/js/vue.js"></script>
+    <script src="https://unpkg.com/axios@0.16.2/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/lodash@4.17.2/lodash.min.js"></script>
+
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            delimiters : ['[[',']]'],
+            data: {
+                calcPageActive: true,
+                infoPageActive: false,
+                unitsPageActive: false,
+                helpPageActive: false,
+
+                errorBoxActive:false,
+                error : '',
+
+                emissionPoints:[
+                  {"tag":"100-P-101", "pwl":"91", "x":"1", "y":"2"},
+                  {"tag":"100-P-102", "pwl":"92", "x":"1", "y":"3"},
+                  {"tag":"100-P-103", "pwl":"93", "x":"1", "y":"4"},
+                  {"tag":"100-P-104", "pwl":"94", "x":"1", "y":"5"},
+
+                ],
+                emissionPoints_errors: [],
+
+                immisionPoints:[
+                  {"x":"0","y":"0"},
+                ],
+
+
+                activeindex : '2',
+                noiseField: [
+                  {"x": '', "y": '', "noise": ''}
+                ],
+            },
+
+            computed: {
+
+            },
+
+            methods: {
+                activatePage: function(event) {
+                    page_menu = event.target.name;
+                    this.calcPageActive = false;
+                    this.infoPageActive = false;
+                    this.unitsPageActive = false;
+                    this.helpPageActive = false;
+                    if (page_menu == 'calc_menu') {
+                        this.calcPageActive = true;
+                    }
+                    if (page_menu == 'info_menu') {
+                        this.infoPageActive = true;
+                    }
+                    if (page_menu == 'units_menu') {
+                        this.unitsPageActive = true;
+                    }
+                    if (page_menu == 'help_menu') {
+                        this.helpPageActive = true;
+                    }
+                },
+
+
+                calculate_result : function(){
+                    var app = this;
+                    url = '/calcapi/noise/noiseMap/'
+
+                    axios.post(url, {
+                      emissionPoints: app.emissionPoints,
+                      immisionPoints: app.immisionPoints,
+                    })
+                    .then(function (response) {
+                        app.noiseField = response.data.noiseField;
+
+                        console.log(response);
+                        app.resetErrors();
+                        })
+                    .catch(function (error) {
+                        app.scanErrors(error);
+                    });
+                },
+
+                hideErrorBox: function(){
+                    this.errorBoxActive=false;
+                },
+
+                scanErrors: function(error){
+                    this.errorBoxActive = true;
+                    this.error = error.response.status + " : " + error.response.statusText;
+                    this.emissionPoints_errors = error.response.data["emissionPoints"];
+                    this.immisionPoints_errors = error.response.data["immisionPoints"];
+
+                },
+
+                resetErrors: function(){
+                  this.errorBoxActive = false;
+                  this.error = '';
+                  this.emissionPoints_errors = [];
+                  this.immisionPoints_errors = [];
+
+
+                },
+
+                removeItem: function(index){
+                  if (index==this.activeindex){
+
+                  this.emissionPoints.splice(index,1);
+
+                  newmaxindex = this.emissionPoints.length-1;
+
+                  if(this.activeindex> newmaxindex){
+
+                    this.activeindex = newmaxindex;
+                  }
+                }
+
+                },
+
+                addItem: function() {
+                  entry = {"tag":"", "pwl":"", "x":"", "y":""}
+                  this.emissionPoints.push(entry);
+                  this.activeindex = this.emissionPoints.length -1;
+                },
+
+                upItem: function(index){
+                  if ((index > 0) && (index==this.activeindex) ){
+                    var temp_tag = this.emissionPoints[index]['tag']
+                    this.emissionPoints[index]['tag']= this.emissionPoints[index-1]['tag'];
+                    this.emissionPoints[index-1]['tag']=temp_tag;
+                    var temp_pwl = this.emissionPoints[index]['pwl']
+                    this.emissionPoints[index]['pwl']= this.emissionPoints[index-1]['pwl'];
+                    this.emissionPoints[index-1]['pwl']=temp_pwl;
+                    var temp_x = this.emissionPoints[index]['x']
+                    this.emissionPoints[index]['x']= this.emissionPoints[index-1]['x'];
+                    this.emissionPoints[index-1]['x']=temp_x;
+                    var temp_y = this.emissionPoints[index]['y']
+                    this.emissionPoints[index]['y']= this.emissionPoints[index-1]['y'];
+                    this.emissionPoints[index-1]['y']=temp_y;
+                    this.activeindex = index - 1;
+                  }
+
+
+                },
+                downItem: function(index){
+
+                  if ((index < this.emissionPoints.length-1) && (index==this.activeindex) ){
+                    var temp_tag = this.emissionPoints[index]['tag']
+                    this.emissionPoints[index]['tag']= this.emissionPoints[index+1]['tag'];
+                    this.emissionPoints[index+1]['tag']=temp_tag;
+                    var temp_pwl = this.emissionPoints[index]['pwl']
+                    this.emissionPoints[index]['pwl']= this.emissionPoints[index+1]['pwl'];
+                    this.emissionPoints[index+1]['pwl']=temp_pwl;
+                    var temp_x = this.emissionPoints[index]['x']
+                    this.emissionPoints[index]['x']= this.emissionPoints[index+1]['x'];
+                    this.emissionPoints[index+1]['x']=temp_x;
+                    var temp_y = this.emissionPoints[index]['y']
+                    this.emissionPoints[index]['y']= this.emissionPoints[index+1]['y'];
+                    this.emissionPoints[index+1]['y']=temp_y;
+                    this.activeindex = index+1;
+                }
+            },
+
+            setActiveIndex : function(index){
+              this.activeindex = index;
+            }
+          },
+        })
+    </script>
+
+
+</body>
+
+</html>

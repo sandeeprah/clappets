@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Clappets.com</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/bulma.css">
+    <link rel="stylesheet" type="text/css" href="/static/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/calculator.css">
+
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <script type="text/javascript" src="/static/js/clappetsunits.js"></script>
+</head>
+
+<body>
+    <section class="section">
+        <div class="container">
+            <div class="columns is-centered" style="border-bottom:0px;">
+                <div class="column is-6">
+                    <nav class="breadcrumb is-right" aria-label="breadcrumbs">
+                        <ul>
+                            <li><a href="/index"><span class="icon is-small">Home</a></li>
+                            <li><a href="/calcs/index"><span>Calculations</span></a></li>
+                            <li><a href="/calcs/thermochem/index"><span>Thermochem</span></a></li>
+                            <li class="is-active"><a href="#"><span>FluidProp</span></a></li>
+
+                        </ul>
+                    </nav>
+
+
+                    <h1 class="title is-3" style="text-align:center;">Fluid Properties</h1>
+
+                    <div id="app">
+                        <div class="tabs is-boxed">
+                            <ul>
+                                <li v-bind:class="{'is-active': calcPageActive}">
+                                    <a name="calc_menu" @click="activatePage">Calc</a>
+                                </li>
+                                <li v-bind:class="{'is-active': infoPageActive }">
+                                    <a name="info_menu" @click="activatePage">Info</a>
+                                </li>
+                                <li v-bind:class="{'is-active': unitsPageActive }">
+                                    <a name="units_menu" @click="activatePage">Units</a>
+                                </li>
+                                <li v-bind:class="{'is-active': helpPageActive }">
+                                    <a name="help_menu" @click="activatePage">Help</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="box" v-show="calcPageActive">
+                            <div class="columns">
+                                <div class="column">
+                                    <h5 class="title is-5">Inputs</h5>
+                                </div>
+                            </div>
+
+                            <div class="columns">
+                                <div class="column is-6">Fluid</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <select class="select" placeholder="fluid" v-model="fluid">
+                                              <option v-for="item in fluid_options" :value="item" v-text="item"></option>
+                                            </select>
+                                        </p>
+                                    </div>
+                                    <p class="help is-danger" v-for="error in fluid_errors">[[ error ]]</p>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-6">Pressure</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="number" placeholder="pressure" v-model="P">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static" v-text="getUnitLabel('pressure')"></a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-danger" v-for="error in P_errors">[[ error ]]</p>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-6">Temperature</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="number" placeholder="temperature" v-model="T" step=0.01>
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static" v-text="getUnitLabel('temperature')"></a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-danger" v-for="error in T_errors">[[ error ]]</p>
+                                </div>
+                            </div>
+
+                            <div class="columns">
+                                <div class="column">
+                                    <h5 class="title is-5">Outputs</h4>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-6">Molecular Weight</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="text" placeholder="MW" readonly v-model="_MW">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static" v-text="getUnitLabel('molecularMass')"></a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-info"></p>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-6">Critical Pressure</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="text" placeholder="Pcritical" readonly v-model="_Pcrit">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static" v-text="getUnitLabel('pressure')"></a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-info"></p>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-6">Critical Temperature</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="text" placeholder="Tcritical" readonly v-model="_Tcrit">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static" v-text="getUnitLabel('temperature')"></a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-info"></p>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-6">Accentricity Factor</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="text" placeholder="acentric" readonly v-model="acentric">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static"></a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-info"></p>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-6">Compressibility Factor (Z)</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="text" placeholder="Z" readonly v-model="Z">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static"></a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-info"></p>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-6">Density</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="text" placeholder="rho" readonly v-model="_rho">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static" v-text="getUnitLabel('density')" ></a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-info"></p>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-6">Specific Volume</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="number" placeholder="v" readonly v-model="_v1">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static" v-text="getUnitLabel('specificVolume')"></a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-info"></p>
+                                </div>
+                            </div>
+
+                            <div class="columns">
+                                <div class="column is-6">Specific Enthalphy</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="text" placeholder="h" readonly v-model="_h">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static" v-text="getUnitLabel('specificEnergy')"></a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-info"></p>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-6">Specific Internal Energy (u)</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="text" placeholder="u" readonly v-model="_u1">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static" v-text="getUnitLabel('specificEnergy')"></a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-info"></p>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-6">Specific Entropy</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="text" placeholder="s" readonly v-model="_s1">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static" v-text="getUnitLabel('specificEntropy')"></a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-info"></p>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-6">Gibbs Free Energy (g)</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="text" placeholder="g" readonly v-model="_g1">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static" v-text="getUnitLabel('specificEntropy')"></a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-info"></p>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-6">Helmholtz Energy</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="text" placeholder="helm" readonly v-model="_helm">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static" v-text="getUnitLabel('specificEnergy')"></a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-info"></p>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-6">Mass Specific Heat-Const Pressure</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="text" placeholder="cpmass" readonly v-model="_cpmass">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static" v-text="getUnitLabel('specificHeat')"></a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-info"></p>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-6">Mass Specific Heat-Const Volume</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="text" placeholder="cvmass" readonly v-model="_cvmass">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static" v-text="getUnitLabel('specificHeat')"></a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-info"></p>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-6">Molar Specific Heat-Const Pressure</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="text" placeholder="cpmolar" readonly v-model="_cpmolar">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static" v-text="getUnitLabel('molarSpecificHeat')"></a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-info"></p>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-6">Molar Specific Heat-Const Volume</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="text" placeholder="cvmolar" readonly v-model="_cvmolar">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static" v-text="getUnitLabel('molarSpecificHeat')"></a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-info"></p>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-6">Ideal Gas Mass Sp. Heat-Const Press</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="text" placeholder="cp0mass" readonly v-model="_cp0mass">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static" v-text="getUnitLabel('specificHeat')"></a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-info"></p>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-6">Health Hazard</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="text" placeholder="HH" readonly v-model="HH">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static"></a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-info"></p>
+                                </div>
+                            </div>
+
+                            <div class="columns">
+                                <div class="column is-6">Physical Hazard</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="text" placeholder="PH" readonly v-model="PH">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static"></a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-info"></p>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-6">Global Warming Potential(100yr)</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="text" placeholder="GWP100" readonly v-model="GWP100">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static"></a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-info"></p>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-6">Ozone Depletion Potential</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="text" placeholder="ODP" readonly v-model="ODP">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static"></a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-info"></p>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-6">Prandtl No</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="text" placeholder="prandtl" readonly v-model="prandtl">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static"></a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-info"></p>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-6">Triple Point Temperature</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="text" placeholder="Ttriple" readonly v-model="_Ttriple">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static" v-text="getUnitLabel('temperature')"></a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-info"></p>
+                                </div>
+                            </div>
+
+                            <div class="columns">
+                                <div class="column is-6">Triple Point Pressure</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="text" placeholder="Ptriple" readonly v-model="_Ptriple">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static" v-text="getUnitLabel('pressure')"></a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-info"></p>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-6">Dynamic Viscosity</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="text" placeholder="viscosity" readonly v-model="_viscosity">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static" v-text="getUnitLabel('dynViscosity')"></a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-info"></p>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column is-6">Thermal Conductivity</div>
+                                <div class="column is-6">
+                                    <div class="field has-addons">
+                                        <p class="control" style="width:100%">
+                                            <input class="input" type="text" placeholder="conductivity" readonly v-model="_conductivity">
+                                        </p>
+                                        <p class="control">
+                                            <a class="button is-static" v-text="getUnitLabel('thermalConductivity')"></a>
+                                        </p>
+                                    </div>
+                                    <p class="help is-info"></p>
+                                </div>
+                            </div>
+
+                            <article class="message is-small is-danger" v-show="errorBoxActive">
+                                <div class="message-header">
+                                    <p>Errors</p>
+                                    <button class="delete is-small" aria-label="delete" @click="hideErrorBox"></button>
+                                </div>
+                                <div class="message-body">
+                                    [[ error]]
+                                </div>
+                            </article>
+
+                        <a class="button is-primary" style="width:100%" v-on:click="calculate_result">Calculate</a>
+                        </div>
+
+
+                        <div class="box" v-show="infoPageActive">
+
+                            <div class="columns ">
+                                <div class="column is-4">Project</label>
+                                </div>
+                                <div class="column is-8">
+                                    <input class="input" type="text" name="" value="">
+                                </div>
+                            </div>
+                            <div class="columns ">
+                                <div class="column is-4">Client</label>
+                                </div>
+                                <div class="column is-8">
+                                    <input class="input" type="text" name="" value="">
+                                </div>
+                            </div>
+                            <div class="columns ">
+                                <div class="column is-4">Location</label>
+                                </div>
+                                <div class="column is-8">
+                                    <input class="input" type="text" name="" value="">
+                                </div>
+                            </div>
+                            <div class="columns ">
+                                <div class="column is-4">Item No.</label>
+                                </div>
+                                <div class="column is-8">
+                                    <input class="input" type="text" name="" value="">
+                                </div>
+                            </div>
+
+                            <div class="columns ">
+                                <div class="column is-4">Purpose</label>
+                                </div>
+                                <div class="column is-8">
+                                    <textarea class="textarea" rows="5" type="text" name="" value=""></textarea>
+                                </div>
+                            </div>
+
+                            <div class="columns ">
+                                <div class="column is-4">Conclusion</label>
+                                </div>
+                                <div class="column is-8">
+                                    <textarea class="textarea" rows="5" type="text" name="" value=""></textarea>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="box" v-show="unitsPageActive">
+                          <div class="columns is-centered">
+                              <div class="column">
+                                  <div class="control">
+                                      <label class="radio"><input type="radio" name="useDefaultUnit" v-model="useDefaultUnits" value="true">Default Units</label>
+                                      <label class="radio"><input type="radio" name="useDefaultUnit" v-model="useDefaultUnits" value="false">Custom Units</label>
+                                  </div>
+                              </div>
+                          </div>
+
+
+                          <div class="columns" v-for="dimension in dimension_list ">
+                              <div class="column is-6" v-text="getDimensionTitle(dimension)"></div>
+                              <div class="column is-6">
+                                  <div class="select">
+                                      <select class="select" v-model="units[dimension]['custom']" :disabled="useDefaultUnits=='true'">
+                                        <option v-for="(unit, index) in getUnitLabelList(dimension)" :value="index" v-text="unit"></option>
+                                      </select>
+                                  </div>
+                                  <p class="help is-info"></p>
+                              </div>
+                          </div>
+
+                        </div>
+
+                        <div class="box" v-show="helpPageActive">
+                            This calculator is based on CoolProp library. For more details on this library refer to
+                            official documentation at <a href = "http://www.coolprop.org">http://www.coolprop.org</a>
+                        </div>
+
+                </div>
+            </div>
+        </div>
+      </div>
+  </section>
+
+    <script src="/static/js/vue.js"></script>
+    <script src="https://unpkg.com/axios@0.16.2/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/lodash@4.17.2/lodash.min.js"></script>
+
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            delimiters:['[[',']]'],
+
+            data: {
+                calcPageActive: true,
+                infoPageActive: false,
+                unitsPageActive: false,
+                helpPageActive: false,
+
+                errorBoxActive:false,
+                fluid_options : ["1-Butene", "Acetone", "Air", "Ammonia", "Argon", "Benzene", "CarbonDioxide", "CarbonMonoxide", "CarbonylSulfide", "cis-2-Butene", "CycloHexane", "Cyclopentane", "CycloPropane", "D4", "D5", "D6", "Deuterium", "Dichloroethane", "DiethylEther", "DimethylCarbonate", "DimethylEther", "Ethane", "Ethanol", "EthylBenzene", "Ethylene", "EthyleneOxide", "Fluorine", "HeavyWater", "Helium", "HFE143m", "Hydrogen", "HydrogenChloride", "HydrogenSulfide", "IsoButane", "IsoButene", "Isohexane", "Isopentane", "Krypton", "m-Xylene", "MD2M", "MD3M", "MD4M", "MDM", "Methane", "Methanol", "MethylLinoleate", "MethylLinolenate", "MethylOleate", "MethylPalmitate", "MethylStearate", "MM", "n-Butane", "n-Decane", "n-Dodecane", "n-Heptane", "n-Hexane", "n-Nonane", "n-Octane", "n-Pentane", "n-Propane", "n-Undecane", "Neon", "Neopentane", "Nitrogen", "NitrousOxide", "Novec649", "o-Xylene", "OrthoDeuterium", "OrthoHydrogen", "Oxygen", "p-Xylene", "ParaDeuterium", "ParaHydrogen", "Propylene", "Propyne", "R11", "R113", "R114", "R115", "R116", "R12", "R123", "R1233zd(E)", "R1234yf", "R1234ze(E)", "R1234ze(Z)", "R124", "R125", "R13", "R134a", "R13I1", "R14", "R141b", "R142b", "R143a", "R152A", "R161", "R21", "R218", "R22", "R227EA", "R23", "R236EA", "R236FA", "R245ca", "R245fa", "R32", "R365MFC", "R40", "R404A", "R407C", "R41", "R410A", "R507A", "RC318", "SES36", "SulfurDioxide", "SulfurHexafluoride", "Toluene", "trans-2-Butene", "Water", "Xenon"],
+
+                fluid: '',
+                fluid_errors:[],
+                P: '',
+                P_errors:[],
+                T: '',
+                T_errors:[],
+
+                MW: '',
+                Pcrit : '',
+                Tcrit : '',
+                acentric : '',
+                Z : '',
+                rho : '',
+                v : '',
+                h : '',
+                u : '',
+                s : '',
+                g : '',
+                helm : '',
+                cpmass : '',
+                cvmass : '',
+                cpmolar : '',
+                cvmolar : '',
+                cp0mass : '',
+                HH : '',
+                PH : '',
+                GWP100 : '',
+                ODP : '',
+                prandtl : '',
+                Ttriple : '',
+                Ptriple : '',
+                viscosity : '',
+                conductivity : '',
+
+                error : '',
+                useDefaultUnits: 'false',
+
+                units : {
+                  "pressure" : {"custom" : 0, "default" : 0},
+                  "temperature" : {"custom" : 0, "default" : 0},
+                  "density" : {"custom" : 0, "default" : 0},
+                  "specificVolume" : {"custom" : 0, "default" : 0},
+                  "molecularMass" : {"custom" : 0, "default" : 0},
+                  "specificEnergy" : {"custom" : 0, "default" : 0},
+                  "specificEntropy" : {"custom" : 0, "default" : 0},
+                  "specificHeat" : {"custom" : 0, "default" : 0},
+                  "molarSpecificHeat" : {"custom" : 0, "default" : 0},
+                  "dynViscosity" : {"custom" : 0, "default" : 0},
+                  "thermalConductivity" : {"custom" : 0, "default" : 0},
+                },
+
+                dimension_list : ["pressure",
+                            "temperature",
+                            "specificHeat",
+                            "molecularMass",
+                            "density",
+                            "specificVolume",
+                            "specificEnergy",
+                            "specificEntropy",
+                            "specificHeat",
+                            "molarSpecificHeat",
+                            "dynViscosity",
+                            "thermalConductivity",
+                          ],
+
+            },
+
+            computed: {
+              _MW : function(){
+                return unitConvert(this.MW, 'molecularMass', 0 , this.getUnitIndex('molecularMass'))
+              },
+              _Pcrit : function(){
+                return unitConvert(this.Pcrit, 'pressure', 0 , this.getUnitIndex('pressure'))
+              },
+              _Tcrit : function(){
+                return unitConvert(this.Tcrit, 'temperature', 0 , this.getUnitIndex('temperature'))
+              },
+              _rho : function(){
+                return unitConvert(this.rho, 'density', 0 , this.getUnitIndex('density'))
+              },
+              _v1 : function(){
+                return unitConvert(this.v, 'specificVolume', 0 , this.getUnitIndex('specificVolume'))
+              },
+              _h : function(){
+                return unitConvert(this.h, 'specificEnergy', 0 , this.getUnitIndex('specificEnergy'))
+              },
+              _u1 : function(){
+                return unitConvert(this.u, 'specificEnergy', 0 , this.getUnitIndex('specificEnergy'))
+              },
+              _s1 : function(){
+                return unitConvert(this.s, 'specificEntropy', 0 , this.getUnitIndex('specificEntropy'))
+              },
+              _g1 : function(){
+                return unitConvert(this.g, 'specificEnergy', 0 , this.getUnitIndex('specificEnergy'))
+              },
+              _helm : function(){
+                return unitConvert(this.helm, 'specificEnergy', 0 , this.getUnitIndex('specificEnergy'))
+              },
+              _cpmass : function(){
+                return unitConvert(this.cpmass, 'specificHeat', 0 , this.getUnitIndex('specificHeat'))
+              },
+              _cvmass : function(){
+                return unitConvert(this.cvmass, 'specificHeat', 0 , this.getUnitIndex('specificHeat'))
+              },
+              _cpmolar : function(){
+                return unitConvert(this.cpmolar, 'molarSpecificHeat', 0 , this.getUnitIndex('molarSpecificHeat'))
+              },
+              _cvmolar : function(){
+                return unitConvert(this.cvmolar, 'molarSpecificHeat', 0 , this.getUnitIndex('molarSpecificHeat'))
+              },
+              _cp0mass : function(){
+                return unitConvert(this.cp0mass, 'specificHeat', 0 , this.getUnitIndex('specificHeat'))
+              },
+              _Ttriple : function(){
+                return unitConvert(this.Ttriple, 'temperature', 0 , this.getUnitIndex('temperature'))
+              },
+              _Ptriple : function(){
+                return unitConvert(this.Ptriple, 'pressure', 0 , this.getUnitIndex('pressure'))
+              },
+              _viscosity : function(){
+                return unitConvert(this.viscosity, 'dynViscosity', 0 , this.getUnitIndex('dynViscosity'))
+              },
+              _conductivity : function(){
+                return unitConvert(this.conductivity, 'thermalConductivity', 0 , this.getUnitIndex('thermalConductivity'))
+              },
+
+            },
+
+
+            methods: {
+                activatePage: function(event) {
+                    page_menu = event.target.name;
+                    this.calcPageActive = false;
+                    this.infoPageActive = false;
+                    this.unitsPageActive = false;
+                    this.helpPageActive = false;
+                    if (page_menu == 'calc_menu') {
+                        this.calcPageActive = true;
+                    }
+                    if (page_menu == 'info_menu') {
+                        this.infoPageActive = true;
+                    }
+                    if (page_menu == 'units_menu') {
+                        this.unitsPageActive = true;
+                    }
+                    if (page_menu == 'help_menu') {
+                        this.helpPageActive = true;
+                    }
+                },
+
+
+                calculate_result : function(){
+                    var app = this;
+                    url = '/calcapi/thermochem/fluid/'
+                    axios.post(url, {
+                      fluid: app.fluid,
+			                P :app.P,
+                      T :app.T,
+                    })
+                    .then(function (response) {
+                        app.MW = response.data.MW
+                        app.Pcrit = response.data.Pcrit
+                        app.Tcrit = response.data.Tcrit
+                        app.acentric = response.data.acentric
+                        app.Z = response.data.Z
+                        app.rho = response.data.rho
+                        app.v = response.data.v
+                        app.h = response.data.h
+                        app.u = response.data.u
+                        app.s = response.data.s
+                        app.g = response.data.g
+                        app.helm = response.data.helm
+                        app.cpmass = response.data.cpmass
+                        app.cvmass = response.data.cvmass
+                        app.cpmolar = response.data.cpmolar
+                        app.cvmolar = response.data.cvmolar
+                        app.cp0mass = response.data.cp0mass
+                        app.HH = response.data.HH
+                        app.PH = response.data.PH
+                        app.GWP100 = response.data.GWP100
+                        app.ODP = response.data.ODP
+                        app.prandtl = response.data.prandtl
+                        app.Ttriple = response.data.Ttriple
+                        app.Ptriple = response.data.Ptriple
+                        app.viscosity = response.data.viscosity
+                        app.conductivity = response.data.conductivity
+
+
+                        console.log(response);
+                        app.resetErrors();
+                        })
+                    .catch(function (error) {
+                        app.scanErrors(error);
+                    });
+                },
+
+                hideErrorBox: function(){
+                    this.errorBoxActive=false;
+                },
+
+                scanErrors: function(error){
+                    this.errorBoxActive = true;
+                    this.error = error.response.status + " : " + error.response.statusText;
+                    this.fluid_errors = error.response.data["fluid"];
+                    this.P_errors = error.response.data["P"];
+                    this.T_errors = error.response.data["T"];
+                },
+
+                resetErrors: function(){
+                  this.errorBoxActive = false;
+                  this.error = '';
+                  this.fluid_errors = [];
+                  this.P_errors = [];
+                  this.T_errors = [];
+                },
+
+                getDimensionTitle : function(dimension){
+                  return getDimensionTitle(dimension)
+                },
+
+                getUnitLabelList : function(dimension){
+                  return getUnitLabelList(dimension)
+                },
+
+                getUnitIndex : function(dimension){
+                  useDefault = this.useDefaultUnits;
+                  if (useDefault=='true'){
+                    unitIndex = this.units[dimension]["default"]
+                  }
+                  else{
+                    unitIndex = this.units[dimension]["custom"]
+                  }
+                  return unitIndex
+                },
+
+                getUnitLabel : function(dimension){
+                  unitIndex = this.getUnitIndex(dimension)
+                  return getUnitLabel(dimension, unitIndex)
+                },
+            },
+        })
+    </script>
+
+
+</body>
+
+</html>

@@ -3,10 +3,10 @@ from io import StringIO
 import os
 import json
 from collections import OrderedDict
-from flask import render_template, request, abort
+from flask import render_template, request, abort, g
 import pymongo
 from clappets import app, mongodb
-from clappets.authentication import auth
+from clappets.authentication import auth, auth_relaxed
 from clappets.core import sDocPrj
 from clappets.utils import json_response
 from clappets.document.utils import load_schema, get_repository, get_folder_title, get_project_title, get_subfolder_names, get_subfolder_list
@@ -410,7 +410,7 @@ def api_delete_document(doc_id):
 #then all htm views
 
 @app.route('/htm/document/', methods=['GET', 'POST'])
-@auth.login_required
+@auth_relaxed.login_required
 def htm_Doc():
     if (request.method=='GET'):
         this_folderpath = os.path.dirname(os.path.abspath(__file__))
@@ -422,7 +422,12 @@ def htm_Doc():
         except Exception as e:
             return "Error Occured" + str(e)
         template = "/document/document.html"
-        return render_template(template, doc=doc)
+        if g.user:
+            authenticated=True
+        else:
+            authenticated = False
+
+        return render_template(template, doc=doc,authenticated=authenticated)
     else:
         doc_file = request.files['doc']
         docRaw = json.loads(doc_file.read().decode('utf-8'))
@@ -432,7 +437,6 @@ def htm_Doc():
             errors["message"] = "The Document Meta Information has errors"
             errors["schema"] = docParsed.errors
             return json_response(errors), 400
-
 
         #check if the raw document conforms to the specific document schema for the class
         try:
@@ -448,11 +452,12 @@ def htm_Doc():
             pass
 
         doc = json.dumps(docRaw, indent=4)
-        return render_template(template, doc=doc)
+        return render_template(template, doc=doc, authenticated=True)
 
 
 
 @app.route('/htm/document/tpl/<repository>/<discipline>/<docCategory>/<docSubCategory>/<docClass>/', methods=['GET'])
+@auth_relaxed.login_required
 def htm_template(repository, discipline, docCategory, docSubCategory, docClass):
     this_folderpath = os.path.dirname(os.path.abspath(__file__))
     folderpath = os.path.join(this_folderpath, repository, discipline, docCategory, docSubCategory, docClass)
@@ -466,7 +471,12 @@ def htm_template(repository, discipline, docCategory, docSubCategory, docClass):
         return "Error Occured" + str(e)
     ostemplatepath = os.path.join(repository, discipline, docCategory, docSubCategory, docClass, "doc.html")
     template = "/".join(ostemplatepath.split(os.sep))
-    return render_template(template, doc=doc)
+    if g.user:
+        authenticated=True
+    else:
+        authenticated = False
+
+    return render_template(template, doc=doc, authenticated=authenticated)
 
 
 @app.route('/htm/document/db/<doc_id>/', methods=['GET'])

@@ -5,6 +5,7 @@ from clappets.project import views
 from clappets.user import views
 from clappets.document import views
 from clappets.pdf import views
+from clappets.calc import views
 from clappets import authentication
 
 @app.route('/')

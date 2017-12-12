@@ -7,11 +7,13 @@
     <a class="navbar-item" @click="newDoc()">New</a>
     <a class="navbar-item" @click="openModal('uploadModalisActive')">Open</a>
     <a class="navbar-item" @click="saveDoc()">Save</a>
+    {% if authenticated %}
     <hr class="navbar-divider">
     <a class="navbar-item" @click="openDocDB()">Open from DB</a>
     <a class="navbar-item" @click="saveDocDB()">Save to DB</a>
     <a class="navbar-item" @click="openModal('saveAsModalisActive')">Save As to DB</a>
     <a class="navbar-item" @click="deleteDocDB()">Delete from DB</a>
+    {% endif %}
     <hr class="navbar-divider">
     <a class="navbar-item" @click="pdf_download('doc')">PDF Download</a>
     <a class="navbar-item" @click="print()">Print</a>
@@ -20,7 +22,11 @@
 <a class="navbar-item" @click="openModal('infoModalisActive')">Doc. Info.</a>
 <a class="navbar-item" @click="openModal('unitsModalisActive')">Units</a>
 <a class="navbar-item" @click="calculate()">Calculate</a>
+
+{% if authenticated %}
 <a class="navbar-item" @click="openModal('macroModalisActive')">Macros</a>
+{% endif %}
+
 {% endblock navbar_left %}
 
 {% block modals %}
