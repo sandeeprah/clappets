@@ -1,4 +1,5 @@
 import json
+import imp
 from flask import current_app
 from bson import json_util
 import smtplib
@@ -18,8 +19,6 @@ def json_response(input):
 def sendMail(to, fro, subject, text, files=[],server="localhost"):
     assert type(to)==list
     assert type(files)==list
-
-
     msg = MIMEMultipart()
     msg['From'] = fro
     msg['To'] = COMMASPACE.join(to)
@@ -42,3 +41,17 @@ def sendMail(to, fro, subject, text, files=[],server="localhost"):
 
 # Example:
 #sendMail(['maSnun <masnun@gmail.com>'],'phpGeek <masnun@leevio.com>','Hello Python!','Heya buddy! Say hello to Python! :)',['masnun.py','masnun.php'])
+
+def load_function(filepath, function_name):
+    fn = None
+    mod_name, file_ext = os.path.splitext(os.path.split(filepath)[-1])
+    if file_ext.lower() == '.py':
+        py_mod = imp.load_source(mod_name, filepath)
+
+    elif file_ext.lower() == '.pyc':
+        py_mod = imp.load_compiled(mod_name, filepath)
+
+    if hasattr(py_mod, function_name):
+        fn = getattr(py_mod, function_name)
+
+    return fn

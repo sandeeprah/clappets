@@ -6,13 +6,12 @@
     <div class="container">
         <div class="columns is-centered">
             <div class="column is-9">
-                <div id="app">
-                  <div class="box" style="width:100%">
-                    <h4 class="title is-4" v-if="action =='add'" v-cloak>Add User</h4>
-                    <h4 class="title is-4" v-if="action =='edit'" v-cloak>Edit User</h4>
-                    <h4 class="title is-4" v-if="action =='view'">View User</h4>
-                  </div>
-
+                <div class="box" style="width:100%">
+                  <h4 class="title is-4" v-if="action =='add'" v-cloak>Add User</h4>
+                  <h4 class="title is-4" v-if="action =='edit'" v-cloak>Edit User</h4>
+                  <h4 class="title is-4" v-if="action =='view'">View User</h4>
+                </div>
+                <div v-show="!show_message">
                   <table class="table is-striped" style="width:100%;">
                     <tr>
                       <th>Parameter</td>
@@ -34,17 +33,17 @@
                         <td>Last Name</td>
                         <td><input type="text" class="input" v-model="user['last_name']" :readonly = "isReadonly"></input></td>
                     </tr>
-                    <tr>
-                        <td>Password</td>
-                        <td><input type="text" class="input" v-model="user['password']" :readonly = "isReadonly"></input></td>
-                    </tr>
                   </table>
                     <p>
-                        <a class="button"  @click="add_resource('user')" v-if="action =='add'">Submit</a>
-                        <a class="button"  @click="update_resource('user', user['_id'])" v-if="action =='edit'">Update</a>
+                        <a class="button"  @click="update_user" v-if="action =='edit'">Update</a>
                         <a class="button"  href="/htm/user/">Go to List</a>
                     </p>
                 </div>
+                <article class="message" v-show="show_message" v-cloak>
+                  <div class="message-body">
+                      [[successMessage]]
+                  </div>
+                </article>
             </div>
         </div>
     </div>
@@ -61,15 +60,30 @@ var app = new Vue({
     mixins: [app_common],
     data: {
         action : "{{ action }}",
-        api_url : {
-            "user" : "/api/user/"
-        },
         user : {{ user | safe }},
+        show_message : false
     },
 
     computed: {},
 
-    methods: {}
+    methods: {
+
+        add_user: function() {
+          var app = this;
+          app.add_resource("user","/api/user/", function() {
+            app.successisActive = false;
+            app.show_message = true;
+          });
+      },
+
+      update_user: function() {
+        var app = this;
+        app.update_resource('user', app.user['_id'],"/api/user/", function() {
+          app.successisActive = false;
+          app.show_message = true;
+        });
+        },
+    }
 })
 </script>
 

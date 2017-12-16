@@ -10,7 +10,7 @@ from clappets.authentication import auth, auth_relaxed
 from clappets.core import sDocPrj
 from clappets.utils import json_response
 from clappets.document.utils import load_schema, get_repository, get_folder_title, get_project_title, get_subfolder_names, get_subfolder_list
-
+from clappets.utils import load_function
 # first all apis
 @app.route('/api/document/tpl/', methods=['GET'])
 @app.route('/api/document/tpl/<repository>/', methods=['GET'])
@@ -407,6 +407,69 @@ def api_delete_document(doc_id):
     return json_response(response)
 
 
+@app.route('/api/document/calculate/', methods=['POST'])
+def api_calculate():
+    errors={}
+    req = request.get_json()
+    if ('doc' not in req):
+        errors['message'] = "'doc' missing in request"
+        return json_response(errors), 400
+
+    #check if the raw document conforms to the generic document schema for the project (basically meta check)
+    docRaw = req['doc']
+    basicSchema = sDocPrj()
+    docParsed = basicSchema.load(docRaw)
+    if (len(docParsed.errors) > 0):
+        errors["message"] = "The Document Meta Information has errors"
+        errors["schema"] = docParsed.errors
+        return json_response(errors), 400
+
+    #check if the raw document conforms to the specific document schema for the class
+    projectID = docRaw['meta']['projectID']
+    repository = get_repository(projectID)
+    discipline = docRaw['meta']['discipline']
+    docCategory = docRaw['meta']['docCategory']
+    docSubCategory = docRaw['meta']['docSubCategory']
+    docClass = docRaw['meta']['docClass']
+
+    # get the absolute folder path in folderpath
+    this_folderpath = os.path.dirname(os.path.abspath(__file__))
+    path = os.path.join(repository, discipline, docCategory, docSubCategory, docClass)
+    docClassFolder = os.path.join(this_folderpath, path)
+    schemaModuleFile = os.path.join(docClassFolder, "schema.py")
+    macroModuleFile = os.path.join(docClassFolder, "macro.py")
+
+    try:
+        docSchema = load_schema(schemaModuleFile)
+    except FileNotFoundError as e:
+        errors["message"] = "Schema File could not be found"
+        errors["operation"] = str(e)
+        return json_response(errors), 400
+
+    try:
+        calculate = load_function(macroModuleFile, 'calculate')
+    except FileNotFoundError as e:
+        errors["message"] = "Calculation Function could not be loaded"
+        errors["operation"] = str(e)
+        return json_response(errors), 400
+
+    docParsed = docSchema.load(docRaw)
+    if (len(docParsed.errors) > 0):
+        errors['message'] = "Document Contains Errors"
+        errors["schema"] = docParsed.errors
+        return json_response(errors), 400
+
+    doc = docParsed.data
+    calculate(doc)
+    return json_response(doc)
+
+
+@app.route('/api/document/macro/', methods=['POST'])
+def api_macro():
+    response = {}
+    response["message"] = "You successfully ran the macros"
+    return json_response(response)
+
 #then all htm views
 
 @app.route('/htm/document/', methods=['GET', 'POST'])
@@ -480,6 +543,7 @@ def htm_template(repository, discipline, docCategory, docSubCategory, docClass):
 
 
 @app.route('/htm/document/db/<doc_id>/', methods=['GET'])
+@auth.login_required
 def htm_dbDoc(doc_id):
     context = {}
     documents = mongodb["documents"]
@@ -496,4 +560,9 @@ def htm_dbDoc(doc_id):
         path = os.path.join(repository, discipline, docCategory, docSubCategory, docClass, "doc.html")
         template = "/".join(path.split(os.sep))
         doc = json.dumps(doc, indent=4)
-        return render_template(template, doc=doc)
+        if g.user:
+            authenticated=True
+        else:
+            authenticated = False
+
+        return render_template(template, doc=doc, authenticated=authenticated)

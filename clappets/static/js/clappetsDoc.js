@@ -13,6 +13,9 @@ var app_doc = {
         pdf_url : {
             doc : "/pdf/document/"
         },
+        macro_url: {
+
+        }
     },
 
     computed : {
@@ -29,6 +32,25 @@ var app_doc = {
             meta = this.doc['meta'];
             id = meta["projectID"] + "-" + meta["discipline"] + "-" + meta["docCategory"] + "-" + meta["docSubCategory"] + "-" + meta["docClass"] + "-" + meta["docInstance"];
             return id;
+        },
+
+        units_used : function(){
+            return this.doc['units']
+        }
+    },
+
+    watch: {
+        units_used: {
+            handler: function(new_units, old_units) {
+                try {
+                    console.log(this.doc);
+                   this.treeUnitConvert(this.doc, old_units, new_units);
+                } catch (err) {
+                    console.log("Error in watch handler for units_used");
+                }
+            },
+            deep: true,
+            passive: true,
         }
     },
 
@@ -50,6 +72,10 @@ var app_doc = {
             } catch (err) {
                 console.log("Error occured in getUnits with dimension = '" + dimension + "'");
             }
+        },
+
+        treeUnitConvert : function(tree, fromUnits, toUnits){
+            treeUnitConvert(tree, fromUnits, toUnits);
         },
 
         newDoc: function() {
@@ -74,13 +100,13 @@ var app_doc = {
             if (this.doc['_id'] == "") {
                 this.saveAsModalisActive = true;
             } else {
-                this.update_resource("doc", this.doc['_id'] )
+                this.update_resource("doc", this.doc['_id'], "/api/document/db/" )
             }
         },
 
         saveAsDocDB: function() {
             this.saveAsModalisActive = false;
-            this.add_resource("doc");
+            this.add_resource("doc", "/api/document/db/");
         },
 
         deleteDocDB: function() {
@@ -88,8 +114,18 @@ var app_doc = {
                 alert("Document does not have a valid ID");
                 return;
             } else {
-                this.delete_resource("doc", this.doc["_id"]);
+                this.delete_resource("doc", this.doc["_id"], "/api/document/db/");
             }
         },
+
+
+        calculate : function(){
+            fn_success =function(){};
+            this.process_resource("doc", "/api/document/calculate/", fn_success)
+        },
+
+        runMacros : function(){
+            alert('u want to run macros');
+        }
     }
 }

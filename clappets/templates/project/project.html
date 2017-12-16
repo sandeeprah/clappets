@@ -6,13 +6,12 @@
     <div class="container">
         <div class="columns is-centered">
             <div class="column is-9">
-                <div id="app">
-                  <div class="box" style="width:100%">
-                    <h4 class="title is-4" v-if="action =='add'" v-cloak>Add Project</h4>
-                    <h4 class="title is-4" v-if="action =='edit'" v-cloak>Edit Project</h4>
-                    <h4 class="title is-4" v-if="action =='view'">View Project</h4>
-                  </div>
-
+                <div class="box" style="width:100%">
+                  <h4 class="title is-4" v-if="action =='add'" v-cloak>Add Project</h4>
+                  <h4 class="title is-4" v-if="action =='edit'" v-cloak>Edit Project</h4>
+                  <h4 class="title is-4" v-if="action =='view'">View Project</h4>
+                </div>
+                <div v-show="!show_message">
                   <table class="table is-striped" style="width:100%;">
                     <tr>
                       <th>Parameter</td>
@@ -32,11 +31,16 @@
                     </tr>
                   </table>
                     <p>
-                        <a class="button"  @click="add_resource('project')" v-if="action =='add'">Submit</a>
-                        <a class="button"  @click="update_resource('project', project['_id'])" v-if="action =='edit'">Update</a>
+                        <a class="button"  @click="add_project" v-if="action =='add'">Submit</a>
+                        <a class="button"  @click="update_project" v-if="action =='edit'">Update</a>
                         <a class="button"  href="/htm/project/">Go to List</a>
                     </p>
                 </div>
+                <article class="message" v-show="show_message" v-cloak>
+                  <div class="message-body">
+                      [[successMessage]]
+                  </div>
+                </article>
             </div>
         </div>
     </div>
@@ -57,13 +61,29 @@ var app = new Vue({
             "project" : "/api/project/"
         },
         project : {{ project | safe }},
+        show_message : false
     },
 
     computed: {
 
     },
 
-    methods: {}
+    methods: {
+        add_project : function(){
+            var app = this;
+            app.add_resource("project","/api/project/",  function() {
+              app.successisActive = false;
+              app.show_message = true;
+            });
+        },
+        update_project : function(){
+            var app = this;
+            app.update_resource("project", app.project['_id'], "/api/project/",  function() {
+              app.successisActive = false;
+              app.show_message = true;
+            });
+        }
+    }
 })
 </script>
 

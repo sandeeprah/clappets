@@ -199,8 +199,6 @@ class validator :
             return False
 
 
-
-
 class sXfld(Schema):
     _val = fields.Raw(required=True)
     _dim = fields.String()
@@ -215,121 +213,53 @@ class sUnitConfig(Schema):
     class Meta:
         ordered = True
 
-class chkDefUnit(Validator):
-    def __init__(self, dimension):
-        self.dimension = dimension
-
-    def __call__(self,value):
-        try:
-            allowable_units = units.get_units(self.dimension)
-
-            if 'default' in value:
-                if (value['default'] not in allowable_units):
-                    raise ValidationError("Invalid Choice for Default Unit")
-            else:
-                raise ValidationError("Missing 'default' Key")
-
-        except ValueError:
-                raise ValidationError("Invalid dimension")
-
-        return value
-
-class chkCusUnit(Validator):
-    def __init__(self, dimension):
-        self.dimension = dimension
-
-    def __call__(self,value):
-        try:
-            allowable_units = units.get_units(self.dimension)
-
-            if 'custom' in value:
-                if (value['custom'] not in allowable_units):
-                    raise ValidationError("Invalid Choice for Custom Unit")
-            else:
-                raise ValidationError("Missing 'custom' Key")
-
-        except ValueError:
-                raise ValidationError("Invalid dimension")
-
-        return value
-
-
-class sUnits_Old_tobedeleted(Schema):
-    length_units = units.get_units('length')
-    length = fields.Nested(sUnitConfig, validate=[chkDefUnit('length'), chkCusUnit('length')])
-
-    time_units = units.get_units('time')
-    time = fields.Nested(sUnitConfig)
-
-    speed_units = units.get_units('speed')
-    speed = fields.Nested(sUnitConfig)
-
-    acceleration_units = units.get_units('acceleration')
-    acceleration = fields.Nested(sUnitConfig)
-
-    force_units = units.get_units('force')
-    force = fields.Nested(sUnitConfig)
-
-    energy_units = units.get_units('energy')
-    energy = fields.Nested(sUnitConfig)
-
-    power_units = units.get_units('power')
-    power = fields.Nested(sUnitConfig)
-
-    pressure_units = units.get_units('pressure')
-    pressure = fields.Nested(sUnitConfig)
-
-    temperature_units = units.get_units('temperature')
-    temperature = fields.Nested(sUnitConfig)
-
-    flow_units = units.get_units('flow')
-    flow = fields.Nested(sUnitConfig)
-
-    density_units = units.get_units('density')
-    density = fields.Nested(sUnitConfig)
-
-    dynViscosity_units = units.get_units('dynViscosity')
-    dynViscosity = fields.Nested(sUnitConfig)
-
-    class Meta:
-        ordered = True
-
 
 class sUnits(Schema):
-    length_units = units.get_units('length')
+    length_units = units.getUnits('length')
     length = fields.String(validate=validate.OneOf(length_units))
-
-    time_units = units.get_units('time')
+    length_micro_units = units.getUnits('length_micro')
+    length_micro = fields.String(validate=validate.OneOf(length_units))
+    length_mili_units = units.getUnits('length_mili')
+    length_mili = fields.String(validate=validate.OneOf(length_units))
+    length_kilo_units = units.getUnits('length_kilo')
+    length_kilo = fields.String(validate=validate.OneOf(length_units))
+    mass_units = units.getUnits('mass')
+    mass = fields.String(validate=validate.OneOf(mass_units))
+    time_units = units.getUnits('time')
     time = fields.String(validate=validate.OneOf(time_units))
-
-    speed_units = units.get_units('speed')
+    speed_units = units.getUnits('speed')
     speed = fields.String(validate=validate.OneOf(speed_units))
-
-    acceleration_units = units.get_units('acceleration')
+    acceleration_units = units.getUnits('acceleration')
     acceleration = fields.String(validate=validate.OneOf(acceleration_units))
-
-    force_units = units.get_units('force')
+    force_units = units.getUnits('force')
     force = fields.String(validate=validate.OneOf(force_units))
-
-    energy_units = units.get_units('energy')
+    energy_units = units.getUnits('energy')
     energy = fields.String(validate=validate.OneOf(energy_units))
-
-    power_units = units.get_units('power')
+    power_units = units.getUnits('power')
     power = fields.String(validate=validate.OneOf(power_units))
-
-    pressure_units = units.get_units('pressure')
+    pressure_units = units.getUnits('pressure')
     pressure = fields.String(validate=validate.OneOf(pressure_units))
-
-    temperature_units = units.get_units('temperature')
+    temperature_units = units.getUnits('temperature')
     temperature = fields.String(validate=validate.OneOf(temperature_units))
-
-    flow_units = units.get_units('flow')
+    flow_units = units.getUnits('flow')
     flow = fields.String(validate=validate.OneOf(flow_units))
-
-    density_units = units.get_units('density')
+    density_units = units.getUnits('density')
     density = fields.String(validate=validate.OneOf(density_units))
-
-    dynViscosity_units = units.get_units('dynViscosity')
+    molecularMass_units = units.getUnits('molecularMass')
+    molecularMass = fields.String(validate=validate.OneOf(molecularMass_units))
+    specificVolume_units = units.getUnits('specificVolume')
+    specificVolume = fields.String(validate=validate.OneOf(specificVolume_units))
+    specificEnergy_units = units.getUnits('specificEnergy')
+    specificEnergy = fields.String(validate=validate.OneOf(specificEnergy_units))
+    specificEnergyMolar_units = units.getUnits('specificEnergyMolar')
+    specificEnergyMolar = fields.String(validate=validate.OneOf(specificEnergyMolar_units))
+    specificHeat_units = units.getUnits('specificHeat')
+    specificHeat = fields.String(validate=validate.OneOf(specificHeat_units))
+    specificHeatMolar_units = units.getUnits('specificHeatMolar')
+    specificHeatMolar = fields.String(validate=validate.OneOf(specificHeatMolar_units))
+    thermalConductivity_units = units.getUnits('thermalConductivity')
+    thermalConductivity = fields.String(validate=validate.OneOf(thermalConductivity_units))
+    dynViscosity_units = units.getUnits('dynViscosity')
     dynViscosity = fields.String(validate=validate.OneOf(dynViscosity_units))
 
     class Meta:

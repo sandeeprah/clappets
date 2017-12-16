@@ -66,16 +66,17 @@ class sUserAccountUpdate (Schema):
     @validates_schema()
     def validate_password_change(self, data):
         missing_fields = []
-        if (data['change_password']):
-            if ('password' not in data):
-                missing_fields.append("password")
-            if ('new_password' not in data):
-                missing_fields.append("new_password")
-            if ('confirm_new_password' not in data):
-                missing_fields.append("confirm_new_password")
+        if ('change_password' in data):
+            if (data['change_password']):
+                if ('password' not in data):
+                    missing_fields.append("password")
+                if ('new_password' not in data):
+                    missing_fields.append("new_password")
+                if ('confirm_new_password' not in data):
+                    missing_fields.append("confirm_new_password")
 
-        if (len(missing_fields) > 0):
-            raise ValidationError('Field is definitely Required', missing_fields)
+            if (len(missing_fields) > 0):
+                raise ValidationError('Field is definitely Required', missing_fields)
 
 class sUserReg (Schema):
     _id = fields.String(required=True, validate=[validate.Length(min=6, max=20)])

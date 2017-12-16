@@ -126,7 +126,7 @@ def get_project_title(projectID):
 def load_schema(filepath):
     class_inst = None
     expected_class = 'docSchema'
-    mod_name,file_ext = os.path.splitext(os.path.split(filepath)[-1])
+    mod_name, file_ext = os.path.splitext(os.path.split(filepath)[-1])
     if file_ext.lower() == '.py':
         py_mod = imp.load_source(mod_name, filepath)
 

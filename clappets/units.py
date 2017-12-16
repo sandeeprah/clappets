@@ -1,14 +1,107 @@
 from collections import OrderedDict
 import json
 import os
+import math
 from marshmallow import Schema, fields, pprint, pre_load, validate, validates, ValidationError
 from collections import OrderedDict
-
 
 unitLib = OrderedDict({
 
     "length": {
         "dimtitle": "Length",
+        "units": {
+            "um": {
+                "label": "μm",
+                "cf": 1e-6,
+                "off": 0
+            },
+            "mm": {
+                "label": "mm",
+                "cf": 1e-3,
+                "off": 0
+            },
+            "m": {
+                "label": "m",
+                "cf": 1,
+                "off": 0
+            },
+            "ft": {
+                "label": "ft",
+                "cf": 0.3048,
+                "off": 0
+            },
+            "yd": {
+                "label": "yd",
+                "cf": 0.9144,
+                "off": 0
+            }
+        }
+    },
+
+    "length_micro": {
+        "dimtitle": "Length Micro",
+        "units": {
+            "um": {
+                "label": "μm",
+                "cf": 1e-6,
+                "off": 0
+            },
+            "mm": {
+                "label": "mm",
+                "cf": 1e-3,
+                "off": 0
+            },
+            "m": {
+                "label": "m",
+                "cf": 1,
+                "off": 0
+            },
+            "ft": {
+                "label": "ft",
+                "cf": 0.3048,
+                "off": 0
+            },
+            "yd": {
+                "label": "yd",
+                "cf": 0.9144,
+                "off": 0
+            }
+        }
+    },
+
+    "length_mili": {
+        "dimtitle": "Length Mili",
+        "units": {
+            "um": {
+                "label": "μm",
+                "cf": 1e-6,
+                "off": 0
+            },
+            "mm": {
+                "label": "mm",
+                "cf": 1e-3,
+                "off": 0
+            },
+            "m": {
+                "label": "m",
+                "cf": 1,
+                "off": 0
+            },
+            "ft": {
+                "label": "ft",
+                "cf": 0.3048,
+                "off": 0
+            },
+            "yd": {
+                "label": "yd",
+                "cf": 0.9144,
+                "off": 0
+            }
+        }
+    },
+
+    "length_kilo": {
+        "dimtitle": "Length Kilo",
         "units": {
             "um": {
                 "label": "μm",
@@ -325,6 +418,80 @@ unitLib = OrderedDict({
             }
         }
     },
+    "molecularMass":{
+        "dimtitle":"Molecular Mass",
+        "units":{
+            "kg/mol" : {
+                "label" : "kg/mol",
+                "cf" : 1,
+                "off" : 0
+            }
+        }
+    },
+
+    "specificVolume":{
+        "dimtitle":"Specific Volume",
+        "units":{
+            "m3/kg" : {
+                "label" : "m³/kg",
+                "cf" : 1,
+                "off" : 0
+            }
+        }
+    },
+    "specificEnergy":{
+        "dimtitle":"Specific Energy",
+        "units":{
+            "J/kg" : {
+                "label" : "J/kg",
+                "cf" : 1,
+                "off" : 0
+            }
+        }
+    },
+    "specificEnergyMolar":{
+        "dimtitle":"Specific Energy Molar",
+        "units":{
+            "J/mol" : {
+                "label" : "J/mol",
+                "cf" : 1,
+                "off" : 0
+            }
+        }
+    },
+    "specificHeat":{
+        "dimtitle":"Specific Heat",
+        "units":{
+            "J/kg.K" : {
+                "label" : "J/kg.K",
+                "cf" : 1,
+                "off" : 0
+            }
+        }
+    },
+
+    "specificHeatMolar":{
+        "dimtitle":"Molar Specific Heat",
+        "units":{
+            "J/mol.K" : {
+                "label" : "J/mol.K",
+                "cf" : 1,
+                "off" : 0
+            }
+        }
+    },
+
+
+    "thermalConductivity":{
+        "dimtitle":"Thermal Conductivity",
+        "units":{
+            "W/m.K" : {
+                "label" : "W/m.K",
+                "cf" : 1,
+                "off" : 0
+            }
+        }
+    },
 
     "dynViscosity": {
         "dimtitle": "Dynamic Viscosity",
@@ -344,18 +511,47 @@ unitLib = OrderedDict({
                 "cf": 1e-3,
                 "off": 0
             },
+
         }
     }
 })
 
-def get_dimensions():
+SI_UNITS = {
+    "length": "m",
+    "length_micro": "m",
+    "length_mili": "m",
+    "length_kilo": "m",
+    "mass": "kg",
+    "time": "s",
+    "speed": "m/s",
+    "acceleration": "m/s2",
+    "force": "N",
+    "energy": "J",
+    "power": "W",
+    "pressure": "Pa",
+    "temperature": "K",
+    "flow": "m3/s",
+    "density": "kg/m3",
+    "molecularMass": "kg/mol",
+    "specificVolume": "m3/kg",
+    "specificEnergy": "J/kg",
+    "specificEnergyMolar": "J/mol",
+    "specificHeat": "J/kg.K",
+    "specificHeatMolar": "J/mol.K",
+    "thermalConductivity": "W/m.K",
+    "dynViscosity": "Pa.s"
+}
+
+def getDimensions():
     dim_list = []
     for key in unitLib:
         dim_list.append(key)
-
     return dim_list
 
-def get_units(dimension):
+def getDimensionTitle(dimension):
+    return unitLib[dimension]['dimtitle']
+
+def getUnits(dimension):
     units_list = []
     if dimension in unitLib:
         units = unitLib[dimension]['units']
@@ -363,3 +559,159 @@ def get_units(dimension):
             units_list.append(key)
 
     return units_list
+
+def getUnitLabel(dimension, unit):
+    return unitLib[dimension]["units"][unit]['label']
+
+
+def getUnitConvFact(dimension,unit):
+    ucf = unitLib[dimension]["units"][unit]["cf"]
+    return ucf
+
+def getUnitOffset(dimension, unit):
+    off = unitLib[dimension]["units"][unit]["off"]
+    return off
+
+def getSI_unit(dimension):
+    return SI_UNITS[dimension]
+
+def unitConvert(value, dimension, fromUnit, toUnit):
+    if (math.isnan(parseFloat(value))):
+        return_value = value
+    else:
+        if ((fromUnit=='none') or (toUnit=='none')):
+            return_value = value
+        else:
+            if (fromUnit==toUnit):
+                return_value = value
+            else:
+                parsed_value = parseFloat(value)
+                cf_from_unit = getUnitConvFact(dimension, fromUnit)
+                offset_from_unit = getUnitOffset(dimension, fromUnit)
+                cf_to_unit = getUnitConvFact(dimension, toUnit);
+                offset_to_unit = getUnitOffset(dimension, toUnit);
+                base_value = parsed_value * cf_from_unit + offset_from_unit;
+                return_value = (base_value - offset_to_unit) / cf_to_unit;
+
+    return str(return_value)
+
+
+def parseFloat(value):
+    try:
+        return float(value)
+    except Exception:
+        return math.nan
+
+
+
+def treeUnitConvert(tree, fromUnits, toUnits):
+    if (isinstance(tree, dict)):
+        if ('_val' in tree) and ('_dim' in tree):
+            value = tree['_val']
+            dimension = tree['_dim']
+            fromUnit = fromUnits[dimension]
+            toUnit = toUnits[dimension]
+            con_value = unitConvert(value, dimension, fromUnit, toUnit)
+            tree['_val'] = con_value
+        if ('_val' in tree) and ('_dim' not in tree):
+            pass
+        if ('_coldim' in tree) and ('_list' in tree):
+            for row in tree['_list']:
+                for column in row:
+                    dimension = tree['_coldim'][column]
+                    value = row[column]
+                    fromUnit = fromUnits[dimension]
+                    toUnit = toUnits[dimension]
+                    con_value = unitConvert(value, dimension, fromUnit, toUnit)
+                    row[column] = con_value
+        else:
+            for k,v in tree.items():
+                treeUnitConvert(v, fromUnits, toUnits)
+
+    elif (isinstance(tree, list)):
+        for item in tree:
+            treeUnitConvert(item, fromUnits, toUnits)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        '''
+        treeUnitConvert: function(objecttree, fromUnits, toUnits) {
+            //console.log(objecttree);
+            //objecttree = JSON.parse(JSON.stringify(objecttree));
+
+            for (var node in objecttree) {
+                if (objecttree.hasOwnProperty(node)) {
+                    elem = objecttree[node];
+                    if (elem.hasOwnProperty('_dim') && elem.hasOwnProperty('_val')) {
+                        try {
+                            var from_value = elem['_val'];
+                            var dimension = elem['_dim'];
+                            var from_unit;
+                            var to_unit;
+                            if (dimension != 'none') {
+                                from_unit = fromUnits[dimension];
+                                to_unit = toUnits[dimension];
+                            } else {
+                                from_unit = 'none';
+                                to_unit = 'none';
+                            }
+                            var to_value = unitConvert(from_value, dimension, from_unit, to_unit);
+                            elem['_val'] = to_value;
+                        } catch (err) {
+                            elem['_val'] = '';
+                            console.log(err);
+                            console.log("error occured in unit convert while converting " + dimension)
+                        }
+                    } else if (elem.hasOwnProperty('_coldim') && elem.hasOwnProperty('_list')) {
+                        var index;
+                        var row;
+                        for (index = 0; index < elem['_list'].length; ++index) {
+                            row = elem['_list'][index];
+                            for (var column in row) {
+                                if (row.hasOwnProperty(column)) {
+                                    console.log(column);
+                                    var from_value = row[column];
+                                    var dimension;
+                                    if (elem['_coldim'].hasOwnProperty(column)) {
+                                        dimension = elem['_coldim'][column]
+                                    } else {
+                                        dimension = 'none'
+                                    }
+                                    var from_unit;
+                                    var to_unit;
+                                    if (dimension != 'none') {
+                                        from_unit = fromUnits[dimension];
+                                        to_unit = toUnits[dimension];
+                                    } else {
+                                        from_unit = 'none';
+                                        to_unit = 'none';
+                                    }
+                                    var to_value = unitConvert(from_value, dimension, from_unit, to_unit);
+                                    row[column] = to_value;
+                                }
+                            }
+                        }
+
+                    } else {
+                        if (elem !== null && typeof(elem) === 'object') {
+                            elem = this.treeUnitConvert(elem, fromUnits, toUnits);
+                        }
+                    }
+                }
+            }
+        },
+        '''

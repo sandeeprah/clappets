@@ -98,9 +98,6 @@
     delimiters: ['[[', ']]'],
     mixins: [app_common],
     data: {
-      api_url: {
-        "user": "/api/user/"
-      },
       user: {{ user|safe}},
       show_message: false,
     },
@@ -109,11 +106,10 @@
     methods: {
       update: function() {
         var app = this;
-        app.update_resource("user", app.user['_id'], function() {
+        app.update_resource("user", app.user['_id'], "/api/user/",function() {
           app.successisActive = false;
           app.show_message = true;
         });
-
       }
     }
   })

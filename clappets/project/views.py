@@ -54,7 +54,9 @@ def api_post_project():
                 errors['message'] = str(e)
                 return json_response(errors), 400
 
-            return json_response({'message' : 'Project Added Sucessfully'}), 201
+            response = {}
+            response['message'] = "Project added successfully"
+            return json_response(response), 201
 
 
 @app.route('/api/project/<project_id>/', methods=['PUT'])
@@ -80,7 +82,7 @@ def api_put_project(project_id):
             except Exception as e:
                 errors['message'] = str(e)
                 return json_response(errors), 400
-            return json_response({'message' : 'Project Updated Sucessfully'}), 201
+            return json_response({'message' : 'Project Updated Sucessfully'}), 200
 
 
 @app.route('/api/project/<project_id>/', methods=['DELETE'])
@@ -93,7 +95,9 @@ def api_delete_project(project_id):
         errors['operation'] = str(e)
         return json_response(errors)
 
-    return json_response({'_message': "Deletion Successful"})
+    response = {}
+    response['message'] = "Deletion Successful"
+    return json_response(response)
 
 
 @app.route('/htm/project/', methods=['GET'])

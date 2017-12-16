@@ -86,9 +86,6 @@ var app = new Vue({
     delimiters : ['[[',']]'],
     mixins: [app_common],
     data: {
-        api_url : {
-            "user" : "/api/user/"
-        },
         user : {{ user | safe }},
         show_message : false
     },
@@ -100,11 +97,10 @@ var app = new Vue({
     methods: {
         register: function() {
           var app = this;
-          app.add_resource("user", function() {
+          app.add_resource("user","/api/user/", function() {
             app.successisActive = false;
             app.show_message = true;
           });
-
     }
 }
 })

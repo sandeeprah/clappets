@@ -1,7 +1,100 @@
-unitReg = {
+unitLib = {
 
     "length": {
         "dimtitle": "Length",
+        "units": {
+            "um": {
+                "label": "μm",
+                "cf": 1e-6,
+                "off": 0
+            },
+            "mm": {
+                "label": "mm",
+                "cf": 1e-3,
+                "off": 0
+            },
+            "m": {
+                "label": "m",
+                "cf": 1,
+                "off": 0
+            },
+            "ft": {
+                "label": "ft",
+                "cf": 0.3048,
+                "off": 0
+            },
+            "yd": {
+                "label": "yd",
+                "cf": 0.9144,
+                "off": 0
+            }
+        }
+    },
+
+    "length_micro": {
+        "dimtitle": "Length Micro",
+        "units": {
+            "um": {
+                "label": "μm",
+                "cf": 1e-6,
+                "off": 0
+            },
+            "mm": {
+                "label": "mm",
+                "cf": 1e-3,
+                "off": 0
+            },
+            "m": {
+                "label": "m",
+                "cf": 1,
+                "off": 0
+            },
+            "ft": {
+                "label": "ft",
+                "cf": 0.3048,
+                "off": 0
+            },
+            "yd": {
+                "label": "yd",
+                "cf": 0.9144,
+                "off": 0
+            }
+        }
+    },
+
+    "length_mili": {
+        "dimtitle": "Length Mili",
+        "units": {
+            "um": {
+                "label": "μm",
+                "cf": 1e-6,
+                "off": 0
+            },
+            "mm": {
+                "label": "mm",
+                "cf": 1e-3,
+                "off": 0
+            },
+            "m": {
+                "label": "m",
+                "cf": 1,
+                "off": 0
+            },
+            "ft": {
+                "label": "ft",
+                "cf": 0.3048,
+                "off": 0
+            },
+            "yd": {
+                "label": "yd",
+                "cf": 0.9144,
+                "off": 0
+            }
+        }
+    },
+
+    "length_kilo": {
+        "dimtitle": "Length Kilo",
         "units": {
             "um": {
                 "label": "μm",
@@ -318,6 +411,80 @@ unitReg = {
             }
         }
     },
+    "molecularMass":{
+        "dimtitle":"Molecular Mass",
+        "units":{
+            "kg/mol" : {
+                "label" : "kg/mol",
+                "cf" : 1,
+                "off" : 0
+            }
+        }
+    },
+
+    "specificVolume":{
+        "dimtitle":"Specific Volume",
+        "units":{
+            "m3/kg" : {
+                "label" : "m³/kg",
+                "cf" : 1,
+                "off" : 0
+            }
+        }
+    },
+    "specificEnergy":{
+        "dimtitle":"Specific Energy",
+        "units":{
+            "J/kg" : {
+                "label" : "J/kg",
+                "cf" : 1,
+                "off" : 0
+            }
+        }
+    },
+    "specificEnergyMolar":{
+        "dimtitle":"Specific Energy Molar",
+        "units":{
+            "J/mol" : {
+                "label" : "J/mol",
+                "cf" : 1,
+                "off" : 0
+            }
+        }
+    },
+    "specificHeat":{
+        "dimtitle":"Specific Heat",
+        "units":{
+            "J/kg.K" : {
+                "label" : "J/kg.K",
+                "cf" : 1,
+                "off" : 0
+            }
+        }
+    },
+
+    "specificHeatMolar":{
+        "dimtitle":"Molar Specific Heat",
+        "units":{
+            "J/mol.K" : {
+                "label" : "J/mol.K",
+                "cf" : 1,
+                "off" : 0
+            }
+        }
+    },
+
+
+    "thermalConductivity":{
+        "dimtitle":"Thermal Conductivity",
+        "units":{
+            "W/m.K" : {
+                "label" : "W/m.K",
+                "cf" : 1,
+                "off" : 0
+            }
+        }
+    },
 
     "dynViscosity": {
         "dimtitle": "Dynamic Viscosity",
@@ -342,26 +509,6 @@ unitReg = {
     }
 }
 
-unitLib = {
-    "length": unitReg["length"],
-    "length_micro": unitReg["length"],
-    "length_mili": unitReg["length"],
-    "length_kilo": unitReg["length"],
-    "mass": unitReg['mass'],
-    "time": unitReg['time'],
-    "speed": unitReg['speed'],
-    "acceleration": unitReg['acceleration'],
-    "force": unitReg['force'],
-    "energy": unitReg['energy'],
-    "power": unitReg['power'],
-    "pressure": unitReg['pressure'],
-    "temperature": unitReg['temperature'],
-    "flow": unitReg['flow'],
-    "density": unitReg['density'],
-    "dynViscosity": unitReg['dynViscosity'],
-    "kinViscosity": unitReg['kinViscosity'],
-}
-
 SI_UNITS = {
     "length": "m",
     "length_mili": "m",
@@ -371,7 +518,7 @@ SI_UNITS = {
     "dynViscosity": "Pa.s",
     "pressure": "Pa",
     "temperature": "K",
-    "speed": "m/s"
+    "speed": "m/s",
 }
 
 
@@ -446,6 +593,68 @@ function unitConvert(value, dimension, fromUnit, toUnit) {
             return_value = (base_value - offset_to_unit) / cf_to_unit;
         }
     }
-
     return return_value;
+}
+
+function treeUnitConvert(objecttree, fromUnits, toUnits) {
+    for (var node in objecttree) {
+        if (objecttree.hasOwnProperty(node)) {
+            elem = objecttree[node];
+            if (elem.hasOwnProperty('_dim') && elem.hasOwnProperty('_val')) {
+                try {
+                    var from_value = elem['_val'];
+                    var dimension = elem['_dim'];
+                    var from_unit;
+                    var to_unit;
+                    if (dimension != 'none') {
+                        from_unit = fromUnits[dimension];
+                        to_unit = toUnits[dimension];
+                    } else {
+                        from_unit = 'none';
+                        to_unit = 'none';
+                    }
+                    var to_value = unitConvert(from_value, dimension, from_unit, to_unit);
+                    elem['_val'] = to_value;
+                } catch (err) {
+                    elem['_val'] = '';
+                    console.log(err);
+                    console.log("error occured in unit convert while converting " + dimension)
+                }
+            } else if (elem.hasOwnProperty('_coldim') && elem.hasOwnProperty('_list')) {
+                var index;
+                var row;
+                for (index = 0; index < elem['_list'].length; ++index) {
+                    row = elem['_list'][index];
+                    for (var column in row) {
+                        if (row.hasOwnProperty(column)) {
+                            console.log(column);
+                            var from_value = row[column];
+                            var dimension;
+                            if (elem['_coldim'].hasOwnProperty(column)) {
+                                dimension = elem['_coldim'][column]
+                            } else {
+                                dimension = 'none'
+                            }
+                            var from_unit;
+                            var to_unit;
+                            if (dimension != 'none') {
+                                from_unit = fromUnits[dimension];
+                                to_unit = toUnits[dimension];
+                            } else {
+                                from_unit = 'none';
+                                to_unit = 'none';
+                            }
+                            var to_value = unitConvert(from_value, dimension, from_unit, to_unit);
+                            row[column] = to_value;
+                        }
+                    }
+                }
+
+            } else {
+                if (elem !== null && typeof(elem) === 'object') {
+                    this.treeUnitConvert(elem, fromUnits, toUnits);
+                }
+            }
+        }
+    }
 }

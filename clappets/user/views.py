@@ -225,6 +225,11 @@ def htm_edit_user(prj_id):
     if (docMongo== None):
         return "Document Not Found"
     else:
+        docMongo["change_password"] = False
+        docMongo["password"] = ""
+        docMongo["new_password"] = ""
+        docMongo["confirm_new_password"] = ""
+
         user = json.dumps(docMongo)
         return render_template("user/user.html", user = user, action="edit")
 

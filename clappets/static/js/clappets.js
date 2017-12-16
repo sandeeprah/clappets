@@ -231,16 +231,16 @@ var app_common = {
             xhr.send(null);
         }, //end of loadProtectedResource
 
-        get_resource_list : function(resource_name) {
+        get_resource_list : function(resource_list, base_url, fn_success) {
             var app = this;
             app.resetMessages();
-            resource_list = resource_name + "_list";
-            url = app.api_url[resource_name];
+            url = base_url;
             var xhr = new XMLHttpRequest();
             xhr.open('GET', url, true);
             xhr.onload = function(e){
                 if (xhr.readyState == 4 && xhr.status == "200"){
                     app.handle_success_with_content(xhr, resource_list);
+                    fn_success();
                 }
                 else{
                     app.handle_errors(xhr);
@@ -253,15 +253,16 @@ var app_common = {
         },
 
 
-        get_resource: function(resource_name, resource_id) {
+        get_resource: function(resource_name, resource_id, base_url, fn_success) {
             var app = this;
             app.resetMessages();
-            url = app.api_url[resource_name] + resource_id + "/"
+            url = base_url + resource_id + "/";
             var xhr = new XMLHttpRequest();
             xhr.open('GET', url, true);
             xhr.onload = function(e){
                 if (xhr.readyState == 4 && xhr.status == "200"){
                     app.handle_success_with_content(xhr, resource_name);
+                    fn_success();
                 }
                 else{
                     app.handle_errors(xhr);
@@ -274,10 +275,10 @@ var app_common = {
         },
 
 
-        add_resource: function(resource_name, fn_success) {
+        add_resource: function(resource_name, base_url, fn_success) {
             var app = this;
             app.resetMessages();
-            url = app.api_url[resource_name];
+            url = base_url;
             var data = {};
             data.resource = app[resource_name];
             var json_data = JSON.stringify(data);
@@ -301,13 +302,13 @@ var app_common = {
         },
 
 
-        update_resource: function(resource_name, resource_id, fn_success) {
+        update_resource: function(resource_name, resource_id, base_url, fn_success) {
             var app = this;
             app.resetMessages();
+            url = base_url + resource_id + '/'
             var data = {};
             data.resource = app[resource_name];
             var json_data = JSON.stringify(data);
-            url = app.api_url[resource_name] + resource_id + '/'
             var xhr = new XMLHttpRequest();
             xhr.open('PUT', url, true);
             xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
@@ -327,16 +328,17 @@ var app_common = {
             xhr.send(json_data);
         },
 
-        delete_resource: function(resource_name, resource_id) {
+        delete_resource: function(resource_name, resource_id, base_url, fn_success) {
             if (confirm("Want to delete " + resource_id + " in " + resource_name)) {
                 var app = this;
                 app.resetMessages();
-                url = app.api_url[resource_name] + resource_id + '/';
+                url = base_url + resource_id + '/';
                 var xhr = new XMLHttpRequest();
                 xhr.open('DELETE', url, true);
                 xhr.onload = function(e){
                     if (xhr.readyState == 4 && xhr.status == "200"){
                         app.handle_success_without_content(xhr);
+                        fn_success();
                     }
                     else{
                         app.handle_errors(xhr);
@@ -347,6 +349,32 @@ var app_common = {
                 };
                 xhr.send(null);
             }
+        },
+
+        process_resource: function(resource_name, base_url, fn_success) {
+            var app = this;
+            app.resetMessages();
+            url = base_url;
+            var data = {};
+            data[resource_name] = app[resource_name];
+            var json_data = JSON.stringify(data);
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', url, true);
+            xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+            app.isLoading = true;
+            xhr.onload = function(e){
+                if (xhr.readyState == 4 && xhr.status == "200"){
+                    app.handle_success_with_content(xhr, resource_name);
+                    fn_success();
+                }
+                else{
+                    app.handle_errors(xhr);
+                }
+            };
+            xhr.onerror = function (e) {
+                app.handle_connection_errors();
+            };
+            xhr.send(json_data);
         },
 
         handle_success_with_content : function(xhr, resource_name){
@@ -414,7 +442,6 @@ var app_common = {
                     app.handle_connection_errors();
                 };
                 xhr.send(null);
-
             } else if (query_url.substring(0, 4) == "/htm") {
                 location.href = query_url;
             }
@@ -453,7 +480,6 @@ var app_common = {
             };
             xhr.send(json_data);
         },
-
     },
 
     beforeMount : function(){
