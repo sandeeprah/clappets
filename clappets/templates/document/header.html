@@ -55,7 +55,7 @@
         <span>{{ context_header['title'] }}</span>
       </td>
       <td style="width:25% text-align: left">
-        <span>{{ context_header['doc_id'] }}</span>
+        <span>{{ context_header['doc_no'] }}</span>
       </td>
       <td style="width:25% text-align: right">
         Rev <span> {{ context_header['rev'] }} </span>
@@ -63,7 +63,7 @@
     </tr>
     <tr>
       <td>
-        Date : 14/11/2017
+        Date : {{ context_header['date'] }}
       </td>
       <td>
         Page <span class="page"></span> of <span class="topage"></span>

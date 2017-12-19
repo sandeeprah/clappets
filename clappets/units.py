@@ -592,6 +592,8 @@ def unitConvert(value, dimension, fromUnit, toUnit):
                 offset_to_unit = getUnitOffset(dimension, toUnit);
                 base_value = parsed_value * cf_from_unit + offset_from_unit;
                 return_value = (base_value - offset_to_unit) / cf_to_unit;
+                return_value = roundit(return_value,0.001,6)
+
 
     return str(return_value)
 
@@ -602,6 +604,15 @@ def parseFloat(value):
     except Exception:
         return math.nan
 
+def roundit(value, allowed_error=0.001, max_decims=6):
+    decims = 1
+    for decims in range(1,7):
+        rounded_value = round(value, decims)
+        abs_error = abs(value - rounded_value)
+        rel_error = abs_error/abs(value)
+        if rel_error < allowed_error:
+            return rounded_value
+    return rounded_value
 
 
 def treeUnitConvert(tree, fromUnits, toUnits):

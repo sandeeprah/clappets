@@ -6,9 +6,10 @@ import CoolProp.CoolProp as CP
 
 class docInput(Schema):
     fluid_options = CP.FluidsList()
-    fluid = fields.Nested(sXfld, validate=[vd.xString(), vd.xChoice(fluid_options)])
-    P = fields.Nested(sXfld, validate=[vd.xNumber(blank=False), vd.xDim('pressure')])
-    T = fields.Nested(sXfld, validate=[vd.xNumber(blank=False), vd.xDim('temperature')])
+#    fluid_list = fields.List(fields.String(validate=validate.OneOf(fluid_options)))
+    fluid = fields.Nested(sXfld, validate=[vd.xString()])
+    P = fields.Nested(sXfld, validate=[vd.xNumber(blank=True), vd.xDim('pressure')])
+    T = fields.Nested(sXfld, validate=[vd.xNumber(blank=True), vd.xDim('temperature')])
 
 class docResult(Schema):
     phase = fields.Nested(sXfld)

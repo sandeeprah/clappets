@@ -2,15 +2,17 @@
   "_id": "",
   "meta": {
     "projectID": "0000",
-    "project_title": "Demo",
+    "project_title": "Local",
     "discipline" : "pro",
     "docCategory": "cal",
     "docSubCategory": "tch",
     "docClass": "flu",
-    "docClass_title": "Thermophysical Properties of Pure Fluid",
+    "docClass_title": "Thermophysical Properties of Fluid",
     "docInstance": "1",
-    "docInstance_title": "Thermophysical Property of Substance One",
-    "rev": "",
+    "docInstance_title": "Thermophysical Property of Fluid",
+    "doc_no":"0000-PRO-CAL-TCH-FLU-01",
+    "rev": "A",
+    "date":"",
     "status": "",
     "performer": "",
     "reviewer": "",
@@ -18,7 +20,7 @@
   },
 
   "units": {
-    "length": "ft",
+    "length": "m",
     "pressure": "bar",
     "temperature": "C",
     "molecularMass" : "kg/mol",
@@ -32,58 +34,39 @@
   },
 
   "input": {
-
     "fluid" : {"_val":"Air"},
-    "P": {"_val":"10", "_dim":"pressure"},
-    "T": {"_val":"25", "_dim":"temperature"},
-    "expansions_conical": {
-      "_coldim": {
-        "D1": "length",
-        "D2": "length",
-        "L": "length"
-      },
-      "_default": {
-        "D1": 0,
-        "D2": 0,
-        "L": 0,
-        "quantity": 0
-      },
-      "_list": [
-          {"D1":"1", "D2":"2", "L":"3"},
-          {"D1":"1.5", "D2":"2.25", "L":"3.4"},
-          {"D1":"1.75", "D2":"2.5", "L":"3.8"}
-      ]
-    }
+    "P": {"_val":"", "_dim":"pressure"},
+    "T": {"_val":"", "_dim":"temperature"}
   },
 
   "result": {
-    "phase": {"_val":"liquid"},
-    "MW": {"_val":"10", "_dim":"molecularMass"},
-    "Pcritical": {"_val":"11", "_dim":"pressure"},
-    "Tcritical": {"_val":"12", "_dim":"temperature"},
-    "Ptriple": {"_val":"13", "_dim":"pressure"},
-    "Ttriple": {"_val":"14", "_dim":"temperature"},
-    "acentric": {"_val":"15"},
-    "Z": {"_val":"16"},
-    "rho": {"_val":"17", "_dim":"density"},
-    "v": {"_val":"18", "_dim":"specificVolume"},
-    "h": {"_val":"19", "_dim":"specificEnergy"},
-    "u": {"_val":"20", "_dim":"specificEnergy"},
-    "s": {"_val":"23", "_dim":"specificHeat"},
-    "gibbs": {"_val":"21", "_dim":"specificEnergy"},
-    "helmholtz": {"_val":"22", "_dim":"specificEnergy"},
-    "Cp": {"_val":"24", "_dim":"specificEnergy"},
-    "Cv": {"_val":"25", "_dim":"specificEnergy"},
-    "Cp_molar": {"_val":"26", "_dim":"specificHeatMolar"},
-    "Cv_molar": {"_val":"27", "_dim":"specificHeatMolar"},
-    "Cp0": {"_val":"28", "_dim":"specificEnergy"},
-    "Prandtl": {"_val":"29"},
-    "dynViscosity": {"_val":"30", "_dim":"dynViscosity"},
-    "conductivity": {"_val":"31", "_dim":"thermalConductivity"},
-    "HH": {"_val":"32"},
-    "PH": {"_val":"33"},
-    "GWP": {"_val":"34"},
-    "ODP": {"_val":"35"}
+    "MW": {"_val":"", "_dim":"molecularMass"},
+    "Pcritical": {"_val":"", "_dim":"pressure"},
+    "Tcritical": {"_val":"", "_dim":"temperature"},
+    "Ptriple": {"_val":"", "_dim":"pressure"},
+    "Ttriple": {"_val":"", "_dim":"temperature"},
+    "acentric": {"_val":""},
+    "phase": {"_val":""},
+    "Z": {"_val":""},
+    "rho": {"_val":"", "_dim":"density"},
+    "v": {"_val":"", "_dim":"specificVolume"},
+    "h": {"_val":"", "_dim":"specificEnergy"},
+    "u": {"_val":"", "_dim":"specificEnergy"},
+    "s": {"_val":"", "_dim":"specificHeat"},
+    "gibbs": {"_val":"", "_dim":"specificEnergy"},
+    "helmholtz": {"_val":"", "_dim":"specificEnergy"},
+    "Cp": {"_val":"", "_dim":"specificEnergy"},
+    "Cv": {"_val":"", "_dim":"specificEnergy"},
+    "Cp_molar": {"_val":"", "_dim":"specificHeatMolar"},
+    "Cv_molar": {"_val":"", "_dim":"specificHeatMolar"},
+    "Cp0": {"_val":"", "_dim":"specificEnergy"},
+    "Prandtl": {"_val":""},
+    "dynViscosity": {"_val":"", "_dim":"dynViscosity"},
+    "conductivity": {"_val":"", "_dim":"thermalConductivity"},
+    "HH": {"_val":""},
+    "PH": {"_val":""},
+    "GWP": {"_val":""},
+    "ODP": {"_val":""}
   },
   "errors": {}
 }

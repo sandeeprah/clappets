@@ -7,7 +7,7 @@ from flask import render_template, make_response, request
 from clappets import app, mongodb
 from clappets.document.utils import get_repository
 from clappets.core import sDocPrj
-from clappets.utils import json_response
+from clappets.utils import json_response, change_date_format
 from collections import OrderedDict
 
 
@@ -15,7 +15,6 @@ from collections import OrderedDict
 def pdf_report():
     errors = OrderedDict()
     req = request.get_json()
-
     #perform a series of checks an return error responses
     #check if the request body contains 'doc'
     if ('resource' not in req):
@@ -41,7 +40,8 @@ def pdf_report():
     docClass = doc['meta']['docClass']
     title = doc["meta"]["docInstance_title"]
     rev = doc['meta']['rev']
-    doc_id = doc['_id']
+    date = doc['meta']['date']
+    doc_no = doc['meta']['doc_no']
 
     path = os.path.join(repository, discipline, docCategory, docSubCategory, docClass, "doc.html")
     template = "/".join(path.split(os.sep))
@@ -68,7 +68,7 @@ def pdf_report():
         'footer-spacing' : '5',
         'disable-smart-shrinking' : None,
         'no-stop-slow-scripts' : None,
-        'javascript-delay': 5000,
+        'javascript-delay': 300,
         'enable-javascript': None,
         'debug-javascript': None,
         '--encoding': "utf-8"
@@ -76,7 +76,7 @@ def pdf_report():
 
     this_folderpath = os.path.dirname(os.path.abspath(__file__))
 #    wkhtmltopdf_path = r'/home/appadmin/wkhtmltox/bin/wkhtmltopdf'
-    wkhtmltopdf_path = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
+    wkhtmltopdf_path = r'/home/sandeep/www/wkhtmltox/bin/wkhtmltopdf'
     config = pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
     this_folderpath = os.path.dirname(os.path.abspath(__file__))
     css_path = os.path.join(this_folderpath, 'print.css')
@@ -84,7 +84,9 @@ def pdf_report():
     context_header = {}
     context_header['title'] = title
     context_header['rev'] = rev
-    context_header['doc_id'] = doc_id
+    context_header['doc_no'] = doc_no
+
+    context_header['date'] = change_date_format(date)
     add_pdf_header(options, context_header=context_header)
 
     try:
@@ -158,7 +160,7 @@ def pdf_dbDoc(doc_id):
         context_header = {}
         context_header['title'] = title
         context_header['rev'] = rev
-        context_header['doc_id'] = doc_id
+        context_header['doc_no'] = doc_no
         add_pdf_header(options, context_header=context_header)
 
         try:

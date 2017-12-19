@@ -18,6 +18,7 @@ class validator :
 
             return value
 
+
     class xNumber(Validator):
         def __init__(self, blank=False):
             self.blank = blank
@@ -276,8 +277,9 @@ class sMeta(Schema):
     docClass = fields.String(required=True)
     docInstance = fields.String(required=True)
     docInstance_title = fields.String(required=True)
-
+    doc_no = fields.String()
     rev = fields.String()
+    date = fields.String()
     status = fields.String()
     performer = fields.String()
     reviewer = fields.String()

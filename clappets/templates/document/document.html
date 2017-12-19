@@ -15,7 +15,7 @@
     <a class="navbar-item" @click="deleteDocDB()">Delete from DB</a>
     {% endif %}
     <hr class="navbar-divider">
-    <a class="navbar-item" @click="pdf_download('doc')">PDF Download</a>
+    <a class="navbar-item" @click="pdf_download('doc','/pdf/document/')">PDF Download</a>
     <a class="navbar-item" @click="print()">Print</a>
   </div>
 </div>
@@ -97,10 +97,10 @@
         </tr>
         <tr>
           <td>
-            Doc No.
+            Doc ID
           </td>
           <td>
-            [[ doc['_id'] ]]
+            [[ doc_id ]]
           </td>
         </tr>
         <tr>
@@ -111,6 +111,33 @@
             <input type="text" class="input" v-model="doc['meta']['docInstance_title']">
           </td>
         </tr>
+        <tr>
+          <td>
+            Doc No.
+          </td>
+          <td>
+            <input type="text" class="input" v-model="doc['meta']['doc_no']">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Rev
+          </td>
+          <td>
+            <input type="text" class="input" v-model="doc['meta']['rev']">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Date
+          </td>
+          <td>
+            <input type="date" class="input" v-model="doc['meta']['date']">
+          </td>
+        </tr>
+
+
+
       </table>
     </div>
     <div class="field is-grouped is-grouped-centered">
@@ -158,18 +185,7 @@
       <h4 class="title is-4">Units</h4>
       <div style="height:180px; overflow:auto;">
         <table class="table" style="width:100%;">
-          <tr v-for="dimension in dimensions_used ">
-            <td style="width:50%">
-              [[ dimension ]]
-            </td>
-            <td style="width:50%">
-              <div class="select" style="width:100%">
-                <select v-model="doc.units[dimension]" style="width:100%;">
-                    <option v-for="unit in getUnits(dimension)" :value="unit['unit']" v-text="unit['label']" style="width:100%"></option>
-                </select>
-              </div>
-            </td>
-          </tr>
+
         </table>
       </div>
     <div class="field is-grouped is-grouped-centered">
@@ -286,6 +302,15 @@
   </div>
 </div>
 
+<div class="modal hideprint" v-bind:class="{'is-active': loadingModalisActive}">
+  <div class="modal-background">
+  </div>
+  <div class="modal-content" style="background-color:white; maximum-height: 50px; width: 200px;text-align:center">
+    <h3 class="title is-3">Please Wait</h3>
+  </div>
+</div>
+
+
 <div style="display:none;">
   <a href="" ref="save_anchor">Save Anchor </a>
 </div>
@@ -320,7 +345,12 @@
         data: {
             doc : {{ doc | safe }},
         },
-        computed: {},
+        computed: {
+          doc_id : function(){
+            did = this.doc['projectID']+"-"+this.doc['docCategory']+'-'+this.doc['docSubCategory']+"-"+this.doc['docClass']+"-"+this.doc['docInstance'];
+            return did;
+          }
+        },
         methods: {}
     });
 </script>

@@ -1,0 +1,30 @@
+{
+  "_id": "",
+  "meta": {
+    "projectID": "0000",
+    "project_title": "Demo",
+    "discipline" : "pro",
+    "docCategory": "cal",
+    "docSubCategory": "tch",
+    "docClass": "wtr",
+    "docClass_title": "Thermophysical Properties of Water",
+    "docInstance": "1",
+    "docInstance_title": "Thermophysical Property of Water",
+    "rev": "",
+    "status": "",
+    "performer": "",
+    "reviewer": "",
+    "approver": ""
+  },
+
+  "units": {
+    "pressure": "bar",
+    "temperature": "C"
+  },
+
+  "input": {
+    "P": {"_val":"10", "_dim":"pressure"},
+    "T": {"_val":"25", "_dim":"temperature"}
+  },
+  "errors": {}
+}

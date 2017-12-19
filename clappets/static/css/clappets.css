@@ -40,6 +40,7 @@
     box-shadow: inset 0px 0px 0px #888;
     background-color: #f6f6f6;
     width:100%;
+    font-weight: bold;
 }
 
 
@@ -49,8 +50,8 @@
 }
 
 .table td, .table th {
-    padding-top: 0.25em;
-    padding-bottom: 0.25em;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
 }
 
 .avoid {
@@ -69,7 +70,7 @@ div.datasheet {
     box-sizing: content-box;
     font-family: Arial, Helvetica, serif;
     letter-spacing: normal;
-    line-height: 1.25em;
+    line-height: 1.5em;
 }
 
 
@@ -104,14 +105,14 @@ div.datasheet {
     border-bottom: 1px solid black;
 }
 
-.datasheet tr td:first-child, .datasheet tr th:first-child  {
+.datasheet table.main tr td:first-child, .datasheet table.main tr th:first-child  {
     width: 2em;
     border-left: 1px solid black;
     border-right: 1px solid black;
 }
 
 
-.datasheet tr td:last-child, .datasheet tr th:last-child {
+.datasheet table.main tr td:last-child, .datasheet table.main tr th:last-child {
     width: 2em;
     border-left: 1px solid black;
     border-right: 1px solid black;
@@ -119,7 +120,7 @@ div.datasheet {
 
 .datasheet input {
     font-size: 1em;
-    height: 1.25em;
+    height: 1.5em;
     width: 100%;
     border: 0px;
     outline: 0px;
@@ -128,12 +129,26 @@ div.datasheet {
     font-family: Arial, Helvetica, serif;
 }
 
+.datasheet select{
+  -webkit-appearance: none;
+     -moz-appearance: none;
+     text-indent: 1px;
+     text-overflow: '';
+}
+
+
 .datasheet table.main tr td span {
     display: inline-block;
     vertical-align: top;
     height: 100%;
     box-sizing: border-box;
     page-break-inside: avoid;
+}
+
+span.result {
+  background-color: #eee;
+  font-weight : bold;
+
 }
 
 .datasheet .w1 {

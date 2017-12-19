@@ -7,6 +7,7 @@ var app_doc = {
         saveAsModalisActive: false,
         macroModalisActive: false,
         uploadModalisActive: false,
+        loadingModalisActive: false,
         api_url : {
             doc : "/api/document/db/"
         },
@@ -35,22 +36,21 @@ var app_doc = {
         },
 
         units_used : function(){
-            return this.doc['units']
+          var clone = JSON.parse(JSON.stringify(this.doc.units))
+          return clone;
         }
     },
 
     watch: {
-        units_used: {
+        'units_used': {
             handler: function(new_units, old_units) {
                 try {
-                    console.log(this.doc);
                    this.treeUnitConvert(this.doc, old_units, new_units);
                 } catch (err) {
                     console.log("Error in watch handler for units_used");
                 }
             },
             deep: true,
-            passive: true,
         }
     },
 

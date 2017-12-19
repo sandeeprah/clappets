@@ -1,4 +1,5 @@
 import json
+import re
 import imp
 from flask import current_app
 from bson import json_util
@@ -55,3 +56,7 @@ def load_function(filepath, function_name):
         fn = getattr(py_mod, function_name)
 
     return fn
+
+
+def change_date_format(dt):
+        return re.sub(r'(\d{4})-(\d{1,2})-(\d{1,2})', '\\3-\\2-\\1', dt)

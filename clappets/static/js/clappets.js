@@ -399,7 +399,7 @@ var app_common = {
 
 
         handle_errors : function(xhr){
-            console.error(xhr.responseText);
+            console.error(xhr.response);
             this.errorStatus = xhr.status + " " + xhr.statusText;
             try {
                 response = JSON.parse(xhr.responseText);
@@ -410,7 +410,7 @@ var app_common = {
                 }
             }
             catch (e) {
-                this.errorMessage = xhr.responseText;
+                this.errorMessage = xhr.response;
             }
             this.errorisActive = true;
             this.isLoading = false;
@@ -452,10 +452,11 @@ var app_common = {
             window.print();
         },
 
-        pdf_download: function(resource_name) {
+        pdf_download: function(resource_name, pdf_url) {
             var app = this;
+            app.loadingModalisActive =true;
             app.resetMessages();
-            url = app.pdf_url[resource_name];
+            url = pdf_url;
             var data = {};
             data.resource = app[resource_name];
             var json_data = JSON.stringify(data);
@@ -470,36 +471,41 @@ var app_common = {
                     link.href = window.URL.createObjectURL(blob);
                     link.download = 'PDF Report.pdf';
                     link.click();
+                    app.loadingModalisActive =false;
                 }
                 else{
-                    app.handle_errors(xhr);
+                    app.errorStatus = xhr.status + " " + xhr.statusText;
+                    app.errorMessage = "Error occured in PDF Download"
+                    app.errorisActive = true;
+                    app.isLoading = false;
+                    app.loadingModalisActive =false;
                 }
             };
             xhr.onerror = function (e) {
+                xhr.responseType = "text";
                 app.handle_connection_errors();
+                app.loadingModalisActive =false;
             };
             xhr.send(json_data);
         },
     },
 
     beforeMount : function(){
-        try{
-            this.username = localStorage.getItem("username");
-            if (localStorage.getItem("userAuthenticated")=="true"){
-                this.userAuthenticated = true;
-            }
-            else{
-                this.userAuthenticated = false;
-            }
-        }catch(e){
-            this.username = "";
-            this.userAuthenticated = false;
-            localStorage.setItem('access_token', 'anonymous');
-        }
+      try{
+        this.username = localStorage['username'];
+        if (localStorage.getItem("userAuthenticated")=="true"){
+              this.userAuthenticated = true;
+          }
+          else{
+              this.userAuthenticated = false;
+          }
+      }
+      catch (e){
+        this.username = "";
+        this.userAuthenticated = false;
+      }
+    },
 
-        if (this.username==null){
-            this.username = "";
-            localStorage.setItem('access_token', 'anonymous');
-        }
-    }
+
+
 }

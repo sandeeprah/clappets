@@ -211,5 +211,4 @@ def calculate(doc_original):
 
     treeUnitConvert(doc, SI_UNITS, doc['units'])
     doc_original['result'].update(doc['result'])
-
     return True
