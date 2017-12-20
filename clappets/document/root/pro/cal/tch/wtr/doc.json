@@ -2,7 +2,7 @@
   "_id": "",
   "meta": {
     "projectID": "0000",
-    "project_title": "Demo",
+    "project_title": "Local",
     "discipline" : "pro",
     "docCategory": "cal",
     "docSubCategory": "tch",
@@ -10,7 +10,9 @@
     "docClass_title": "Thermophysical Properties of Water",
     "docInstance": "1",
     "docInstance_title": "Thermophysical Property of Water",
-    "rev": "",
+    "doc_no":"0000-PRO-CAL-TCH-WTR-01",
+    "rev": "A",
+    "date":"",
     "status": "",
     "performer": "",
     "reviewer": "",
@@ -18,13 +20,35 @@
   },
 
   "units": {
+    "length": "m",
     "pressure": "bar",
-    "temperature": "C"
+    "temperature": "C",
+    "molecularMass" : "kg/mol",
+    "density":"kg/m3",
+    "specificVolume":"m3/kg",
+    "specificEnergy":"J/kg",
+    "specificHeat":"J/kg.K",
+    "specificHeatMolar":"J/mol.K",
+    "dynViscosity":"Pa.s",
+    "thermalConductivity":"W/m.K"
   },
 
   "input": {
-    "P": {"_val":"10", "_dim":"pressure"},
-    "T": {"_val":"25", "_dim":"temperature"}
+    "state" : {"_val":"Saturated_P"},
+    "P": {"_val":"1", "_dim":"pressure"},
+    "T": {"_val":"35", "_dim":"temperature"},
+    "Q": {"_val":"0.5"}
+  },
+
+  "result": {
+    "phase": {"_val":""},
+    "rho": {"_val":"", "_dim":"density"},
+    "Tsat": {"_val":"", "_dim":"temperature"},
+    "Psat": {"_val":"", "_dim":"pressure"},
+    "v": {"_val":"", "_dim":"specificVolume"},
+    "h": {"_val":"", "_dim":"specificEnergy"},
+    "u": {"_val":"", "_dim":"specificEnergy"},
+    "s": {"_val":"", "_dim":"specificHeat"}
   },
   "errors": {}
 }

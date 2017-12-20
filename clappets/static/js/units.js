@@ -583,6 +583,9 @@ function unitConvert(value, dimension, fromUnit, toUnit) {
         if ((fromUnit == 'none') || (toUnit=='none')) {
             return_value = value;
         }
+        if (fromUnit == toUnit) {
+            return_value = value;
+        }
         else{
             parsed_value = parseFloat(value);
             cf_from_unit = getUnitConvFact(dimension, fromUnit);
@@ -591,10 +594,28 @@ function unitConvert(value, dimension, fromUnit, toUnit) {
             offset_to_unit = getUnitOffset(dimension, toUnit);
             base_value = parsed_value * cf_from_unit + offset_from_unit;
             return_value = (base_value - offset_to_unit) / cf_to_unit;
+            return_value = roundit(return_value, 0.001, 6);
         }
     }
     return return_value;
 }
+
+
+function roundit(value, allowed_error, max_decims){
+  for (var decims = 1; i <= max_decims; decims++) {
+    rounded_value = round(value, decims);
+    abs_error = Math.abs(value-rounded_value);
+    rel_error = abs_error/Math.abs(value);
+    if (rel_error < allowed_error){
+      return rounded_value;
+    }
+  }
+}
+
+function round(value, decimals) {
+  return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+}
+
 
 function treeUnitConvert(objecttree, fromUnits, toUnits) {
   for (var node in objecttree) {
