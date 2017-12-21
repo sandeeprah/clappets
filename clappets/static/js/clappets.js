@@ -211,6 +211,9 @@ var app_common = {
 
         loadProtectedResource: function(url){
             token = localStorage["access_token"];
+            if (typeof token === "undefined") {
+                token = "anonymous";
+              }
             var xhr = new XMLHttpRequest();
             xhr.open("GET", url, true, token, "unused");
             xhr.onload = function (e) {
