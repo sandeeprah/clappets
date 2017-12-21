@@ -1,6 +1,7 @@
 import json
 import re
 import imp
+import math
 from flask import current_app
 from bson import json_util
 import smtplib
@@ -60,3 +61,25 @@ def load_function(filepath, function_name):
 
 def change_date_format(dt):
         return re.sub(r'(\d{4})-(\d{1,2})-(\d{1,2})', '\\3-\\2-\\1', dt)
+
+def parseFloat(value):
+    try:
+        return float(value)
+    except Exception:
+        return math.nan
+
+def roundit(value,  max_decim=6, allowed_error=0.001):
+    decims = 1
+    rounded_value = round(value, max_decim)
+
+    if (value == 0):
+        rounded_value = 0
+    else:
+        for decims in range(1, max_decim+1):
+            rounded_value = round(value, decims)
+            abs_error = abs(value - rounded_value)
+            rel_error = abs_error/abs(value)
+            if rel_error < allowed_error:
+                return rounded_value
+
+    return rounded_value

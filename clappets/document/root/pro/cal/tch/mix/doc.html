@@ -1,582 +1,508 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Clappets.com</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/bulma.css">
-    <link rel="stylesheet" type="text/css" href="/static/font-awesome/css/font-awesome.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/calculator.css">
-
-    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-    <script type="text/javascript" src="/static/js/clappetsunits.js"></script>
-</head>
-
-<body>
-    <section class="section">
-        <div class="container">
-            <div class="columns is-centered" style="border-bottom:0px;">
-                <div class="column is-6">
-                    <nav class="breadcrumb is-right" aria-label="breadcrumbs">
-                        <ul>
-                            <li><a href="/index"><span class="icon is-small">Home</a></li>
-                            <li><a href="/calcs/index"><span>Calculations</span></a></li>
-                            <li><a href="/calcs/thermochem/index"><span>Thermochem</span></a></li>
-                            <li class="is-active"><a href="#"><span>Mixture</span></a></li>
-
-                        </ul>
-                    </nav>
-
-
-                    <h1 class="title is-3" style="text-align:center;">Hydrocarbon Mixture Properties</h1>
-
-                    <div id="app">
-                        <div class="tabs is-boxed">
-                            <ul>
-                                <li v-bind:class="{'is-active': calcPageActive}">
-                                    <a name="calc_menu" @click="activatePage">Calc</a>
-                                </li>
-                                <li v-bind:class="{'is-active': infoPageActive }">
-                                    <a name="info_menu" @click="activatePage">Info</a>
-                                </li>
-                                <li v-bind:class="{'is-active': unitsPageActive }">
-                                    <a name="units_menu" @click="activatePage">Units</a>
-                                </li>
-                                <li v-bind:class="{'is-active': helpPageActive }">
-                                    <a name="help_menu" @click="activatePage">Help</a>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="box" v-show="calcPageActive">
-                            <div class="columns">
-                              <div class="column">
-                                <table  class="table is-striped is-bordered" style="width:100%">
-                                  <tr>
-                                    <td><b>Component</b></td>
-                                    <td><b>Mole Fraction </b></td>
-                                  </tr>
-                                  <tr v-for="(component,index) in mixture">
-                                    <td v-text="component['fluid']" style="width:50%"></td>
-                                    <td style="width:50%">
-                                      <input type="number" class="grid" v-model="component['molefraction']" min="0" max="1"></input>
-                                      <p class="help is-danger" v-for="error in get_mixture_errors(index)" >[[ error ]]</p>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td>Total</td>
-                                    <td style="font-weight:bold;"><span class="is-danger" v-text="sigma_mol" v-bind:style="{color: sigm_mol_color}"></span></td>
-                                  </tr>
-                                </table>
-                              </div>
-
-                            </div>
-
-
-
-                            <div class="columns">
-                                <div class="column is-6">Pressure</div>
-                                <div class="column is-6">
-                                    <div class="field has-addons">
-                                        <p class="control" style="width:100%">
-                                            <input class="input" type="number" placeholder="pressure" v-model="P">
-                                        </p>
-                                        <p class="control">
-                                            <a class="button is-static" v-text="getUnitLabel('pressure')"></a>
-                                        </p>
-                                    </div>
-                                    <p class="help is-danger" v-for="error in P_errors">[[ error ]]</p>
-                                </div>
-                            </div>
-                            <div class="columns">
-                                <div class="column is-6">Temperature</div>
-                                <div class="column is-6">
-                                    <div class="field has-addons">
-                                        <p class="control" style="width:100%">
-                                            <input class="input" type="number" placeholder="temperature" v-model="T" step=0.01>
-                                        </p>
-                                        <p class="control">
-                                            <a class="button is-static" v-text="getUnitLabel('temperature')"></a>
-                                        </p>
-                                    </div>
-                                    <p class="help is-danger" v-for="error in T_errors">[[ error ]]</p>
-                                </div>
-                            </div>
-
-                            <div class="columns">
-                                <div class="column">
-                                    <h5 class="title is-5">Outputs</h4>
-                                </div>
-                            </div>
-                            <div class="columns">
-                                <div class="column is-6">Molecular Mass</div>
-                                <div class="column is-6">
-                                    <div class="field has-addons">
-                                        <p class="control" style="width:100%">
-                                            <input class="input" type="text" placeholder="MW" readonly v-model="_MW">
-                                        </p>
-                                        <p class="control">
-                                            <a class="button is-static" v-text="getUnitLabel('molecularMass')" ></a>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="columns">
-                                <div class="column is-6">Critical Pressure</div>
-                                <div class="column is-6">
-                                    <div class="field has-addons">
-                                        <p class="control" style="width:100%">
-                                            <input class="input" type="text" placeholder="Pc" readonly v-model="_Pc">
-                                        </p>
-                                        <p class="control">
-                                            <a class="button is-static" v-text="getUnitLabel('pressure')" ></a>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="columns">
-                                <div class="column is-6">Critical Temperature</div>
-                                <div class="column is-6">
-                                    <div class="field has-addons">
-                                        <p class="control" style="width:100%">
-                                            <input class="input" type="text" placeholder="Tc" readonly v-model="_Tc">
-                                        </p>
-                                        <p class="control">
-                                            <a class="button is-static" v-text="getUnitLabel('temperature')" ></a>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="columns">
-                                <div class="column is-6">Acentric Factor</div>
-                                <div class="column is-6">
-                                  <input class="input" type="text" placeholder="omega" readonly v-model="omega">
-                                </div>
-                            </div>
-                            <div class="columns">
-                                <div class="column is-6">Reduced Pressure</div>
-                                <div class="column is-6">
-                                  <input class="input" type="text" placeholder="Pr" readonly v-model="Pr">
-                                </div>
-                            </div>
-                            <div class="columns">
-                                <div class="column is-6">Reduced Temperature</div>
-                                <div class="column is-6">
-                                  <input class="input" type="text" placeholder="Tr" readonly v-model="Tr">
-                                </div>
-                            </div>
-                            <div class="columns">
-                                <div class="column is-6">Specific Heat-Const Pressure</div>
-                                <div class="column is-6">
-                                    <div class="field has-addons">
-                                        <p class="control" style="width:100%">
-                                            <input class="input" type="text" placeholder="Cp0mass" readonly v-model="_Cp0mass">
-                                        </p>
-                                        <p class="control">
-                                            <a class="button is-static" v-text="getUnitLabel('specificHeat')" ></a>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="columns">
-                                <div class="column is-6">Specific Heat - Const. Volume</div>
-                                <div class="column is-6">
-                                    <div class="field has-addons">
-                                        <p class="control" style="width:100%">
-                                            <input class="input" type="text" placeholder="Cv0mass" readonly v-model="_Cv0mass">
-                                        </p>
-                                        <p class="control">
-                                            <a class="button is-static" v-text="getUnitLabel('specificHeat')" ></a>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="columns">
-                                <div class="column is-6">Molar specificHeat-Const Pressure</div>
-                                <div class="column is-6">
-                                    <div class="field has-addons">
-                                        <p class="control" style="width:100%">
-                                            <input class="input" type="text" placeholder="Cp0molar" readonly v-model="_Cp0molar">
-                                        </p>
-                                        <p class="control">
-                                            <a class="button is-static" v-text="getUnitLabel('molarSpecificHeat')" ></a>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="columns">
-                                <div class="column is-6">Molar specificHeat-Const Volume</div>
-                                <div class="column is-6">
-                                    <div class="field has-addons">
-                                        <p class="control" style="width:100%">
-                                            <input class="input" type="text" placeholder="Cv0molar" readonly v-model="_Cv0molar">
-                                        </p>
-                                        <p class="control">
-                                            <a class="button is-static" v-text="getUnitLabel('molarSpecificHeat')" ></a>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="columns">
-                                <div class="column is-6">Z (Peng Robinson)</div>
-                                <div class="column is-6">
-                                  <input class="input" type="text" placeholder="Z_PR" readonly v-model="Z_PR">
-                                </div>
-                            </div>
-                            <div class="columns">
-                                <div class="column is-6">Z (Lee Kesler)</div>
-                                <div class="column is-6">
-                                  <input class="input" type="text" placeholder="Z_LKP" readonly v-model="Z_LKP">
-                                </div>
-                            </div>
-                            <div class="columns">
-                                <div class="column is-6">Z (Nelson Obert)</div>
-                                <div class="column is-6">
-                                  <input class="input" type="text" placeholder="Z_NO" readonly v-model="Z_NO">
-                                </div>
-                            </div>
-
-
-
-
-
-                            <article class="message is-small is-danger" v-show="errorBoxActive">
-                                <div class="message-header">
-                                    <p>Errors</p>
-                                    <button class="delete is-small" aria-label="delete" @click="hideErrorBox"></button>
-                                </div>
-                                <div class="message-body">
-                                    [[ error]]
-                                </div>
-                            </article>
-
-                        <a class="button is-primary" style="width:100%" v-on:click="calculate_result">Calculate</a>
-                        </div>
-
-
-                        <div class="box" v-show="infoPageActive">
-
-                            <div class="columns ">
-                                <div class="column is-4">Project</label>
-                                </div>
-                                <div class="column is-8">
-                                    <input class="input" type="text" name="" value="">
-                                </div>
-                            </div>
-                            <div class="columns ">
-                                <div class="column is-4">Client</label>
-                                </div>
-                                <div class="column is-8">
-                                    <input class="input" type="text" name="" value="">
-                                </div>
-                            </div>
-                            <div class="columns ">
-                                <div class="column is-4">Location</label>
-                                </div>
-                                <div class="column is-8">
-                                    <input class="input" type="text" name="" value="">
-                                </div>
-                            </div>
-                            <div class="columns ">
-                                <div class="column is-4">Item No.</label>
-                                </div>
-                                <div class="column is-8">
-                                    <input class="input" type="text" name="" value="">
-                                </div>
-                            </div>
-
-                            <div class="columns ">
-                                <div class="column is-4">Purpose</label>
-                                </div>
-                                <div class="column is-8">
-                                    <textarea class="textarea" rows="5" type="text" name="" value=""></textarea>
-                                </div>
-                            </div>
-
-                            <div class="columns ">
-                                <div class="column is-4">Conclusion</label>
-                                </div>
-                                <div class="column is-8">
-                                    <textarea class="textarea" rows="5" type="text" name="" value=""></textarea>
-
-                                </div>
-                            </div>
-
-                        </div>
-
-
-                        <div class="box" v-show="unitsPageActive">
-                          <div class="columns is-centered">
-                              <div class="column">
-                                  <div class="control">
-                                      <label class="radio"><input type="radio" name="useDefaultUnit" v-model="useDefaultUnits" value="true">Default Units</label>
-                                      <label class="radio"><input type="radio" name="useDefaultUnit" v-model="useDefaultUnits" value="false">Custom Units</label>
-                                  </div>
-                              </div>
-                          </div>
-
-
-                          <div class="columns" v-for="dimension in dimension_list ">
-                              <div class="column is-6" v-text="getDimensionTitle(dimension)"></div>
-                              <div class="column is-6">
-                                  <div class="select">
-                                      <select class="select" v-model="units[dimension]['custom']" :disabled="useDefaultUnits=='true'">
-                                        <option v-for="(unit, index) in getUnitLabelList(dimension)" :value="index" v-text="unit"></option>
-                                      </select>
-                                  </div>
-                                  <p class="help is-info"></p>
-                              </div>
-                          </div>
-
-                        </div>
-
-                        <div class="box" v-show="helpPageActive">
-                            This calculator is based on CoolProp library. For more details on this library refer to
-                            official documentation at <a href = "http://www.coolprop.org">http://www.coolprop.org</a>
-                        </div>
-
-                </div>
-            </div>
-        </div>
-      </div>
-  </section>
-
-    <script src="/static/js/vue.js"></script>
-    <script src="https://unpkg.com/axios@0.16.2/dist/axios.min.js"></script>
-    <script src="https://unpkg.com/lodash@4.17.2/lodash.min.js"></script>
-
-
-    <script>
-        var app = new Vue({
-            el: '#app',
-            delimiters: ['[[',']]'],
-            data: {
-                calcPageActive: true,
-                infoPageActive: false,
-                unitsPageActive: false,
-                helpPageActive: false,
-
-                errorBoxActive:false,
-
-                components_selected: [],
-
-                mixture :[
-                        {"fluid" : "Methane", "molefraction" : "0.4"},
-                        {"fluid" : "Ethane", "molefraction" : "0.3"},
-                        {"fluid" : "n-Propane", "molefraction" : "0.3"},
-                ],
-                mixture_errors : [],
-
-                P: '',
-                P_errors:[],
-                T: '',
-                T_errors:[],
-
-                MW : '',
-                Pc : '',
-                Tc : '',
-                omega : '',
-                Pr : '',
-                Tr : '',
-                Cp0mass : '',
-                Cp0molar : '',
-                Cv0mass : '',
-                Cv0molar : '',
-                Z_PR : '',
-                Z_LKP : '',
-                Z_NO : '',
-
-
-                error : '',
-                useDefaultUnits: 'false',
-
-                units : {
-                  "pressure" : {"custom" : 0, "default" : 0},
-                  "temperature" : {"custom" : 0, "default" : 0},
-                  "molecularMass" : {"custom" : 0, "default" : 0},
-                  "density" : {"custom" : 0, "default" : 0},
-                  "specificVolume" : {"custom" : 0, "default" : 0},
-                  "specificEnergy" : {"custom" : 0, "default" : 0},
-                  "specificEntropy" : {"custom" : 0, "default" : 0},
-                  "specificHeat" : {"custom" : 0, "default" : 0},
-                  "molarSpecificHeat" : {"custom" : 0, "default" : 0},
-
-                },
-
-                dimension_list : ["pressure",
-                            "temperature",
-                            "molecularMass",
-                            "density",
-                            "specificVolume",
-                            "specificEnergy",
-                            "specificEntropy",
-                            "specificHeat",
-                            "molarSpecificHeat",
-                          ],
-
-            },
-
-            computed: {
-              sigma_mol : function(){
-                sigma = 0;
-                for (var component of this.mixture){
-                  fraction = parseFloat(component['molefraction']);
-                  if (isNaN(fraction)) {
-                    fraction = 0;
-                  }
-                  sigma += fraction
-                }
-                return sigma.toFixed(2)
-              },
-
-              sigm_mol_color : function(){
-                if (this.sigma_mol == 1){
-                  return "green";
-                }
-                else{
-                  return "red";
-                }
-              },
-
-              _MW : function(){
-                return unitConvert(this.MW, 'molecularMass', 0 , this.getUnitIndex('molecularMass'))
-              },
-              _Pc : function(){
-                return unitConvert(this.Pc, 'pressure', 0 , this.getUnitIndex('pressure'))
-              },
-              _Tc : function(){
-                return unitConvert(this.Tc, 'temperature', 0 , this.getUnitIndex('temperature'))
-              },
-              _Cp0mass: function(){
-                return unitConvert(this.Cp0mass, 'specificHeat', 0 , this.getUnitIndex('specificHeat'))
-              },
-              _Cv0mass: function(){
-                return unitConvert(this.Cv0mass, 'specificHeat', 0 , this.getUnitIndex('specificHeat'))
-              },
-              _Cp0molar: function(){
-                return unitConvert(this.Cp0molar, 'molarSpecificHeat', 0 , this.getUnitIndex('molarSpecificHeat'))
-              },
-              _Cv0molar: function(){
-                return unitConvert(this.Cv0molar, 'molarSpecificHeat', 0 , this.getUnitIndex('molarSpecificHeat'))
-              },
-            },
-
-
-            methods: {
-                activatePage: function(event) {
-                    page_menu = event.target.name;
-                    this.calcPageActive = false;
-                    this.infoPageActive = false;
-                    this.unitsPageActive = false;
-                    this.helpPageActive = false;
-                    if (page_menu == 'calc_menu') {
-                        this.calcPageActive = true;
-                    }
-                    if (page_menu == 'info_menu') {
-                        this.infoPageActive = true;
-                    }
-                    if (page_menu == 'units_menu') {
-                        this.unitsPageActive = true;
-                    }
-                    if (page_menu == 'help_menu') {
-                        this.helpPageActive = true;
-                    }
-                },
-
-
-                calculate_result : function(){
-                    var app = this;
-                    url = '/calcapi/thermochem/mixture/';
-
-                    axios.post(url, {
-                      mixture: app.mixture,
-			                P :app.P,
-                      T :app.T,
-                    })
-                    .then(function (response) {
-                        app.MW = response.data.MW
-                        app.Pc = response.data.Pc
-                        app.Tc = response.data.Tc
-                        app.omega = response.data.omega
-                        app.Pr = response.data.Pr
-                        app.Tr = response.data.Tr
-                        app.Cp0mass = response.data.Cp0mass,
-                        app.Cv0mass = response.data.Cv0mass,
-                        app.Cp0molar = response.data.Cp0molar,
-                        app.Cv0molar = response.data.Cv0molar,
-                        app.Z_PR = response.data.Z_PR
-                        app.Z_LKP = response.data.Z_LKP
-                        app.Z_NO = response.data.Z_NO
-
-                        console.log(response);
-                        app.resetErrors();
-                        })
-                    .catch(function (error) {
-                        app.scanErrors(error);
-                    });
-                },
-
-                hideErrorBox: function(){
-                    this.errorBoxActive=false;
-                },
-
-                scanErrors: function(error){
-                    this.errorBoxActive = true;
-                    this.error = error.response.status + " : " + error.response.statusText;
-                    this.mixture_errors = error.response.data["mixture"];
-                    this.P_errors = error.response.data["P"];
-                    this.T_errors = error.response.data["T"];
-
-                },
-
-                resetErrors: function(){
-                  this.errorBoxActive = false;
-                  this.error = '';
-                  this.mixture_errors = [];
-                  this.P_errors = [];
-                  this.T_errors = [];
-
-                },
-
-                get_mixture_errors : function(index){
-                  if (this.mixture_errors){
-                    if (index in this.mixture_errors){
-                      return this.mixture_errors[index]['molefraction']
-                    }
-                    else return []
-                  }
-                  else return []
-                },
-
-                getDimensionTitle : function(dimension){
-                  return getDimensionTitle(dimension)
-                },
-
-                getUnitLabelList : function(dimension){
-                  return getUnitLabelList(dimension)
-                },
-
-                getUnitIndex : function(dimension){
-                  useDefault = this.useDefaultUnits;
-                  if (useDefault=='true'){
-                    unitIndex = this.units[dimension]["default"]
-                  }
-                  else{
-                    unitIndex = this.units[dimension]["custom"]
-                  }
-                  return unitIndex
-                },
-
-                getUnitLabel : function(dimension){
-                  unitIndex = this.getUnitIndex(dimension)
-                  return getUnitLabel(dimension, unitIndex)
-                },
-            },
-        })
-    </script>
-
-
-</body>
-
-</html>
+{% extends "document/document.html" %}
+{% block content %}
+<div class="datasheet">
+  <table class="main">
+    <thead>
+        <tr>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <td colspan="10" style="text-align:right;">
+            <i>Calculation Performed at www.clappets.com</i>
+        </td>
+    </tfoot>
+    <tbody>
+      <tr>
+        <td>S#</td>
+        <td colspan="8" style="text-align:center;">
+          <span class="title is-6">[[ doc['meta']['docClass_title'] ]]</span>
+        </td>
+        <td>R#</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td colspan="8">
+          <span class="w16"><b>Inputs</b></span>
+        </td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>1.2</td>
+        <td colspan="4">
+          <span class="w14">Pressure</span>
+          <span class="w6"><input class="inp" type="text" v-model="doc['input']['P']['_val']"/></span>
+          <span class="w6">[[ gUL('pressure') ]]</span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','P'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.3</td>
+        <td colspan="4">
+          <span class="w14">Temperature</span>
+          <span class="w6"><input class="inp" type="text" v-model="doc['input']['T']['_val']"/></span>
+          <span class="w6">[[ gUL('temperature') ]]</span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','T'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.4</td>
+        <td colspan="4">
+          <span class="w14">Mixture</span>
+        </td>
+        <td colspan="4"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.4.1</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w10">Component</span>
+          <span class="w6">Formula</span>
+          <span class="w6">Mol.Wt.</span>
+          <span class="w6">Mol.Fraction</span>
+        </td>
+        <td colspan="4"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.4.1</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w10">Air</span>
+          <span class="w6">--</span>
+          <span class="w6">28.966</span>
+          <span class="w6"><input class="inp" v-model="doc['input']['mixture'][0]['molefraction']"/></span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','mixture',0,'molefraction'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.4.2</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w10">Oxygen</span>
+          <span class="w6">O2</span>
+          <span class="w6">32.000</span>
+          <span class="w6"><input class="inp" v-model="doc['input']['mixture'][1]['molefraction']"/></span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','mixture',1,'molefraction'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.4.3</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w10">Nitrogen</span>
+          <span class="w6">N2</span>
+          <span class="w6">28.016</span>
+          <span class="w6"><input class="inp" v-model="doc['input']['mixture'][2]['molefraction']"/></span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','mixture',2,'molefraction'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.4.4</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w10">Water Vapor</span>
+          <span class="w6">H2O</span>
+          <span class="w6">18.016</span>
+          <span class="w6"><input class="inp" v-model="doc['input']['mixture'][3]['molefraction']"/></span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','mixture',3,'molefraction'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.4.5</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w10">Carbon Monoxide</span>
+          <span class="w6">CO</span>
+          <span class="w6">28.010</span>
+          <span class="w6"><input class="inp" v-model="doc['input']['mixture'][4]['molefraction']"/></span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','mixture',4,'molefraction'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.4.6</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w10">Carbon Dioxide</span>
+          <span class="w6">CO2</span>
+          <span class="w6">44.010</span>
+          <span class="w6"><input class="inp" v-model="doc['input']['mixture'][5]['molefraction']"/></span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','mixture',5,'molefraction'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.4.7</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w10">Hydrogen Sulfide</span>
+          <span class="w6">H2S</span>
+          <span class="w6">34.076</span>
+          <span class="w6"><input class="inp" v-model="doc['input']['mixture'][6]['molefraction']"/></span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','mixture',6,'molefraction'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.4.8</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w10">Hydrogen</span>
+          <span class="w6">H2</span>
+          <span class="w6">2.016</span>
+          <span class="w6"><input class="inp" v-model="doc['input']['mixture'][7]['molefraction']"/></span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','mixture',7,'molefraction'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.4.9</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w10">Methane</span>
+          <span class="w6">CH4</span>
+          <span class="w6">16.042</span>
+          <span class="w6"><input class="inp" v-model="doc['input']['mixture'][8]['molefraction']"/></span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','mixture',8,'molefraction'])">[[err]]</p>
+
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.4.10</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w10">Ethene</span>
+          <span class="w6">C2H4</span>
+          <span class="w6">28.052</span>
+          <span class="w6"><input class="inp" v-model="doc['input']['mixture'][9]['molefraction']"/></span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','mixture',9,'molefraction'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.4.11</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w10">Ethane</span>
+          <span class="w6">C2H6</span>
+          <span class="w6">30.068</span>
+          <span class="w6"><input class="inp" v-model="doc['input']['mixture'][10]['molefraction']"/></span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','mixture',10,'molefraction'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.4.12</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w10">Propene</span>
+          <span class="w6">C3H6</span>
+          <span class="w6">42.078</span>
+          <span class="w6"><input class="inp" v-model="doc['input']['mixture'][11]['molefraction']"/></span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','mixture',11,'molefraction'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.4.13</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w10">n-Propane</span>
+          <span class="w6">C3H8</span>
+          <span class="w6">44.094</span>
+          <span class="w6"><input class="inp" v-model="doc['input']['mixture'][12]['molefraction']"/></span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','mixture',12,'molefraction'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.4.14</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w10">i-Butane</span>
+          <span class="w6">C4H10</span>
+          <span class="w6">58.120</span>
+          <span class="w6"><input class="inp" v-model="doc['input']['mixture'][13]['molefraction']"/></span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','mixture',13,'molefraction'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.4.15</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w10">n-Butane</span>
+          <span class="w6">C4H10</span>
+          <span class="w6">58.120</span>
+          <span class="w6"><input class="inp" v-model="doc['input']['mixture'][14]['molefraction']"/></span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','mixture',14,'molefraction'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.4.16</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w10">i-Pentane</span>
+          <span class="w6">C5H12</span>
+          <span class="w6">72.146</span>
+          <span class="w6"><input class="inp" v-model="doc['input']['mixture'][15]['molefraction']"/></span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','mixture',15,'molefraction'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.4.17</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w10">n-Pentane</span>
+          <span class="w6">C5H12</span>
+          <span class="w6">72.146</span>
+          <span class="w6"><input class="inp" v-model="doc['input']['mixture'][16]['molefraction']"/></span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','mixture',16,'molefraction'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.4.18</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w10">Hexane+</span>
+          <span class="w6">C6H14</span>
+          <span class="w6">86.000</span>
+          <span class="w6"><input class="inp" v-model="doc['input']['mixture'][17]['molefraction']"/></span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','mixture',17,'molefraction'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>2</td>
+        <td colspan="8">
+          <span class="w16"><b>Results</b></span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.4</td>
+        <td colspan="4">
+          <span class="w14">MW</span>
+          <span class="w6 result">[[ doc['result']['MW']['_val'] ]]</span>
+          <span class="w6">[[ gUL('molecularMass') ]]</span>
+        </td>
+        <td colspan="4"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td colspan="4">
+          <span class="w14">Critical Pressure</span>
+          <span class="w6 result">[[ doc['result']['Pcritical']['_val'] ]]</span>
+          <span class="w6">[[ gUL('pressure') ]]</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.3</td>
+        <td colspan="4">
+          <span class="w14">Critical Temperature</span>
+          <span class="w6 result"> [[ doc['result']['Tcritical']['_val'] ]]</span>
+          <span class="w6">[[ gUL('temperature') ]]</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td colspan="4">
+          <span class="w14">Reduced Pressure</span>
+          <span class="w6 result"> [[ doc['result']['Pr']['_val'] ]]</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.3</td>
+        <td colspan="4">
+          <span class="w14">Reduced Temperature</span>
+          <span class="w6 result"> [[ doc['result']['Tr']['_val'] ]]</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.3</td>
+        <td colspan="4">
+          <span class="w14">Acentric Factor</span>
+          <span class="w6 result"> [[ doc['result']['acentric']['_val'] ]]</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.3</td>
+        <td colspan="4">
+          <span class="w14">Z (Peng-Robinson)</span>
+          <span class="w6 result"> [[ doc['result']['Z_PR']['_val'] ]]</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.3</td>
+        <td colspan="4">
+          <span class="w14">Z (Lee-Kesler)</span>
+          <span class="w6 result"> [[ doc['result']['Z_LKP']['_val'] ]]</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.3</td>
+        <td colspan="4">
+          <span class="w14">Z (Nelson Obert)</span>
+          <span class="w6 result"> [[ doc['result']['Z_NO']['_val'] ]]</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.3</td>
+        <td colspan="4">
+          <span class="w14">Cp0</span>
+          <span class="w6 result"> [[ doc['result']['Cp0mass']['_val'] ]]</span>
+          <span class="w6">[[ gUL('specificHeat') ]]</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.3</td>
+        <td colspan="4">
+          <span class="w14">Cv0</span>
+          <span class="w6 result"> [[ doc['result']['Cv0mass']['_val'] ]]</span>
+          <span class="w6">[[ gUL('specificHeat') ]]</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.3</td>
+        <td colspan="4">
+          <span class="w14">Cp0 Molar</span>
+          <span class="w6 result"> [[ doc['result']['Cp0molar']['_val'] ]]</span>
+          <span class="w6">[[ gUL('specificHeatMolar') ]]</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.3</td>
+        <td colspan="4">
+          <span class="w14">Cv0 Molar</span>
+          <span class="w6 result"> [[ doc['result']['Cv0molar']['_val'] ]]</span>
+          <span class="w6">[[ gUL('specificHeatMolar') ]]</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+{% endblock content %}
+
+
+{% block script_vueapp %}
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        delimiters : ['[[',']]'],
+        mixins: [app_common, app_doc],
+        data: {
+            doc : {{ doc | safe }},
+            fixed:{
+              state_options:["Saturated_T", "Saturated_P", "Superheated_or_Compressed"]
+            }
+        },
+        computed: {
+          state : function(){
+            return this.doc['input']['state']['_val'];
+          }
+        },
+        methods: {}
+    });
+</script>
+{% endblock script_vueapp %}

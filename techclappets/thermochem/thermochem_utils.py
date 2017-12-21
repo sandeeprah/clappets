@@ -49,10 +49,14 @@ def mixture_props(mixture, P=None, T=None):
             Cp0molar = CP.PropsSI("Cp0molar", "P", P, "T", T, fluid)
             Cp0molar_mix += Cp0molar*y_component
 
+    MW_mix = round(MW_mix, 6)
+    Pc_mix = round(Pc_mix, 1)
+    ω_mix = round(ω_mix, 4)
+
     properties.update({"MW":MW_mix})
-    properties.update({"Pc":Pc_mix})
-    properties.update({"Tc":Tc_mix})
-    properties.update({"omega":ω_mix})
+    properties.update({"Pcritical":Pc_mix})
+    properties.update({"Tcritical":Tc_mix})
+    properties.update({"acentric":ω_mix})
 
     if (P is not None) and (T is not None):
         Pr_mix = P/Pc_mix
@@ -61,9 +65,35 @@ def mixture_props(mixture, P=None, T=None):
         Cv0mass_mix  = Cp0mass_mix - (R/ MW_mix)
         Cv0molar_mix = Cp0molar_mix - R
         k_mix = Cp0molar_mix/Cv0molar_mix
-        Z_mix_PR = Z_PengRobinson_mixture(mixture=mixture, P=P, T=T)
-        Z_mix_LKP = Z_LeeKesler_mixture(mixture=mixture, P=P, T=T)
-        Z_mix_NO = Z_NelsonObert_mixture(mixture=mixture, P=P, T=T)
+
+        try:
+            Z_mix_PR = Z_PengRobinson_mixture(mixture=mixture, P=P, T=T)
+        except Exception:
+            Z_mix_PR = math.nan
+
+        try:
+            Z_mix_LKP = Z_LeeKesler_mixture(mixture=mixture, P=P, T=T)
+        except Exception:
+            Z_mix_LKP = math.nan
+
+        try:
+            Z_mix_NO = Z_NelsonObert_mixture(mixture=mixture, P=P, T=T)
+        except Exception:
+            Z_mix_NO = math.nan
+
+
+
+        Pr_mix = round(Pr_mix, 4)
+        Tr_mix = round(Tr_mix, 4)
+        Z_mix_PR = round(Z_mix_PR, 4)
+        Z_mix_LKP = round(Z_mix_LKP, 4)
+        Z_mix_NO = round(Z_mix_NO, 4)
+
+        Cp0mass_mix = round(Cp0mass_mix, 1)
+        Cv0mass_mix = round(Cv0mass_mix, 1)
+        Cp0molar_mix = round(Cp0molar_mix, 1)
+        Cv0molar_mix = round(Cv0molar_mix, 1)
+
 
         properties.update({"Pr":Pr_mix})
         properties.update({"Tr":Tr_mix})

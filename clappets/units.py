@@ -4,9 +4,9 @@ import os
 import math
 from marshmallow import Schema, fields, pprint, pre_load, validate, validates, ValidationError
 from collections import OrderedDict
+from clappets.utils import parseFloat, roundit
 
 unitLib = OrderedDict({
-
     "length": {
         "dimtitle": "Length",
         "units": {
@@ -592,27 +592,10 @@ def unitConvert(value, dimension, fromUnit, toUnit):
                 offset_to_unit = getUnitOffset(dimension, toUnit);
                 base_value = parsed_value * cf_from_unit + offset_from_unit;
                 return_value = (base_value - offset_to_unit) / cf_to_unit;
-                return_value = roundit(return_value,0.001,6)
+                return_value = roundit(return_value,7,0.001)
 
 
     return str(return_value)
-
-
-def parseFloat(value):
-    try:
-        return float(value)
-    except Exception:
-        return math.nan
-
-def roundit(value, allowed_error=0.001, max_decims=6):
-    decims = 1
-    for decims in range(1,7):
-        rounded_value = round(value, decims)
-        abs_error = abs(value - rounded_value)
-        rel_error = abs_error/abs(value)
-        if rel_error < allowed_error:
-            return rounded_value
-    return rounded_value
 
 
 def treeUnitConvert(tree, fromUnits, toUnits):
@@ -642,87 +625,3 @@ def treeUnitConvert(tree, fromUnits, toUnits):
     elif (isinstance(tree, list)):
         for item in tree:
             treeUnitConvert(item, fromUnits, toUnits)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        '''
-        treeUnitConvert: function(objecttree, fromUnits, toUnits) {
-            //console.log(objecttree);
-            //objecttree = JSON.parse(JSON.stringify(objecttree));
-
-            for (var node in objecttree) {
-                if (objecttree.hasOwnProperty(node)) {
-                    elem = objecttree[node];
-                    if (elem.hasOwnProperty('_dim') && elem.hasOwnProperty('_val')) {
-                        try {
-                            var from_value = elem['_val'];
-                            var dimension = elem['_dim'];
-                            var from_unit;
-                            var to_unit;
-                            if (dimension != 'none') {
-                                from_unit = fromUnits[dimension];
-                                to_unit = toUnits[dimension];
-                            } else {
-                                from_unit = 'none';
-                                to_unit = 'none';
-                            }
-                            var to_value = unitConvert(from_value, dimension, from_unit, to_unit);
-                            elem['_val'] = to_value;
-                        } catch (err) {
-                            elem['_val'] = '';
-                            console.log(err);
-                            console.log("error occured in unit convert while converting " + dimension)
-                        }
-                    } else if (elem.hasOwnProperty('_coldim') && elem.hasOwnProperty('_list')) {
-                        var index;
-                        var row;
-                        for (index = 0; index < elem['_list'].length; ++index) {
-                            row = elem['_list'][index];
-                            for (var column in row) {
-                                if (row.hasOwnProperty(column)) {
-                                    console.log(column);
-                                    var from_value = row[column];
-                                    var dimension;
-                                    if (elem['_coldim'].hasOwnProperty(column)) {
-                                        dimension = elem['_coldim'][column]
-                                    } else {
-                                        dimension = 'none'
-                                    }
-                                    var from_unit;
-                                    var to_unit;
-                                    if (dimension != 'none') {
-                                        from_unit = fromUnits[dimension];
-                                        to_unit = toUnits[dimension];
-                                    } else {
-                                        from_unit = 'none';
-                                        to_unit = 'none';
-                                    }
-                                    var to_value = unitConvert(from_value, dimension, from_unit, to_unit);
-                                    row[column] = to_value;
-                                }
-                            }
-                        }
-
-                    } else {
-                        if (elem !== null && typeof(elem) === 'object') {
-                            elem = this.treeUnitConvert(elem, fromUnits, toUnits);
-                        }
-                    }
-                }
-            }
-        },
-        '''

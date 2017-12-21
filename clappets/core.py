@@ -59,7 +59,7 @@ class validator :
             try:
                 val = float(value['_val'])
                 if val < self.minimum :
-                    raise ValidationError("Value below Min")
+                    raise ValidationError("Value below {}".format(self.minimum))
             except ValueError:
                     raise ValidationError("Invalid Value")
 
@@ -110,7 +110,7 @@ class validator :
             try:
                 val = float(value['_val'])
                 if val > self.maximum :
-                    raise ValidationError("Value above Max")
+                    raise ValidationError("Value above {}".format(self.maximum))
             except ValueError:
                     raise ValidationError("Invalid Value")
             return value
@@ -138,7 +138,7 @@ class validator :
             try:
                 val = float(value['_val'])
                 if val >= self.maximum :
-                    raise ValidationError("Value above Max")
+                    raise ValidationError("Value above ".format(self.maximum))
             except ValueError:
                     raise ValidationError("Invalid Value")
 
@@ -275,6 +275,7 @@ class sMeta(Schema):
     docCategory = fields.String(required=True)
     docSubCategory = fields.String(required=True)
     docClass = fields.String(required=True)
+    docClass_title = fields.String(required=True)
     docInstance = fields.String(required=True)
     docInstance_title = fields.String(required=True)
     doc_no = fields.String()
