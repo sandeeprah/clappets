@@ -1,0 +1,126 @@
+{% extends "document/document.html" %}
+{% block content %}
+<div class="datasheet">
+  <table class="main">
+    <thead>
+        <tr>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <td colspan="10" style="text-align:right;">
+            <i>Template URL : </i>
+            <a href="https://www.clappets.com/htm/document/tpl/root/mec/cal/nos/sum/">https://www.clappets.com/htm/document/tpl/root/mec/cal/nos/sum/</a>
+        </td>
+    </tfoot>
+    <tbody>
+      <tr>
+        <td>S#</td>
+        <td colspan="8" style="text-align:center;">
+          <span class="title is-6">[[ doc['meta']['docClass_title'] ]]</span>
+        </td>
+        <td>R#</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td colspan="8">
+          <span class="w16"><b>Inputs</b></span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w6">Noise Level</span>
+          <span class="w4">(dB)</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr v-for="(item, index) in doc['input']['noiseLevelList']">
+        <td>1.2</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w6">[[ index+1]]</span>
+          <span class="w4">
+            <input class="inp" type="number" v-model="doc['input']['noiseLevelList'][index]">
+          </span>
+          <span class="w4 hideprint">
+            <a  class="hideprint" @click="removeItem(index)" style="width:100%;">❌</a>
+          </span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr class="hideprint">
+        <td></td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w10">
+            <a class="button is-small is-primary" style="width:100%" v-on:click="addItem">Add Noise Item</a>
+          </span>
+        </td>
+        <td colspan="4"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td colspan="8">
+          <span class="w16"><b>Results</b></span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.1</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w6">Total</span>
+          <span class="w4 result">[[ doc['result']['noiseTotal']['_val'] ]]</span><span class="w2">dB</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+
+
+
+    </tbody>
+  </table>
+</div>
+{% endblock content %}
+
+
+{% block script_vueapp %}
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        delimiters : ['[[',']]'],
+        mixins: [app_common, app_doc],
+        data: {
+            doc : {{ doc | safe }},
+        },
+        computed: {
+        },
+        methods: {
+          removeItem: function(index) {
+            this.doc['input']['noiseLevelList'].splice(index,1);
+          },
+          addItem: function() {
+            this.doc['input']['noiseLevelList'].push("0");
+          },
+        }
+    });
+</script>
+{% endblock script_vueapp %}

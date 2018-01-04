@@ -302,7 +302,7 @@ class sDocPrj(Schema):
     input = fields.Dict(required = True)
     result = fields.Dict()
     report = fields.Url()
-    errors = fields.Dict()
+    errors = fields.List(fields.String)
 
     class Meta:
         ordered = True

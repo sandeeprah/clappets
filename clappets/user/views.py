@@ -244,6 +244,8 @@ def htm_view_user(prj_id):
         return render_template("user/user.html", doc = doc, action="view")
 
 
+
+
 @app.route('/htm/user/confirm/<user_id>/<token>/', methods=['GET'])
 def confirm_email(user_id, token):
     try:
@@ -288,9 +290,6 @@ def user_account():
     print(user)
     return render_template("user/account.html")
 
-@app.route('/htm/user/forgot/', methods=['GET'])
-def forgot_password():
-    return render_template("user/forgot_password.html")
 
 def generate_confirmation_token(email):
     serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])

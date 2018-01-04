@@ -17,6 +17,10 @@ def pressuredrop_index():
 def noise_index():
     return render_template("calc/noise/index.html")
 
+@app.route('/htm/calc/piping/')
+def piping_index():
+    return render_template("calc/piping/index.html")
+
 @app.route('/htm/calc/pump/')
 def pump_index():
     return render_template("calc/pump/index.html")

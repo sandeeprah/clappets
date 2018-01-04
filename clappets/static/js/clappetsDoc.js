@@ -20,6 +20,11 @@ var app_doc = {
     },
 
     computed : {
+        doc_id: function() {
+            meta = this.doc['meta'];
+            id = meta["projectID"] + "-" + meta["discipline"] + "-" + meta["docCategory"] + "-" + meta["docSubCategory"] + "-" + meta["docClass"] + "-" + meta["docInstance"];
+            return id;
+        },
         dimensions_used: function() {
             dimensions = []
             for (var dimension in this.doc.units) {
@@ -29,16 +34,18 @@ var app_doc = {
             }
             return dimensions;
         },
-        doc_id: function() {
-            meta = this.doc['meta'];
-            id = meta["projectID"] + "-" + meta["discipline"] + "-" + meta["docCategory"] + "-" + meta["docSubCategory"] + "-" + meta["docClass"] + "-" + meta["docInstance"];
-            return id;
-        },
-
         units_used : function(){
           var clone = JSON.parse(JSON.stringify(this.doc.units))
           return clone;
+        },
+        show_units : function(){
+          return true;
+        },
+
+        show_calculation: function(){
+          return true;
         }
+
     },
 
     watch: {
@@ -117,7 +124,6 @@ var app_doc = {
                 this.delete_resource("doc", this.doc["_id"], "/api/document/db/");
             }
         },
-
 
         calculate : function(){
             fn_success =function(){};

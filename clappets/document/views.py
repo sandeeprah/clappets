@@ -473,7 +473,6 @@ def api_macro():
 #then all htm views
 
 @app.route('/htm/document/', methods=['GET', 'POST'])
-@auth_relaxed.login_required
 def htm_Doc():
     if (request.method=='GET'):
         this_folderpath = os.path.dirname(os.path.abspath(__file__))
@@ -485,12 +484,51 @@ def htm_Doc():
         except Exception as e:
             return "Error Occured" + str(e)
         template = "/document/document.html"
-        if g.user:
-            authenticated=True
-        else:
-            authenticated = False
 
-        return render_template(template, doc=doc,authenticated=authenticated)
+        return render_template(template, doc=doc,authenticated=False)
+    else:
+        doc_file = request.files['doc']
+        docRaw = json.loads(doc_file.read().decode('utf-8'))
+        basicSchema = sDocPrj()
+        docParsed = basicSchema.load(docRaw)
+        if (len(docParsed.errors) > 0):
+            errors["message"] = "The Document Meta Information has errors"
+            errors["schema"] = docParsed.errors
+            return json_response(errors), 400
+
+        #check if the raw document conforms to the specific document schema for the class
+        try:
+            projectID = docRaw['meta']['projectID']
+            repository = get_repository(projectID)
+            discipline = docRaw['meta']['discipline']
+            docCategory = docRaw['meta']['docCategory']
+            docSubCategory = docRaw['meta']['docSubCategory']
+            docClass = docRaw['meta']['docClass']
+            path = os.path.join(repository, discipline, docCategory, docSubCategory, docClass, "doc.html")
+            template = "/".join(path.split(os.sep))
+        except:
+            pass
+
+        doc = json.dumps(docRaw, indent=4)
+        return render_template(template, doc=doc, authenticated=False)
+
+
+
+
+@app.route('/htm/documentauth/', methods=['GET', 'POST'])
+@auth.login_required
+def htm_DocAuth():
+    if (request.method=='GET'):
+        this_folderpath = os.path.dirname(os.path.abspath(__file__))
+        folderpath = this_folderpath
+        doc_json_path = os.path.join(folderpath, "base.json")
+        try:
+            doc_json = json.load(open(doc_json_path), object_pairs_hook=OrderedDict)
+            doc = json.dumps(doc_json, indent=4)
+        except Exception as e:
+            return "Error Occured" + str(e)
+        template = "/document/document.html"
+        return render_template(template, doc=doc,authenticated=True)
     else:
         doc_file = request.files['doc']
         docRaw = json.loads(doc_file.read().decode('utf-8'))
@@ -518,9 +556,7 @@ def htm_Doc():
         return render_template(template, doc=doc, authenticated=True)
 
 
-
 @app.route('/htm/document/tpl/<repository>/<discipline>/<docCategory>/<docSubCategory>/<docClass>/', methods=['GET'])
-@auth_relaxed.login_required
 def htm_template(repository, discipline, docCategory, docSubCategory, docClass):
     this_folderpath = os.path.dirname(os.path.abspath(__file__))
     folderpath = os.path.join(this_folderpath, repository, discipline, docCategory, docSubCategory, docClass)
@@ -534,12 +570,8 @@ def htm_template(repository, discipline, docCategory, docSubCategory, docClass):
         return "Error Occured" + str(e)
     ostemplatepath = os.path.join(repository, discipline, docCategory, docSubCategory, docClass, "doc.html")
     template = "/".join(ostemplatepath.split(os.sep))
-    if g.user:
-        authenticated=True
-    else:
-        authenticated = False
 
-    return render_template(template, doc=doc, authenticated=authenticated)
+    return render_template(template, doc=doc, authenticated=False)
 
 
 @app.route('/htm/document/db/<doc_id>/', methods=['GET'])

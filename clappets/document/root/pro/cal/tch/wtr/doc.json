@@ -50,5 +50,5 @@
     "u": {"_val":"", "_dim":"specificEnergy"},
     "s": {"_val":"", "_dim":"specificHeat"}
   },
-  "errors": {}
+  "errors": []
 }

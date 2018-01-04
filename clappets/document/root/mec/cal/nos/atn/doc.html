@@ -1,0 +1,162 @@
+{% extends "document/document.html" %}
+{% block content %}
+<div class="datasheet">
+  <table class="main">
+    <thead>
+        <tr>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <td colspan="10" style="text-align:right;">
+            <i>Template URL : </i>
+            <a href="https://www.clappets.com/htm/document/tpl/root/mec/cal/nos/con/">https://www.clappets.com/htm/document/tpl/root/mec/cal/psy/hai/</a>
+        </td>
+    </tfoot>
+    <tbody>
+      <tr>
+        <td>S#</td>
+        <td colspan="8" style="text-align:center;">
+          <span class="title is-6">[[ doc['meta']['docClass_title'] ]]</span>
+        </td>
+        <td>R#</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td colspan="8">
+          <span class="w16"><b>Inputs</b></span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+      <td>1.1</td>
+      <td colspan="4">
+        <span class="w14">Calculation Option</span>
+        <span class="w16">
+          <select class="inp" v-model="doc['input']['source_option']['_val']">
+            <option value="point">Point</option>
+            <option value="line">Line</option>
+            <option value="wall">Wall</option>
+          </select>
+      </td>
+      <td colspan="4">
+        <p class="help is-danger" v-for="err in getErrs(['schema','input','source_option'])">[[err]]</p>
+      </td>
+      <td></td>
+    </tr>
+      <tr>
+        <td>1.1</td>
+        <td colspan="4">
+          <span class="w14">Sound Pressure Level @ R1</span>
+          <span class="w6"><input class="inp" type="text" v-model="doc['input']['SPL1']['_val']"/></span>
+          <span class="w6">dB</span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','SPL1'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td colspan="4">
+          <span class="w14">R1</span>
+          <span class="w6"><input class="inp" type="text" v-model="doc['input']['R1']['_val']"/></span>
+          <span class="w6">[[ gUL('length') ]]</span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','R1'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.3</td>
+        <td colspan="4">
+          <span class="w14">R2</span>
+          <span class="w6"><input class="inp" type="text" v-model="doc['input']['R2']['_val']"/></span>
+          <span class="w6">[[ gUL('length') ]]</span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','R2'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr v-show="source_option=='wall'">
+        <td>1.4</td>
+        <td colspan="4">
+          <span class="w14">Width</span>
+          <span class="w6"><input class="inp" type="text" v-model="doc['input']['width']['_val']"/></span>
+          <span class="w6">[[ gUL('length') ]]</span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','width'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr v-show="source_option=='wall'">
+        <td>1.5</td>
+        <td colspan="4">
+          <span class="w14">Height</span>
+          <span class="w6"><input class="inp" type="text" v-model="doc['input']['height']['_val']"/></span>
+          <span class="w6">[[ gUL('length') ]]</span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','height'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>2</td>
+        <td colspan="8">
+          <span class="w16"><b>Results</b></span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.1</td>
+        <td colspan="4">
+          <span class="w14">Sound Pressure Level @ R2</span>
+          <span class="w6"><input class="inp" type="text" v-model="doc['result']['SPL2']['_val']"/></span>
+          <span class="w6">[[ gUL('length') ]]</span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','result','SPL2'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+{% endblock content %}
+
+
+{% block script_vueapp %}
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        delimiters : ['[[',']]'],
+        mixins: [app_common, app_doc],
+        data: {
+            doc : {{ doc | safe }},
+            fixed:{
+              calculation_options:["calcSPL","calcPWL","calcDistance"]
+            }
+        },
+        computed: {
+          source_option : function(){
+            return this.doc['input']['source_option']['_val'];
+          }
+        },
+        methods: {}
+    });
+</script>
+{% endblock script_vueapp %}

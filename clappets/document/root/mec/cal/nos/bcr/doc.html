@@ -1,0 +1,409 @@
+{% extends "document/document.html" %} {% block content %}
+<div class="datasheet">
+  <table class="main">
+    <thead>
+      <tr>
+        <th style="border:0px;">&nbsp;</th>
+        <th style="border:0px;">&nbsp;</th>
+        <th style="border:0px;">&nbsp;</th>
+        <th style="border:0px;">&nbsp;</th>
+        <th style="border:0px;">&nbsp;</th>
+        <th style="border:0px;">&nbsp;</th>
+        <th style="border:0px;">&nbsp;</th>
+        <th style="border:0px;">&nbsp;</th>
+        <th style="border:0px;">&nbsp;</th>
+        <th style="border:0px;">&nbsp;</th>
+      </tr>
+    </thead>
+    <tfoot>
+      <td colspan="10" style="text-align:right;">
+        <i>Template URL : </i>
+        <a href="https://www.clappets.com/htm/document/tpl/root/mec/cal/nos/con/">https://www.clappets.com/htm/document/tpl/root/mec/cal/psy/hai/</a>
+      </td>
+    </tfoot>
+    <tbody>
+      <tr>
+        <td>S#</td>
+        <td colspan="8" style="text-align:center;">
+          <span class="title is-6">[[ doc['meta']['docClass_title'] ]]</span>
+        </td>
+        <td>R#</td>
+      </tr>
+    </tbody>
+      <tr>
+        <td>1</td>
+        <td colspan="8">
+          <span class="w16"><b>Inputs</b></span>
+        </td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>1.1</td>
+        <td colspan="4">
+          <span class="w14">Correction Option</span>
+          <span class="w16">
+          <select class="inp" v-model="doc['input']['correction_option']['_val']">
+            <option value="overall">Overall</option>
+            <option value="spectrum">Spectrum</option>
+          </select>
+      </td>
+      <td colspan="4">
+        <p class="help is-danger" v-for="err in getErrs(['schema','input','correction_option'])">[[err]]</p>
+      </td>
+      <td></td>
+    </tr>
+
+    <tr v-show="crn_opt=='overall'">
+      <td>1.2</td>
+      <td colspan="4">
+        <span class="w14">Total Noise</span>
+          <span class="w6"><input class="inp" type="text" v-model="doc['input']['totalNoise']['_val']"/></span>
+          <span class="w6">dB</span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','totalNoise'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr v-show="crn_opt=='overall'">
+        <td>1.3</td>
+        <td colspan="4">
+          <span class="w14">Background Noise</span>
+          <span class="w6"><input class="inp" type="text" v-model="doc['input']['backgroundNoise']['_val']"/></span>
+          <span class="w6">dB</span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','backgroundNoise'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+
+      <tbody v-show="crn_opt=='spectrum'">
+      <tr>
+        <td>1.2</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w4">Hz</span>
+          <span class="w8" style="text-align:center">Total Noise(dB)</span>
+          <span class="w2" ></span>
+          <span class="w8" style="text-align:center">Back. Noise(dB)</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2.1</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w4">63</span>
+          <span class="w8">
+            <input class="inp" type="number" v-model="doc['input']['totalSpectrum']['f63']"/>
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','totalSpectrum','f63'])">[[err]]</p>
+          </span>
+          <span class="w2"></span>
+          <span class="w8">
+            <input class="inp" type="number" v-model="doc['input']['backgroundSpectrum']['f63']"/>
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','backgroundSpectrum','f63'])">[[err]]</p>
+          </span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2.1</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w4">125</span>
+          <span class="w8">
+            <input class="inp" type="number" v-model="doc['input']['totalSpectrum']['f125']"/>
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','totalSpectrum','f125'])">[[err]]</p>
+          </span>
+          <span class="w2"></span>
+          <span class="w8">
+            <input class="inp" type="number" v-model="doc['input']['backgroundSpectrum']['f125']"/>
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','backgroundSpectrum','f125'])">[[err]]</p>
+          </span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2.3</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w4">250</span>
+          <span class="w8">
+            <input class="inp" type="number" v-model="doc['input']['totalSpectrum']['f250']"/>
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','totalSpectrum','f250'])">[[err]]</p>
+          </span>
+          <span class="w2"></span>
+          <span class="w8">
+            <input class="inp" type="number" v-model="doc['input']['backgroundSpectrum']['f250']"/>
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','backgroundSpectrum','f250'])">[[err]]</p>
+          </span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2.4</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w4">500</span>
+          <span class="w8">
+            <input class="inp" type="number" v-model="doc['input']['totalSpectrum']['f500']"/>
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','totalSpectrum','f500'])">[[err]]</p>
+          </span>
+          <span class="w2"></span>
+          <span class="w8">
+            <input class="inp" type="number" v-model="doc['input']['backgroundSpectrum']['f500']"/>
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','backgroundSpectrum','f500'])">[[err]]</p>
+          </span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2.5</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w4">1000</span>
+          <span class="w8">
+            <input class="inp" type="number" v-model="doc['input']['totalSpectrum']['f1000']"/>
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','totalSpectrum','f1000'])">[[err]]</p>
+          </span>
+          <span class="w2"></span>
+          <span class="w8">
+            <input class="inp" type="number" v-model="doc['input']['backgroundSpectrum']['f1000']"/>
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','backgroundSpectrum','f1000'])">[[err]]</p>
+          </span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2.6</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w4">2000</span>
+          <span class="w8">
+            <input class="inp" type="number" v-model="doc['input']['totalSpectrum']['f2000']"/>
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','totalSpectrum','f2000'])">[[err]]</p>
+          </span>
+          <span class="w2"></span>
+          <span class="w8">
+            <input class="inp" type="number" v-model="doc['input']['backgroundSpectrum']['f2000']"/>
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','backgroundSpectrum','f2000'])">[[err]]</p>
+          </span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2.7</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w4">4000</span>
+          <span class="w8">
+            <input class="inp" type="number" v-model="doc['input']['totalSpectrum']['f4000']"/>
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','totalSpectrum','f4000'])">[[err]]</p>
+          </span>
+          <span class="w2"></span>
+          <span class="w8">
+            <input class="inp" type="number" v-model="doc['input']['backgroundSpectrum']['f4000']"/>
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','backgroundSpectrum','f4000'])">[[err]]</p>
+          </span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2.8</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w4">8000</span>
+          <span class="w8">
+            <input class="inp" type="number" v-model="doc['input']['totalSpectrum']['f8000']"/>
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','totalSpectrum','f8000'])">[[err]]</p>
+          </span>
+          <span class="w2"></span>
+          <span class="w8">
+            <input class="inp" type="number" v-model="doc['input']['backgroundSpectrum']['f8000']"/>
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','backgroundSpectrum','f8000'])">[[err]]</p>
+          </span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+    </tbody>
+
+      <tr>
+        <td>2</td>
+        <td colspan="8">
+          <span class="w16"><b>Results</b></span>
+        </td>
+        <td></td>
+      </tr>
+      <tr v-show="crn_opt=='overall'">
+        <td>2.1</td>
+        <td colspan="4">
+          <span class="w14">Source Noise</span>
+          <span class="w6 result"> [[ doc['result']['sourceNoise']['_val'] ]]</span>
+          <span class="w6">dB</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tbody v-show="crn_opt=='spectrum'">
+      <tr>
+        <td>2.1</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w4">Hz</span>
+          <span class="w8" style="text-align:center">Source Noise(dB)</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.1.1</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w4">63</span>
+          <span class="w8 result">
+            [[ doc['result']['sourceSpectrum']['f63'] ]]
+          </span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.1.2</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w4">125</span>
+          <span class="w8 result">
+            [[ doc['result']['sourceSpectrum']['f125'] ]]
+          </span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.1.3</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w4">250</span>
+          <span class="w8 result">
+            [[ doc['result']['sourceSpectrum']['f250'] ]]
+          </span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.1.4</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w4">500</span>
+          <span class="w8 result">
+            [[ doc['result']['sourceSpectrum']['f500'] ]]
+          </span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.1.5</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w4">1000</span>
+          <span class="w8 result">
+            [[ doc['result']['sourceSpectrum']['f1000'] ]]
+          </span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.1.6</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w4">2000</span>
+          <span class="w8 result">
+            [[ doc['result']['sourceSpectrum']['f2000'] ]]
+          </span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.1.7</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w4">4000</span>
+          <span class="w8 result">
+            [[ doc['result']['sourceSpectrum']['f4000'] ]]
+          </span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.1.8</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w4">8000</span>
+          <span class="w8 result">
+            [[ doc['result']['sourceSpectrum']['f8000'] ]]
+          </span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+{% endblock content %}
+
+{% block script_vueapp %}
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    delimiters: ['[[', ']]'],
+    mixins: [app_common, app_doc],
+    data: {
+      doc: {{doc | safe}},
+      fixed: {
+        calculation_options: ["calcSPL", "calcPWL", "calcDistance"]
+      }
+    },
+    computed: {
+      crn_opt: function() {
+        return this.doc['input']['correction_option']['_val'];
+      }
+    },
+    methods: {}
+  });
+</script>
+{% endblock script_vueapp %}

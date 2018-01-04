@@ -594,8 +594,10 @@ def unitConvert(value, dimension, fromUnit, toUnit):
                 return_value = (base_value - offset_to_unit) / cf_to_unit;
                 return_value = roundit(return_value,7,0.001)
 
-
-    return str(return_value)
+    if (isinstance(value, str)):
+        return str(return_value)
+    else:
+        return return_value
 
 
 def treeUnitConvert(tree, fromUnits, toUnits):
@@ -612,12 +614,13 @@ def treeUnitConvert(tree, fromUnits, toUnits):
         if ('_coldim' in tree) and ('_list' in tree):
             for row in tree['_list']:
                 for column in row:
-                    dimension = tree['_coldim'][column]
-                    value = row[column]
-                    fromUnit = fromUnits[dimension]
-                    toUnit = toUnits[dimension]
-                    con_value = unitConvert(value, dimension, fromUnit, toUnit)
-                    row[column] = con_value
+                    if column in tree['_coldim']:
+                        dimension = tree['_coldim'][column]
+                        value = row[column]
+                        fromUnit = fromUnits[dimension]
+                        toUnit = toUnits[dimension]
+                        con_value = unitConvert(value, dimension, fromUnit, toUnit)
+                        row[column] = con_value
         else:
             for k,v in tree.items():
                 treeUnitConvert(v, fromUnits, toUnits)

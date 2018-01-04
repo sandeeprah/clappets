@@ -1,0 +1,41 @@
+{
+  "_id": "",
+  "meta": {
+    "projectID": "0000",
+    "project_title": "Local",
+    "discipline" : "mec",
+    "docCategory": "cal",
+    "docSubCategory": "nos",
+    "docClass": "con",
+    "docClass_title": "Common Noise Conversions",
+    "docInstance": "1",
+    "docInstance_title": "Common Noise Conversions",
+    "doc_no":"0000-MEC-CAL-NOS-CON-01",
+    "rev": "A",
+    "date":"",
+    "status": "",
+    "performer": "",
+    "reviewer": "",
+    "approver": ""
+  },
+
+  "units": {
+    "length": "m"
+  },
+
+  "input": {
+    "calculation_option" : {"_val":"calcSPL"},
+    "PWL" : {"_val": ""},
+    "SPL" : {"_val": ""},
+    "distance" : {"_val": "", "_dim":"length"},
+    "Q" : {"_val": "1"}
+  },
+
+  "result": {
+    "PWL" : {"_val": ""},
+    "SPL" : {"_val": ""},
+    "distance" : {"_val": "1", "_dim":"length"}
+  },
+
+  "errors": []
+}

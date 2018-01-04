@@ -18,8 +18,12 @@ def getSPL(PWL, distance, Q):
         SPL : Sound Pressure Level in dB
     '''
     Area = 4*math.pi*math.pow(distance,2)/Q
-    SPL = PWL - 10*math.log10(Area)
-    SPL = round(SPL,1)
+    try:
+        SPL = PWL - 10*math.log10(Area)
+        SPL = round(SPL,1)
+    except Exception:
+        SPL = math.nan
+    
     return SPL
 
 
@@ -112,12 +116,17 @@ def correctBackNoise(noiseTotal, noiseBackground):
         noise level attributable to the source in dB.
 
     '''
-    noise_intensity_total = math.pow(10, noiseTotal/10)
-    noise_intensity_background = math.pow(10, noiseBackground/10)
-    noise_intensity_source = noise_intensity_total - noise_intensity_background
+    try:
+        noise_intensity_total = math.pow(10, noiseTotal/10)
+        noise_intensity_background = math.pow(10, noiseBackground/10)
+        noise_intensity_source = noise_intensity_total - noise_intensity_background
 
-    noiseSource = 10*math.log10(noise_intensity_source)
-    noiseSource = round(noiseSource,2)
+        noiseSource = 10*math.log10(noise_intensity_source)
+        noiseSource = round(noiseSource,2)
+    except Exception:
+        noiseSource = math.nan
+
+
     return noiseSource
 
 

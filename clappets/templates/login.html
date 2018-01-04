@@ -6,95 +6,66 @@
   <div class="container">
     <div class="columns is-centered">
       <div class="column is-6">
-        <div class="box" style="width:100%">
-          <h1 class="title is-3">Login</h1>
-          <div id="app">
-            <div class="field">
-              <div class="control">
-                <input class="input" type="text" placeholder="Your Username" autofocus="" v-model="username">
-              </div>
+
+        <div class="box" style="height:280px; overflow:auto;">
+          <h4 class="title is-4">Login</h4>
+          <div class="field">
+            <div class="control has-icons-left">
+              <input class="input" type="text" placeholder="Username" autofocus="" v-model="username">
+              <span class="icon is-small is-left">
+                  <i class="fa fa-user"></i>
+              </span>
             </div>
-            <div class="field">
-              <div class="control">
-                <input class="input" type="password" placeholder="Your Password" v-model="password">
-              </div>
+          </div>
+          <div class="field">
+            <div class="control">
+              <input class="input" type="password" placeholder="Password" v-model="password">
             </div>
-            <div class="field">
-              <label class="checkbox">
-                  <input type="checkbox">
-                  Remember me
-                </label>
+          </div>
+          <div>
+            <p class="help is-danger">[[errorMessage]]</p>
+          </div>
+          <div class="field is-grouped is-grouped-centered">
+            <p class="control">
+              <button class="button is-primary" @click="logme()" style="width:6em">Login</button>
+            </p>
+            <p class="control">
+              <a href="/" class="button is-light" style="width:6em">Cancel</a>
+              </p>
             </div>
-            <a class="button is-block is-info" @click="get_auth_token()"> Login</a>
-            <p>&nbsp;</p>
-            <a class="button is-block is-info" @click="get_prot_resource()">Get Protected Resource</a>
+
+            <p class="has-text-grey has-text-centered">
+              <a href="/register/">Sign Up</a> &nbsp;·&nbsp;
+              <a href="/forgot/">Forgot Password</a> &nbsp;·&nbsp;
+            </p>
         </div>
-        </div>
-        <p class="has-text-grey">
-          <a href="../">Sign Up</a> &nbsp;·&nbsp;
-          <a href="../">Forgot Password</a> &nbsp;·&nbsp;
-          <a href="../">Need Help?</a>
-        </p>
       </div>
     </div>
   </div>
 </section>
 {% endblock content %}
 
-{% block script_bottom %}
-{{ super() }}
 
 
+{% block script_vueapp %}
 <script type="text/javascript">
 
 var app = new Vue({
   el: '#app',
   delimiters: ['[[', ']]'],
-  mixins: [],
+  mixins: [app_common],
   data: {
-      username : 'joe',
-      password : 'billy'
+      username : '',
+      password : ''
   },
   computed : {},
   methods : {
-
-      get_auth_token: function(){
-          alert("u want to login");
-          var app = this;
-          axios({
-                method:'post',
-                url:'/login/',
-                data: {
-                    username : app.username,
-                    password : app.password
-                }
-              })
-              .then(function(response) {
-                  console.log(response.data);
-                  localStorage.setItem('access_token', response.data['access_token']);
-              });
-      },
-
-      get_prot_resource : function(){
-          alert("u want to get a protected resource");
-          var app = this;
-          axios({
-                method:'get',
-                url:'/protected/',
-                data: {
-                    username : app.username,
-                    password : app.password
-                },
-                headers : {
-                  Authorization: 'Bearer ' + localStorage.getItem('access_token')
-                }
-              })
-              .then(function(response) {
-                  document = response.data
-              });
-      },
+    logme: function(){
+        alert('attempting login');
+        this.login();
+    }
   }
 });
 
 </script>
-{% endblock script_bottom %}
+{% endblock script_vueapp %}

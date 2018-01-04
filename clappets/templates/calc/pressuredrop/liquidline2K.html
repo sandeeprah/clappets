@@ -135,7 +135,7 @@
                     </tr>
                     <tr v-show="input['pipe']['size_definition']['_val'] =='Custom'">
                       <td>Inner Dia</td>
-                      <td><span v-text="gUL(input['pipe']['Dia_inner']['_dim'])"></td>
+                      <td><span v-text="gUL('length')"></td>
                       <td>
                         <input class="grid" type="number" v-model="input['pipe']['Dia_inner']['_val']">
                         <p class="help is-danger" v-for="err in get_error_list(['input','pipe','Dia_inner'])">[[err]]</p>

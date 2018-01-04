@@ -602,12 +602,17 @@ function unitConvert(value, dimension, fromUnit, toUnit) {
 
 
 function roundit(value, allowed_error, max_decims){
-  for (var decims = 1; i <= max_decims; decims++) {
-    rounded_value = round(value, decims);
-    abs_error = Math.abs(value-rounded_value);
-    rel_error = abs_error/Math.abs(value);
-    if (rel_error < allowed_error){
-      return rounded_value;
+  if (value==0){
+    return 0
+  }
+  else{
+    for (var decims = 1; decims <= max_decims; decims++) {
+      rounded_value = round(value, decims);
+      abs_error = Math.abs(value-rounded_value);
+      rel_error = abs_error/Math.abs(value);
+      if (rel_error < allowed_error){
+        return rounded_value;
+      }
     }
   }
 }

@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% block title %}Calculations{% endblock %}
-{% block calculations_active %}is-active{% endblock calculations_active %}
 {% block content %}
 <div class="section">
     <div class="container">
@@ -17,7 +16,7 @@
               </div>
               <footer class="card-footer">
                 <p class="card-footer-item">
-                  <span><a href="/calcapi/noise/getSPL/" class="button is-primary">View>></a></span>
+                  <span><a href="/htm/document/tpl/root/mec/cal/nos/con/" class="button is-primary">View>></a></span>
                 </p>
               </footer>
             </div>
@@ -31,7 +30,7 @@
               </div>
               <footer class="card-footer">
                 <p class="card-footer-item">
-                  <span><a href="/calcapi/noise/noiseSummation/" class="button is-primary">View>></a></span>
+                  <span><a href="/htm/document/tpl/root/mec/cal/nos/sum/" class="button is-primary">View>></a></span>
                 </p>
               </footer>
             </div>
@@ -44,51 +43,25 @@
               </div>
               <footer class="card-footer">
                 <p class="card-footer-item">
-                  <span><a href="/calcapi/noise/noiseMap/" class="button is-primary">View>></a></span>
+                  <span><a href="/htm/document/tpl/root/mec/cal/nos/map/" class="button is-primary">View>></a></span>
                 </p>
               </footer>
             </div>
           </div>
         </div>
         <div class="columns">
-          <div class="column">
+          <div class="column is-4">
             <div class="card" >
               <div class="card-content" style="height: 170px;">
-                <p>Find attenuation with distance in Sound Pressure Level for a Point Source of sound.</p>
+                <p>Find attenuation with distance in Sound Pressure Level for a Point, Line, Wall (planar) type of source of sound.</p>
               </div>
               <footer class="card-footer">
                 <p class="card-footer-item">
-                  <span><a href="/calcapi/noise/distAttenPoint/" class="button is-primary">View>></a></span>
+                  <span><a href="/htm/document/tpl/root/mec/cal/nos/atn/" class="button is-primary">View>></a></span>
                 </p>
               </footer>
             </div>
           </div>
-          <div class="column">
-            <div class="card">
-              <div class="card-content" style="height: 170px;">
-                <p>Find attenuation with distance in Sound Pressure Level for a Line Source of sound.</p>
-              </div>
-              <footer class="card-footer">
-                <p class="card-footer-item">
-                  <span><a href="/calcapi/noise/distAttenLine/" class="button is-primary">View>></a></span>
-                </p>
-              </footer>
-            </div>
-          </div>
-          <div class="column">
-            <div class="card">
-              <div class="card-content" style="height: 170px;">
-                <p>Find attenuation with distance in Sound Pressure Level for a planar wall Source of sound.</p>
-              </div>
-              <footer class="card-footer">
-                <p class="card-footer-item">
-                  <span><a href="/calcapi/noise/distAttenWall/" class="button is-primary">View>></a></span>
-                </p>
-              </footer>
-            </div>
-          </div>
-        </div>
-        <div class="columns">
           <div class="column">
             <div class="card" >
               <div class="card-content" style="height: 170px;">
@@ -96,19 +69,7 @@
               </div>
               <footer class="card-footer">
                 <p class="card-footer-item">
-                  <span><a href="/calcapi/noise/correctBackNoise/" class="button is-primary">View>></a></span>
-                </p>
-              </footer>
-            </div>
-          </div>
-          <div class="column">
-            <div class="card">
-              <div class="card-content" style="height: 170px;">
-                <p>Perform correction in noise spectrum due to background noise spectrum.</p>
-              </div>
-              <footer class="card-footer">
-                <p class="card-footer-item">
-                  <span><a href="/calcapi/noise/correctSpectrum/" class="button is-primary">View>></a></span>
+                  <span><a href="/htm/document/tpl/root/mec/cal/nos/bcr/" class="button is-primary">View>></a></span>
                 </p>
               </footer>
             </div>
@@ -120,7 +81,7 @@
               </div>
               <footer class="card-footer">
                 <p class="card-footer-item">
-                  <span><a href="/calcapi/noise/aWeightedNoise/" class="button is-primary">View>></a></span>
+                  <span><a href="/htm/document/tpl/root/mec/cal/nos/awt/" class="button is-primary">View>></a></span>
                 </p>
               </footer>
             </div>

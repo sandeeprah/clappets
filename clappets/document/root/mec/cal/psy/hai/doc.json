@@ -58,5 +58,5 @@
     "Cp_ha": {"_val":"", "_dim":"specificHeat"}
 
   },
-  "errors": {}
+  "errors": []
 }

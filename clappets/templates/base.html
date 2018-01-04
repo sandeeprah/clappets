@@ -35,26 +35,29 @@
           <a href="/index" class="navbar-item">Home</a>
 
           {% block navbar_left %}
-          <a class="navbar-item" @click="loadProtectedResource('/htm/document/')">docuMentor</a>
+          <a href="/htm/document/" class="navbar-item">docuMentor</a>
           <a href="/htm/calc/" class="navbar-item">Calculations</a>
+          <!--
           <a href="#" class="navbar-item">Directory</a>
-          <a href="#" class="navbar-item">eProcurement</a>
+          <a href="#" class="navbar-item">eBiz</a>
+          -->
           {% endblock navbar_left %}
         </div>
         <div class="navbar-end">
           <a href="#" class="navbar-item is-right">Help</a>
-          <div class="navbar-end">
-              <a href="#" class="navbar-item is-right" v-if="!userAuthenticated" @click="openModal('loginModalisActive')">Login</a>
-              <div class="navbar-item is-right has-dropdown is-hoverable" v-if="userAuthenticated">
-                <a class="navbar-link">
-                    <i class="fa fa-user" aria-hidden="true">&nbsp; [[username]]</i>
-                </a>
-                <div class="navbar-dropdown">
-                  <a class="navbar-item" href="/htm/user/account/">Profile</a>
-                  <a class="navbar-item" @click="logout()">Logout</a>
-                </div>
-              </div>
+
+          <!--
+          <a href="/login/" class="navbar-item is-right" v-if="!userAuthenticated">Login</a>
+          <div class="navbar-item is-right has-dropdown is-hoverable" v-if="userAuthenticated">
+            <a class="navbar-link">
+                <i class="fa fa-user" aria-hidden="true">&nbsp; [[username]]</i>
+            </a>
+            <div class="navbar-dropdown">
+              <a class="navbar-item" href="/htm/user/account/">Profile</a>
+              <a class="navbar-item" @click="logout()">Logout</a>
+            </div>
           </div>
+        -->
         </div>
       </div>
     </nav>
@@ -93,68 +96,23 @@
     {% endblock messages %}
 
     {% block modals %}
-    <div class="modal hideprint" v-bind:class="{'is-active': loginModalisActive}">
-      <div class="modal-background">
-      </div>
-      <div class="modal-content" style="background-color:white; maximum-height: 360px; width: 600px; overflow:auto;">
-        <div class="box" style="height:280px; overflow:auto;">
-          <h4 class="title is-4">Login</h4>
-          <div class="field">
-            <div class="control has-icons-left">
-              <input class="input" type="text" placeholder="Username" autofocus="" v-model="username">
-              <span class="icon is-small is-left">
-                  <i class="fa fa-user"></i>
-              </span>
-            </div>
-          </div>
-          <div class="field">
-            <div class="control">
-              <input class="input" type="password" placeholder="Password" v-model="password">
-            </div>
-          </div>
-          <div>
-            <p class="help is-danger">[[errorMessage]]</p>
-          </div>
-          <div class="field is-grouped is-grouped-centered">
-            <p class="control">
-              <button class="button is-primary" @click="login()" style="width:6em">Login</button>
-            </p>
-            <p class="control">
-              <button class="button is-light" @click="closeModal('loginModalisActive')" style="width:6em">Cancel</a>
-              </p>
-            </div>
+    {% endblock modals %}
 
-            <p class="has-text-grey has-text-centered">
-              <a href="/htm/user/add/">Sign Up</a> &nbsp;·&nbsp;
-              <a href="/htm/user/forgot/">Forgot Password</a> &nbsp;·&nbsp;
-            </p>
-        </div>
+    {% block pagetitle %}
+    {% endblock pagetitle %}
+
+
+    {% block content %}
+    {% endblock content %}
+
+    {% block page_footer %}
+    <div class="container">
+      <footer>
+        <p></p>
+      </footer>
     </div>
+    {% endblock page_footer %}
   </div>
-
-  {% endblock modals %}
-
-
-  {% block pagetitle %}
-
-
-  {% endblock pagetitle %}
-
-
-  {% block content %}
-
-
-  {% endblock content %}
-
-  {% block page_footer %}
-  <div class="container">
-    <footer>
-      <p></p>
-    </footer>
-  </div>
-  {% endblock page_footer %}
-
-</div>
 
   {% block script_bottom %}
   <script type="text/javascript" src="{{ url_for('static', filename='js/bulma.js', _external=True) }}"></script>

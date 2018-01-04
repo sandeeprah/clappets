@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block title %}Admin-User{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-6">
+                    <div class="box" style="width:100%">
+                      <h4 class="title is-4">User Registration</h4>
+                    </div>
+                  <div v-show="!show_message">
+                      <div class="field">
+                        <label class="label">Username</label>
+                        <div class="control has-icons-left">
+                          <input class="input" type="text" placeholder="Username" v-model="user['_id']"/>
+                          <span class="icon is-small is-left">
+                              <i class="fa fa-user"></i>
+                          </span>
+                        </div>
+                        <p class="help is-danger" v-for="err in getErrs(['schema','_id'])" v-cloak>[[ err ]]</p>
+                      </div>
+                      <div class="field">
+                        <label class="label">Email</label>
+                        <div class="control has-icons-left">
+                          <input class="input" type="text" placeholder="Email" v-model="user['email']"/>
+                          <span class="icon is-small is-left">
+                              <i class="fa fa-envelope"></i>
+                          </span>
+                        </div>
+                        <p class="help is-danger" v-for="err in getErrs(['schema','email'])" v-cloak>[[ err ]]</p>
+                      </div>
+                      <div class="field">
+                        <label class="label">First Name</label>
+                        <div class="control">
+                          <input class="input" type="text" placeholder="First Name" v-model="user['first_name']"/>
+                        </div>
+                        <p class="help is-danger" v-for="err in getErrs(['schema','first_name'])" v-cloak>[[ err ]]</p>
+                      </div>
+                      <div class="field">
+                        <label class="label">Last Name</label>
+                        <div class="control">
+                          <input class="input" type="text" placeholder="Last Name" v-model="user['last_name']"/>
+                        </div>
+                        <p class="help is-danger" v-for="err in getErrs(['schema','last_name'])" v-cloak>[[ err ]]</p>
+                      </div>
+                      <div class="field">
+                        <label class="label">Password</label>
+                        <div class="control">
+                          <input class="input" type="password" placeholder="Password" v-model="user['password']"/>
+                        </div>
+                        <p class="help is-danger" v-for="err in getErrs(['schema','password'])" v-cloak>[[ err ]]</p>
+                      </div>
+                      <div class="field">
+                        <label class="label">Confirm Password</label>
+                        <div class="control">
+                          <input class="input" type="password" placeholder="Confirm Password" v-model="user['confirm_password']"/>
+                        </div>
+                        <p class="help is-danger" v-for="err in getErrs(['schema','confirm_password'])" v-cloak>[[ err ]]</p>
+                      </div>
+                      <div class="field is-grouped">
+                        <div class="control">
+                          <button class="button is-primary" v-bind:class="{'is-loading': isLoading}" @click="register">Submit</button>
+                        </div>
+                        <div class="control">
+                          <a href="/index" class="button is-light" >Cancel</a>
+                        </div>
+                      </div>
+                  </div>
+                  <article class="message" v-show="show_message" v-cloak>
+                    <div class="message-body">
+                        [[successMessage]]
+                    </div>
+                  </article>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+
+{% block script_vueapp %}
+<script type="text/javascript">
+var app = new Vue({
+    el: '#app',
+    delimiters : ['[[',']]'],
+    mixins: [app_common],
+    data: {
+        user : {
+          "_id": "",
+          "email" : "",
+          "first_name" : "",
+          "last_name" : "",
+          "password": "",
+          "confirm_password": ""
+        },
+        show_message : false
+    },
+
+    computed: {
+
+    },
+
+    methods: {
+        register: function() {
+          var app = this;
+          app.add_resource("user","/api/user/", function() {
+            app.successisActive = false;
+            app.show_message = true;
+          });
+    }
+}
+})
+</script>
+
+{% endblock script_vueapp %}

@@ -9,7 +9,7 @@ from clappets.calc import views
 from clappets import authentication
 
 @app.route('/')
-@app.route('/index')
+@app.route('/index/')
 def index():
     return render_template("index.html")
 
@@ -17,13 +17,22 @@ def index():
 def admin():
     return render_template("admin.html")
 
-@app.route('/test/demo/')
-@app.route('/test/demo/index')
-def demo():
-    return render_template("test/demo.html")
+@app.route('/login/')
+def login():
+    return render_template("login.html")
 
+@app.route('/forgot/', methods=['GET'])
+def forgot_password():
+    return render_template("forgot_password.html")
 
-@app.route('/htm/documentor/')
-@app.route('/htm/documentor/index')
-def documentor_index():
-    return render_template("documentor/index.html")
+@app.route('/register/', methods=['GET'])
+def register_user():
+    return render_template("register.html")
+
+@app.route('/profile/', methods=['GET'])
+def profile_user():
+    return render_template("profile.html")
+
+@app.route('/indexlogin/', methods=['GET'])
+def index_user():
+    return render_template("indexlogin.html")

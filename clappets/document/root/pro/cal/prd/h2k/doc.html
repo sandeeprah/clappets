@@ -1,0 +1,1038 @@
+{% extends "document/document.html" %}
+{% block content %}
+
+<div class="datasheet">
+  <table class="main">
+      <thead>
+          <tr>
+            <th style="border:0px;">&nbsp;</th>
+            <th style="border:0px;">&nbsp;</th>
+            <th style="border:0px;">&nbsp;</th>
+            <th style="border:0px;">&nbsp;</th>
+            <th style="border:0px;">&nbsp;</th>
+            <th style="border:0px;">&nbsp;</th>
+            <th style="border:0px;">&nbsp;</th>
+            <th style="border:0px;">&nbsp;</th>
+            <th style="border:0px;">&nbsp;</th>
+            <th style="border:0px;">&nbsp;</th>
+          </tr>
+      </thead>
+      <tfoot>
+          <td colspan="10" style="text-align:right;">
+              <i>Calculation Performed at www.clappets.com</i>
+          </td>
+      </tfoot>
+    <tbody>
+      <tr>
+        <td>S#</td>
+        <td colspan="8" style="text-align:center;">
+          <span class="w24 title is-6">[[ doc['meta']['docClass_title'] ]]</span>
+        </td>
+        <td>R#</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td colspan="8">
+          <span class="w16"><b>Inputs</b></span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.1</td>
+        <td colspan="8">
+          <span class="w14">Fluid Data</span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w14">Flow Rate</span>
+          <span class="w6"><input class="inp" type="text" v-model="doc['input']['fluidData']['Q']['_val']"/></span>
+          <span class="w6">[[ gUL('flow') ]]</span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','fluidData','Q'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w14">Density</span>
+          <span class="w6"><input class="inp" type="text" v-model="doc['input']['fluidData']['rho']['_val']"/></span>
+          <span class="w6">[[ gUL('density') ]]</span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','fluidData','rho'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w14">Dynamic Viscosity</span>
+          <span class="w6"><input class="inp" type="text" v-model="doc['input']['fluidData']['mu']['_val']"/></span>
+          <span class="w6">[[ gUL('dynViscosity') ]]</span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','fluidData','mu'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w14">Pipe Data</span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.1</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w14">Size Definition</span>
+          <span class="w16">
+            <select class="inp" v-model="doc['input']['pipe']['size_definition']['_val']">
+              <option value="NPS">Using NPS</option>
+              <option value="Custom">Custom</option>
+            </select>
+          </span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','pipe','size_definition'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w14">Schedule</span>
+          <span class="w6"><input class="inp" type="text" v-model="doc['input']['pipe']['schedule']['_val']"/></span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','pipe','schedule'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w14">Inner Dia</span>
+          <span class="w6"><input class="inp" type="text" v-model="doc['input']['pipe']['Dia_inner']['_val']"/></span>
+          <span class="w6">[[ gUL('length') ]]</span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','pipe','Dia_inner'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.1</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w14">Roughness Based On</span>
+          <span class="w16">
+            <select class="inp" v-model="doc['input']['pipe']['roughness_basis']['_val']">
+              <option value="Material">Using Material</option>
+              <option value="Custom">Custom</option>
+            </select>
+          </span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','pipe','roughness_basis'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.1</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w14">Material</span>
+          <span class="w16">
+            <select class="inp" v-model="doc['input']['pipe']['material']['_val']">
+              <option value="Carbon Steel">Carbon Steel</option>
+              <option value="Cast Iron">Cast Iron</option>
+            </select>
+          </span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','pipe','material'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.1</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w14">Roughness</span>
+          <span class="w6"><input class="inp" type="text" v-model="doc['input']['pipe']['roughness']['_val']"/></span>
+          <span class="w6">[[ gUL('length_mili') ]]</span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','pipe','roughness'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.1</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w14">Length</span>
+          <span class="w6"><input class="inp" type="text" v-model="doc['input']['pipe']['length']['_val']"/></span>
+          <span class="w6">[[ gUL('length') ]]</span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','pipe','length'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.1</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w14">Elevation Gain</span>
+          <span class="w6"><input class="inp" type="text" v-model="doc['input']['pipe']['elevation']['_val']"/></span>
+          <span class="w6">[[ gUL('length') ]]</span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','pipe','elevation'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w14">Entrance</span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.1</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w14">Entrance Type</span>
+          <span class="w16">
+            <select class="inp" v-model="doc['input']['entrance']['entry_type']['_val']">
+              <option value="None">None</option>
+              <option value="Sharp">Sharp</option>
+              <option value="Rounded">Rounded</option>
+              <option value="Angled">Angled</option>
+              <option value="Projecting">Projecting</option>
+            </select>
+          </span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','entrance','entry_type'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.1</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w14">Inner Dia</span>
+          <span class="w6"><input class="inp" type="text" v-model="doc['input']['entrance']['Di']['_val']"/></span>
+          <span class="w6">[[ gUL('length') ]]</span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','entrance','Di'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.1</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w14">Radius of Curvature</span>
+          <span class="w6"><input class="inp" type="text" v-model="doc['input']['entrance']['Rc']['_val']"/></span>
+          <span class="w6">[[ gUL('length') ]]</span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','entrance','Rc'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w14">Exit</span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.1</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w14">Exit Type</span>
+          <span class="w16">
+            <select class="inp" v-model="doc['input']['exit']['exit_type']['_val']">
+              <option value="None">None</option>
+              <option value="Normal">Normal</option>
+            </select>
+          </span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','exit','exit_type'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w14">Fittings</span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.1</td>
+        <td colspan="6">
+          <span class="w2"></span>
+          <span class="w20">Fitting Type</span>
+          <span class="w6">Qty</span>
+        </td>
+        <td colspan="2">
+        </td>
+        <td></td>
+      </tr>
+      <tr v-for="(fitting, index) in doc['input']['fittings']">
+        <td>1.1</td>
+        <td colspan="6">
+          <span class="w2"></span>
+          <span class="w24">[[ fixed['hooper_list'][index] ]]</span>
+          <span class="w6">
+            <input type="number" v-model="doc['input']['fittings'][index]['quantity']"/>
+          </span>
+        </td>
+        <td colspan="2">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','fittings',index, 'quantity'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w14">Contractions</span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w14">Contractions Sharp</span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w6"></span>
+          <span class="w6">D1([[ gUL('length_mili') ]])</span>
+          <span class="w6">D2([[ gUL('length_mili') ]])</span>
+          <span class="w6"></span>
+          <span class="w12">Remarks</span>
+          <span class="w6">Quantity</span>
+        </td>
+        <td></td>
+      </tr>
+      <tbody v-for="(item, index) in doc['input']['contractions_sharp']['_list']">
+        <tr>
+          <td>1.2</td>
+          <td colspan="8">
+            <span class="w2"></span>
+            <span class="w4">
+              <button class="button is-small " @click="removeListItem(doc['input']['contractions_sharp']['_list'],index)" style="height:1.75em; padding-top:0px;padding-bottom:0px;">✘</button>
+            </span>
+            <span class="w6">
+              <input type="number" v-model="doc['input']['contractions_sharp']['_list'][index]['D1']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','contractions_sharp','_list', index, 'D1'])">[[err]]</p>
+            </span>
+            <span class="w6">
+              <input type="number" v-model="doc['input']['contractions_sharp']['_list'][index]['D2']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','contractions_sharp','_list', index, 'D2'])">[[err]]</p>
+            </span>
+            <span class="w6">
+            </span>
+            <span class="w12">
+              <input type="number" v-model="doc['input']['contractions_sharp']['_list'][index]['remarks']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','contractions_sharp','_list', index, 'remarks'])">[[err]]</p>
+            </span>
+            <span class="w6">
+              <input type="number" v-model="doc['input']['contractions_sharp']['_list'][index]['quantity']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','contractions_sharp','_list',index,'quantity'])">[[err]]</p>
+            </span>
+          </td>
+          <td></td>
+        </tr>
+        <tr v-for="err in getErrs(['schema','input','contractions_sharp','_list',index,'_schema'])">
+          <td></td>
+          <td colspan="8">
+            <span class="help is-danger">for above : [[err]]</span>
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w2"></span>
+          <span class="w14">
+            <button class="button is-small is-primary" type="button" name="button" @click="addListItem(doc['input']['contractions_sharp']['_list'], doc['input']['contractions_sharp']['_default'])" style="height:1.75em; padding-top:0px;padding-bottom:0px;">➕</button>
+          </span>
+        </td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w14">Contractions Rounded</span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w6"></span>
+          <span class="w6">D1([[ gUL('length_mili') ]])</span>
+          <span class="w6">D2([[ gUL('length_mili') ]])</span>
+          <span class="w6">Rc([[ gUL('length_mili') ]])</span>
+          <span class="w12">Remarks</span>
+          <span class="w6">Quantity</span>
+        </td>
+        <td></td>
+      </tr>
+      <tbody v-for="(item, index) in doc['input']['contractions_rounded']['_list']">
+        <tr>
+          <td>1.2</td>
+          <td colspan="8">
+            <span class="w2"></span>
+            <span class="w4">
+              <button class="button is-small " @click="removeListItem(doc['input']['contractions_rounded']['_list'],index)" style="height:1.75em; padding-top:0px;padding-bottom:0px;">✘</button>
+            </span>
+            <span class="w6">
+              <input type="number" v-model="doc['input']['contractions_rounded']['_list'][index]['D1']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','contractions_rounded','_list', index, 'D1'])">[[err]]</p>
+            </span>
+            <span class="w6">
+              <input type="number" v-model="doc['input']['contractions_rounded']['_list'][index]['D2']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','contractions_rounded','_list', index, 'D2'])">[[err]]</p>
+            </span>
+            <span class="w6">
+              <input type="number" v-model="doc['input']['contractions_rounded']['_list'][index]['Rc']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','contractions_rounded','_list', index, 'Rc'])">[[err]]</p>
+            </span>
+            <span class="w12">
+              <input type="number" v-model="doc['input']['contractions_rounded']['_list'][index]['remarks']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','contractions_sharp','_list', index, 'remarks'])">[[err]]</p>
+            </span>
+            <span class="w6">
+              <input type="number" v-model="doc['input']['contractions_rounded']['_list'][index]['quantity']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','contractions_rounded','_list',index,'quantity'])">[[err]]</p>
+            </span>
+          </td>
+          <td></td>
+        </tr>
+        <tr v-for="err in getErrs(['schema','input','contractions_rounded','_list',index,'_schema'])">
+          <td></td>
+          <td colspan="8">
+            <span class="help is-danger">for above : [[err]]</span>
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w2"></span>
+          <span class="w14">
+            <button class="button is-small is-primary" type="button" name="button" @click="addListItem(doc['input']['contractions_rounded']['_list'], doc['input']['contractions_rounded']['_default'])" style="height:1.75em; padding-top:0px;padding-bottom:0px;">➕</button>
+          </span>
+        </td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w14">Contractions Conical</span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w6"></span>
+          <span class="w6">D1([[ gUL('length_mili') ]])</span>
+          <span class="w6">D2([[ gUL('length_mili') ]])</span>
+          <span class="w6">L([[ gUL('length_mili') ]])</span>
+          <span class="w12">Remarks</span>
+          <span class="w6">Quantity</span>
+        </td>
+        <td></td>
+      </tr>
+      <tbody v-for="(item, index) in doc['input']['contractions_conical']['_list']">
+        <tr>
+          <td>1.2</td>
+          <td colspan="8">
+            <span class="w2"></span>
+            <span class="w4">
+              <button class="button is-small " @click="removeListItem(doc['input']['contractions_conical']['_list'],index)" style="height:1.75em; padding-top:0px;padding-bottom:0px;">✘</button>
+            </span>
+            <span class="w6">
+              <input type="number" v-model="doc['input']['contractions_conical']['_list'][index]['D1']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','contractions_conical','_list', index, 'D1'])">[[err]]</p>
+            </span>
+            <span class="w6">
+              <input type="number" v-model="doc['input']['contractions_conical']['_list'][index]['D2']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','contractions_conical','_list', index, 'D2'])">[[err]]</p>
+            </span>
+            <span class="w6">
+              <input type="number" v-model="doc['input']['contractions_conical']['_list'][index]['L']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','contractions_conical','_list', index, 'L'])">[[err]]</p>
+            </span>
+            <span class="w12">
+              <input type="number" v-model="doc['input']['contractions_conical']['_list'][index]['remarks']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','contractions_sharp','_list', index, 'remarks'])">[[err]]</p>
+            </span>
+            <span class="w6">
+              <input type="number" v-model="doc['input']['contractions_conical']['_list'][index]['quantity']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','contractions_conical','_list',index,'quantity'])">[[err]]</p>
+            </span>
+          </td>
+          <td></td>
+        </tr>
+        <tr v-for="err in getErrs(['schema','input','contractions_conical','_list',index,'_schema'])">
+          <td></td>
+          <td colspan="8">
+            <span class="help is-danger">for above : [[err]]</span>
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w2"></span>
+          <span class="w14">
+            <button class="button is-small is-primary" type="button" name="button" @click="addListItem(doc['input']['contractions_conical']['_list'], doc['input']['contractions_conical']['_default'])" style="height:1.75em; padding-top:0px;padding-bottom:0px;">➕</button>
+          </span>
+        </td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w14">Contractions Reducer</span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w6"></span>
+          <span class="w18">Reducer Size</span>
+          <span class="w12">Remarks</span>
+          <span class="w6">Quantity</span>
+        </td>
+        <td></td>
+      </tr>
+      <tbody v-for="(item, index) in doc['input']['contractions_reducer']['_list']">
+        <tr>
+          <td>1.2</td>
+          <td colspan="8">
+            <span class="w2"></span>
+            <span class="w4">
+              <button class="button is-small " @click="removeListItem(doc['input']['contractions_reducer']['_list'],index)" style="height:1.75em; padding-top:0px;padding-bottom:0px;">✘</button>
+            </span>
+            <span class="w18">
+              <select class="inp" v-model="doc['input']['contractions_reducer']['_list'][index]['reducer_size']">
+                  <option v-for="reducer in fixed['reducer_list']" :value="reducer">[[reducer]]</option>
+              </select>
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','contractions_reducer','_list', index, 'reducer_size'])">[[err]]</p>
+            </span>
+            <span class="w12">
+              <input type="number" v-model="doc['input']['contractions_reducer']['_list'][index]['remarks']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','contractions_sharp','_list', index, 'remarks'])">[[err]]</p>
+            </span>
+            <span class="w6">
+              <input type="number" v-model="doc['input']['contractions_reducer']['_list'][index]['quantity']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','contractions_reducer','_list',index,'quantity'])">[[err]]</p>
+            </span>
+          </td>
+          <td></td>
+        </tr>
+        <tr v-for="err in getErrs(['schema','input','contractions_reducer','_list',index,'_schema'])">
+          <td></td>
+          <td colspan="8">
+            <span class="help is-danger">for above : [[err]]</span>
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w2"></span>
+          <span class="w14">
+            <button class="button is-small is-primary" type="button" name="button" @click="addListItem(doc['input']['contractions_reducer']['_list'], doc['input']['contractions_reducer']['_default'])" style="height:1.75em; padding-top:0px;padding-bottom:0px;">➕</button>
+          </span>
+        </td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w14">Expansions</span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w14">Expansions Sharp</span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w6"></span>
+          <span class="w6">D1([[ gUL('length_mili') ]])</span>
+          <span class="w6">D2([[ gUL('length_mili') ]])</span>
+          <span class="w6"></span>
+          <span class="w12">Remarks</span>
+          <span class="w6">Quantity</span>
+        </td>
+        <td></td>
+      </tr>
+      <tbody v-for="(item, index) in doc['input']['expansions_sharp']['_list']">
+        <tr>
+          <td>1.2</td>
+          <td colspan="8">
+            <span class="w2"></span>
+            <span class="w4">
+              <button class="button is-small " @click="removeListItem(doc['input']['expansions_sharp']['_list'],index)" style="height:1.75em; padding-top:0px;padding-bottom:0px;">✘</button>
+            </span>
+            <span class="w6">
+              <input type="number" v-model="doc['input']['expansions_sharp']['_list'][index]['D1']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','expansions_sharp','_list', index, 'D1'])">[[err]]</p>
+            </span>
+            <span class="w6">
+              <input type="number" v-model="doc['input']['expansions_sharp']['_list'][index]['D2']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','expansions_sharp','_list', index, 'D2'])">[[err]]</p>
+            </span>
+            <span class="w6">
+            </span>
+            <span class="w12">
+              <input type="number" v-model="doc['input']['expansions_sharp']['_list'][index]['remarks']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','expansions_sharp','_list', index, 'remarks'])">[[err]]</p>
+            </span>
+            <span class="w6">
+              <input type="number" v-model="doc['input']['expansions_sharp']['_list'][index]['quantity']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','expansions_sharp','_list',index,'quantity'])">[[err]]</p>
+            </span>
+          </td>
+          <td></td>
+        </tr>
+        <tr v-for="err in getErrs(['schema','input','expansions_sharp','_list',index,'_schema'])">
+          <td></td>
+          <td colspan="8">
+            <span class="help is-danger">for above : [[err]]</span>
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w2"></span>
+          <span class="w14">
+            <button class="button is-small is-primary" type="button" name="button" @click="addListItem(doc['input']['expansions_sharp']['_list'], doc['input']['expansions_sharp']['_default'])" style="height:1.75em; padding-top:0px;padding-bottom:0px;">➕</button>
+          </span>
+        </td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w14">Expansions Rounded</span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w6"></span>
+          <span class="w6">D1([[ gUL('length_mili') ]])</span>
+          <span class="w6">D2([[ gUL('length_mili') ]])</span>
+          <span class="w6">Rc([[ gUL('length_mili') ]])</span>
+          <span class="w12">Remarks</span>
+          <span class="w6">Quantity</span>
+        </td>
+        <td></td>
+      </tr>
+      <tbody v-for="(item, index) in doc['input']['expansions_rounded']['_list']">
+        <tr>
+          <td>1.2</td>
+          <td colspan="8">
+            <span class="w2"></span>
+            <span class="w4">
+              <button class="button is-small " @click="removeListItem(doc['input']['expansions_rounded']['_list'],index)" style="height:1.75em; padding-top:0px;padding-bottom:0px;">✘</button>
+            </span>
+            <span class="w6">
+              <input type="number" v-model="doc['input']['expansions_rounded']['_list'][index]['D1']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','expansions_rounded','_list', index, 'D1'])">[[err]]</p>
+            </span>
+            <span class="w6">
+              <input type="number" v-model="doc['input']['expansions_rounded']['_list'][index]['D2']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','expansions_rounded','_list', index, 'D2'])">[[err]]</p>
+            </span>
+            <span class="w6">
+              <input type="number" v-model="doc['input']['expansions_rounded']['_list'][index]['Rc']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','expansions_rounded','_list', index, 'Rc'])">[[err]]</p>
+            </span>
+            <span class="w12">
+              <input type="number" v-model="doc['input']['expansions_rounded']['_list'][index]['remarks']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','expansions_sharp','_list', index, 'remarks'])">[[err]]</p>
+            </span>
+            <span class="w6">
+              <input type="number" v-model="doc['input']['expansions_rounded']['_list'][index]['quantity']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','expansions_rounded','_list',index,'quantity'])">[[err]]</p>
+            </span>
+          </td>
+          <td></td>
+        </tr>
+        <tr v-for="err in getErrs(['schema','input','expansions_rounded','_list',index,'_schema'])">
+          <td></td>
+          <td colspan="8">
+            <span class="help is-danger">for above : [[err]]</span>
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w2"></span>
+          <span class="w14">
+            <button class="button is-small is-primary" type="button" name="button" @click="addListItem(doc['input']['expansions_rounded']['_list'], doc['input']['expansions_rounded']['_default'])" style="height:1.75em; padding-top:0px;padding-bottom:0px;">➕</button>
+          </span>
+        </td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w14">Expansions Conical</span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w6"></span>
+          <span class="w6">D1([[ gUL('length_mili') ]])</span>
+          <span class="w6">D2([[ gUL('length_mili') ]])</span>
+          <span class="w6">L([[ gUL('length_mili') ]])</span>
+          <span class="w12">Remarks</span>
+          <span class="w6">Quantity</span>
+        </td>
+        <td></td>
+      </tr>
+      <tbody v-for="(item, index) in doc['input']['expansions_conical']['_list']">
+        <tr>
+          <td>1.2</td>
+          <td colspan="8">
+            <span class="w2"></span>
+            <span class="w4">
+              <button class="button is-small " @click="removeListItem(doc['input']['expansions_conical']['_list'],index)" style="height:1.75em; padding-top:0px;padding-bottom:0px;">✘</button>
+            </span>
+            <span class="w6">
+              <input type="number" v-model="doc['input']['expansions_conical']['_list'][index]['D1']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','expansions_conical','_list', index, 'D1'])">[[err]]</p>
+            </span>
+            <span class="w6">
+              <input type="number" v-model="doc['input']['expansions_conical']['_list'][index]['D2']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','expansions_conical','_list', index, 'D2'])">[[err]]</p>
+            </span>
+            <span class="w6">
+              <input type="number" v-model="doc['input']['expansions_conical']['_list'][index]['Rc']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','expansions_conical','_list', index, 'Rc'])">[[err]]</p>
+            </span>
+            <span class="w12">
+              <input type="number" v-model="doc['input']['expansions_conical']['_list'][index]['remarks']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','expansions_sharp','_list', index, 'remarks'])">[[err]]</p>
+            </span>
+            <span class="w6">
+              <input type="number" v-model="doc['input']['expansions_conical']['_list'][index]['quantity']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','expansions_conical','_list',index,'quantity'])">[[err]]</p>
+            </span>
+          </td>
+          <td></td>
+        </tr>
+        <tr v-for="err in getErrs(['schema','input','expansions_conical','_list',index,'_schema'])">
+          <td></td>
+          <td colspan="8">
+            <span class="help is-danger">for above : [[err]]</span>
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w2"></span>
+          <span class="w14">
+            <button class="button is-small is-primary" type="button" name="button" @click="addListItem(doc['input']['expansions_conical']['_list'], doc['input']['expansions_conical']['_default'])" style="height:1.75em; padding-top:0px;padding-bottom:0px;">➕</button>
+          </span>
+        </td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w14">Expansions Reducer</span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w6"></span>
+          <span class="w18">Reducer Size</span>
+          <span class="w12">Remarks</span>
+          <span class="w6">Quantity</span>
+        </td>
+        <td></td>
+      </tr>
+      <tbody v-for="(item, index) in doc['input']['expansions_reducer']['_list']">
+        <tr>
+          <td>1.2</td>
+          <td colspan="8">
+            <span class="w2"></span>
+            <span class="w4">
+              <button class="button is-small " @click="removeListItem(doc['input']['expansions_reducer']['_list'],index)" style="height:1.75em; padding-top:0px;padding-bottom:0px;">✘</button>
+            </span>
+            <span class="w18">
+              <select class="inp" v-model="doc['input']['expansions_reducer']['_list'][index]['reducer_size']">
+                  <option v-for="reducer in fixed['reducer_list']" :value="reducer">[[reducer]]</option>
+              </select>
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','expansions_reducer','_list', index, 'reducer_size'])">[[err]]</p>
+            </span>
+            <span class="w12">
+              <input type="number" v-model="doc['input']['expansions_reducer']['_list'][index]['remarks']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','expansions_sharp','_list', index, 'remarks'])">[[err]]</p>
+            </span>
+            <span class="w6">
+              <input type="number" v-model="doc['input']['expansions_reducer']['_list'][index]['quantity']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','expansions_reducer','_list',index,'quantity'])">[[err]]</p>
+            </span>
+          </td>
+          <td></td>
+        </tr>
+        <tr v-for="err in getErrs(['schema','input','expansions_reducer','_list',index,'_schema'])">
+          <td></td>
+          <td colspan="8">
+            <span class="help is-danger">for above : [[err]]</span>
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w2"></span>
+          <span class="w14">
+            <button class="button is-small is-primary" type="button" name="button" @click="addListItem(doc['input']['expansions_reducer']['_list'], doc['input']['expansions_reducer']['_default'])" style="height:1.75em; padding-top:0px;padding-bottom:0px;">➕</button>
+          </span>
+        </td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w14">Fixed Losses</span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w14">Fixed K Losses</span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w6"></span>
+          <span class="w6">K</span>
+          <span class="w12">Remarks</span>
+          <span class="w6">Quantity</span>
+        </td>
+        <td></td>
+      </tr>
+      <tbody v-for="(item, index) in doc['input']['fixed_K_losses']['_list']">
+        <tr>
+          <td>1.2</td>
+          <td colspan="8">
+            <span class="w2"></span>
+            <span class="w4">
+              <button class="button is-small " @click="removeListItem(doc['input']['fixed_K_losses']['_list'],index)" style="height:1.75em; padding-top:0px;padding-bottom:0px;">✘</button>
+            </span>
+            <span class="w6">
+              <input type="number" v-model="doc['input']['fixed_K_losses']['_list'][index]['K']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','fixed_K_losses','_list', index, 'K'])">[[err]]</p>
+            </span>
+            <span class="w12">
+              <input type="number" v-model="doc['input']['fixed_K_losses']['_list'][index]['remarks']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','fixed_K_losses','_list', index, 'remarks'])">[[err]]</p>
+            </span>
+            <span class="w6">
+              <input type="number" v-model="doc['input']['fixed_K_losses']['_list'][index]['quantity']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','fixed_K_losses','_list',index,'quantity'])">[[err]]</p>
+            </span>
+          </td>
+          <td></td>
+        </tr>
+        <tr v-for="err in getErrs(['schema','input','fixed_K_losses','_list',index,'_schema'])">
+          <td></td>
+          <td colspan="8">
+            <span class="help is-danger">for above : [[err]]</span>
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
+      <tr>
+        <td>1.2</td>
+        <td colspan="8">
+          <span class="w2"></span>
+          <span class="w14">
+            <button class="button is-small is-primary" type="button" name="button" @click="addListItem(doc['input']['fixed_K_losses']['_list'], doc['input']['fixed_K_losses']['_default'])" style="height:1.75em; padding-top:0px;padding-bottom:0px;">➕</button>
+          </span>
+        </td>
+        <td></td>
+      </tr>
+
+
+      <!--
+      <tr>
+        <td>1.1</td>
+        <td colspan="4">
+          <span class="w14">Fluid</span>
+          <span class="w16">
+            <select class="inp" placeholder="fluid" v-model="doc['input']['fluid']['_val']">
+              <option v-for="item in fixed['fluid_list']" :value="item" v-text="item"></option>
+            </select>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','fluid'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>1.2</td>
+        <td colspan="4">
+          <span class="w14">Pressure</span>
+          <span class="w6"><input class="inp" type="text" v-model="doc['input']['P']['_val']"/></span>
+          <span class="w6">[[ gUL('pressure') ]]</span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','P'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+    -->
+
+
+
+  </table>
+</div>
+
+{% endblock content %}
+
+
+{% block script_vueapp %}
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        delimiters : ['[[',']]'],
+        mixins: [app_common, app_doc],
+        data: {
+            doc : {{ doc | safe }},
+            fixed: {
+
+                hooper_list: [
+                  "Elbow, 90\u00b0, Standard (R/D = 1), Screwed",
+                  "Elbow, 90\u00b0, Standard (R/D = 1), Flanged/welded",
+                  "Elbow, 90\u00b0, Long-radius (R/D = 1.5), All types",
+                  "Elbow, 90\u00b0, Mitered (R/D = 1.5), 1 weld (90\u00b0 angle)",
+                  "Elbow, 90\u00b0, Mitered (R/D = 1.5), 2 weld (45\u00b0 angle)",
+                  "Elbow, 90\u00b0, Mitered (R/D = 1.5), 3 weld (30\u00b0 angle)",
+                  "Elbow, 90\u00b0, Mitered (R/D = 1.5), 4 weld (22.5\u00b0 angle)",
+                  "Elbow, 90\u00b0, Mitered (R/D = 1.5), 5 weld (18\u00b0 angle)",
+                  "Elbow, 45\u00b0, Standard (R/D = 1), All types",
+                  "Elbow, 45\u00b0, Long-radius (R/D 1.5), All types",
+                  "Elbow, 45\u00b0, Mitered (R/D=1.5), 1 weld (45\u00b0 angle)",
+                  "Elbow, 45\u00b0, Mitered (R/D=1.5), 2 weld (22.5\u00b0 angle)",
+                  "Elbow, 45\u00b0, Standard (R/D = 1), Screwed",
+                  "Elbow, 180\u00b0, Standard (R/D = 1), Flanged/welded",
+                  "Elbow, 180\u00b0, Long-radius (R/D = 1.5), All types",
+                  "Elbow, Used as, Standard, Screwed",
+                  "Elbow, Elbow, Long-radius, Screwed",
+                  "Elbow, Elbow, Standard, Flanged/welded",
+                  "Elbow, Elbow, Stub-in type branch",
+                  "Tee, Run, Screwed",
+                  "Tee, Through, Flanged or welded",
+                  "Tee, Tee, Stub-in type branch",
+                  "Valve, Gate, Full line size, Beta = 1",
+                  "Valve, Ball, Reduced trim, Beta = 0.9",
+                  "Valve, Plug, Reduced trim, Beta = 0.8",
+                  "Valve, Globe, Standard",
+                  "Valve, Globe, Angle or Y-type",
+                  "Valve, Diaphragm, Dam type",
+                  "Valve, Butterfly,",
+                  "Valve, Check, Lift",
+                  "Valve, Check, Swing",
+                  "Valve, Check, Tilting-disc"
+                ],
+
+                reducer_list: ["3/4 x 3/4", "3/4 x 3/8", "1 x 3/4", "1 x 1/2",
+                  "1 1/4 x 1", "1 1/4 x 3/4", "1 1/4 x 1/2", "1 1/2 x 1 1/4",
+                  "1 1/2 x 1", "1 1/2 x 3/4", "1 1/2 x 1/2", "2 x 1 1/2", "2 x 1 1/4",
+                  "2 x 1", "2 x 3/4", "2 1/2 x 2", "2 1/2 x 1 1/2", "2 1/2 x 1 1/4",
+                  "2 1/2 x1", "3 x 2 1/2", "3 x 2", "3 x 1 1/2", "3 x 1 1/4",
+                  "3 1/2 x 3", "3 1/2 x 2 1/2", "3 1/2 x 2", "3 1/2 x 1 1/2",
+                  "3 1/2 x 1 1/4", "4 x 3 1/2", "4 x 3", "4 x 2 1/2", "4 x 2",
+                  "4 x 1 1/2", "5 x 4", "5 x 3 1/2", "5 x 3", "5 x 2 1/2", "5 x 2",
+                  "6 x 5", "6 x 4", "6 x 1/2", "6 x 3", "6 x 1/2", "8 x 6", "8 x 5",
+                  "8 x 4", "8 x 3 1/2", "10 x 8", "10 x 6", "10 x 5", "10 x 4",
+                  "12 x 10", "12 x 8", "12 x 6", "12 x 5", "14 x 12", "14 x 10",
+                  "14 x 8", "14 x 6", "16 x 14", "16 x 12", "16 x 10", "16 x 8",
+                  "18 x 16", "18 x 14", "18 x 12", "18 x 10", "20 x 18", "20 x 16",
+                  "20 x 14", "20 x 12", "22 x 20", "22 x 18", "22 x 16", "22 x 14",
+                  "24 x 22", "24 x 20", "24 x 18", "24 x 16"
+                ],
+
+
+            }
+        },
+        computed: {},
+        methods: {}
+    });
+</script>
+{% endblock script_vueapp %}

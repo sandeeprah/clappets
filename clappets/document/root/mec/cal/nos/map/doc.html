@@ -1,0 +1,321 @@
+{% extends "document/document.html" %}
+{% block content %}
+<div class="datasheet">
+  <table class="main">
+    <thead>
+        <tr>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <td colspan="10" style="text-align:right;">
+            <i>Template URL : </i>
+            <a href="https://www.clappets.com/htm/document/tpl/root/mec/cal/nos/sum/">https://www.clappets.com/htm/document/tpl/root/mec/cal/nos/sum/</a>
+        </td>
+    </tfoot>
+    <tbody>
+      <tr>
+        <td>S#</td>
+        <td colspan="8" style="text-align:center;">
+          <span class="title is-6">[[ doc['meta']['docClass_title'] ]]</span>
+        </td>
+        <td>R#</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td colspan="8">
+          <span class="w16"><b>Inputs</b></span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.1</td>
+        <td colspan="8">
+          <span class="w16">Emission Sources</span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td colspan="6">
+          <span class="w2"></span>
+          <span class="w14">Tag</span>
+          <span class="w6">PWL(dB)</span>
+          <span class="w6">Q</span>
+          <span class="w6">X  ([[gUL('length')]])</span>
+          <span class="w6">Y  ([[gUL('length')]])</span>
+        </td>
+        <td colspan="2"></td>
+        <td></td>
+      </tr>
+      <tr v-for="(item, index) in doc['input']['emissionPoints']['_list']" >
+        <td></td>
+        <td colspan="6">
+          <span class="w2"></span>
+          <span class="w14">
+            <input class="inp" type="text" v-model="item['tag']" @focus = "setActiveIndex(index)">
+          </span>
+          <span class="w6">
+            <input class="inp" type="number" v-model="item['pwl']" @focus = "setActiveIndex(index)">
+          </span>
+          <span class="w6">
+            <input class="inp" type="number" v-model="item['Q']" @focus = "setActiveIndex(index)">
+          </span>
+          <span class="w6">
+            <input class="inp" type="number" v-model="item['x']" @focus = "setActiveIndex(index)">
+          </span>
+          <span class="w6">
+            <input class="inp" type="number" v-model="item['y']" @focus = "setActiveIndex(index)">
+          </span>
+          <span class="" v-show="index==activeindex">
+
+          <span class="w2 hideprint">
+            <a @click="removeItem(index)" style="width:100%;">❌</a>
+          </span>
+          <span class="w2 hideprint">
+            <a @click="upItem(index)" style="width:100%;">▲</a>
+          </span>
+          <span class="w2 hideprint">
+            <a @click="downItem(index)" style="width:100%;">▼</a>
+          </span>
+        </span>
+        </td>
+        <td colspan="2"></td>
+        <td></td>
+      </tr>
+      <tr class="hideprint">
+        <td></td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w10">
+            <a class="button is-small is-primary" style="width:100%" v-on:click="addItem">Add Emission Source</a>
+          </span>
+        </td>
+        <td colspan="4"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td colspan="4">
+          <span class="w8">Grid Area for Noise Map</span>
+        </td>
+        <td colspan="4"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w6">X1  ([[gUL('length')]])</span>
+          <span class="w4">
+            <input class="inp" type="number" v-model="doc['input']['mapArea']['x1']['_val']">
+          </span>
+          <span class="w4"></span>
+          <span class="w6">Y1  ([[gUL('length')]])</span>
+          <span class="w4">
+            <input class="inp" type="number" v-model="doc['input']['mapArea']['y1']['_val']">
+          </span>
+        </td>
+        <td colspan="4"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w6">X2 ([[gUL('length')]])</span>
+          <span class="w4">
+            <input class="inp" v-model="doc['input']['mapArea']['x2']['_val']">
+          </span>
+          <span class="w4"></span>
+          <span class="w6">Y2 ([[gUL('length')]])</span>
+          <span class="w4">
+            <input class="inp" v-model="doc['input']['mapArea']['y2']['_val']">
+          </span>
+        </td>
+        <td colspan="4"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w6">X step ([[gUL('length')]])</span>
+          <span class="w4">
+            <input class="inp" v-model="doc['input']['mapArea']['x_step']['_val']">
+          </span>
+          <span class="w4"></span>
+          <span class="w6">Y step ([[gUL('length')]])</span>
+          <span class="w4">
+            <input class="inp" type="number" v-model="doc['input']['mapArea']['y_step']['_val']">
+          </span>
+        </td>
+        <td colspan="4"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td colspan="8">
+          <span class="w16"><b>Results</b></span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td colspan="6">
+          <span class="w2"></span>
+          <span class="w6">
+            X ([[gUL('length')]])
+          </span>
+          <span class="w6">
+            Y ([[gUL('length')]])
+          </span>
+          <span class="w6">
+            SPL (dB)
+          </span>
+        </td>
+        <td colspan="2"></td>
+        <td></td>
+      </tr>
+      <tr v-for="(item, index) in doc['result']['noiseField']['_list']" >
+        <td></td>
+        <td colspan="6">
+          <span class="w2"></span>
+          <span class="w6">
+            [[ item['x'] ]]
+          </span>
+          <span class="w6">
+            [[ item['y'] ]]
+          </span>
+          <span class="w6">
+            [[ item['noise'] ]]
+          </span>
+        </td>
+        <td colspan="2"></td>
+        <td></td>
+      </tr>
+
+
+
+
+
+
+
+
+
+
+      <!--
+      <tr>
+        <td>2.1</td>
+        <td colspan="4">
+          <span class="w2"></span>
+          <span class="w6">Total</span>
+          <span class="w4 result">[[ doc['result']['noiseTotal']['_val'] ]]</span><span class="w2">dB</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+
+
+    -->
+
+
+    </tbody>
+  </table>
+</div>
+{% endblock content %}
+
+
+{% block script_vueapp %}
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        delimiters : ['[[',']]'],
+        mixins: [app_common, app_doc],
+        data: {
+            doc : {{ doc | safe }},
+            activeindex : '2',
+        },
+        computed: {
+        },
+        methods: {
+          removeItem: function(index) {
+            this.doc['input']['emissionPoints'].splice(index,1);
+          },
+          addItem: function() {
+            new_item = {
+              "tag":"xyz",
+              "pwl":"92",
+              "Q":"2",
+              "x":"4",
+              "y":"5"
+            }
+            this.doc['input']['emissionPoints'].push(new_item);
+          },
+
+          upItem: function(index){
+
+            emissionPoints = this.doc['input']['emissionPoints']
+
+            if ((index > 0) && (index==this.activeindex) ){
+              var temp_tag = emissionPoints[index]['tag']
+              emissionPoints[index]['tag']= emissionPoints[index-1]['tag'];
+              emissionPoints[index-1]['tag']=temp_tag;
+              var temp_pwl = emissionPoints[index]['pwl']
+              emissionPoints[index]['pwl']= emissionPoints[index-1]['pwl'];
+              emissionPoints[index-1]['pwl']=temp_pwl;
+              var temp_x = emissionPoints[index]['x']
+              emissionPoints[index]['x']= emissionPoints[index-1]['x'];
+              emissionPoints[index-1]['x']=temp_x;
+              var temp_y = emissionPoints[index]['y']
+              emissionPoints[index]['y']= emissionPoints[index-1]['y'];
+              emissionPoints[index-1]['y']=temp_y;
+              this.activeindex = index - 1;
+            }
+
+
+          },
+          downItem: function(index){
+            emissionPoints = this.doc['input']['emissionPoints']
+            if ((index < emissionPoints.length-1) && (index==this.activeindex) ){
+              var temp_tag = emissionPoints[index]['tag']
+              emissionPoints[index]['tag']= emissionPoints[index+1]['tag'];
+              emissionPoints[index+1]['tag']=temp_tag;
+              var temp_pwl = emissionPoints[index]['pwl']
+              emissionPoints[index]['pwl']= emissionPoints[index+1]['pwl'];
+              emissionPoints[index+1]['pwl']=temp_pwl;
+              var temp_x = emissionPoints[index]['x']
+              emissionPoints[index]['x']= emissionPoints[index+1]['x'];
+              emissionPoints[index+1]['x']=temp_x;
+              var temp_y = emissionPoints[index]['y']
+              emissionPoints[index]['y']= emissionPoints[index+1]['y'];
+              emissionPoints[index+1]['y']=temp_y;
+              this.activeindex = index+1;
+            }
+          },
+
+      setActiveIndex : function(index){
+        this.activeindex = index;
+      }
+
+
+
+
+
+
+
+
+        }
+    });
+</script>
+{% endblock script_vueapp %}

@@ -82,4 +82,8 @@ def roundit(value,  max_decim=6, allowed_error=0.001):
             if rel_error < allowed_error:
                 return rounded_value
 
-    return rounded_value
+
+    if (isinstance(value, str)):
+        return str(rounded_value)
+    else:
+        return rounded_value

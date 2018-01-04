@@ -2,8 +2,6 @@ var app_common = {
     data: {
         userAuthenticated : false,
         username: '',
-        password: '',
-        loginModalisActive : false,
         successMessage: "",
         successisActive: false,
         warningMessage: "",
@@ -14,7 +12,6 @@ var app_common = {
         errors : {},
         selectionMenu: {},
         isLoading: false
-
     },
     computed : {
         isReadonly: function() {
@@ -146,7 +143,7 @@ var app_common = {
                             app.successMessage = "User Successfully Logged In"
                             app.successisActive = true;
                             app.loginModalisActive = false;
-                            location.href = "/index";
+                            location.href = "/profile";
                         } else {
                           console.error(xhr2.statusText);
                           app.errorMessage = "Login Failed.";
@@ -199,7 +196,7 @@ var app_common = {
                     app.errorisActive = true;
                 } else {
                   console.error(xhr.statusText);
-                  location.href = "/index";
+                  location.href = "/indexlogin/";
                 }
               }
             };
@@ -491,6 +488,16 @@ var app_common = {
             };
             xhr.send(json_data);
         },
+
+        addListItem: function(targetList, list_entry) {
+            var lsitem = JSON.parse(JSON.stringify(list_entry));
+            targetList.push(lsitem);
+        },
+
+        removeListItem: function(targetList, index) {
+            targetList.splice(index, 1);
+        }
+
     },
 
     beforeMount : function(){

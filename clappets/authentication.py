@@ -83,8 +83,8 @@ def verify_token_relaxed(username, password):
 
 
 
-@app.route('/auth2/', methods=['POST'])
-def getAuthToken2():
+@app.route('/authalt/', methods=['POST'])
+def getAuthTokenAlt():
     req = request.get_json()
     username = req["username"]
     password = req["password"]

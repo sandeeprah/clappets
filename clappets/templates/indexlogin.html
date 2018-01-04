@@ -1,0 +1,25 @@
+{% extends "baselogin.html" %}
+{% block title %}Home{% endblock %}
+{% block home_active %}is-active{% endblock home_active %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column">
+        <div class="box" style="width:100%">
+          <h1 class="title is-3">Clappets.com</h1>
+          <p>Clappets.com aims at developing high quality productivity tools and resources for common process and mechanical engineering activities in the Chemical and Hydrocarbon Industry.
+          </p>
+          <br/>
+          <p>
+            These tools include day to day calculations and templates which are tailored to automate the generation, validation, storage, analysis, transformation and exchange of technical documents.
+          </p>
+          <br/>
+          <span><a href="/calcs/index" class="button is-primary">Launch >></a></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}

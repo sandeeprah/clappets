@@ -1,5 +1,5 @@
 # import the run_tests from relevant test module
-from clappets.document.root.mec.cal.psy.hai.test  import run_tests
+from clappets.document.root.pro.cal.prd.h2k.test  import run_tests
 
 
 

@@ -20,8 +20,8 @@
   </div>
 </div>
 <a class="navbar-item" @click="openModal('infoModalisActive')">Doc. Info.</a>
-<a class="navbar-item" @click="openModal('unitsModalisActive')">Units</a>
-<a class="navbar-item" @click="calculate()">Calculate</a>
+<a class="navbar-item" @click="openModal('unitsModalisActive')" v-if="show_units">Units</a>
+<a class="navbar-item" @click="calculate()" v-if="show_calculation">Calculate</a>
 
 {% if authenticated %}
 <a class="navbar-item" @click="openModal('macroModalisActive')">Macros</a>
@@ -345,12 +345,7 @@
         data: {
             doc : {{ doc | safe }},
         },
-        computed: {
-          doc_id : function(){
-            did = this.doc['projectID']+"-"+this.doc['docCategory']+'-'+this.doc['docSubCategory']+"-"+this.doc['docClass']+"-"+this.doc['docInstance'];
-            return did;
-          }
-        },
+        computed: {},
         methods: {}
     });
 </script>

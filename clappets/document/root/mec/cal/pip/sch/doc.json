@@ -1,0 +1,42 @@
+{
+  "_id": "",
+  "meta": {
+    "projectID": "0000",
+    "project_title": "Local",
+    "discipline" : "mec",
+    "docCategory": "cal",
+    "docSubCategory": "pip",
+    "docClass": "sch",
+    "docClass_title": "Nearest Pipe Dimensions to ANSI/ASME B36.10/19",
+    "docInstance": "1",
+    "docInstance_title": "Nearest Pipe Dimensions to ANSI/ASME B36.10/19",
+    "doc_no":"0000-MEC-CAL-PIP-SCH-01",
+    "rev": "A",
+    "date":"",
+    "status": "",
+    "performer": "",
+    "reviewer": "",
+    "approver": ""
+  },
+
+  "units": {
+    "length": "mm"
+  },
+
+  "input": {
+    "calculation_option" : {"_val": "NPS"},
+    "NPS" : {"_val": "1"},
+    "Di" : {"_val": "", "_dim":"length"},
+    "Do" : {"_val": "", "_dim":"length"},
+    "Schedule" : {"_val":"40"}
+  },
+
+  "result": {
+    "NPS" : {"_val": ""},
+    "Di" : {"_val": "","_dim":"length"},
+    "Do" : {"_val": "","_dim":"length"},
+    "t" : {"_val":"","_dim":"length"}
+  },
+
+  "errors": []
+}
