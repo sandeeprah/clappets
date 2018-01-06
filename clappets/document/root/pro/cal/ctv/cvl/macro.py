@@ -1,0 +1,32 @@
+import CoolProp.CoolProp as CP
+from fluids.control_valve import size_control_valve_l
+from clappets.units import treeUnitConvert, SI_UNITS
+from clappets.utils import roundit
+
+from copy import deepcopy
+
+def calculate(doc_original):
+    doc = deepcopy(doc_original)
+    treeUnitConvert(doc, doc['units'], SI_UNITS)
+
+
+    rho = float(doc['input']['rho']['_val'])
+    Psat = float(doc['input']['Psat']['_val'])
+    Pc = float(doc['input']['Pc']['_val'])
+    mu = float(doc['input']['mu']['_val'])
+    P1 = float(doc['input']['P1']['_val'])
+    P2 = float(doc['input']['P2']['_val'])
+    Q = float(doc['input']['Q']['_val'])
+    D1 = float(doc['input']['D1']['_val'])
+    D2 = float(doc['input']['D2']['_val'])
+    d = float(doc['input']['d']['_val'])
+    FL = float(doc['input']['FL']['_val'])
+    Fd = float(doc['input']['Fd']['_val'])
+
+    Cmetric = size_control_valve_l(rho, Psat, Pc, mu, P1, P2, Q, D1, D2, d, FL, Fd)
+    Cmetric = roundit(Cmetric)
+    doc['result']['Cmetric']['_val'] = str(Cmetric)
+
+    treeUnitConvert(doc, SI_UNITS, doc['units'])
+    doc_original['result'].update(doc['result'])
+    return True

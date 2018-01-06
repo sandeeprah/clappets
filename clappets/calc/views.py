@@ -21,6 +21,14 @@ def noise_index():
 def piping_index():
     return render_template("calc/piping/index.html")
 
+@app.route('/htm/calc/controlvalves/')
+def controlvalves_index():
+    return render_template("calc/controlvalves/index.html")
+
+@app.route('/htm/calc/reliefvalves/')
+def reliefvalves_index():
+    return render_template("calc/reliefvalves/index.html")
+
 @app.route('/htm/calc/pump/')
 def pump_index():
     return render_template("calc/pump/index.html")

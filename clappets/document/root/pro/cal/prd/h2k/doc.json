@@ -22,6 +22,7 @@
   "units": {
     "length": "m",
     "length_mili": "mm",
+    "angle": "degrees",
     "speed": "m/s",
     "pressure": "bar",
     "flow": "m3/hr",
@@ -34,12 +35,12 @@
 
     "fluidData": {
       "Q": {
-        "_val": 10,
+        "_val": 100,
         "_dim": "flow"
       },
 
       "medium": {
-        "_val": "HC + Water"
+        "_val": "Water"
       },
       "rho": {
         "_val": "1000",
@@ -56,31 +57,31 @@
         "_val": "NPS"
       },
       "NPS": {
-        "_val": 4
+        "_val": "4"
       },
       "schedule": {
         "_val": "40"
       },
       "Dia_inner": {
-        "_val": 15,
-        "_dim": "length"
+        "_val": "",
+        "_dim": "length_mili"
       },
       "roughness_basis": {
         "_val": "Material"
       },
       "material": {
-        "_val": "Carbon Steel"
+        "_val": "Carbon Steel(corroded)"
       },
       "roughness": {
-        "_val": 16,
+        "_val": "",
         "_dim": "length_mili"
       },
       "length": {
-        "_val": 17,
+        "_val": "20",
         "_dim": "length"
       },
       "elevation": {
-        "_val": 18,
+        "_val": "0",
         "_dim": "length"
       }
     },
@@ -89,13 +90,17 @@
       "entry_type": {
         "_val": "Sharp"
       },
-      "Di": {
-        "_val": 9,
-        "_dim": "length"
-      },
       "Rc": {
-        "_val": 20,
-        "_dim": "length"
+        "_val": "",
+        "_dim": "length_mili"
+      },
+      "angle": {
+        "_val": "",
+        "_dim":"angle"
+      },
+      "wall_thickness": {
+        "_val": "",
+        "_dim": "length_mili"
       }
     },
 
@@ -107,12 +112,12 @@
 
     "fittings": [
         {
-          "index": 1,
-          "quantity": "1"
+          "index": "1",
+          "quantity": "0"
         },
         {
-          "index": 2,
-          "quantity": "1"
+          "index": "2",
+          "quantity": "0"
         },
         {
           "index": "3",
@@ -233,12 +238,6 @@
         "D1": "length_mili",
         "D2": "length_mili"
       },
-      "_default": {
-        "D1": "0",
-        "D2": "0",
-        "remarks": "",
-        "quantity": "0"
-      },
       "_list": []
     },
 
@@ -247,12 +246,6 @@
         "D1": "length_mili",
         "D2": "length_mili",
         "Rc": "length_mili"
-      },
-      "_default": {
-        "D1": "0",
-        "D2": "0",
-        "Rc": "0",
-        "quantity": 0
       },
       "_list": []
     },
@@ -263,21 +256,11 @@
         "D2": "length_mili",
         "L": "length_mili"
       },
-      "_default": {
-        "D1": "0",
-        "D2": "0",
-        "L": "0",
-        "quantity": "0"
-      },
       "_list": []
     },
 
     "contractions_reducer": {
       "_coldim": {},
-      "_default": {
-        "reducer_size": "",
-        "quantity": "0"
-      },
       "_list": []
     },
 
@@ -285,12 +268,6 @@
       "_coldim": {
         "D1": "length_mili",
         "D2": "length_mili"
-      },
-      "_default": {
-        "D1": "0",
-        "D2": "0",
-        "remarks": "",
-        "quantity": "0"
       },
       "_list": []
     },
@@ -301,12 +278,6 @@
         "D2": "length_mili",
         "Rc": "length_mili"
       },
-      "_default": {
-        "D1": "0",
-        "D2": "0",
-        "Rc": "0",
-        "quantity": "0"
-      },
       "_list": []
     },
 
@@ -316,65 +287,31 @@
         "D2": "length_mili",
         "L": "length_mili"
       },
-      "_default": {
-        "D1": "0",
-        "D2": "0",
-        "L": "0",
-        "quantity": "0"
-      },
       "_list": []
     },
 
     "expansions_reducer": {
       "_coldim": {},
-      "_default": {
-        "reducer_size": "",
-        "quantity": "0"
-      },
       "_list": []
     },
 
     "fixed_K_losses": {
       "_coldim": {},
-      "_default": {
-        "K": "0",
-        "remark": "",
-        "quantity": "0"
-      },
-
-      "_list": []
+        "_list": []
     },
 
     "fixed_LbyD_losses": {
       "_coldim": {},
-      "_default": {
-        "LbyD": "0",
-        "remark": "",
-        "quantity": "0"
-      },
-
       "_list": []
     },
 
     "fixed_deltaP_losses": {
-      "_coldim": {
-        "deltaP": "pressure"
-      },
-      "_default": {
-        "deltaP": "0",
-        "remark": "",
-        "quantity": "0"
-    },
-
+      "_coldim": {"deltaP": "pressure"},
       "_list": []
     }
-
-
   },
 
-  "result": {
-
-  },
+  "result": {},
 
   "errors": []
 }

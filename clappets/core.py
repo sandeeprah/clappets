@@ -59,7 +59,7 @@ class validator :
             try:
                 val = float(value['_val'])
                 if val < self.minimum :
-                    raise ValidationError("Value below {}".format(self.minimum))
+                    raise ValidationError("Value >= {} reqd".format(self.minimum))
             except ValueError:
                     raise ValidationError("Invalid Value")
 
@@ -72,7 +72,7 @@ class validator :
             try:
                 val = float(value)
                 if val <= self.minimum :
-                    raise ValidationError("Value below Min")
+                    raise ValidationError("Value > {} reqd".format(self.minimum))
             except ValueError:
                     raise ValidationError("Invalid Value")
             return value
@@ -84,7 +84,7 @@ class validator :
             try:
                 val = float(value['_val'])
                 if val <= self.minimum :
-                    raise ValidationError("Value below Min")
+                    raise ValidationError("Value > {} reqd".format(self.minimum))
             except ValueError:
                     raise ValidationError("Invalid Value")
             return value
@@ -194,10 +194,22 @@ class validator :
             return True
         elif ('_val' not in data[key]):
             return True
-        elif (data[key]['_val']==''):
-            return True
         else:
             return False
+
+
+    def isBlank(data, key):
+        if (key in data):
+            if ('_val' in data[key]):
+                if (data[key]['_val']==''):
+                    return True
+                else:
+                    return False
+            else:
+                return False
+        else:
+            return False
+
 
 
 class sXfld(Schema):

@@ -124,6 +124,22 @@ unitLib = {
         }
     },
 
+    "angle": {
+        "dimtitle": "Angle",
+        "units": {
+            "degrees": {
+                "label": "degrees",
+                "cf": 1.74533e-2,
+                "off": 0
+            },
+            "radians": {
+                "label": "radians",
+                "cf": 1,
+                "off": 0
+            }
+        }
+    },
+
     "mass": {
         "dimtitle": "Mass",
         "units": {
@@ -512,6 +528,7 @@ unitLib = {
 SI_UNITS = {
     "length": "m",
     "length_mili": "m",
+    "angle": "radians",
     "flow": "m3/s",
     "density": "kg/m3",
     "power": "W",

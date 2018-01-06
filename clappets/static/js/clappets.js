@@ -13,6 +13,7 @@ var app_common = {
         selectionMenu: {},
         isLoading: false
     },
+
     computed : {
         isReadonly: function() {
             if (this.action == "view") {
@@ -496,8 +497,24 @@ var app_common = {
 
         removeListItem: function(targetList, index) {
             targetList.splice(index, 1);
-        }
+        },
 
+
+
+        retSilent: function(obj, path_array) {
+            val = obj;
+            total_length = path_array.length;
+            try{
+                for (i = 0; i < total_length; i++) {
+                    key = path_array[i];
+                    val = val[key];
+                }
+                return val;
+            }
+            catch (err) {
+                return "";
+            }
+        }
     },
 
     beforeMount : function(){

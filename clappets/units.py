@@ -131,6 +131,22 @@ unitLib = OrderedDict({
         }
     },
 
+    "angle": {
+        "dimtitle": "Angle",
+        "units": {
+            "degrees": {
+                "label": "degrees",
+                "cf": 1.74533e-2,
+                "off": 0
+            },
+            "radians": {
+                "label": "radians",
+                "cf": 1,
+                "off": 0
+            }
+        }
+    },
+
     "mass": {
         "dimtitle": "Mass",
         "units": {
@@ -521,6 +537,7 @@ SI_UNITS = {
     "length_micro": "m",
     "length_mili": "m",
     "length_kilo": "m",
+    "angle": "radians",
     "mass": "kg",
     "time": "s",
     "speed": "m/s",

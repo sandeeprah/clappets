@@ -5,7 +5,7 @@ from fluids.core import Reynolds, K_from_f, K_from_L_equiv, dP_from_K
 from fluids.fittings import Hooper2K, entrance_sharp, exit_normal
 from fluids.piping import nearest_pipe
 import fluids
-from techclappets.pressuredrop.line import get_hooper_list
+from techclappets.pressuredrop.line import get_hooper_list, get_roughness
 from clappets.units import treeUnitConvert, SI_UNITS
 from clappets.utils import roundit
 from copy import deepcopy
@@ -25,9 +25,17 @@ def calculate(doc_original):
     deltaP_fixed = 0
     deltaP_total = 0
 
-    nps = float(doc['input']['pipe']['NPS']['_val'])
-    schedule = doc['input']['pipe']['schedule']['_val']
-    NPS, Di, Do, t = nearest_pipe(NPS=nps, schedule=schedule)
+    size_definition = doc['input']['pipe']['size_definition']['_val']
+    if (size_definition =="NPS"):
+        nps = float(doc['input']['pipe']['NPS']['_val'])
+        schedule = doc['input']['pipe']['schedule']['_val']
+        NPS, Di, Do, t = nearest_pipe(NPS=nps, schedule=schedule)
+    else:
+        Di = float(doc['input']['pipe']['Dia_inner']['_val'])
+        NPS = math.nan
+        Do = math.nan
+        t = math.nan
+
     doc['result'].update({'Di' : {'_val': str(Di), '_dim': 'length_mili'} })
     doc['result'].update({'Do' : {'_val':str(Do), '_dim': 'length_mili'}})
     doc['result'].update({'t' : {'_val':str(t), '_dim': 'length_mili'}})
@@ -46,14 +54,21 @@ def calculate(doc_original):
     doc['result'].update({'Hdyn' : {'_val': str(Hdyn), '_dim': 'length'}})
 
     #K calculation for straigth pipe
-    roughness = float(doc['input']['pipe']['roughness']['_val'])
+    roughness_basis = doc['input']['pipe']['roughness_basis']['_val']
+    if (roughness_basis =="Material"):
+        material = doc['input']['pipe']['material']['_val']
+        roughness = get_roughness(material)
+    else:
+        roughness = float(doc['input']['pipe']['roughness']['_val'])
+
     eD = roughness/Di
-    doc['result'].update({'eD' : {'_val': str(Hdyn)} })
+
+    doc['result'].update({'eD' : {'_val': str(eD)} })
     fd = roundit(friction_factor(Re=Re, eD=eD, Method="Moody"))
-    doc['result'].update({'fd Moody' : {'_val': str(fd) }})
+    doc['result'].update({'fd_Moody' : {'_val': str(fd) }})
 
 
-    length = doc['input']['pipe']['length']['_val']
+    length = float(doc['input']['pipe']['length']['_val'])
     K_pipe = roundit(K_from_f(fd=fd, L=length, D=Di))
     doc['result'].update({'K_pipe' : {'_val': str(K_pipe) }})
     deltaP_pipe = roundit(dP_from_K(K_pipe, rho, V))
@@ -61,6 +76,7 @@ def calculate(doc_original):
 
 
     #calculating pressure drop for entrance
+
     entry_type = doc['input']['entrance']['entry_type']['_val']
     print('entry type is')
     print(entry_type)
@@ -69,15 +85,14 @@ def calculate(doc_original):
     elif entry_type=='Sharp':
         K_entry = fluids.fittings.entrance_sharp()
     elif entry_type=='Rounded':
-        Di = entrance['Di']
-        Rc = entrance['Rc']
+        Rc = float(doc['input']['entrance']['Rc']['_val'])
         K_entry = fluids.fittings.entrance_rounded(Di, Rc)
     elif entry_type=='Angled':
-        angle = entrance['angle']
+        angle_radians = float(doc['input']['entrance']['angle']['_val'])
+        angle = angle_radians*57.2958
         K_entry = fluids.fittings.entrance_angled(angle)
     elif entry_type=='Projecting':
-        Di = entrance['Di']
-        wall_thickness = entrance['wall_thickness']
+        wall_thickness = float(doc['input']['entrance']['wall_thickness']['_val'])
         K_entry = fluids.fittings.entrance_distance(Di, wall_thickness)
 
     K_entry = roundit(K_entry)
