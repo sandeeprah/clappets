@@ -8,7 +8,7 @@ from copy import deepcopy
 def calculate(doc_original):
     doc = deepcopy(doc_original)
     treeUnitConvert(doc, doc['units'], SI_UNITS)
-
+    doc['errors'] =[]
 
     rho = float(doc['input']['rho']['_val'])
     Psat = float(doc['input']['Psat']['_val'])
@@ -25,8 +25,10 @@ def calculate(doc_original):
 
     Cmetric = size_control_valve_l(rho, Psat, Pc, mu, P1, P2, Q, D1, D2, d, FL, Fd)
     Cmetric = roundit(Cmetric)
-    doc['result']['Cmetric']['_val'] = str(Cmetric)
+    doc['result'].update({'Cmetric':{'_val' : str(Cmetric)}})
 
-    treeUnitConvert(doc, SI_UNITS, doc['units'])
+    treeUnitConvert(doc, SI_UNITS, doc['units'], autoRoundOff=True)
     doc_original['result'].update(doc['result'])
+    doc_original['errors'] = doc['errors']
+
     return True

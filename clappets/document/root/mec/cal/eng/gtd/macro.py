@@ -6,7 +6,6 @@ from fluids.safety_valve import API520_B, API520_N, API520_SH, API520_round_size
 from techclappets.fluids.safety_valve  import API520_A_l_cert, API526_letter,  Reynolds
 from techclappets.conversions import dyn2kinVisc, kin2dynVisc, SSU2cSt
 from techclappets.thermochem.psychrometry import Pws, humidityratio
-from techclappets.pump import viscCorr
 
 from copy import deepcopy
 import math

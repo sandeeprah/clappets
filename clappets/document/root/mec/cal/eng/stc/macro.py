@@ -14,6 +14,7 @@ def calculate(doc_original):
     doc = deepcopy(doc_original)
     treeUnitConvert(doc, doc['units'], SI_UNITS)
     doc['errors'] =[]
+
     solve_for = doc['input']['solve_for']['_val']
     inlet_definition = doc['input']['inlet_definition']['_val']
     P_inlet = float(doc['input']['P_inlet']['_val'])
@@ -25,26 +26,25 @@ def calculate(doc_original):
         try:
             h_inlet = round(CP.PropsSI('H','P', P_inlet, 'T', T_inlet, 'Water'),1)
             s_inlet = round(CP.PropsSI('S','P', P_inlet, 'T', T_inlet, 'Water'),1)
-            Q_inlet = 1
+            phase_inlet = CP.PhaseSI('P',P_inlet,'T',T_inlet,'Water')
         except Exception as e:
-#            doc['errors'].append(str(e))
             doc['errors'].append('Failed to calculate steam inlet conditions, check inputs')
             h_inlet = math.nan
             s_inlet = math.nan
-            Q_inlet = math.nan
+            phase_inlet = ""
 
     elif (inlet_definition=='P-h'):
         h_inlet = float(doc['input']['h_inlet']['_val'])
         try:
             T_inlet = round(CP.PropsSI('T','P', P_inlet, 'H', h_inlet, 'Water'),1)
             s_inlet = round(CP.PropsSI('S','P', P_inlet, 'H', h_inlet, 'Water'),1)
-            Q_inlet = 1
+            phase_inlet = CP.PhaseSI('P',P_inlet,'H',h_inlet,'Water')
         except Exception as e:
 #            doc['errors'].append(str(e))
             doc['errors'].append('Failed to calculate steam inlet conditions, check inputs')
             T_inlet = math.nan
             s_inlet = math.nan
-            Q_inlet = math.nan
+            phase_inlet = ""
 
 
     elif(inlet_definition=='P-s'):
@@ -52,13 +52,13 @@ def calculate(doc_original):
         try:
             T_inlet = round(CP.PropsSI('T','P', P_inlet, 'S', s_inlet, 'Water'),1)
             h_inlet = round(CP.PropsSI('H','P', P_inlet, 'S', s_inlet, 'Water'),1)
-            Q_inlet = 1
+            phase_inlet = CP.PhaseSI('P',P_inlet,'S',s_inlet,'Water')
         except Exception as e:
 #            doc['errors'].append(str(e))
             doc['errors'].append('Failed to calculate steam inlet conditions, check inputs')
             T_inlet = math.nan
             h_inlet = math.nan
-            Q_inlet = math.nan
+            phase_inlet = ""
 
     elif(inlet_definition=='P-Q'):
         Q_inlet = float(doc['input']['Q_inlet']['_val'])
@@ -66,12 +66,13 @@ def calculate(doc_original):
             T_inlet = round(CP.PropsSI('T','P', P_inlet, 'Q', Q_inlet, 'Water'),1)
             s_inlet = round(CP.PropsSI('S','P', P_inlet, 'Q', Q_inlet, 'Water'),1)
             h_inlet = round(CP.PropsSI('H','P', P_inlet, 'Q', Q_inlet, 'Water'),1)
+            phase_inlet = CP.PhaseSI('P',P_inlet,'Q',Q_inlet,'Water')
         except Exception as e:
 #            doc['errors'].append(str(e))
             doc['errors'].append('Failed to calculate steam inlet conditions, check inputs')
             T_inlet = math.nan
             s_inlet = math.nan
-            Q_inlet = math.nan
+            phase_inlet = ""
 
 
 
@@ -95,14 +96,14 @@ def calculate(doc_original):
             h_outlet = round(h_outlet,1)
             T_outlet = round(CP.PropsSI('T','P', P_outlet, 'H', h_outlet, 'Water'),1)
             s_outlet = round(CP.PropsSI('S','P', P_outlet, 'H', h_outlet, 'Water'),1)
-            Q_outlet = 1
+            phase_outlet = CP.PhaseSI('P',P_outlet,'H',h_outlet,'Water')
         except Exception as e:
 #            doc['errors'].append(str(e))
             doc['errors'].append('Failed to calculate steam outlet conditions, check inputs')
             h_outlet = math.nan
             T_outlet = math.nan
             s_outlet = math.nan
-            Q_outlet = math.nan
+            phase_outlet = ""
 
     else:
 
@@ -111,32 +112,29 @@ def calculate(doc_original):
                 T_outlet = float(doc['input']['T_outlet']['_val'])
                 h_outlet = round(CP.PropsSI('H','P', P_outlet, 'T', T_outlet, 'Water'),1)
                 s_outlet = round(CP.PropsSI('S','P', P_outlet, 'T', T_outlet, 'Water'),1)
-                Q_outlet = 1
 
             elif (outlet_definition=='P-h'):
                 h_outlet = float(doc['input']['h_outlet']['_val'])
                 T_outlet = round(CP.PropsSI('H','P', P_outlet, 'H', h_outlet, 'Water'),1)
                 s_outlet = round(CP.PropsSI('S','P', P_outlet, 'H', h_outlet, 'Water'),1)
-                Q_outlet = 1
 
             elif(outlet_definition=='P-s'):
                 s_outlet = float(doc['input']['s_outlet']['_val'])
                 h_outlet = float(doc['input']['h_outlet']['_val'])
                 T_outlet = round(CP.PropsSI('H','P', P_outlet, 'H', h_outlet, 'Water'),1)
-                Q_outlet = 1
 
             elif(outlet_definition=='P-Q'):
                 Q_outlet = float(doc['input']['Q_outlet']['_val'])
                 T_outlet = round(CP.PropsSI('T','P', P_outlet, 'Q', Q_outlet, 'Water'),1)
                 h_outlet = round(CP.PropsSI('H','P', P_outlet, 'Q', Q_outlet, 'Water'),1)
                 s_outlet = round(CP.PropsSI('S','P', P_outlet, 'Q', Q_outlet, 'Water'),1)
+
         except Exception as e:
 #            doc['errors'].append(str(e))
             doc['errors'].append('Failed to calculate steam outlet conditions, check inputs')
             h_outlet = math.nan
             T_outlet = math.nan
             s_outlet = math.nan
-            Q_outlet = math.nan
 
         try:
             isentropic_efficiency = (h_inlet - h_outlet)*100/(h_inlet - h_outlet_ideal)
@@ -146,6 +144,9 @@ def calculate(doc_original):
             doc['errors'].append('Failed to Isentropic Efficiency, check inputs')
             isentropic_efficiency = math.nan
 
+
+
+    phase_outlet = CP.PhaseSI('P',P_outlet,'H',h_outlet,'Water')
 
     turbine_definition = doc['input']['turbine_definition']['_val']
     generator_efficiency = float(doc['input']['generator_efficiency']['_val'])
@@ -177,14 +178,14 @@ def calculate(doc_original):
     doc['result'].update({'T_inlet':{'_val':str(T_inlet), '_dim':'temperature'}})
     doc['result'].update({'h_inlet':{'_val':str(h_inlet), '_dim':'specificEnergy'}})
     doc['result'].update({'s_inlet':{'_val':str(s_inlet), '_dim':'specificHeat'}})
-    doc['result'].update({'Q_inlet':{'_val':str(Q_inlet)}})
+    doc['result'].update({'phase_inlet':{'_val':str(phase_inlet)}})
     doc['result'].update({'h_outlet_ideal':{'_val':str(h_outlet_ideal), '_dim':'specificEnergy'}})
 
     doc['result'].update({'P_outlet':{'_val':str(P_outlet), '_dim':'pressure'}})
     doc['result'].update({'T_outlet':{'_val':str(T_outlet), '_dim':'temperature'}})
     doc['result'].update({'h_outlet':{'_val':str(h_outlet), '_dim':'specificEnergy'}})
     doc['result'].update({'s_outlet':{'_val':str(s_outlet), '_dim':'specificHeat'}})
-    doc['result'].update({'Q_outlet':{'_val':str(Q_outlet)}})
+    doc['result'].update({'phase_outlet':{'_val':str(phase_outlet)}})
 
     doc['result'].update({'isentropic_efficiency':{'_val':str(isentropic_efficiency)}})
     doc['result'].update({'generator_efficiency':{'_val':str(generator_efficiency)}})
@@ -193,19 +194,7 @@ def calculate(doc_original):
     doc['result'].update({'power_output':{'_val':str(power_output), '_dim':'power'}})
 
 
-
-    '''
-    doc['result'].update({'Psite':{'_val':str(Psite), '_dim':'power'}})
-    doc['result'].update({'Ltemperature':{'_val':str(Ltemperature)}})
-    doc['result'].update({'Lhumidity':{'_val':str(Lhumidity)}})
-    doc['result'].update({'Laltitude':{'_val':str(Laltitude)}})
-    doc['result'].update({'Linlet':{'_val':str(Linlet)}})
-    doc['result'].update({'Loutlet':{'_val':str(Loutlet)}})
-    doc['result'].update({'Lfuel':{'_val':str(Lfuel)}})
-    doc['result'].update({'Ltotal':{'_val':str(Ltotal)}})
-    '''
-
-    treeUnitConvert(doc, SI_UNITS, doc['units'])
+    treeUnitConvert(doc, SI_UNITS, doc['units'], autoRoundOff=True)
     doc_original['result'].update(doc['result'])
     doc_original['errors'] = doc['errors']
 

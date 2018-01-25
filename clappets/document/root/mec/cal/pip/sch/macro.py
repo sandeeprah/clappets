@@ -7,7 +7,6 @@ from fluids.piping import nearest_pipe
 def calculate(doc_original):
     doc = deepcopy(doc_original)
     treeUnitConvert(doc, doc['units'], SI_UNITS)
-
     doc['errors'] = []
 
     calculation_option = doc['input']['calculation_option']['_val']
@@ -34,12 +33,13 @@ def calculate(doc_original):
         t = math.nan
 
 
-    doc['result']['NPS']['_val'] = str(roundit(nps))
-    doc['result']['Di']['_val'] = str(roundit(di))
-    doc['result']['Do']['_val'] = str(roundit(do))
-    doc['result']['t']['_val'] = str(roundit(t))
 
-    treeUnitConvert(doc, SI_UNITS, doc['units'])
+    doc['result'].update({'NPS':{'_val' : str(roundit(nps))}})
+    doc['result'].update({'Di':{'_val' : str(roundit(di)), '_dim':'length'}})
+    doc['result'].update({'Do':{'_val' : str(roundit(do)), '_dim':'length'}})
+    doc['result'].update({'t':{'_val' : str(roundit(t)), '_dim':'length'}})
+
+    treeUnitConvert(doc, SI_UNITS, doc['units'], autoRoundOff=True)
     doc_original['result'].update(doc['result'])
     doc_original['errors'] = doc['errors']
     return True

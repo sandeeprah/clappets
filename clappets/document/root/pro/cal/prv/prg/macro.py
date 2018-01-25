@@ -122,7 +122,7 @@ def calculate(doc_original):
     doc['result'].update({'A_sel':{'_val':str(A_sel), '_dim':'area'}})
     doc['result'].update({'A_letter':{'_val':str(A_letter)}})
 
-    treeUnitConvert(doc, SI_UNITS, doc['units'])
+    treeUnitConvert(doc, SI_UNITS, doc['units'], autoRoundOff=True)
     doc_original['result'].update(doc['result'])
     doc_original['errors'] = doc['errors']
 

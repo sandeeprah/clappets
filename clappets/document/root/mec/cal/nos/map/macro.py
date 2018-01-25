@@ -7,6 +7,7 @@ from techclappets.noise import noise_utils
 def calculate(doc_original):
     doc = deepcopy(doc_original)
     treeUnitConvert(doc, doc['units'], SI_UNITS)
+    doc['errors'] =[]
 
     emissionPoints = doc['input']['emissionPoints']['_list']
     mapArea = doc['input']['mapArea']
@@ -35,15 +36,28 @@ def calculate(doc_original):
         for y in y_list:
             immisionPoints.append({'x':x, 'y':y})
 
-    noiseField = noise_utils.noiseMap(emissionPoints=emissionPoints, immisionPoints=immisionPoints)
+    noiseField_list = noise_utils.noiseMap(emissionPoints=emissionPoints, immisionPoints=immisionPoints)
 
-    for np in noiseField:
+    for np in noiseField_list:
         np['x'] = str(np['x'])
         np['y'] = str(np['y'])
         np['noise'] = str(np['noise'])
 
-    doc['result']['noiseField']['_list'] = noiseField
+
+    noiseField = {
+      "_coldim":{
+        "x":"length",
+        "y":"length"
+      },
+      "_list" : []
+    }
+    noiseField['_list']= noiseField_list
+
+#    doc['result']['noiseField']['_list'] = noiseField
+    doc['result'].update({'noiseField':noiseField})
 
     treeUnitConvert(doc, SI_UNITS, doc['units'])
     doc_original['result'].update(doc['result'])
+    doc_original['errors'] = doc['errors']
+
     return True

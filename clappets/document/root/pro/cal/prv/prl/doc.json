@@ -36,7 +36,7 @@
   "input": {
     "Pset": {"_val":"1734", "_dim":"pressure"},
     "Pover": {"_val":"10"},
-    "Psuper" : {"_val" : "300", "_dim":"pressure"},
+    "Psuper" : {"_val" : "30", "_dim":"pressure"},
     "Psuper_is_const" : {"_val":"No"},
     "Pbuiltup" : {"_val":"10", "_dim":"pressure"},
     "valve_design" : {"_val":"Conventional"},

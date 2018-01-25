@@ -348,7 +348,7 @@
         <td>2.1</td>
         <td colspan="4">
           <span class="w14">MW</span>
-          <span class="w6 result">[[ doc['result']['MW']['_val'] ]]</span>
+          <span class="w6 result">[[ retSilent(doc, ['result', 'MW', '_val']) ]]</span>
           <span class="w6">[[ gUL('molecularMass') ]]</span>
         </td>
         <td colspan="4"></td>
@@ -358,7 +358,7 @@
         <td>2.2</td>
         <td colspan="4">
           <span class="w14">Critical Pressure</span>
-          <span class="w6 result">[[ doc['result']['Pcritical']['_val'] ]]</span>
+          <span class="w6 result">[[ retSilent(doc, ['result', 'Pcritical', '_val']) ]]</span>
           <span class="w6">[[ gUL('pressure') ]]</span>
         </td>
         <td colspan="4">
@@ -369,7 +369,7 @@
         <td>2.3</td>
         <td colspan="4">
           <span class="w14">Critical Temperature</span>
-          <span class="w6 result"> [[ doc['result']['Tcritical']['_val'] ]]</span>
+          <span class="w6 result"> [[ retSilent(doc, ['result', 'Tcritical', '_val']) ]]</span>
           <span class="w6">[[ gUL('temperature') ]]</span>
         </td>
         <td colspan="4">
@@ -380,7 +380,7 @@
         <td>2.4</td>
         <td colspan="4">
           <span class="w14">Reduced Pressure</span>
-          <span class="w6 result"> [[ doc['result']['Pr']['_val'] ]]</span>
+          <span class="w6 result"> [[ retSilent(doc, ['result', 'Pr', '_val']) ]]</span>
         </td>
         <td colspan="4">
         </td>
@@ -390,7 +390,7 @@
         <td>2.5</td>
         <td colspan="4">
           <span class="w14">Reduced Temperature</span>
-          <span class="w6 result"> [[ doc['result']['Tr']['_val'] ]]</span>
+          <span class="w6 result"> [[ retSilent(doc, ['result', 'Tr', '_val']) ]]</span>
         </td>
         <td colspan="4">
         </td>
@@ -400,7 +400,7 @@
         <td>2.6</td>
         <td colspan="4">
           <span class="w14">Acentric Factor</span>
-          <span class="w6 result"> [[ doc['result']['acentric']['_val'] ]]</span>
+          <span class="w6 result"> [[ retSilent(doc, ['result', 'acentric', '_val']) ]]</span>
         </td>
         <td colspan="4">
         </td>
@@ -410,7 +410,7 @@
         <td>2.7</td>
         <td colspan="4">
           <span class="w14">Z (Peng-Robinson)</span>
-          <span class="w6 result"> [[ doc['result']['Z_PR']['_val'] ]]</span>
+          <span class="w6 result"> [[ retSilent(doc, ['result', 'Z_PR', '_val']) ]]</span>
         </td>
         <td colspan="4">
         </td>
@@ -420,7 +420,7 @@
         <td>2.8</td>
         <td colspan="4">
           <span class="w14">Z (Lee-Kesler)</span>
-          <span class="w6 result"> [[ doc['result']['Z_LKP']['_val'] ]]</span>
+          <span class="w6 result"> [[ retSilent(doc, ['result', 'Z_LKP', '_val']) ]]</span>
         </td>
         <td colspan="4">
         </td>
@@ -430,7 +430,7 @@
         <td>2.9</td>
         <td colspan="4">
           <span class="w14">Z (Nelson Obert)</span>
-          <span class="w6 result"> [[ doc['result']['Z_NO']['_val'] ]]</span>
+          <span class="w6 result"> [[ retSilent(doc, ['result', 'Z_NO', '_val']) ]]</span>
         </td>
         <td colspan="4">
         </td>
@@ -440,7 +440,7 @@
         <td>2.10</td>
         <td colspan="4">
           <span class="w14">Cp0</span>
-          <span class="w6 result"> [[ doc['result']['Cp0mass']['_val'] ]]</span>
+          <span class="w6 result"> [[ retSilent(doc, ['result', 'Cp0mass', '_val']) ]]</span>
           <span class="w6">[[ gUL('specificHeat') ]]</span>
         </td>
         <td colspan="4">
@@ -451,7 +451,7 @@
         <td>2.11</td>
         <td colspan="4">
           <span class="w14">Cv0</span>
-          <span class="w6 result"> [[ doc['result']['Cv0mass']['_val'] ]]</span>
+          <span class="w6 result"> [[ retSilent(doc, ['result', 'Cv0mass', '_val']) ]]</span>
           <span class="w6">[[ gUL('specificHeat') ]]</span>
         </td>
         <td colspan="4">
@@ -462,7 +462,7 @@
         <td>2.12</td>
         <td colspan="4">
           <span class="w14">Cp0 Molar</span>
-          <span class="w6 result"> [[ doc['result']['Cp0molar']['_val'] ]]</span>
+          <span class="w6 result"> [[ retSilent(doc, ['result', 'Cp0molar', '_val']) ]]</span>
           <span class="w6">[[ gUL('specificHeatMolar') ]]</span>
         </td>
         <td colspan="4">
@@ -473,7 +473,7 @@
         <td>2.13</td>
         <td colspan="4">
           <span class="w14">Cv0 Molar</span>
-          <span class="w6 result"> [[ doc['result']['Cv0molar']['_val'] ]]</span>
+          <span class="w6 result"> [[ retSilent(doc, ['result', 'Cv0molar', '_val']) ]]</span>
           <span class="w6">[[ gUL('specificHeatMolar') ]]</span>
         </td>
         <td colspan="4">

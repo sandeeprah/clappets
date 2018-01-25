@@ -9,7 +9,7 @@ from copy import deepcopy
 def calculate(doc_original):
     doc = deepcopy(doc_original)
     treeUnitConvert(doc, doc['units'], SI_UNITS)
-
+    doc['errors'] =[]
 
     T = float(doc['input']['T']['_val'])
     MW = float(doc['input']['MW']['_val'])
@@ -33,8 +33,11 @@ def calculate(doc_original):
         Cmetric = math.nan
 
     Cmetric = roundit(Cmetric)
-    doc['result']['Cmetric']['_val'] = str(Cmetric)
+    doc['result'].update({'Cmetric':{'_val' : str(Cmetric)}})
 
     treeUnitConvert(doc, SI_UNITS, doc['units'])
     doc_original['result'].update(doc['result'])
+    doc_original['errors'] = doc['errors']
+
+
     return True

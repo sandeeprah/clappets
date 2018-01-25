@@ -275,5 +275,5 @@ def calculate(doc_original):
 
 #    doc_original['input'].update(doc['input'])
     doc_original['result'].update(doc['result'])
-    treeUnitConvert(doc, SI_UNITS, doc['units'])
+    treeUnitConvert(doc, SI_UNITS, doc['units'], autoRoundOff=True)
     return True

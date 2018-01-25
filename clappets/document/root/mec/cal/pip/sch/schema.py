@@ -71,6 +71,37 @@ class docResult(Schema):
     Do = fields.Nested(sXfld)
     t = fields.Nested(sXfld)
 
+    @validates('NPS')
+    def check_nps(self, value):
+        if (xisBlank(value)):
+            return
+        vd.xNumber(value)
+        nps_options = ["0.125", "0.25", "0.375", "0.5", "0.75", "1", "1.25", "1.5", "2", "2.5", "3", "3.5", "4", "5", "6", "8", "10", "12", "14", "16", "18", "20", "22", "24", "26", "28", "30", "32", "34", "36"]
+        vd.xChoice(value, nps_options)
+
+    @validates('Di')
+    def check_Di(self, value):
+        if (xisBlank(value)):
+            return
+        vd.xNumber(value)
+        vd.xGrtThan(value, 0)
+        vd.xDim(value, ['length','length_mili'])
+
+    @validates('Do')
+    def check_Do(self, value):
+        if (xisBlank(value)):
+            return
+        vd.xNumber(value)
+        vd.xGrtThan(value, 0)
+        vd.xDim(value, ['length','length_mili'])
+
+    @validates('t')
+    def check_t(self, value):
+        if (xisBlank(value)):
+            return
+        vd.xNumber(value)
+        vd.xGrtThan(value, 0)
+        vd.xDim(value, ['length','length_mili'])
 
 class docSchema(sDocPrj):
     input = fields.Nested(docInput)

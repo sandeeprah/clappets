@@ -300,9 +300,6 @@
         </td>
         <td></td>
       </tr>
-
-
-
       <tr>
         <td>1.12</td>
         <td colspan="6">
@@ -332,6 +329,23 @@
         </td>
         <td></td>
       </tr>
+      <tbody class="hideprint">
+        <tr>
+          <td></td>
+          <td colspan="8">
+            <span class="w8">
+              <button class="button is-small is-primary" @click="calculate" style="width:100%">Calculate</button>
+            </span>
+            <span class="w8">
+              <button class="button is-small is-primary" @click="openModal('unitsModalisActive')" style="width:100%">Units</button>
+            </span>
+            <span class="w8">
+              <button class="button is-small is-primary" @click="openModal('infoModalisActive')" style="width:100%">Info</button>
+            </span>
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
       <tbody v-if="doc['errors'].length > 0">
         <tr>
           <td></td>
@@ -343,11 +357,12 @@
         <tr>
           <td></td>
           <td colspan="8">
-            <p class="help is-danger" v-for = "err in doc['errors']">[[ err ]]</p>
+            <p class="help is-danger" v-for="err in doc['errors']">[[ err ]]</p>
           </td>
           <td></td>
         </tr>
       </tbody>
+    <tbody>
       <tr>
         <td>2</td>
         <td colspan="8">
@@ -372,7 +387,6 @@
         <td>2.2</td>
         <td colspan="4">
           <span class="w2"></span>
-
           <span class="w20">Rated Coefficient of Discharge(Kd)</span>
           <span class="w6 result">[[ retSilent(doc, ['result','Kd','_val']) ]] </span>
         </td>
@@ -384,7 +398,6 @@
         <td>2.3</td>
         <td colspan="4">
           <span class="w2"></span>
-
           <span class="w20">Backpressure Correction (Kw)</span>
           <span class="w6 result">[[ retSilent(doc, ['result','Kw','_val']) ]] </span>
         </td>
@@ -396,7 +409,6 @@
         <td>2.4</td>
         <td colspan="4">
           <span class="w2"></span>
-
           <span class="w20"> Rupture Disc Correction Factor(Kc)</span>
           <span class="w6 result">[[ retSilent(doc, ['result','Kc','_val']) ]] </span>
         </td>
@@ -408,7 +420,6 @@
         <td>2.5</td>
         <td colspan="4">
           <span class="w2"></span>
-
           <span class="w20">Viscosity Correction Factor(Kv)</span>
           <span class="w6 result">[[ retSilent(doc, ['result','Kv','_val']) ]] </span>
         </td>
@@ -420,7 +431,6 @@
         <td>2.6</td>
         <td colspan="4">
           <span class="w2"></span>
-
           <span class="w20">Required Effective Discharge Area(A)</span>
           <span class="w6 result">[[ retSilent(doc, ['result','A','_val']) ]] </span>
         </td>
@@ -432,7 +442,6 @@
         <td>2.7</td>
         <td colspan="4">
           <span class="w2"></span>
-
           <span class="w20">Orifice Designation (API 526)</span>
           <span class="w6 result">[[ retSilent(doc, ['result','A_letter','_val']) ]] </span>
         </td>
@@ -444,7 +453,6 @@
         <td>2.8</td>
         <td colspan="4">
           <span class="w2"></span>
-
           <span class="w20">Selected Orifice Discharge Area (A_sel)</span>
           <span class="w6 result">[[ retSilent(doc, ['result','A_sel','_val']) ]] </span>
         </td>

@@ -25,8 +25,8 @@ def calculate(doc_original):
         SPL2 = math.nan
 
 
-    doc['result']['SPL2']['_val'] = str(SPL2)
+    doc['result'].update({'SPL2':{'_val' : str(SPL2)}})
 
-    treeUnitConvert(doc, SI_UNITS, doc['units'])
+    treeUnitConvert(doc, SI_UNITS, doc['units'], autoRoundOff=True)
     doc_original['result'].update(doc['result'])
     return True

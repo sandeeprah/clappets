@@ -10,10 +10,6 @@ def calculate(doc_original):
 
     calculation_option = doc['input']['calculation_option']['_val']
 
-    doc['result']['PWL']['_val'] = ""
-    doc['result']['SPL']['_val'] = ""
-    doc['result']['distance']['_val'] = ""
-
 
     if (calculation_option=='calcSPL'):
         PWL = parseFloat(doc['input']['PWL']['_val'])
@@ -21,7 +17,9 @@ def calculate(doc_original):
         Q = parseFloat(doc['input']['Q']['_val'])
 
         SPL = noise_utils.getSPL(PWL,distance,Q)
-        doc['result']['SPL']['_val'] = str(SPL)
+        SPL = roundit(SPL)
+        doc['result'].update({'SPL':{'_val' : str(SPL)}})
+
 
     if (calculation_option=='calcPWL'):
         SPL = parseFloat(doc['input']['SPL']['_val'])
@@ -29,7 +27,7 @@ def calculate(doc_original):
         Q = parseFloat(doc['input']['Q']['_val'])
 
         PWL = noise_utils.getPWL(SPL,distance,Q)
-        doc['result']['PWL']['_val'] = str(PWL)
+        doc['result'].update({'PWL':{'_val' : str(PWL)}})
 
     if (calculation_option=='calcDistance'):
         PWL = parseFloat(doc['input']['PWL']['_val'])
@@ -37,9 +35,9 @@ def calculate(doc_original):
         Q = parseFloat(doc['input']['Q']['_val'])
 
         distance = noise_utils.getDistance(PWL,SPL,Q)
-        doc['result']['distance']['_val'] = str(distance)
+        doc['result'].update({'distance':{'_val' : str(distance), '_dim':'length'}})
 
 
-    treeUnitConvert(doc, SI_UNITS, doc['units'])
+    treeUnitConvert(doc, SI_UNITS, doc['units'], autoRoundOff=True)
     doc_original['result'].update(doc['result'])
     return True

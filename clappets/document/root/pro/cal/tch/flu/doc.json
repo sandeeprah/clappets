@@ -26,17 +26,17 @@
     "molecularMass" : "kg/mol",
     "density":"kg/m3",
     "specificVolume":"m3/kg",
-    "specificEnergy":"J/kg",
-    "specificHeat":"J/kg.K",
-    "specificHeatMolar":"J/mol.K",
+    "specificEnergy":"kJ/kg",
+    "specificHeat":"kJ/kg.K",
+    "specificHeatMolar":"kJ/kmol.K",
     "dynViscosity":"Pa.s",
     "thermalConductivity":"W/m.K"
   },
 
   "input": {
     "fluid" : {"_val":"Air"},
-    "P": {"_val":"", "_dim":"pressure"},
-    "T": {"_val":"", "_dim":"temperature"}
+    "P": {"_val":"1", "_dim":"pressure"},
+    "T": {"_val":"25", "_dim":"temperature"}
   },
 
   "result": {
@@ -55,8 +55,8 @@
     "s": {"_val":"", "_dim":"specificHeat"},
     "gibbs": {"_val":"", "_dim":"specificEnergy"},
     "helmholtz": {"_val":"", "_dim":"specificEnergy"},
-    "Cp": {"_val":"", "_dim":"specificEnergy"},
-    "Cv": {"_val":"", "_dim":"specificEnergy"},
+    "Cp": {"_val":"", "_dim":"specificHeat"},
+    "Cv": {"_val":"", "_dim":"specificHeat"},
     "Cp_molar": {"_val":"", "_dim":"specificHeatMolar"},
     "Cv_molar": {"_val":"", "_dim":"specificHeatMolar"},
     "Cp0": {"_val":"", "_dim":"specificEnergy"},

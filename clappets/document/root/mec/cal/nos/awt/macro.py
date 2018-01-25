@@ -13,7 +13,7 @@ def calculate(doc_original):
     totalAudibleNoise = noise_utils.spectrumTotal(filteredSpectrum)
 
     doc['result']['filteredSpectrum'] = filteredSpectrum
-    doc['result']['totalAudibleNoise']['_val'] = str(totalAudibleNoise)
+    doc['result'].update({'totalAudibleNoise':{'_val' : str(totalAudibleNoise)}})
 
     treeUnitConvert(doc, SI_UNITS, doc['units'])
     doc_original['result'].update(doc['result'])

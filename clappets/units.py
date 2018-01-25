@@ -535,6 +535,11 @@ unitLib = OrderedDict({
                 "label" : "J/mol",
                 "cf" : 1,
                 "off" : 0
+            },
+            "kJ/kmol" : {
+                "label" : "J/mol",
+                "cf" : 1,
+                "off" : 0
             }
         }
     },
@@ -558,6 +563,11 @@ unitLib = OrderedDict({
         "dimtitle":"Molar Specific Heat",
         "units":{
             "J/mol.K" : {
+                "label" : "J/mol.K",
+                "cf" : 1,
+                "off" : 0
+            },
+            "kJ/kmol.K" : {
                 "label" : "J/mol.K",
                 "cf" : 1,
                 "off" : 0

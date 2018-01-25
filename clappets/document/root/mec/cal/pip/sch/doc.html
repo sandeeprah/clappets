@@ -107,6 +107,46 @@
         </td>
         <td></td>
       </tr>
+
+    </tbody>
+
+      <tbody class="hideprint">
+        <tr>
+          <td></td>
+          <td colspan="8">
+            <span class="w8">
+              <button class="button is-small is-primary" @click="calculate" style="width:100%">Calculate</button>
+            </span>
+            <span class="w8">
+              <button class="button is-small is-primary" @click="openModal('unitsModalisActive')" style="width:100%">Units</button>
+            </span>
+            <span class="w8">
+              <button class="button is-small is-primary" @click="openModal('infoModalisActive')" style="width:100%">Info</button>
+            </span>
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
+
+
+      <tbody v-if="doc['errors'].length > 0">
+        <tr>
+          <td>2.4</td>
+          <td colspan="8">
+            <p class="help is-danger"><b>Errors</b></p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td colspan="8">
+            <p class="help is-danger" v-for = "err in doc['errors']">[[ err ]]</p>
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
+
+      <tbody>
       <tr>
         <td>2</td>
         <td colspan="8">
@@ -118,7 +158,7 @@
         <td>2.1</td>
         <td colspan="4">
           <span class="w14">NPS</span>
-          <span class="w6 result"> [[ doc['result']['NPS']['_val'] ]]</span>
+          <span class="w6 result"> [[ retSilent(doc, ['result', 'NPS', '_val']) ]]</span>
         </td>
         <td colspan="4">
         </td>
@@ -128,7 +168,7 @@
         <td>2.2</td>
         <td colspan="4">
           <span class="w14">Inner Dia (Di)</span>
-          <span class="w6 result"> [[ doc['result']['Di']['_val'] ]]</span>
+          <span class="w6 result"> [[ retSilent(doc, ['result', 'Di', '_val']) ]]</span>
           <span class="w6">[[ gUL('length') ]]</span>
         </td>
         <td colspan="4">
@@ -139,7 +179,7 @@
         <td>2.3</td>
         <td colspan="4">
           <span class="w14">Outer Dia (Do)</span>
-          <span class="w6 result"> [[ doc['result']['Do']['_val'] ]]</span>
+          <span class="w6 result"> [[ retSilent(doc, ['result', 'Do', '_val']) ]]</span>
           <span class="w6">[[ gUL('length') ]]</span>
         </td>
         <td colspan="4">
@@ -147,22 +187,7 @@
         <td></td>
       </tr>
     </tbody>
-    <tbody v-if="doc['errors'].length > 0">
-      <tr>
-        <td>2.4</td>
-        <td colspan="8">
-          <p class="help is-danger"><b>Errors</b></p>
-        </td>
-        <td></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td colspan="8">
-          <p class="help is-danger" v-for = "err in doc['errors']">[[ err ]]</p>
-        </td>
-        <td></td>
-      </tr>
-    </tbody>
+
 
   </table>
 </div>

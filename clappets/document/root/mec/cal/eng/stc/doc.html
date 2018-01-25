@@ -1,4 +1,5 @@
-{% extends "document/document.html" %} {% block content %}
+{% extends "document/document.html" %}
+{% block content %}
 <div class="datasheet">
   <table class="main">
     <thead>
@@ -63,7 +64,7 @@
       <td colspan="4">
         <span class="w2"></span>
         <span class="w14">Inlet Conditions Defined As</span>
-        <span class="w12">
+        <span class="w14">
           <select class="inp"  v-model="doc['input']['inlet_definition']['_val']">
             <option value="P-T">Pressure-Temperature</option>
             <option value="P-h">Pressure-Enthalphy</option>
@@ -153,7 +154,7 @@
       <td colspan="4">
         <span class="w2"></span>
         <span class="w14">Turbine Property Defined</span>
-        <span class="w12">
+        <span class="w14">
           <select class="inp"  v-model="doc['input']['turbine_definition']['_val']">
             <option value="power_output">Power Output</option>
             <option value="mass_flow">Mass Flow</option>
@@ -227,7 +228,7 @@
       <td colspan="4">
         <span class="w2"></span>
         <span class="w14">Outlet Conditions Defined As</span>
-        <span class="w12">
+        <span class="w14">
           <select class="inp"  v-model="doc['input']['outlet_definition']['_val']">
             <option value="P-T">Pressure-Temperature</option>
             <option value="P-h">Pressure-Enthalphy</option>
@@ -325,6 +326,39 @@
         <td></td>
       </tr>
     </tbody>
+    <tbody class="hideprint">
+      <tr>
+        <td></td>
+        <td colspan="8">
+          <span class="w8">
+            <button class="button is-small is-primary" @click="calculate" style="width:100%">Calculate</button>
+          </span>
+          <span class="w8">
+            <button class="button is-small is-primary" @click="openModal('unitsModalisActive')" style="width:100%">Units</button>
+          </span>
+          <span class="w8">
+            <button class="button is-small is-primary" @click="openModal('infoModalisActive')" style="width:100%">Info</button>
+          </span>
+        </td>
+        <td></td>
+      </tr>
+    </tbody>
+    <tbody v-if="doc['errors'].length > 0">
+      <tr>
+        <td></td>
+        <td colspan="8">
+          <p class="help is-danger"><b>Errors</b></p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td colspan="8">
+          <p class="help is-danger" v-for="err in doc['errors']">[[ err ]]</p>
+        </td>
+        <td></td>
+      </tr>
+    </tbody>
     <tbody>
       <tr>
         <td>2</td>
@@ -392,8 +426,8 @@
         <td>2.1.4</td>
         <td colspan="4">
           <span class="w2"></span>
-          <span class="w14">Inlet Quality</span>
-          <span class="w6 result">[[ retSilent(doc, ['result','Q_inlet','_val']) ]]</span>
+          <span class="w14">Inlet Phase</span>
+          <span class="w6 result">[[ retSilent(doc, ['result','phase_inlet','_val']) ]]</span>
         </td>
         <td colspan="4">
         </td>
@@ -523,8 +557,8 @@
         <td>2.1.4</td>
         <td colspan="4">
           <span class="w2"></span>
-          <span class="w14">Outlet  Quality</span>
-          <span class="w6 result">[[ retSilent(doc, ['result','Q_outlet','_val']) ]]</span>
+          <span class="w14">Outlet  Phase</span>
+          <span class="w6 result">[[ retSilent(doc, ['result','phase_outlet','_val']) ]]</span>
         </td>
         <td colspan="4">
         </td>
@@ -540,11 +574,7 @@
     delimiters: ['[[', ']]'],
     mixins: [app_common, app_doc],
     data: {
-      doc: {
-        {
-          doc | safe
-        }
-      },
+      doc: {{doc | safe}},
       fixed: {
         state_options: ["Saturated_T", "Saturated_P", "Superheated_or_Compressed"]
       }

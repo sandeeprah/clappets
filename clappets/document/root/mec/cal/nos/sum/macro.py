@@ -11,8 +11,8 @@ def calculate(doc_original):
     noiseLevelList = doc['input']['noiseLevelList']
     noiseTotal = noise_utils.addNoise(noiseLevelList=noiseLevelList)
 
-    doc['result']['noiseTotal']['_val'] = str(noiseTotal)
+    doc['result'].update({'noiseTotal':{'_val' : str(noiseTotal)}})
 
-    treeUnitConvert(doc, SI_UNITS, doc['units'])
+    treeUnitConvert(doc, SI_UNITS, doc['units'], autoRoundOff=True)
     doc_original['result'].update(doc['result'])
     return True

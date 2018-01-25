@@ -53,16 +53,49 @@
         <td colspan="4">
           <span class="w14">Specific Fuel Consumption</span>
           <span class="w6"><input class="inp" type="number" v-model="doc['input']['Fuel_rate_specific']['_val']"/></span>
-          <span class="w4">[[ gUL('specificFuelConsumption') ]]</span>
-          <span class="w4"><button class="button is-small is-primary" @click="setTypical">Use Typical</button></span>
+          <span class="w6">[[ gUL('specificFuelConsumption') ]]</span>
+          <span class="w4"><button class="button is-small is-info" @click="setTypical" style="padding:0px; height:1.5em;">Use Typical</button></span>
         </td>
         <td colspan="4">
           <p class="help is-danger" v-for="err in getErrs(['schema','input','Fuel_rate_specific'])">[[err]]</p>
         </td>
         <td></td>
       </tr>
-
-
+    </tbody>
+    <tbody class="hideprint">
+      <tr>
+        <td></td>
+        <td colspan="8">
+          <span class="w8">
+            <button class="button is-small is-primary" @click="calculate" style="width:100%">Calculate</button>
+          </span>
+          <span class="w8">
+            <button class="button is-small is-primary" @click="openModal('unitsModalisActive')" style="width:100%">Units</button>
+          </span>
+          <span class="w8">
+            <button class="button is-small is-primary" @click="openModal('infoModalisActive')" style="width:100%">Info</button>
+          </span>
+        </td>
+        <td></td>
+      </tr>
+    </tbody>
+    <tbody v-if="doc['errors'].length > 0">
+      <tr>
+        <td></td>
+        <td colspan="8">
+          <p class="help is-danger"><b>Errors</b></p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td colspan="8">
+          <p class="help is-danger" v-for="err in doc['errors']">[[ err ]]</p>
+        </td>
+        <td></td>
+      </tr>
+    </tbody>
+    <tbody>
       <tr>
         <td>2</td>
         <td colspan="8">

@@ -512,6 +512,11 @@ unitLib = {
                 "label" : "J/kg",
                 "cf" : 1,
                 "off" : 0
+            },
+            "kJ/kg" : {
+                "label" : "kJ/kg",
+                "cf" : 1000,
+                "off" : 0
             }
         }
     },
@@ -520,6 +525,11 @@ unitLib = {
         "units":{
             "J/mol" : {
                 "label" : "J/mol",
+                "cf" : 1,
+                "off" : 0
+            },
+            "kJ/kmol" : {
+                "label" : "kJ/kmol",
                 "cf" : 1,
                 "off" : 0
             }
@@ -532,6 +542,11 @@ unitLib = {
                 "label" : "J/kg.K",
                 "cf" : 1,
                 "off" : 0
+            },
+            "kJ/kg.K" : {
+                "label" : "kJ/kg.K",
+                "cf" : 1000,
+                "off" : 0
             }
         }
     },
@@ -541,6 +556,11 @@ unitLib = {
         "units":{
             "J/mol.K" : {
                 "label" : "J/mol.K",
+                "cf" : 1,
+                "off" : 0
+            },
+            "kJ/kmol.K" : {
+                "label" : "kJ/kmol.K",
                 "cf" : 1,
                 "off" : 0
             }

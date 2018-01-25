@@ -246,7 +246,40 @@
         <td></td>
       </tr>
     </tbody>
-
+    <tbody class="hideprint">
+      <tr>
+        <td></td>
+        <td colspan="8">
+          <span class="w8">
+            <button class="button is-small is-primary" @click="calculate" style="width:100%">Calculate</button>
+          </span>
+          <span class="w8">
+            <button class="button is-small is-primary" @click="openModal('unitsModalisActive')" style="width:100%">Units</button>
+          </span>
+          <span class="w8">
+            <button class="button is-small is-primary" @click="openModal('infoModalisActive')" style="width:100%">Info</button>
+          </span>
+        </td>
+        <td></td>
+      </tr>
+    </tbody>
+    <tbody v-if="doc['errors'].length > 0">
+      <tr>
+        <td></td>
+        <td colspan="8">
+          <p class="help is-danger"><b>Errors</b></p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td colspan="8">
+          <p class="help is-danger" v-for="err in doc['errors']">[[ err ]]</p>
+        </td>
+        <td></td>
+      </tr>
+    </tbody>
+    <tbody>
       <tr>
         <td>2</td>
         <td colspan="8">
@@ -258,14 +291,16 @@
         <td>2.1</td>
         <td colspan="4">
           <span class="w14">Source Noise</span>
-          <span class="w6 result"> [[ doc['result']['sourceNoise']['_val'] ]]</span>
+          <span class="w6 result"> [[ retSilent(doc, ['result','sourceNoise', '_val']) ]]</span>
           <span class="w6">dB</span>
         </td>
         <td colspan="4">
         </td>
         <td></td>
       </tr>
-      <tbody v-show="crn_opt=='spectrum'">
+    </tbody>
+
+    <tbody v-show="crn_opt=='spectrum'">
       <tr>
         <td>2.1</td>
         <td colspan="4">
@@ -283,7 +318,7 @@
           <span class="w2"></span>
           <span class="w4">63</span>
           <span class="w8 result">
-            [[ doc['result']['sourceSpectrum']['f63'] ]]
+            [[ retSilent(doc, ['result','sourceSpectrum','f63']) ]]
           </span>
         </td>
         <td colspan="4">
@@ -296,7 +331,7 @@
           <span class="w2"></span>
           <span class="w4">125</span>
           <span class="w8 result">
-            [[ doc['result']['sourceSpectrum']['f125'] ]]
+            [[ retSilent(doc, ['result','sourceSpectrum','f125']) ]]
           </span>
         </td>
         <td colspan="4">
@@ -309,7 +344,7 @@
           <span class="w2"></span>
           <span class="w4">250</span>
           <span class="w8 result">
-            [[ doc['result']['sourceSpectrum']['f250'] ]]
+            [[ retSilent(doc, ['result','sourceSpectrum','f250']) ]]
           </span>
         </td>
         <td colspan="4">
@@ -322,7 +357,7 @@
           <span class="w2"></span>
           <span class="w4">500</span>
           <span class="w8 result">
-            [[ doc['result']['sourceSpectrum']['f500'] ]]
+            [[ retSilent(doc, ['result','sourceSpectrum','f500']) ]]
           </span>
         </td>
         <td colspan="4">
@@ -335,7 +370,7 @@
           <span class="w2"></span>
           <span class="w4">1000</span>
           <span class="w8 result">
-            [[ doc['result']['sourceSpectrum']['f1000'] ]]
+            [[ retSilent(doc, ['result','sourceSpectrum','f1000']) ]]
           </span>
         </td>
         <td colspan="4">
@@ -348,7 +383,7 @@
           <span class="w2"></span>
           <span class="w4">2000</span>
           <span class="w8 result">
-            [[ doc['result']['sourceSpectrum']['f2000'] ]]
+            [[ retSilent(doc, ['result','sourceSpectrum','f2000']) ]]
           </span>
         </td>
         <td colspan="4">
@@ -361,7 +396,7 @@
           <span class="w2"></span>
           <span class="w4">4000</span>
           <span class="w8 result">
-            [[ doc['result']['sourceSpectrum']['f4000'] ]]
+            [[ retSilent(doc, ['result','sourceSpectrum','f4000']) ]]
           </span>
         </td>
         <td colspan="4">
@@ -374,7 +409,7 @@
           <span class="w2"></span>
           <span class="w4">8000</span>
           <span class="w8 result">
-            [[ doc['result']['sourceSpectrum']['f8000'] ]]
+            [[ retSilent(doc, ['result','sourceSpectrum','f8000']) ]]
           </span>
         </td>
         <td colspan="4">

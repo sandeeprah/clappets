@@ -46,7 +46,7 @@ class docInput(Schema):
             if (data['state']['_val']=='Saturated_T'):
                 if xisMissing(original_data, 'T'):
                     err_fields.append('T')
-                if vd.isMissing(original_data, 'Q'):
+                if xisMissing(original_data, 'Q'):
                     err_fields.append('Q')
 
             if (data['state']['_val']=='Saturated_P'):

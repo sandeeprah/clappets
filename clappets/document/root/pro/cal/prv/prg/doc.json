@@ -44,7 +44,7 @@
     "k": {"_val":"1.09"},
     "valve_design" : {"_val":"Pilot-Operated"},
     "rupture_disc" : {"_val":"No"},
-    "Kd_basis": {"_val":"Manual"},
+    "Kd_basis": {"_val":"Default"},
     "Kd_manual": {"_val":""},
     "Kb_basis": {"_val":"Default"},
     "Kb_manual": {"_val":""},
