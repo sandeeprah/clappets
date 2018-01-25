@@ -21,6 +21,11 @@
         display: none;
         color: red;
     }
+
+    .datasheet select{
+      -webkit-appearance: none;
+      -moz-appearance: none;
+    }
 }
 
 @media screen {
@@ -80,7 +85,7 @@ div.datasheet {
     padding: 0.25em;
     vertical-align: top;
     page-break-inside: avoid;
-    white-space: nowrap;
+    /* white-space: nowrap; */
     border-top: 1px solid black;
     border-bottom: 0px solid black;
 }
@@ -127,13 +132,24 @@ div.datasheet {
     background-color: #eee;
     box-sizing: border-box;
     font-family: Arial, Helvetica, serif;
+    font-weight: bold;
 }
 
 .datasheet select{
-  -webkit-appearance: none;
-     -moz-appearance: none;
-     text-indent: 1px;
-     text-overflow: '';
+/*  -webkit-appearance: none;
+  -moz-appearance: none;
+*/
+  text-indent: 1px;
+  text-overflow: '';
+  font-size: 1em;
+  height: 1.5em;
+  width: 100%;
+  border: 0px;
+  outline: 0px;
+  background-color: #eee;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, serif;
+  font-weight: bold;
 }
 
 
@@ -148,6 +164,7 @@ div.datasheet {
 span.result {
   background-color: #eee;
   font-weight : bold;
+  color: #000000;
 
 }
 

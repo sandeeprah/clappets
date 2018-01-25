@@ -38,7 +38,7 @@
       </tr>
 
       <tr>
-        <td>1.2</td>
+        <td>1.1</td>
         <td colspan="4">
           <span class="w14">Pressure</span>
           <span class="w6"><input class="inp" type="text" v-model="doc['input']['P']['_val']"/></span>
@@ -50,7 +50,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.3</td>
+        <td>1.2</td>
         <td colspan="4">
           <span class="w14">Temperature</span>
           <span class="w6"><input class="inp" type="text" v-model="doc['input']['T']['_val']"/></span>
@@ -62,15 +62,17 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.4</td>
+        <td>1.3</td>
         <td colspan="4">
           <span class="w14">Mixture</span>
         </td>
-        <td colspan="4"></td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','schema_mixture'])">[[err]]</p>
+        </td>
         <td></td>
       </tr>
       <tr>
-        <td>1.4.1</td>
+        <td></td>
         <td colspan="4">
           <span class="w2"></span>
           <span class="w10">Component</span>
@@ -82,7 +84,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.4.1</td>
+        <td></td>
         <td colspan="4">
           <span class="w2"></span>
           <span class="w10">Air</span>
@@ -96,7 +98,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.4.2</td>
+        <td></td>
         <td colspan="4">
           <span class="w2"></span>
           <span class="w10">Oxygen</span>
@@ -110,7 +112,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.4.3</td>
+        <td></td>
         <td colspan="4">
           <span class="w2"></span>
           <span class="w10">Nitrogen</span>
@@ -124,7 +126,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.4.4</td>
+        <td></td>
         <td colspan="4">
           <span class="w2"></span>
           <span class="w10">Water Vapor</span>
@@ -138,7 +140,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.4.5</td>
+        <td></td>
         <td colspan="4">
           <span class="w2"></span>
           <span class="w10">Carbon Monoxide</span>
@@ -152,7 +154,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.4.6</td>
+        <td></td>
         <td colspan="4">
           <span class="w2"></span>
           <span class="w10">Carbon Dioxide</span>
@@ -166,7 +168,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.4.7</td>
+        <td></td>
         <td colspan="4">
           <span class="w2"></span>
           <span class="w10">Hydrogen Sulfide</span>
@@ -180,7 +182,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.4.8</td>
+        <td></td>
         <td colspan="4">
           <span class="w2"></span>
           <span class="w10">Hydrogen</span>
@@ -194,7 +196,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.4.9</td>
+        <td></td>
         <td colspan="4">
           <span class="w2"></span>
           <span class="w10">Methane</span>
@@ -209,7 +211,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.4.10</td>
+        <td></td>
         <td colspan="4">
           <span class="w2"></span>
           <span class="w10">Ethene</span>
@@ -223,7 +225,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.4.11</td>
+        <td></td>
         <td colspan="4">
           <span class="w2"></span>
           <span class="w10">Ethane</span>
@@ -237,7 +239,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.4.12</td>
+        <td></td>
         <td colspan="4">
           <span class="w2"></span>
           <span class="w10">Propene</span>
@@ -251,7 +253,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.4.13</td>
+        <td></td>
         <td colspan="4">
           <span class="w2"></span>
           <span class="w10">n-Propane</span>
@@ -265,7 +267,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.4.14</td>
+        <td></td>
         <td colspan="4">
           <span class="w2"></span>
           <span class="w10">i-Butane</span>
@@ -279,7 +281,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.4.15</td>
+        <td></td>
         <td colspan="4">
           <span class="w2"></span>
           <span class="w10">n-Butane</span>
@@ -293,7 +295,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.4.16</td>
+        <td></td>
         <td colspan="4">
           <span class="w2"></span>
           <span class="w10">i-Pentane</span>
@@ -307,7 +309,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.4.17</td>
+        <td></td>
         <td colspan="4">
           <span class="w2"></span>
           <span class="w10">n-Pentane</span>
@@ -321,7 +323,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.4.18</td>
+        <td></td>
         <td colspan="4">
           <span class="w2"></span>
           <span class="w10">Hexane+</span>
@@ -343,7 +345,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>2.4</td>
+        <td>2.1</td>
         <td colspan="4">
           <span class="w14">MW</span>
           <span class="w6 result">[[ doc['result']['MW']['_val'] ]]</span>
@@ -353,7 +355,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.2</td>
+        <td>2.2</td>
         <td colspan="4">
           <span class="w14">Critical Pressure</span>
           <span class="w6 result">[[ doc['result']['Pcritical']['_val'] ]]</span>
@@ -364,7 +366,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.3</td>
+        <td>2.3</td>
         <td colspan="4">
           <span class="w14">Critical Temperature</span>
           <span class="w6 result"> [[ doc['result']['Tcritical']['_val'] ]]</span>
@@ -375,7 +377,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.2</td>
+        <td>2.4</td>
         <td colspan="4">
           <span class="w14">Reduced Pressure</span>
           <span class="w6 result"> [[ doc['result']['Pr']['_val'] ]]</span>
@@ -385,7 +387,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.3</td>
+        <td>2.5</td>
         <td colspan="4">
           <span class="w14">Reduced Temperature</span>
           <span class="w6 result"> [[ doc['result']['Tr']['_val'] ]]</span>
@@ -395,7 +397,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.3</td>
+        <td>2.6</td>
         <td colspan="4">
           <span class="w14">Acentric Factor</span>
           <span class="w6 result"> [[ doc['result']['acentric']['_val'] ]]</span>
@@ -405,7 +407,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.3</td>
+        <td>2.7</td>
         <td colspan="4">
           <span class="w14">Z (Peng-Robinson)</span>
           <span class="w6 result"> [[ doc['result']['Z_PR']['_val'] ]]</span>
@@ -415,7 +417,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.3</td>
+        <td>2.8</td>
         <td colspan="4">
           <span class="w14">Z (Lee-Kesler)</span>
           <span class="w6 result"> [[ doc['result']['Z_LKP']['_val'] ]]</span>
@@ -425,7 +427,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.3</td>
+        <td>2.9</td>
         <td colspan="4">
           <span class="w14">Z (Nelson Obert)</span>
           <span class="w6 result"> [[ doc['result']['Z_NO']['_val'] ]]</span>
@@ -435,7 +437,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.3</td>
+        <td>2.10</td>
         <td colspan="4">
           <span class="w14">Cp0</span>
           <span class="w6 result"> [[ doc['result']['Cp0mass']['_val'] ]]</span>
@@ -446,7 +448,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.3</td>
+        <td>2.11</td>
         <td colspan="4">
           <span class="w14">Cv0</span>
           <span class="w6 result"> [[ doc['result']['Cv0mass']['_val'] ]]</span>
@@ -457,7 +459,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.3</td>
+        <td>2.12</td>
         <td colspan="4">
           <span class="w14">Cp0 Molar</span>
           <span class="w6 result"> [[ doc['result']['Cp0molar']['_val'] ]]</span>
@@ -468,7 +470,7 @@
         <td></td>
       </tr>
       <tr>
-        <td>1.3</td>
+        <td>2.13</td>
         <td colspan="4">
           <span class="w14">Cv0 Molar</span>
           <span class="w6 result"> [[ doc['result']['Cv0molar']['_val'] ]]</span>
@@ -478,7 +480,6 @@
         </td>
         <td></td>
       </tr>
-
     </tbody>
   </table>
 </div>

@@ -1,4 +1,4 @@
-from marshmallow import Schema, fields, validate, validates_schema, ValidationError
+from marshmallow import Schema, fields, validate, validates, validates_schema, ValidationError
 from clappets.core import sDocPrj, sXfld
 from clappets.core import validator as vd
 import CoolProp.CoolProp as CP
@@ -25,12 +25,45 @@ class emissionPoints(Schema):
 
 
 class areaGrid(Schema):
-    x1 = fields.Nested(sXfld, validate=[vd.xNumber(blank=False), vd.xDim('length')])
-    y1 = fields.Nested(sXfld, validate=[vd.xNumber(blank=False), vd.xDim('length')])
-    x2 = fields.Nested(sXfld, validate=[vd.xNumber(blank=False), vd.xDim('length')])
-    y2 = fields.Nested(sXfld, validate=[vd.xNumber(blank=False), vd.xDim('length')])
-    x_step = fields.Nested(sXfld, validate=[vd.xNumber(blank=False), vd.xDim('length')])
-    y_step = fields.Nested(sXfld, validate=[vd.xNumber(blank=False), vd.xDim('length')])
+    x1 = fields.Nested(sXfld)
+    y1 = fields.Nested(sXfld)
+    x2 = fields.Nested(sXfld)
+    y2 = fields.Nested(sXfld)
+    x_step = fields.Nested(sXfld)
+    y_step = fields.Nested(sXfld)
+
+
+    @validates('x1')
+    def check_x1(self, value):
+        vd.xNumber(value)
+        vd.xDim(value,'length')
+
+    @validates('y1')
+    def check_y1(self, value):
+        vd.xNumber(value)
+        vd.xDim(value,'length')
+
+    @validates('x2')
+    def check_x2(self, value):
+        vd.xNumber(value)
+        vd.xDim(value,'length')
+
+    @validates('y2')
+    def check_y2(self, value):
+        vd.xNumber(value)
+        vd.xDim(value,'length')
+
+    @validates('x_step')
+    def check_x_step(self, value):
+        vd.xNumber(value)
+        vd.xDim(value,'length')
+
+    @validates('y_step')
+    def check_y_step(self, value):
+        vd.xNumber(value)
+        vd.xDim(value,'length')
+
+
 
     class Meta:
         ordered = True

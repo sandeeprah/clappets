@@ -12,8 +12,8 @@ from marshmallow import Schema, fields, pprint, pre_load, validate, validates,  
 #from techclappets.core import noemptySchema, schOneOf, schema_dquant, sXfld , sXfld , CalcOutput, vd.fMinExcl(0), vd.fMin(0)
 #from techclappets.pressuredrop.reducer import reducer_sizes, reducer_dimensions
 from collections import OrderedDict
-from techclappets.core import sXfld, sDocBase
-from techclappets.core import validator as vd
+#from techclappets.core import sXfld, sDocBase
+#from techclappets.core import validator as vd
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 

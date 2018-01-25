@@ -1,43 +1,75 @@
-from marshmallow import Schema, fields, validate, validates_schema, ValidationError
-from clappets.core import sDocPrj, sXfld
+from marshmallow import Schema, fields, validate, validates, validates_schema, ValidationError
+from clappets.core import sDocPrj, sXfld, xisBlank, xisMissing
 from clappets.core import validator as vd
 import CoolProp.CoolProp as CP
 
 
 class docInput(Schema):
-    calculation_options = [
-                        "calcSPL",
-                        "calcPWL",
-                        "calcDistance"
-                        ]
+    calculation_option = fields.Nested(sXfld, required=True)
+    PWL = fields.Nested(sXfld)
+    SPL = fields.Nested(sXfld)
+    distance = fields.Nested(sXfld)
+    Q = fields.Nested(sXfld, required=True)
 
-    calculation_option = fields.Nested(sXfld, validate=[vd.xString(), vd.xChoice(calculation_options)], required=True)
-    PWL = fields.Nested(sXfld, validate=[vd.xNumber(blank=True)])
-    SPL = fields.Nested(sXfld, validate=[vd.xNumber(blank=True)])
-    distance = fields.Nested(sXfld, validate=[vd.xNumber(blank=True), vd.xDim('length')])
-    Q_options = ["1","2","4","8"]
-    Q = fields.Nested(sXfld, validate=[vd.xString(), vd.xChoice(Q_options)], required=True)
+    @validates('calculation_option')
+    def check_calculation_option(self, value):
+        vd.xString(value)
+        calculation_options = [
+                            "calcSPL",
+                            "calcPWL",
+                            "calcDistance"
+                            ]
+        vd.xChoice(value, calculation_options)
 
-    @validates_schema()
-    def check_missingvalid(self,data):
+    @validates('PWL')
+    def check_PWL(self, value):
+        if (xisBlank(value)):
+            return
+        vd.xNumber(value)
+        vd.xGrtThanEq(value, 0)
+
+    @validates('SPL')
+    def check_SPL(self, value):
+        if (xisBlank(value)):
+            return
+        vd.xNumber(value)
+        vd.xGrtThanEq(value, 0)
+
+    @validates('distance')
+    def check_distance(self, value):
+        if (xisBlank(value)):
+            return
+        vd.xNumber(value)
+        vd.xGrtThan(value, 0)
+        vd.xDim(value,'length')
+
+    @validates('Q')
+    def check_Q(self, value):
+        vd.xNumber(value)
+        Q_options = ["1","2","4","8"]
+        vd.xChoice(value, Q_options)
+
+
+    @validates_schema(pass_original=True)
+    def check_missingvalid(self,data, original_data):
         err_fields = []
         if 'calculation_option' in data:
             if (data['calculation_option']['_val']=='calcSPL'):
-                if vd.isMissing(data, 'PWL'):
+                if xisMissing(original_data, 'PWL'):
                     err_fields.append('PWL')
-                if vd.isMissing(data, 'distance'):
+                if xisMissing(original_data, 'distance'):
                     err_fields.append('distance')
 
             if (data['calculation_option']['_val']=='calcPWL'):
-                if vd.isMissing(data, 'SPL'):
+                if xisMissing(original_data, 'SPL'):
                     err_fields.append('SPL')
-                if vd.isMissing(data, 'distance'):
+                if xisMissing(original_data, 'distance'):
                     err_fields.append('distance')
 
             if (data['calculation_option']['_val']=='calcDistance'):
-                if vd.isMissing(data, 'PWL'):
+                if xisMissing(original_data, 'PWL'):
                     err_fields.append('PWL')
-                if vd.isMissing(data, 'SPL'):
+                if xisMissing(original_data, 'SPL'):
                     err_fields.append('SPL')
 
 
@@ -46,9 +78,9 @@ class docInput(Schema):
 
 
 class docResult(Schema):
-    PWL = fields.Nested(sXfld, validate=[vd.xNumber(blank=True)])
-    SPL = fields.Nested(sXfld, validate=[vd.xNumber(blank=True)])
-    distance = fields.Nested(sXfld, validate=[vd.xNumber(blank=True), vd.xDim('length')])
+    PWL = fields.Nested(sXfld)
+    SPL = fields.Nested(sXfld)
+    distance = fields.Nested(sXfld)
 
 
 class docSchema(sDocPrj):

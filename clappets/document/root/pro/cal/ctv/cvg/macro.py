@@ -1,3 +1,4 @@
+import math
 import CoolProp.CoolProp as CP
 from fluids.control_valve import size_control_valve_g
 from clappets.units import treeUnitConvert, SI_UNITS
@@ -26,7 +27,11 @@ def calculate(doc_original):
     xT = float(doc['input']['xT']['_val'])
 
     MW_ = MW*1000
-    Cmetric = size_control_valve_g(T, MW_, mu, gamma, Z, P1, P2, Q, D1, D2, d, FL, Fd, xT)
+    try:
+        Cmetric = size_control_valve_g(T, MW_, mu, gamma, Z, P1, P2, Q, D1, D2, d, FL, Fd, xT)
+    except Exception:
+        Cmetric = math.nan
+
     Cmetric = roundit(Cmetric)
     doc['result']['Cmetric']['_val'] = str(Cmetric)
 

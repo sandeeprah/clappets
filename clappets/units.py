@@ -131,6 +131,32 @@ unitLib = OrderedDict({
         }
     },
 
+    "area": {
+        "dimtitle": "Area",
+        "units": {
+            "m2": {
+                "label": "m²",
+                "cf": 1,
+                "off": 0
+            },
+            "mm2": {
+                "label": "mm²",
+                "cf": 1e-6,
+                "off": 0
+            },
+            "ft2": {
+                "label": "ft²",
+                "cf": 0.092903,
+                "off": 0
+            },
+            "in2": {
+                "label": "in²",
+                "cf": 6.4516e-4,
+                "off": 0
+            }
+        }
+    },
+
     "angle": {
         "dimtitle": "Angle",
         "units": {
@@ -398,7 +424,12 @@ unitLib = OrderedDict({
             },
             "lpm": {
                 "label": "lpm",
-                "cf": 1.6667e-5,
+                "cf": 1.666667e-5,
+                "off": 0
+            },
+            "lph": {
+                "label": "lph",
+                "cf": 1e-3/3.6e3,
                 "off": 0
             },
             "usgpm": {
@@ -413,6 +444,33 @@ unitLib = OrderedDict({
             },
         }
     },
+
+    "massflow": {
+        "dimtitle": "Mass Flow",
+        "units": {
+            "kg/s": {
+                "label": "kg/s",
+                "cf": 1,
+                "off": 0
+            },
+            "kg/min": {
+                "label": "kg/min",
+                "cf": 1 / 60,
+                "off": 0
+            },
+            "kg/hr": {
+                "label": "kg/hr",
+                "cf": 1 / 3600,
+                "off": 0
+            },
+            "lb/hr": {
+                "label": "lb/hr",
+                "cf": 1.25998e-4,
+                "off": 0
+            },
+        }
+    },
+
 
     "density": {
         "dimtitle": "Density",
@@ -462,6 +520,11 @@ unitLib = OrderedDict({
                 "label" : "J/kg",
                 "cf" : 1,
                 "off" : 0
+            },
+            "kJ/kg" : {
+                "label" : "kJ/kg",
+                "cf" : 1000,
+                "off" : 0
             }
         }
     },
@@ -481,6 +544,11 @@ unitLib = OrderedDict({
             "J/kg.K" : {
                 "label" : "J/kg.K",
                 "cf" : 1,
+                "off" : 0
+            },
+            "kJ/kg.K" : {
+                "label" : "kJ/kg.K",
+                "cf" : 1000,
                 "off" : 0
             }
         }
@@ -526,8 +594,44 @@ unitLib = OrderedDict({
                 "label": "cP",
                 "cf": 1e-3,
                 "off": 0
-            },
+            }
+        }
+    },
 
+    "kinViscosity": {
+        "dimtitle": "Kinematic Viscosity",
+        "units": {
+            "m2/s": {
+                "label": "m²/s",
+                "cf": 1,
+                "off": 0
+            },
+            "St": {
+                "label": "St",
+                "cf": 1e-4,
+                "off": 0
+            },
+            "cSt": {
+                "label": "cSt",
+                "cf": 1e-6,
+                "off": 0
+            }
+        }
+    },
+
+    "specificFuelConsumption" : {
+        "dimtitle": "Specific Fuel Consumption",
+        "units": {
+            "m3/W.s": {
+                "label": "m³/W.s",
+                "cf": 1,
+                "off": 0
+            },
+            "litre/kW.h": {
+                "label": "litre/kW.h",
+                "cf": 1e-6/3600,
+                "off": 0
+            }
         }
     }
 })
@@ -537,6 +641,7 @@ SI_UNITS = {
     "length_micro": "m",
     "length_mili": "m",
     "length_kilo": "m",
+    "area": "m2",
     "angle": "radians",
     "mass": "kg",
     "time": "s",
@@ -547,6 +652,7 @@ SI_UNITS = {
     "power": "W",
     "pressure": "Pa",
     "temperature": "K",
+    "massflow": "kg/s",
     "flow": "m3/s",
     "density": "kg/m3",
     "molecularMass": "kg/mol",
@@ -556,7 +662,9 @@ SI_UNITS = {
     "specificHeat": "J/kg.K",
     "specificHeatMolar": "J/mol.K",
     "thermalConductivity": "W/m.K",
-    "dynViscosity": "Pa.s"
+    "dynViscosity": "Pa.s",
+    "kinViscosity": "m2/s",
+    "specificFuelConsumption" : "m3/W.s"
 }
 
 def getDimensions():
@@ -592,7 +700,7 @@ def getUnitOffset(dimension, unit):
 def getSI_unit(dimension):
     return SI_UNITS[dimension]
 
-def unitConvert(value, dimension, fromUnit, toUnit):
+def unitConvert(value, dimension, fromUnit, toUnit, autoRoundOff=False):
     if (math.isnan(parseFloat(value))):
         return_value = value
     else:
@@ -609,7 +717,8 @@ def unitConvert(value, dimension, fromUnit, toUnit):
                 offset_to_unit = getUnitOffset(dimension, toUnit);
                 base_value = parsed_value * cf_from_unit + offset_from_unit;
                 return_value = (base_value - offset_to_unit) / cf_to_unit;
-                return_value = roundit(return_value,7,0.001)
+                if (autoRoundOff):
+                    return_value = roundit(return_value,7,0.001)
 
     if (isinstance(value, str)):
         return str(return_value)
@@ -617,14 +726,14 @@ def unitConvert(value, dimension, fromUnit, toUnit):
         return return_value
 
 
-def treeUnitConvert(tree, fromUnits, toUnits):
+def treeUnitConvert(tree, fromUnits, toUnits, autoRoundOff=False):
     if (isinstance(tree, dict)):
         if ('_val' in tree) and ('_dim' in tree):
             value = tree['_val']
             dimension = tree['_dim']
             fromUnit = fromUnits[dimension]
             toUnit = toUnits[dimension]
-            con_value = unitConvert(value, dimension, fromUnit, toUnit)
+            con_value = unitConvert(value, dimension, fromUnit, toUnit, autoRoundOff)
             tree['_val'] = con_value
         if ('_val' in tree) and ('_dim' not in tree):
             pass
@@ -636,12 +745,17 @@ def treeUnitConvert(tree, fromUnits, toUnits):
                         value = row[column]
                         fromUnit = fromUnits[dimension]
                         toUnit = toUnits[dimension]
-                        con_value = unitConvert(value, dimension, fromUnit, toUnit)
+                        con_value = unitConvert(value, dimension, fromUnit, toUnit, autoRoundOff)
                         row[column] = con_value
         else:
             for k,v in tree.items():
-                treeUnitConvert(v, fromUnits, toUnits)
+                treeUnitConvert(v, fromUnits, toUnits, autoRoundOff)
 
     elif (isinstance(tree, list)):
         for item in tree:
-            treeUnitConvert(item, fromUnits, toUnits)
+            treeUnitConvert(item, fromUnits, toUnits, autoRoundOff)
+
+
+
+def printUnitLib():
+    print(json.dumps(unitLib, indent=4))

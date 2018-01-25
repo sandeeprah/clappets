@@ -383,7 +383,7 @@ var app_common = {
             response = JSON.parse(xhr.responseText);
             this[resource_name] = response;
             this.successMessage = "Data Loaded Successfully"
-            this.successisActive = true;
+//            this.successisActive = true;
             this.isLoading = false;
         },
 
@@ -391,7 +391,7 @@ var app_common = {
             console.log(xhr.responseText);
             response = JSON.parse(xhr.responseText);
             this.successMessage = response["message"];
-            this.successisActive = true;
+//            this.successisActive = true;
             if (response.hasOwnProperty("redirect_url")){
                 location.href = response["redirect_url"];
             }

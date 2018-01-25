@@ -9,11 +9,7 @@ from collections import OrderedDict
 import os
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
-
-
 R = 8.314
-
-
 
 def mixture_props(mixture, P=None, T=None):
     MW_mix = 0
@@ -51,7 +47,23 @@ def mixture_props(mixture, P=None, T=None):
 
     MW_mix = round(MW_mix, 6)
     Pc_mix = round(Pc_mix, 1)
+    Tc_mix = round(Tc_mix, 1)
     ω_mix = round(ω_mix, 4)
+
+    if (Pc_mix ==0):
+        Pc_mix = math.nan
+
+    if (Tc_mix ==0):
+        Tc_mix = math.nan
+
+    if (MW_mix ==0):
+        MW_mix = math.nan
+
+    if (Cp0mass_mix ==0):
+        Cp0mass_mix = math.nan
+
+    if (Cp0molar_mix ==0):
+        Cp0molar_mix = math.nan
 
     properties.update({"MW":MW_mix})
     properties.update({"Pcritical":Pc_mix})
@@ -59,12 +71,21 @@ def mixture_props(mixture, P=None, T=None):
     properties.update({"acentric":ω_mix})
 
     if (P is not None) and (T is not None):
-        Pr_mix = P/Pc_mix
-        Tr_mix = T/Tc_mix
 
-        Cv0mass_mix  = Cp0mass_mix - (R/ MW_mix)
-        Cv0molar_mix = Cp0molar_mix - R
-        k_mix = Cp0molar_mix/Cv0molar_mix
+        try:
+            Pr_mix = P/Pc_mix
+            Tr_mix = T/Tc_mix
+            Cv0mass_mix  = Cp0mass_mix - (R/ MW_mix)
+            Cv0molar_mix = Cp0molar_mix - R
+            k_mix = Cp0molar_mix/Cv0molar_mix
+
+        except Exception as e:
+            Pr_mix = math.nan
+            Tr_mix = math.nan
+            Cv0mass_mix  = math.nan
+            Cv0molar_mix = math.nan
+            k_mix = math.nan
+
 
         try:
             Z_mix_PR = Z_PengRobinson_mixture(mixture=mixture, P=P, T=T)
@@ -123,9 +144,15 @@ def normalise(mixture):
 
 
 def Z_PengRobinson_mixture(mixture, P, T):
-    mixData = mixingData(mixture)
-    amix, bmix = pengRobinsonMixing(mixData,T)
-    Z = solvePengRobinson(amix, bmix, P, T)
+    try:
+        mixData = mixingData(mixture)
+        amix, bmix = pengRobinsonMixing(mixData,T)
+        Z = solvePengRobinson(amix, bmix, P, T)
+        if (amix==0 and bmix==0):
+            Z = math.nan
+    except Exception:
+        Z = math.nan
+
     return Z
 
 

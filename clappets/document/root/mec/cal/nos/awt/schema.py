@@ -19,7 +19,7 @@ class docInput(Schema):
 
 class docResult(Schema):
     filteredSpectrum = fields.Nested(schema_Spectrum)
-    totalAudibleNoise = fields.Nested(sXfld, validate=[vd.xNumber(blank=True)])
+    totalAudibleNoise = fields.Nested(sXfld)
 
 
 class docSchema(sDocPrj):

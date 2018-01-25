@@ -1,9 +1,8 @@
+import numbers
 from marshmallow import Schema, fields, pprint, pre_load, ValidationError, validate
 from marshmallow.validate import Validator
 from collections import OrderedDict
-from techclappets import units
-import numbers
-
+from clappets import units
 
 class validator :
     class xChoice(Validator):
@@ -19,6 +18,7 @@ class validator :
 
             return value
 
+
     class xNumber(Validator):
         def __init__(self, blank=False):
             self.blank = blank
@@ -30,7 +30,6 @@ class validator :
                             myfloat = float(value['_val'])
                     else:
                         myfloat = float(value['_val'])
-
                 elif (not isinstance(value['_val'], numbers.Real)):
                     raise ValidationError("Invalid Number")
             except:
@@ -59,7 +58,7 @@ class validator :
             try:
                 val = float(value['_val'])
                 if val < self.minimum :
-                    raise ValidationError("Value below Min")
+                    raise ValidationError("Value >= {} reqd".format(self.minimum))
             except ValueError:
                     raise ValidationError("Invalid Value")
 
@@ -72,7 +71,7 @@ class validator :
             try:
                 val = float(value)
                 if val <= self.minimum :
-                    raise ValidationError("Value below Min")
+                    raise ValidationError("Value > {} reqd".format(self.minimum))
             except ValueError:
                     raise ValidationError("Invalid Value")
             return value
@@ -84,7 +83,7 @@ class validator :
             try:
                 val = float(value['_val'])
                 if val <= self.minimum :
-                    raise ValidationError("Value below Min")
+                    raise ValidationError("Value > {} reqd".format(self.minimum))
             except ValueError:
                     raise ValidationError("Invalid Value")
             return value
@@ -110,7 +109,7 @@ class validator :
             try:
                 val = float(value['_val'])
                 if val > self.maximum :
-                    raise ValidationError("Value above Max")
+                    raise ValidationError("Value <= {} reqd".format(self.maximum))
             except ValueError:
                     raise ValidationError("Invalid Value")
             return value
@@ -138,7 +137,7 @@ class validator :
             try:
                 val = float(value['_val'])
                 if val >= self.maximum :
-                    raise ValidationError("Value above Max")
+                    raise ValidationError("Value above ".format(self.maximum))
             except ValueError:
                     raise ValidationError("Invalid Value")
 
@@ -194,11 +193,21 @@ class validator :
             return True
         elif ('_val' not in data[key]):
             return True
-        elif (data[key]['_val']==''):
-            return True
         else:
             return False
 
+
+    def isBlank(data, key):
+        if (key in data):
+            if ('_val' in data[key]):
+                if (data[key]['_val']==''):
+                    return True
+                else:
+                    return False
+            else:
+                return False
+        else:
+            return False
 
 
 
@@ -216,113 +225,104 @@ class sUnitConfig(Schema):
     class Meta:
         ordered = True
 
-class chkDefUnit(Validator):
-    def __init__(self, dimension):
-        self.dimension = dimension
-
-    def __call__(self,value):
-        try:
-            allowable_units = units.get_units(self.dimension)
-
-            if 'default' in value:
-                if (value['default'] not in allowable_units):
-                    raise ValidationError("Invalid Choice for Default Unit")
-            else:
-                raise ValidationError("Missing 'default' Key")
-
-        except ValueError:
-                raise ValidationError("Invalid dimension")
-
-        return value
-
-class chkCusUnit(Validator):
-    def __init__(self, dimension):
-        self.dimension = dimension
-
-    def __call__(self,value):
-        try:
-            allowable_units = units.get_units(self.dimension)
-
-            if 'custom' in value:
-                if (value['custom'] not in allowable_units):
-                    raise ValidationError("Invalid Choice for Custom Unit")
-            else:
-                raise ValidationError("Missing 'custom' Key")
-
-        except ValueError:
-                raise ValidationError("Invalid dimension")
-
-        return value
 
 class sUnits(Schema):
-    length_units = units.get_units('length')
-    length = fields.Nested(sUnitConfig, validate=[chkDefUnit('length'), chkCusUnit('length')])
+    length_units = units.getUnits('length')
+    length = fields.String(validate=validate.OneOf(length_units))
+    length_micro_units = units.getUnits('length_micro')
+    length_micro = fields.String(validate=validate.OneOf(length_units))
+    length_mili_units = units.getUnits('length_mili')
+    length_mili = fields.String(validate=validate.OneOf(length_units))
+    length_kilo_units = units.getUnits('length_kilo')
+    length_kilo = fields.String(validate=validate.OneOf(length_units))
+    area_units = units.getUnits('area')
+    area = fields.String(validate=validate.OneOf(area_units))
+    angle_units = units.getUnits('angle')
+    angle = fields.String(validate=validate.OneOf(angle_units))
+    mass_units = units.getUnits('mass')
+    mass = fields.String(validate=validate.OneOf(mass_units))
+    time_units = units.getUnits('time')
+    time = fields.String(validate=validate.OneOf(time_units))
+    speed_units = units.getUnits('speed')
+    speed = fields.String(validate=validate.OneOf(speed_units))
+    acceleration_units = units.getUnits('acceleration')
+    acceleration = fields.String(validate=validate.OneOf(acceleration_units))
+    force_units = units.getUnits('force')
+    force = fields.String(validate=validate.OneOf(force_units))
+    energy_units = units.getUnits('energy')
+    energy = fields.String(validate=validate.OneOf(energy_units))
+    power_units = units.getUnits('power')
+    power = fields.String(validate=validate.OneOf(power_units))
+    pressure_units = units.getUnits('pressure')
+    pressure = fields.String(validate=validate.OneOf(pressure_units))
+    temperature_units = units.getUnits('temperature')
+    temperature = fields.String(validate=validate.OneOf(temperature_units))
+    massflow_units = units.getUnits('massflow')
+    massflow = fields.String(validate=validate.OneOf(massflow_units))
+    flow_units = units.getUnits('flow')
+    flow = fields.String(validate=validate.OneOf(flow_units))
+    density_units = units.getUnits('density')
+    density = fields.String(validate=validate.OneOf(density_units))
+    molecularMass_units = units.getUnits('molecularMass')
+    molecularMass = fields.String(validate=validate.OneOf(molecularMass_units))
+    specificVolume_units = units.getUnits('specificVolume')
+    specificVolume = fields.String(validate=validate.OneOf(specificVolume_units))
+    specificEnergy_units = units.getUnits('specificEnergy')
+    specificEnergy = fields.String(validate=validate.OneOf(specificEnergy_units))
+    specificEnergyMolar_units = units.getUnits('specificEnergyMolar')
+    specificEnergyMolar = fields.String(validate=validate.OneOf(specificEnergyMolar_units))
+    specificHeat_units = units.getUnits('specificHeat')
+    specificHeat = fields.String(validate=validate.OneOf(specificHeat_units))
+    specificHeatMolar_units = units.getUnits('specificHeatMolar')
+    specificHeatMolar = fields.String(validate=validate.OneOf(specificHeatMolar_units))
+    thermalConductivity_units = units.getUnits('thermalConductivity')
+    thermalConductivity = fields.String(validate=validate.OneOf(thermalConductivity_units))
+    dynViscosity_units = units.getUnits('dynViscosity')
+    dynViscosity = fields.String(validate=validate.OneOf(dynViscosity_units))
+    kinViscosity_units = units.getUnits('kinViscosity')
+    kinViscosity = fields.String(validate=validate.OneOf(kinViscosity_units))
 
-    time_units = units.get_units('time')
-    time = fields.Nested(sUnitConfig)
-
-    speed_units = units.get_units('speed')
-    speed = fields.Nested(sUnitConfig)
-
-    acceleration_units = units.get_units('acceleration')
-    acceleration = fields.Nested(sUnitConfig)
-
-    force_units = units.get_units('force')
-    force = fields.Nested(sUnitConfig)
-
-    energy_units = units.get_units('energy')
-    energy = fields.Nested(sUnitConfig)
-
-    power_units = units.get_units('power')
-    power = fields.Nested(sUnitConfig)
-
-    pressure_units = units.get_units('pressure')
-    pressure = fields.Nested(sUnitConfig)
-
-    temperature_units = units.get_units('temperature')
-    temperature = fields.Nested(sUnitConfig)
-
-    flow_units = units.get_units('flow')
-    flow = fields.Nested(sUnitConfig)
-
-    density_units = units.get_units('density')
-    density = fields.Nested(sUnitConfig)
-
-    dynViscosity_units = units.get_units('dynViscosity')
-    dynViscosity = fields.Nested(sUnitConfig)
 
     class Meta:
         ordered = True
 
+
+
 class sMeta(Schema):
     projectID = fields.String(required=True)
+    project_title = fields.String(required=True)
     discipline = fields.String(required=True)
     docCategory = fields.String(required=True)
+    docSubCategory = fields.String(required=True)
     docClass = fields.String(required=True)
-    docID = fields.String(required=True)
-    docTitle = fields.String(required=True)
+    docClass_title = fields.String(required=True)
+    docInstance = fields.String(required=True)
+    docInstance_title = fields.String(required=True)
+    doc_no = fields.String()
     rev = fields.String()
-    revNote = fields.String(many=True)
-    purpose = fields.String()
+    date = fields.String()
+    status = fields.String()
     performer = fields.String()
     reviewer = fields.String()
     approver = fields.String()
-    clientDocNo = fields.String()
-    clientDocRev = fields.String()
-    clientDocTitle = fields.String()
-    apiUrl = fields.Url()
+
     class Meta:
         ordered=True
 
-class sDocBase(Schema):
-    _id = fields.String()
+
+class sDoc(Schema):
+    _id = fields.String(required=True)
+    class Meta:
+        ordered = True
+
+class sDocPrj(Schema):
+    _id = fields.String(required=True)
     meta = fields.Nested(sMeta, required=True)
-    unitSystem = fields.String()
     units = fields.Nested(sUnits)
     input = fields.Dict(required = True)
     result = fields.Dict()
     report = fields.Url()
-    errors = fields.Dict()
+    errors = fields.List(fields.String)
 
     class Meta:
         ordered = True

@@ -40,7 +40,7 @@
         <td>1.1</td>
         <td colspan="4">
           <span class="w14">Density</span>
-          <span class="w6"><input class="inp" type="text" v-model="doc['input']['rho']['_val']"/></span>
+          <span class="w6"><input class="inp" type="number" v-model="doc['input']['rho']['_val']"/></span>
           <span class="w6">[[ gUL('density') ]]</span>
         </td>
         <td colspan="4">
@@ -52,7 +52,7 @@
         <td>1.2</td>
         <td colspan="4">
           <span class="w14">Saturation Pressure</span>
-          <span class="w6"><input class="inp" type="text" v-model="doc['input']['Psat']['_val']"/></span>
+          <span class="w6"><input class="inp" type="number" v-model="doc['input']['Psat']['_val']"/></span>
           <span class="w6">[[ gUL('pressure') ]]</span>
         </td>
         <td colspan="4">
@@ -64,7 +64,7 @@
         <td>1.3</td>
         <td colspan="4">
           <span class="w14">Critical Pressure</span>
-          <span class="w6"><input class="inp" type="text" v-model="doc['input']['Pc']['_val']"/></span>
+          <span class="w6"><input class="inp" type="number" v-model="doc['input']['Pc']['_val']"/></span>
           <span class="w6">[[ gUL('pressure') ]]</span>
         </td>
         <td colspan="4">
@@ -76,7 +76,7 @@
         <td>1.4</td>
         <td colspan="4">
           <span class="w14">Dynamic Viscosity</span>
-          <span class="w6"><input class="inp" type="text" v-model="doc['input']['mu']['_val']"/></span>
+          <span class="w6"><input class="inp" type="number" v-model="doc['input']['mu']['_val']"/></span>
           <span class="w6">[[ gUL('dynViscosity') ]]</span>
         </td>
         <td colspan="4">
@@ -88,7 +88,7 @@
         <td>1.5</td>
         <td colspan="4">
           <span class="w14">Inlet Pressure (P1)</span>
-          <span class="w6"><input class="inp" type="text" v-model="doc['input']['P1']['_val']"/></span>
+          <span class="w6"><input class="inp" type="number" v-model="doc['input']['P1']['_val']"/></span>
           <span class="w6">[[ gUL('pressure') ]]</span>
         </td>
         <td colspan="4">
@@ -100,7 +100,7 @@
         <td>1.6</td>
         <td colspan="4">
           <span class="w14">Inlet Pressure (P2)</span>
-          <span class="w6"><input class="inp" type="text" v-model="doc['input']['P2']['_val']"/></span>
+          <span class="w6"><input class="inp" type="number" v-model="doc['input']['P2']['_val']"/></span>
           <span class="w6">[[ gUL('pressure') ]]</span>
         </td>
         <td colspan="4">
@@ -112,7 +112,7 @@
         <td>1.7</td>
         <td colspan="4">
           <span class="w14">Flow Rate(Q)</span>
-          <span class="w6"><input class="inp" type="text" v-model="doc['input']['Q']['_val']"/></span>
+          <span class="w6"><input class="inp" type="number" v-model="doc['input']['Q']['_val']"/></span>
           <span class="w6">[[ gUL('flow') ]]</span>
         </td>
         <td colspan="4">
@@ -124,7 +124,7 @@
         <td>1.8</td>
         <td colspan="4">
           <span class="w14">Inlet Pipe Diameter(D1)</span>
-          <span class="w6"><input class="inp" type="text" v-model="doc['input']['D1']['_val']"/></span>
+          <span class="w6"><input class="inp" type="number" v-model="doc['input']['D1']['_val']"/></span>
           <span class="w6">[[ gUL('length_mili') ]]</span>
         </td>
         <td colspan="4">
@@ -136,7 +136,7 @@
         <td>1.9</td>
         <td colspan="4">
           <span class="w14">Outlet Pipe Diameter(D2)</span>
-          <span class="w6"><input class="inp" type="text" v-model="doc['input']['D2']['_val']"/></span>
+          <span class="w6"><input class="inp" type="number" v-model="doc['input']['D2']['_val']"/></span>
           <span class="w6">[[ gUL('length_mili') ]]</span>
         </td>
         <td colspan="4">
@@ -148,7 +148,7 @@
         <td>1.10</td>
         <td colspan="4">
           <span class="w14">Valve Diameter(d)</span>
-          <span class="w6"><input class="inp" type="text" v-model="doc['input']['d']['_val']"/></span>
+          <span class="w6"><input class="inp" type="number" v-model="doc['input']['d']['_val']"/></span>
           <span class="w6">[[ gUL('length_mili') ]]</span>
         </td>
         <td colspan="4">
@@ -160,7 +160,7 @@
         <td>1.11</td>
         <td colspan="4">
           <span class="w14">Pressure Recovery Factor (FL)</span>
-          <span class="w6"><input class="inp" type="text" v-model="doc['input']['FL']['_val']"/></span>
+          <span class="w6"><input class="inp" type="number" v-model="doc['input']['FL']['_val']"/></span>
         </td>
         <td colspan="4">
           <p class="help is-danger" v-for="err in getErrs(['schema','input','FL'])">[[err]]</p>
@@ -171,7 +171,7 @@
         <td>1.12</td>
         <td colspan="4">
           <span class="w14">Valve Style Modifier (Fd)</span>
-          <span class="w6"><input class="inp" type="text" v-model="doc['input']['Fd']['_val']"/></span>
+          <span class="w6"><input class="inp" type="number" v-model="doc['input']['Fd']['_val']"/></span>
         </td>
         <td colspan="4">
           <p class="help is-danger" v-for="err in getErrs(['schema','input','Fd'])">[[err]]</p>
@@ -195,151 +195,6 @@
         </td>
         <td></td>
       </tr>
-
-
-
-
-
-      <!--
-      <tr>
-        <td>1.1</td>
-        <td colspan="4">
-          <span class="w14">State</span>
-          <span class="w16">
-            <select class="inp" placeholder="fluid" v-model="doc['input']['state']['_val']">
-              <option v-for="item in fixed['state_options']" :value="item" v-text="item"></option>
-            </select>
-        </td>
-        <td colspan="4">
-          <p class="help is-danger" v-for="err in getErrs(['schema','input','state'])">[[err]]</p>
-        </td>
-        <td></td>
-      </tr>
-      <tr v-show="(state=='Saturated_P') || (state=='Superheated_or_Compressed')">
-        <td>1.2</td>
-        <td colspan="4">
-          <span class="w14">Pressure</span>
-          <span class="w6"><input class="inp" type="text" v-model="doc['input']['P']['_val']"/></span>
-          <span class="w6">[[ gUL('pressure') ]]</span>
-        </td>
-        <td colspan="4">
-          <p class="help is-danger" v-for="err in getErrs(['schema','input','P'])">[[err]]</p>
-        </td>
-        <td></td>
-      </tr>
-      <tr v-show="(state=='Saturated_T') || (state=='Superheated_or_Compressed')">
-        <td>1.3</td>
-        <td colspan="4">
-          <span class="w14">Temperature</span>
-          <span class="w6"><input class="inp" type="text" v-model="doc['input']['T']['_val']"/></span>
-          <span class="w6">[[ gUL('temperature') ]]</span>
-        </td>
-        <td colspan="4">
-          <p class="help is-danger" v-for="err in getErrs(['schema','input','T'])">[[err]]</p>
-        </td>
-        <td></td>
-      </tr>
-      <tr v-show="(state=='Saturated_T') || (state=='Saturated_P')">
-        <td>1.4</td>
-        <td colspan="4">
-          <span class="w14">Quality</span>
-          <span class="w6"><input class="inp" type="text" v-model="doc['input']['Q']['_val']"/></span>
-        </td>
-        <td colspan="4">
-          <p class="help is-danger" v-for="err in getErrs(['schema','input','Q'])">[[err]]</p>
-        </td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td colspan="8">
-          <span class="w16"><b>Results</b></span>
-        </td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>2.1</td>
-        <td colspan="4">
-          <span class="w14">Phase</span>
-          <span class="w6 result">[[ doc['result']['phase']['_val'] ]]</span>
-          <span class="w6">[[ gUL('molecularMass') ]]</span>
-        </td>
-        <td colspan="4"></td>
-        <td></td>
-      </tr>
-      <tr v-show="state=='Saturated_T'">
-        <td>2.2</td>
-        <td colspan="4">
-          <span class="w14">Psat</span>
-          <span class="w6 result">[[ doc['result']['Psat']['_val'] ]]</span>
-          <span class="w6">[[ gUL('pressure') ]]</span>
-        </td>
-        <td colspan="4"></td>
-        <td></td>
-      </tr>
-      <tr v-show="state=='Saturated_P'">
-        <td>2.3</td>
-        <td colspan="4">
-          <span class="w14">Tsat</span>
-          <span class="w6 result">[[ doc['result']['Tsat']['_val'] ]]</span>
-          <span class="w6">[[ gUL('temperature') ]]</span>
-        </td>
-        <td colspan="4"></td>
-        <td></td>
-      </tr>
-
-      <tr>
-        <td>2.4</td>
-        <td colspan="4">
-          <span class="w14">Density</span>
-          <span class="w6 result">[[ doc['result']['rho']['_val'] ]]</span>
-          <span class="w6">[[ gUL('density') ]]</span>
-        </td>
-        <td colspan="4"></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>2.5</td>
-        <td colspan="4">
-          <span class="w14">Specific Volume</span>
-          <span class="w6 result">[[ doc['result']['v']['_val'] ]]</span>
-          <span class="w6">[[ gUL('specificVolume') ]]</span>
-        </td>
-        <td colspan="4"></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>2.6</td>
-        <td colspan="4">
-          <span class="w14">Specific Enthalphy</span>
-          <span class="w6 result">[[ doc['result']['h']['_val'] ]]</span>
-          <span class="w6">[[ gUL('specificEnergy') ]]</span>
-        </td>
-        <td colspan="4"></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>2.7</td>
-        <td colspan="4">
-          <span class="w14">Specific Internal Energy</span>
-          <span class="w6 result">[[ doc['result']['u']['_val'] ]]</span>
-          <span class="w6">[[ gUL('specificEnergy') ]]</span>
-        </td>
-        <td colspan="4"></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>2.8</td>
-        <td colspan="4">
-          <span class="w14">Specific Entropy</span>
-          <span class="w6 result">[[ doc['result']['s']['_val'] ]]</span>
-          <span class="w6">[[ gUL('specificHeat') ]]</span>
-        </td>
-        <td colspan="4"></td>
-        <td></td>
-      </tr>
-
-    -->
     </tbody>
   </table>
 </div>

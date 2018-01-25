@@ -4,212 +4,126 @@ from marshmallow.validate import Validator
 from collections import OrderedDict
 from clappets import units
 
-class validator :
-    class xChoice(Validator):
-        def __init__(self, choices):
-            self.choices = choices
-
-        def __call__(self, value):
-            try:
-                if value['_val'] not in self.choices:
-                    raise ValidationError("Invalid Choice")
-            except:
-                raise ValidationError("Invalid Choice")
-
-            return value
 
 
-    class xNumber(Validator):
-        def __init__(self, blank=False):
-            self.blank = blank
-        def __call__(self, value):
-            try:
-                if (isinstance(value['_val'], str)):
-                    if (self.blank==True):
-                        if (value['_val']!=''):
-                            myfloat = float(value['_val'])
-                    else:
-                        myfloat = float(value['_val'])
+def xisBlank(value):
+    val = value['_val']
+    if (val==""):
+        return True
+    else:
+        return False
 
-                elif (not isinstance(value['_val'], numbers.Real)):
-                    raise ValidationError("Invalid Number")
-            except:
-                raise ValidationError("Invalid Number")
-
-            return value
-
-
-    class fMin(Validator):
-        def __init__(self, minimum):
-            self.minimum = minimum
-        def __call__(self, value):
-            try:
-                val = float(value)
-                if val < self.minimum :
-                    raise ValidationError("Value below Min")
-            except ValueError:
-                    raise ValidationError("Invalid Value")
-            return value
-
-
-    class xMin(Validator):
-        def __init__(self, minimum):
-            self.minimum = minimum
-        def __call__(self, value):
-            try:
-                val = float(value['_val'])
-                if val < self.minimum :
-                    raise ValidationError("Value >= {} reqd".format(self.minimum))
-            except ValueError:
-                    raise ValidationError("Invalid Value")
-
-            return value
-
-    class fMinExcl(Validator):
-        def __init__(self, minimum):
-            self.minimum = minimum
-        def __call__(self, value):
-            try:
-                val = float(value)
-                if val <= self.minimum :
-                    raise ValidationError("Value > {} reqd".format(self.minimum))
-            except ValueError:
-                    raise ValidationError("Invalid Value")
-            return value
-
-    class xMinExcl(Validator):
-        def __init__(self, minimum):
-            self.minimum = minimum
-        def __call__(self, value):
-            try:
-                val = float(value['_val'])
-                if val <= self.minimum :
-                    raise ValidationError("Value > {} reqd".format(self.minimum))
-            except ValueError:
-                    raise ValidationError("Invalid Value")
-            return value
-
-    class fMax(Validator):
-        def __init__(self, maximum):
-            self.maximum = maximum
-
-        def __call__(self, value):
-            try:
-                val = float(value)
-                if val > self.maximum :
-                    raise ValidationError("Value above Max")
-            except ValueError:
-                    raise ValidationError("Invalid Value")
-            return value
-
-    class xMax(Validator):
-        def __init__(self, maximum):
-            self.maximum = maximum
-
-        def __call__(self, value):
-            try:
-                val = float(value['_val'])
-                if val > self.maximum :
-                    raise ValidationError("Value above {}".format(self.maximum))
-            except ValueError:
-                    raise ValidationError("Invalid Value")
-            return value
-
-
-    class fMaxExcl(Validator):
-        def __init__(self, maximum):
-            self.maximum = maximum
-
-        def __call__(self, value):
-            try:
-                val = float(value)
-                if val >= self.maximum :
-                    raise ValidationError("Value above Max")
-            except ValueError:
-                    raise ValidationError("Invalid Value")
-            return value
-
-
-    class xMaxExcl(Validator):
-        def __init__(self, maximum):
-            self.maximum = maximum
-
-        def __call__(self, value):
-            try:
-                val = float(value['_val'])
-                if val >= self.maximum :
-                    raise ValidationError("Value above ".format(self.maximum))
-            except ValueError:
-                    raise ValidationError("Invalid Value")
-
-            return value
-
-    class xString(Validator):
-        def __call__(self, value):
-            try:
-                if (not isinstance(value['_val'], str)):
-                    raise ValidationError("Invalid String")
-            except ValueError:
-                    raise ValidationError("Invalid String")
-
-            return value
-
-    class xDim(Validator):
-        def __init__(self, dim):
-            self.dim = dim
-
-        def __call__(self,value):
-            try:
-                if '_dim' in value:
-                    if (value['_dim'] not in self.dim):
-                        raise ValidationError("Invalid Dimension")
-                else:
-                    raise ValidationError("Missing '_dim' Key")
-
-            except ValueError:
-                    raise ValidationError("Invalid dimension")
-
-            return value
-
-    class xPrm(Validator):
-        def __init__(self, prm):
-            self.prm = prm
-
-        def __call__(self,value):
-            try:
-                if '_prm' in value:
-                    if (value['_prm'] not in self.prm):
-                        raise ValidationError("Invalid Permissions")
-                else:
-                    raise ValidationError("Missing '_prm' Key")
-
-            except ValueError:
-                    raise ValidationError("Invalid dimension")
-
-            return value
-
-
-    def isMissing(data, key):
-        if (key not in data):
-            return True
-        elif ('_val' not in data[key]):
+def xisMissing(data, key):
+    if (key not in data):
+        return True
+    elif ('_val' not in data[key]):
+        return True
+    else:
+        if (data[key]['_val']==''):
             return True
         else:
             return False
 
+        return False
 
-    def isBlank(data, key):
-        if (key in data):
-            if ('_val' in data[key]):
-                if (data[key]['_val']==''):
-                    return True
-                else:
-                    return False
+
+class validator:
+
+    def xChoice(value, choices):
+        if value['_val'] in choices:
+            return True
+        else:
+            raise ValidationError("Invalid Choice")
+
+
+    def xNumber(value):
+        try:
+            val = float(value['_val'])
+            return True
+        except Exception:
+            raise ValidationError('invalid number')
+
+    def xGrtThan(value, setVal):
+        val = float(value['_val'])
+        if (val > setVal):
+            return True
+        else:
+            raise ValidationError('> {} reqd'.format(setVal))
+
+    def xGrtThanEq(value, setVal):
+        val = float(value['_val'])
+        if (val >= setVal):
+            return True
+        else:
+            raise ValidationError('>= {} reqd'.format(setVal))
+
+    def xLessThan(value, setVal):
+        val = float(value['_val'])
+        if (val < setVal):
+            return True
+        else:
+            raise ValidationError('< {} reqd'.format(setVal))
+
+    def xLessThanEq(value, setVal):
+        val = float(value['_val'])
+        if (val <= setVal):
+            return True
+        else:
+            raise ValidationError('<= {} reqd'.format(setVal))
+
+    def fGrtThan(value, setVal):
+        val = float(value)
+        if (val > setVal):
+            return True
+        else:
+            raise ValidationError('> {} reqd'.format(setVal))
+
+    def fGrtThanEq(value, setVal):
+        val = float(value)
+        if (val >= setVal):
+            return True
+        else:
+            raise ValidationError('>= {} reqd'.format(setVal))
+
+    def fLessThan(value, setVal):
+        val = float(value)
+        if (val < setVal):
+            return True
+        else:
+            raise ValidationError('< {} reqd'.format(setVal))
+
+    def fLessThanEq(value, setVal):
+        val = float(value)
+        if (val <= setVal):
+            return True
+        else:
+            raise ValidationError('<= {} reqd'.format(setVal))
+
+    def xString(value):
+        val = value['_val']
+        if (isinstance(value['_val'], str)):
+            return True
+        else:
+            raise ValidationError("Invalid String")
+
+
+    def xDim(value, dimensions):
+        if ('_dim' in value):
+            dim = value['_dim']
+            if (dim in dimensions):
+                return True
             else:
-                return False
+                raise ValidationError("Invalid Dimension")
         else:
-            return False
+            raise ValidationError("Missing '_dim' Key")
 
+
+    def xPrm(value, permissions):
+        prm = value['_prm']
+        if (prm in permissions):
+            return True
+        else:
+            raise ValidationError("Invalid Permissions")
 
 
 class sXfld(Schema):
@@ -220,13 +134,6 @@ class sXfld(Schema):
     class Meta:
         ordered = True
 
-class sUnitConfig(Schema):
-    custom = fields.String(required=True)
-    default = fields.String(required=True)
-    class Meta:
-        ordered = True
-
-
 class sUnits(Schema):
     length_units = units.getUnits('length')
     length = fields.String(validate=validate.OneOf(length_units))
@@ -236,6 +143,10 @@ class sUnits(Schema):
     length_mili = fields.String(validate=validate.OneOf(length_units))
     length_kilo_units = units.getUnits('length_kilo')
     length_kilo = fields.String(validate=validate.OneOf(length_units))
+    area_units = units.getUnits('area')
+    area = fields.String(validate=validate.OneOf(area_units))
+    angle_units = units.getUnits('angle')
+    angle = fields.String(validate=validate.OneOf(angle_units))
     mass_units = units.getUnits('mass')
     mass = fields.String(validate=validate.OneOf(mass_units))
     time_units = units.getUnits('time')
@@ -254,6 +165,8 @@ class sUnits(Schema):
     pressure = fields.String(validate=validate.OneOf(pressure_units))
     temperature_units = units.getUnits('temperature')
     temperature = fields.String(validate=validate.OneOf(temperature_units))
+    massflow_units = units.getUnits('massflow')
+    massflow = fields.String(validate=validate.OneOf(massflow_units))
     flow_units = units.getUnits('flow')
     flow = fields.String(validate=validate.OneOf(flow_units))
     density_units = units.getUnits('density')
@@ -274,6 +187,12 @@ class sUnits(Schema):
     thermalConductivity = fields.String(validate=validate.OneOf(thermalConductivity_units))
     dynViscosity_units = units.getUnits('dynViscosity')
     dynViscosity = fields.String(validate=validate.OneOf(dynViscosity_units))
+    kinViscosity_units = units.getUnits('kinViscosity')
+    kinViscosity = fields.String(validate=validate.OneOf(kinViscosity_units))
+    specificFuelConsumption_units = units.getUnits('specificFuelConsumption')
+    specificFuelConsumption = fields.String(validate=validate.OneOf(specificFuelConsumption_units))
+
+
 
     class Meta:
         ordered = True

@@ -63,28 +63,33 @@
           <span class="w2"></span>
           <span class="w14">
             <input class="inp" type="text" v-model="item['tag']" @focus = "setActiveIndex(index)">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','emissionPoints','_list',index,'tag'])">[[err]]</p>
           </span>
           <span class="w6">
             <input class="inp" type="number" v-model="item['pwl']" @focus = "setActiveIndex(index)">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','emissionPoints','_list',index,'pwl'])">[[err]]</p>
           </span>
           <span class="w6">
             <input class="inp" type="number" v-model="item['Q']" @focus = "setActiveIndex(index)">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','emissionPoints','_list',index,'Q'])">[[err]]</p>
           </span>
           <span class="w6">
             <input class="inp" type="number" v-model="item['x']" @focus = "setActiveIndex(index)">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','emissionPoints','_list',index,'x'])">[[err]]</p>
           </span>
           <span class="w6">
             <input class="inp" type="number" v-model="item['y']" @focus = "setActiveIndex(index)">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','emissionPoints','_list',index,'y'])">[[err]]</p>
           </span>
           <span class="" v-show="index==activeindex">
 
-          <span class="w2 hideprint">
+          <span class="w1 hideprint">
             <a @click="removeItem(index)" style="width:100%;">❌</a>
           </span>
-          <span class="w2 hideprint">
+          <span class="w1 hideprint">
             <a @click="upItem(index)" style="width:100%;">▲</a>
           </span>
-          <span class="w2 hideprint">
+          <span class="w1 hideprint">
             <a @click="downItem(index)" style="width:100%;">▼</a>
           </span>
         </span>
@@ -118,11 +123,13 @@
           <span class="w6">X1  ([[gUL('length')]])</span>
           <span class="w4">
             <input class="inp" type="number" v-model="doc['input']['mapArea']['x1']['_val']">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','mapArea','x1'])">[[err]]</p>
           </span>
           <span class="w4"></span>
           <span class="w6">Y1  ([[gUL('length')]])</span>
           <span class="w4">
             <input class="inp" type="number" v-model="doc['input']['mapArea']['y1']['_val']">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','mapArea','y1'])">[[err]]</p>
           </span>
         </td>
         <td colspan="4"></td>
@@ -135,11 +142,13 @@
           <span class="w6">X2 ([[gUL('length')]])</span>
           <span class="w4">
             <input class="inp" v-model="doc['input']['mapArea']['x2']['_val']">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','mapArea','x2'])">[[err]]</p>
           </span>
           <span class="w4"></span>
           <span class="w6">Y2 ([[gUL('length')]])</span>
           <span class="w4">
             <input class="inp" v-model="doc['input']['mapArea']['y2']['_val']">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','mapArea','y2'])">[[err]]</p>
           </span>
         </td>
         <td colspan="4"></td>
@@ -152,11 +161,13 @@
           <span class="w6">X step ([[gUL('length')]])</span>
           <span class="w4">
             <input class="inp" v-model="doc['input']['mapArea']['x_step']['_val']">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','mapArea','x_step'])">[[err]]</p>
           </span>
           <span class="w4"></span>
           <span class="w6">Y step ([[gUL('length')]])</span>
           <span class="w4">
             <input class="inp" type="number" v-model="doc['input']['mapArea']['y_step']['_val']">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','mapArea','y_step'])">[[err]]</p>
           </span>
         </td>
         <td colspan="4"></td>
@@ -250,7 +261,7 @@
         },
         methods: {
           removeItem: function(index) {
-            this.doc['input']['emissionPoints'].splice(index,1);
+            this.doc['input']['emissionPoints']['_list'].splice(index,1);
           },
           addItem: function() {
             new_item = {
@@ -260,12 +271,12 @@
               "x":"4",
               "y":"5"
             }
-            this.doc['input']['emissionPoints'].push(new_item);
+            this.doc['input']['emissionPoints']['_list'].push(new_item);
           },
 
           upItem: function(index){
 
-            emissionPoints = this.doc['input']['emissionPoints']
+            emissionPoints = this.doc['input']['emissionPoints']['_list']
 
             if ((index > 0) && (index==this.activeindex) ){
               var temp_tag = emissionPoints[index]['tag']
@@ -286,7 +297,7 @@
 
           },
           downItem: function(index){
-            emissionPoints = this.doc['input']['emissionPoints']
+            emissionPoints = this.doc['input']['emissionPoints']['_list']
             if ((index < emissionPoints.length-1) && (index==this.activeindex) ){
               var temp_tag = emissionPoints[index]['tag']
               emissionPoints[index]['tag']= emissionPoints[index+1]['tag'];

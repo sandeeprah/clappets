@@ -1,0 +1,44 @@
+{
+  "_id": "",
+  "meta": {
+    "projectID": "0000",
+    "project_title": "Local",
+    "discipline" : "ele",
+    "docCategory": "cal",
+    "docSubCategory": "lgt",
+    "docClass": "w2x",
+    "docClass_title": "Watts-Lumens Conversions",
+    "docInstance": "1",
+    "docInstance_title": "Watts-Lumens Conversions",
+    "doc_no":"0000-ELE-CAL-LGT-W2X-01",
+    "rev": "A",
+    "date":"",
+    "status": "",
+    "performer": "",
+    "reviewer": "",
+    "approver": ""
+  },
+
+  "units": {
+    "length": "m",
+    "area": "m2",
+    "angle" : "degrees"
+  },
+
+  "input": {
+    "convert" : {"_val":"watts2lux"},
+    "watts": {"_val":""},
+    "lux": {"_val":""},
+    "luminous_efficacy": {"_val":""},
+    "area_basis" : {"_val":"radius"},
+    "radius": {"_val":"2", "_dim":"length"},
+    "area": {"_val":"2", "_dim":"area"}
+  },
+
+  "result": {
+    "watts": {"_val":""},
+    "lux": {"_val":""}
+  },
+
+  "errors": []
+}

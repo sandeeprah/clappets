@@ -10,6 +10,7 @@ def calculate(doc_original):
     mixture = doc['input']['mixture']
     P = float(doc['input']['P']['_val'])
     T = float(doc['input']['T']['_val'])
+    
     mixprops = mixture_props(mixture,P=P,T=T)
 
     doc['result']['MW']['_val'] = str(mixprops['MW'])

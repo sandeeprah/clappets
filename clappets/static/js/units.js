@@ -123,6 +123,31 @@ unitLib = {
             }
         }
     },
+    "area": {
+        "dimtitle": "Area",
+        "units": {
+            "m2": {
+                "label": "m²",
+                "cf": 1,
+                "off": 0
+            },
+            "mm2": {
+                "label": "mm²",
+                "cf": 1e-6,
+                "off": 0
+            },
+            "ft2": {
+                "label": "ft²",
+                "cf": 0.092903,
+                "off": 0
+            },
+            "in2": {
+                "label": "in²",
+                "cf": 6.4516e-4,
+                "off": 0
+            }
+        }
+    },
 
     "angle": {
         "dimtitle": "Angle",
@@ -371,6 +396,33 @@ unitLib = {
         }
     },
 
+    "massflow": {
+        "dimtitle": "Mass Flow",
+        "units": {
+            "kg/s": {
+                "label": "kg/s",
+                "cf": 1,
+                "off": 0
+            },
+            "kg/min": {
+                "label": "kg/min",
+                "cf": 1 / 60,
+                "off": 0
+            },
+            "kg/hr": {
+                "label": "kg/hr",
+                "cf": 1 / 3600,
+                "off": 0
+            },
+            "lb/hr": {
+                "label": "lb/hr",
+                "cf": 1.25998e-4,
+                "off": 0
+            },
+        }
+    },
+
+
     "flow": {
         "dimtitle": "Flow",
         "units": {
@@ -392,6 +444,11 @@ unitLib = {
             "lpm": {
                 "label": "lpm",
                 "cf": 1.6667e-5,
+                "off": 0
+            },
+            "lph": {
+                "label": "lph",
+                "cf": 1e-3/3.6e3,
                 "off": 0
             },
             "usgpm": {
@@ -522,20 +579,75 @@ unitLib = {
             },
 
         }
+    },
+
+    "kinViscosity": {
+        "dimtitle": "Kinematic Viscosity",
+        "units": {
+            "m2/s": {
+                "label": "m²/s",
+                "cf": 1,
+                "off": 0
+            },
+            "St": {
+                "label": "St",
+                "cf": 1e-4,
+                "off": 0
+            },
+            "cSt": {
+                "label": "cSt",
+                "cf": 1e-6,
+                "off": 0
+            }
+        }
+    },
+
+    "specificFuelConsumption" : {
+        "dimtitle": "Specific Fuel Consumption",
+        "units": {
+            "m3/W.s": {
+                "label": "m³/W.s",
+                "cf": 1,
+                "off": 0
+            },
+            "litre/kW.h": {
+                "label": "litre/kW.h",
+                "cf": 1e-6/3600,
+                "off": 0
+            }
+        }
     }
 }
 
 SI_UNITS = {
-    "length": "m",
-    "length_mili": "m",
-    "angle": "radians",
-    "flow": "m3/s",
-    "density": "kg/m3",
-    "power": "W",
-    "dynViscosity": "Pa.s",
-    "pressure": "Pa",
-    "temperature": "K",
-    "speed": "m/s",
+  "length": "m",
+  "length_micro": "m",
+  "length_mili": "m",
+  "length_kilo": "m",
+  "area": "m2",
+  "angle": "radians",
+  "mass": "kg",
+  "time": "s",
+  "speed": "m/s",
+  "acceleration": "m/s2",
+  "force": "N",
+  "energy": "J",
+  "power": "W",
+  "pressure": "Pa",
+  "temperature": "K",
+  "flow": "m3/s",
+  "massflow": "kg/s",
+  "density": "kg/m3",
+  "molecularMass": "kg/mol",
+  "specificVolume": "m3/kg",
+  "specificEnergy": "J/kg",
+  "specificEnergyMolar": "J/mol",
+  "specificHeat": "J/kg.K",
+  "specificHeatMolar": "J/mol.K",
+  "thermalConductivity": "W/m.K",
+  "dynViscosity": "Pa.s",
+  "kinViscosity": "m2/s",
+  "specificFuelConsumption" : "m3/W.s"
 }
 
 

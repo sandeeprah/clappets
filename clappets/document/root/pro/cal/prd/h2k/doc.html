@@ -49,7 +49,7 @@
         <td colspan="4">
           <span class="w2"></span>
           <span class="w14">Medium</span>
-          <span class="w16"><input class="inp" type="text" v-model="doc['input']['fluidData']['medium']['_val']"/></span>
+          <span class="w14"><input class="inp" type="text" v-model="doc['input']['fluidData']['medium']['_val']"/></span>
         </td>
         <td colspan="4">
           <p class="help is-danger" v-for="err in getErrs(['schema','input','fluidData','medium'])">[[err]]</p>
@@ -249,7 +249,7 @@
         <td colspan="4">
           <span class="w2"></span>
           <span class="w14">Entrance Type</span>
-          <span class="w16">
+          <span class="w12">
             <select class="inp" v-model="doc['input']['entrance']['entry_type']['_val']">
               <option value="None">None</option>
               <option value="Sharp">Sharp</option>
@@ -709,7 +709,9 @@
         <td colspan="8">
           <span class="w2"></span>
           <span class="w14">
-            <button class="button is-small is-primary" type="button" name="button" @click="addListItem(doc['input']['expansions_sharp']['_list'], doc['input']['expansions_sharp']['_default'])" style="height:1.75em; padding-top:0px;padding-bottom:0px;">➕</button>
+            <button class="button is-small is-primary" type="button" name="button"
+            @click="addListItem(doc['input']['expansions_sharp']['_list'], {'D1':'', 'D2':'', 'remarks':'', 'quantity':''})"
+            style="height:1.75em; padding-top:0px;padding-bottom:0px;">➕</button>
           </span>
         </td>
         <td></td>
@@ -777,7 +779,9 @@
         <td colspan="8">
           <span class="w2"></span>
           <span class="w14">
-            <button class="button is-small is-primary" type="button" name="button" @click="addListItem(doc['input']['expansions_rounded']['_list'], doc['input']['expansions_rounded']['_default'])" style="height:1.75em; padding-top:0px;padding-bottom:0px;">➕</button>
+            <button class="button is-small is-primary" type="button" name="button"
+            @click="addListItem(doc['input']['expansions_rounded']['_list'],{'D1':'','D2':'','Rc':'','remarks':'','quantity':''})"
+            style="height:1.75em; padding-top:0px;padding-bottom:0px;">➕</button>
           </span>
         </td>
         <td></td>
@@ -818,12 +822,12 @@
               <p class="help is-danger" v-for="err in getErrs(['schema','input','expansions_conical','_list', index, 'D2'])">[[err]]</p>
             </span>
             <span class="w6">
-              <input type="number" v-model="doc['input']['expansions_conical']['_list'][index]['Rc']">
-              <p class="help is-danger" v-for="err in getErrs(['schema','input','expansions_conical','_list', index, 'Rc'])">[[err]]</p>
+              <input type="number" v-model="doc['input']['expansions_conical']['_list'][index]['L']">
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','expansions_conical','_list', index, 'L'])">[[err]]</p>
             </span>
             <span class="w12">
               <input type="number" v-model="doc['input']['expansions_conical']['_list'][index]['remarks']">
-              <p class="help is-danger" v-for="err in getErrs(['schema','input','expansions_sharp','_list', index, 'remarks'])">[[err]]</p>
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','expansions_conical','_list', index, 'remarks'])">[[err]]</p>
             </span>
             <span class="w6">
               <input type="number" v-model="doc['input']['expansions_conical']['_list'][index]['quantity']">
@@ -845,7 +849,9 @@
         <td colspan="8">
           <span class="w2"></span>
           <span class="w14">
-            <button class="button is-small is-primary" type="button" name="button" @click="addListItem(doc['input']['expansions_conical']['_list'], doc['input']['expansions_conical']['_default'])" style="height:1.75em; padding-top:0px;padding-bottom:0px;">➕</button>
+            <button class="button is-small is-primary" type="button" name="button"
+            @click="addListItem(doc['input']['expansions_conical']['_list'], {'D1':'','D2':'','L':'','remarks':'','quantity':''})"
+            style="height:1.75em; padding-top:0px;padding-bottom:0px;">➕</button>
           </span>
         </td>
         <td></td>
@@ -883,7 +889,7 @@
             </span>
             <span class="w12">
               <input type="number" v-model="doc['input']['expansions_reducer']['_list'][index]['remarks']">
-              <p class="help is-danger" v-for="err in getErrs(['schema','input','expansions_sharp','_list', index, 'remarks'])">[[err]]</p>
+              <p class="help is-danger" v-for="err in getErrs(['schema','input','expansions_reducer','_list', index, 'remarks'])">[[err]]</p>
             </span>
             <span class="w6">
               <input type="number" v-model="doc['input']['expansions_reducer']['_list'][index]['quantity']">
@@ -905,7 +911,9 @@
         <td colspan="8">
           <span class="w2"></span>
           <span class="w14">
-            <button class="button is-small is-primary" type="button" name="button" @click="addListItem(doc['input']['expansions_reducer']['_list'], doc['input']['expansions_reducer']['_default'])" style="height:1.75em; padding-top:0px;padding-bottom:0px;">➕</button>
+            <button class="button is-small is-primary" type="button" name="button"
+            @click="addListItem(doc['input']['expansions_reducer']['_list'], {'reducer_size':'','remarks':'','quantity':''})"
+            style="height:1.75em; padding-top:0px;padding-bottom:0px;">➕</button>
           </span>
         </td>
         <td></td>
@@ -971,7 +979,9 @@
         <td colspan="8">
           <span class="w2"></span>
           <span class="w14">
-            <button class="button is-small is-primary" type="button" name="button" @click="addListItem(doc['input']['fixed_K_losses']['_list'], doc['input']['fixed_K_losses']['_default'])" style="height:1.75em; padding-top:0px;padding-bottom:0px;">➕</button>
+            <button class="button is-small is-primary" type="button" name="button"
+            @click="addListItem(doc['input']['fixed_K_losses']['_list'], {'K':'','remarks':'','quantity':''})"
+            style="height:1.75em; padding-top:0px;padding-bottom:0px;">➕</button>
           </span>
         </td>
         <td></td>
@@ -1030,7 +1040,9 @@
         <td colspan="8">
           <span class="w2"></span>
           <span class="w14">
-            <button class="button is-small is-primary" type="button" name="button" @click="addListItem(doc['input']['fixed_LbyD_losses']['_list'], doc['input']['fixed_LbyD_losses']['_default'])" style="height:1.75em; padding-top:0px;padding-bottom:0px;">➕</button>
+            <button class="button is-small is-primary" type="button" name="button"
+            @click="addListItem(doc['input']['fixed_LbyD_losses']['_list'], {'LbyD':'','remarks':'','quantity':''})"
+            style="height:1.75em; padding-top:0px;padding-bottom:0px;">➕</button>
           </span>
         </td>
         <td></td>
@@ -1088,13 +1100,13 @@
         <td colspan="8">
           <span class="w2"></span>
           <span class="w14">
-            <button class="button is-small is-primary" type="button" name="button" @click="addListItem(doc['input']['fixed_deltaP_losses']['_list'], doc['input']['fixed_deltaP_losses']['_default'])" style="height:1.75em; padding-top:0px;padding-bottom:0px;">➕</button>
+            <button class="button is-small is-primary" type="button" name="button"
+            @click="addListItem(doc['input']['fixed_deltaP_losses']['_list'], {'deltaP':'','remarks':'','quantity':''})"
+            style="height:1.75em; padding-top:0px;padding-bottom:0px;">➕</button>
           </span>
         </td>
         <td></td>
       </tr>
-
-
       <tr>
         <td>2</td>
         <td colspan="8">

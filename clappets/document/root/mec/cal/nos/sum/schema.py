@@ -8,7 +8,7 @@ class docInput(Schema):
     noiseLevelList = fields.List(fields.Float, required=True)
 
 class docResult(Schema):
-    noiseTotal = fields.Nested(sXfld, validate=[vd.xNumber(blank=True)])
+    noiseTotal = fields.Nested(sXfld)
 
 
 class docSchema(sDocPrj):

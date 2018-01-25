@@ -18,8 +18,8 @@ def calculate(doc_original):
     elif (source_option =='line'):
         SPL2 = noise_utils.distAttenLine(SPL1=SPL1, R1=R1, R2=R2)
     elif(source_option =='wall'):
-        width = parseFloat(doc['input']['width']['_val'])
-        height = parseFloat(doc['input']['height']['_val'])
+        width = abs(parseFloat(doc['input']['width']['_val']))
+        height = abs(parseFloat(doc['input']['height']['_val']))
         SPL2 = noise_utils.distAttenWall(SPL1=SPL1, R1=R1, R2=R2, width=width, height=height)
     else:
         SPL2 = math.nan

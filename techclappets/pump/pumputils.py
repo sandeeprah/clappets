@@ -1,18 +1,7 @@
-import json
-import sys
-import math
+from math import pow, log10
 import os
-import fluids
 import pandas as pd
-from fluids.friction import friction_factor
-from fluids.core import Reynolds, K_from_f, K_from_L_equiv, dP_from_K
-from fluids.fittings import Hooper2K, entrance_sharp, exit_normal
-from fluids.piping import nearest_pipe
-from marshmallow import Schema, fields, pprint, pre_load, validate, validates_schema, ValidationError
-from techclappets.core import noemptySchema, CalcOutput, check_positive, check_nonnegative
-#from techclappets.pressuredrop.reducer import reducer_sizes, reducer_dimensions
-from collections import OrderedDict
-from techclappets.core import schema_units_used, schema_dquant
+from clappets.units import unitConvert
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 
@@ -25,29 +14,55 @@ def pump_sizes(pump_type):
 def pump_dimensions(pump_size):
     pass
 
-class schema_input_pump_estimate(Schema):
-    rho = fields.Nested(schema_dquant)
-    Q = fields.Nested(schema_dquant)
-    H = fields.Nested(schema_dquant)
 
+def viscCorr(Qbep, Hbep, nu, N, Qratio):
+    _Qbep = Qbep*3600
+    _Hbep = Hbep
+    _nu = unitConvert(nu,'kinViscosity', 'm2/s','cSt')
+    _N = N
 
-class schema_request_pump_estimate(Schema):
-    input = fields.Nested(schema_input_pump_estimate)
-    units_used = fields.Nested(schema_units_used)
+    B = 16.5*(pow(_nu,0.5)*pow(_Hbep, 0.0625))/(pow(_Qbep, 0.375)*pow(_N,0.25))
 
-def pump_estimate(request_json):
-    calculation_output = CalcOutput()
-    schema_request = schema_request_pump_estimate()
-    parsed_request = schema_request.load(request_json)
-    if (len(parsed_request.errors) > 0 ):
-        calculation_output.errors = parsed_request.errors.copy()
+    if (B <= 1):
+        Cq = 1
+        Ch = 1
+        Ceta = 1
+    elif(B> 1 and B < 40):
+        f = log10(B)
+        k = -0.165*pow(f, 3.15)
+        Cq = pow(2.71, k)
+        Cbep_h = Cq
+        Ch = 1 - (1-Cbep_h)*pow(Qratio, 0.75)
+        a = -0.0547*pow(B, 0.69)
+        Ceta = pow(B,a)
     else:
-        rho = parsed_request.data['input']['rho']['_val']
-        Q = parsed_request.data['input']['Q']['_val']
-        H = parsed_request.data['input']['H']['_val']
-        g = 9.81
-        Phydraulic = rho*Q*g*H
+        raise Exception('Outside Correction Range')
 
-        calculation_output.result.update({'Phydraulic' : {"_val":Phydraulic, "_dim":"power"}})
+    return Cq, Ch, Ceta
 
-    return calculation_output
+
+def viscSel(Qvis, Hvis, nu):
+    _Qvis = Qvis*3600
+    _Hvis = Hvis
+    _nu = unitConvert(nu,'kinViscosity', 'm2/s','cSt')
+
+    B = 2.80*(pow(_nu,0.5)/(pow(_Qvis, 0.25)*pow(_Hvis, 0.125)))
+    print('B')
+    print(B)
+
+    if (B <= 1):
+        Cq = 1
+        Ch = 1
+        Ceta = 1
+    elif(B> 1 and B < 40):
+        f = log10(B)
+        k = -0.165*pow(f, 3.15)
+        Cq = pow(2.71, k)
+        Ch = Cq
+
+        a = -0.0547*pow(B, 0.69)
+        Ceta = pow(B,a)
+    else:
+        raise Exception('Outside Correction Range')
+
+    return Cq, Ch, Ceta

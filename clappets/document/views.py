@@ -513,8 +513,6 @@ def htm_Doc():
         return render_template(template, doc=doc, authenticated=False)
 
 
-
-
 @app.route('/htm/documentauth/', methods=['GET', 'POST'])
 @auth.login_required
 def htm_DocAuth():

@@ -59,6 +59,9 @@
           <span class="w4 hideprint">
             <a  class="hideprint" @click="removeItem(index)" style="width:100%;">❌</a>
           </span>
+          <span class="w12">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','noiseLevelList',index])">[[err]]</p>
+          </span>
         </td>
         <td colspan="4">
         </td>

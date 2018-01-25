@@ -1,4 +1,5 @@
 import math
+from clappets.utils import roundit
 
 def getSPL(PWL, distance, Q):
     '''
@@ -23,7 +24,7 @@ def getSPL(PWL, distance, Q):
         SPL = round(SPL,1)
     except Exception:
         SPL = math.nan
-    
+
     return SPL
 
 
@@ -180,7 +181,7 @@ def aWeightedSpectrum(spectrum):
                     }
 
     for frequency in bands:
-        spectrum_filtered[frequency] = spectrum[frequency] + A_filter[frequency]
+        spectrum_filtered[frequency] = roundit(spectrum[frequency] + A_filter[frequency])
 
     return spectrum_filtered
 
@@ -222,7 +223,11 @@ def distAttenPoint(SPL1, R1, R2):
     Returns:
         Sound Pressure Level and distance R2.
     '''
-    SPL2 = SPL1 - 20*math.log10(R2/R1)
+    try:
+        SPL2 = SPL1 - 20*math.log10(R2/R1)
+    except Exception:
+        SPL2 = math.nan
+
     SPL2 = round(SPL2,2)
     return SPL2
 
@@ -238,7 +243,11 @@ def distAttenLine(SPL1, R1, R2):
     Returns:
         Sound Pressure Level and distance R2.
     '''
-    SPL2 = SPL1 - 10*math.log10(R2/R1)
+    try:
+        SPL2 = SPL1 - 10*math.log10(R2/R1)
+    except Exception:
+        SPL2 = math.nan
+
     SPL2 = round(SPL2,2)
     return SPL2
 
@@ -258,31 +267,37 @@ def distAttenWall(SPL1, R1, R2, width, height):
 
     R_ultranear = width/math.pi
     R_near = height
-    # determine if R1 is in ultranear, near or far.
-    if (R1 > R_near):
-        zone1 = "farfield"
-    if (R1 <= R_near):
-        zone1 = "nearfield"
-        if (R1 < R_ultranear):
-            zone1 = "ultranearfield"
-    if (zone1=="farfield"):
-        SPL_nearfield = SPL1 -20*math.log10(R_near/R1)
-    if (zone1=="nearfield"):
-        SPL_nearfield = SPL1 -10*math.log10(R_near/R1)
-    if (zone1=="ultranearfield"):
-        SPL_nearfield = SPL1 -10*math.log10(R_near/R_ultranear)
-    if (R2 > R_near):
-        zone2 = "farfield"
-    if (R2 <= R_near):
-        zone2 = "nearfield"
-        if (R2 < R_ultranear):
-            zone2 = "ultranearfield"
-    if (zone2=="farfield"):
-        SPL2 = SPL_nearfield -20*math.log10(R2/R_near)
-    if (zone2=="nearfield"):
-        SPL2 = SPL_nearfield -10*math.log10(R2/R_near)
-    if (zone2=="ultranearfield"):
-        SPL2 = SPL_nearfield -10*math.log10(R_ultranear/R_near)
+
+    try:
+        # determine if R1 is in ultranear, near or far.
+        if (R1 > R_near):
+            zone1 = "farfield"
+        if (R1 <= R_near):
+            zone1 = "nearfield"
+            if (R1 < R_ultranear):
+                zone1 = "ultranearfield"
+        if (zone1=="farfield"):
+            SPL_nearfield = SPL1 -20*math.log10(R_near/R1)
+        if (zone1=="nearfield"):
+            SPL_nearfield = SPL1 -10*math.log10(R_near/R1)
+        if (zone1=="ultranearfield"):
+            SPL_nearfield = SPL1 -10*math.log10(R_near/R_ultranear)
+        if (R2 > R_near):
+            zone2 = "farfield"
+        if (R2 <= R_near):
+            zone2 = "nearfield"
+            if (R2 < R_ultranear):
+                zone2 = "ultranearfield"
+        if (zone2=="farfield"):
+            SPL2 = SPL_nearfield -20*math.log10(R2/R_near)
+        if (zone2=="nearfield"):
+            SPL2 = SPL_nearfield -10*math.log10(R2/R_near)
+        if (zone2=="ultranearfield"):
+            SPL2 = SPL_nearfield -10*math.log10(R_ultranear/R_near)
+
+    except Exception:
+        SPL2 = math.nan
+
     SPL2 = round(SPL2,2)
     return SPL2
 

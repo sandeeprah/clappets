@@ -127,6 +127,8 @@ var app_doc = {
 
         calculate : function(){
             fn_success =function(){};
+            this.doc['result'] ={};
+            this.doc['errors'] =[];
             this.process_resource("doc", "/api/document/calculate/", fn_success)
         },
 

@@ -69,6 +69,12 @@ def parseFloat(value):
         return math.nan
 
 def roundit(value,  max_decim=6, allowed_error=0.001):
+    try:
+        value = float(value)
+    except Exception:
+        return value
+
+    
     decims = 1
     rounded_value = round(value, max_decim)
 

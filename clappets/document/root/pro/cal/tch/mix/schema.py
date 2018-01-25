@@ -1,5 +1,5 @@
-from marshmallow import Schema, fields, validate, validates_schema, ValidationError
-from clappets.core import sDocPrj, sXfld
+from marshmallow import Schema, fields, validate, validates, validates_schema, ValidationError
+from clappets.core import sDocPrj, sXfld, xisBlank, xisMissing
 from clappets.core import validator as vd
 import CoolProp.CoolProp as CP
 
@@ -11,25 +11,57 @@ class schema_fluidfraction(Schema):
     class Meta:
         ordered = True
 
+    @validates('molefraction')
+    def check_molefraction(self, value):
+        vd.fGrtThanEq(value,0)
+        vd.fLessThanEq(value,1)
+
+
+
 class docInput(Schema):
-    mixture = fields.Nested(schema_fluidfraction, many=True)
-    P = fields.Nested(sXfld, validate=[vd.xNumber(blank=False), vd.xDim('pressure')])
-    T = fields.Nested(sXfld, validate=[vd.xNumber(blank=False), vd.xDim('temperature')])
+    P = fields.Nested(sXfld, required=True)
+    T = fields.Nested(sXfld, required=True)
+    mixture = fields.Nested(schema_fluidfraction, many=True, required=True)
+    class Meta:
+        ordered = True
+
+    @validates('P')
+    def check_P(self, value):
+        vd.xNumber(value)
+        vd.xGrtThan(value, 0)
+        vd.xDim(value, ['pressure'])
+
+    @validates('T')
+    def check_T(self, value):
+        vd.xNumber(value)
+        vd.xDim(value, ['temperature'])
+
+    @validates_schema()
+    def check_mixture(self, data):
+        mixture = data['mixture']
+        sigma_y = 0
+        for component in mixture:
+            if ('molefraction' in component):
+                sigma_y = sigma_y + component['molefraction']
+
+        if (sigma_y <=0):
+            raise ValidationError('Invalid Gas Composition Entered','schema_mixture')
+
 
 class docResult(Schema):
-    MW = fields.Nested(sXfld, validate=[vd.xNumber(blank=True), vd.xDim('molecularMass')])
-    Pcritical = fields.Nested(sXfld, validate=[vd.xNumber(blank=True), vd.xDim('pressure')])
-    Tcritical = fields.Nested(sXfld, validate=[vd.xNumber(blank=True), vd.xDim('temperature')])
-    Pr = fields.Nested(sXfld, validate=[vd.xNumber(blank=True)])
-    Tr = fields.Nested(sXfld, validate=[vd.xNumber(blank=True)])
-    acentric = fields.Nested(sXfld, validate=[vd.xNumber(blank=True)])
-    Z_PR = fields.Nested(sXfld, validate=[vd.xNumber(blank=True)])
-    Z_LKP = fields.Nested(sXfld, validate=[vd.xNumber(blank=True)])
-    Z_NO = fields.Nested(sXfld, validate=[vd.xNumber(blank=True)])
-    Cp0mass = fields.Nested(sXfld, validate=[vd.xNumber(blank=True), vd.xDim('specificHeat')])
-    Cv0mass = fields.Nested(sXfld, validate=[vd.xNumber(blank=True), vd.xDim('specificHeat')])
-    Cp0molar = fields.Nested(sXfld, validate=[vd.xNumber(blank=True), vd.xDim('specificHeatMolar')])
-    Cv0molar = fields.Nested(sXfld, validate=[vd.xNumber(blank=True), vd.xDim('specificHeatMolar')])
+    MW = fields.Nested(sXfld)
+    Pcritical = fields.Nested(sXfld)
+    Tcritical = fields.Nested(sXfld)
+    Pr = fields.Nested(sXfld)
+    Tr = fields.Nested(sXfld)
+    acentric = fields.Nested(sXfld)
+    Z_PR = fields.Nested(sXfld)
+    Z_LKP = fields.Nested(sXfld)
+    Z_NO = fields.Nested(sXfld)
+    Cp0mass = fields.Nested(sXfld)
+    Cv0mass = fields.Nested(sXfld)
+    Cp0molar = fields.Nested(sXfld)
+    Cv0molar = fields.Nested(sXfld)
 
 
 class docSchema(sDocPrj):

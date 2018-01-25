@@ -1,0 +1,38 @@
+{
+  "_id": "",
+  "meta": {
+    "projectID": "0000",
+    "project_title": "Local",
+    "discipline" : "mec",
+    "docCategory": "cal",
+    "docSubCategory": "eng",
+    "docClass": "dfc",
+    "docClass_title": "Diesel Engine - Fuel Consumption",
+    "docInstance": "1",
+    "docInstance_title": "Diesel Engine - Fuel Consumption",
+    "doc_no":"0000-MEC-CAL-ENG-DFC-01",
+    "rev": "A",
+    "date":"",
+    "status": "",
+    "performer": "",
+    "reviewer": "",
+    "approver": ""
+  },
+
+  "units": {
+    "power": "kW",
+    "flow": "lph",
+    "specificFuelConsumption": "litre/kW.h"
+  },
+
+  "input": {
+    "Prated": {"_val":"740", "_dim":"power"},
+    "Fuel_rate_specific": {"_val":"0.26", "_dim":"specificFuelConsumption"}
+  },
+
+  "result": {
+    "Fuel_flow_rate": {"_val":"", "_dim":"flow"}
+  },
+
+  "errors": []
+}

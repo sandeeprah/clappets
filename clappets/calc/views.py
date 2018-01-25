@@ -25,6 +25,10 @@ def piping_index():
 def controlvalves_index():
     return render_template("calc/controlvalves/index.html")
 
+@app.route('/htm/calc/engines/')
+def engines_index():
+    return render_template("calc/engines/index.html")
+
 @app.route('/htm/calc/reliefvalves/')
 def reliefvalves_index():
     return render_template("calc/reliefvalves/index.html")
@@ -32,3 +36,15 @@ def reliefvalves_index():
 @app.route('/htm/calc/pump/')
 def pump_index():
     return render_template("calc/pump/index.html")
+
+@app.route('/htm/calc/lighting/')
+def lighting_index():
+    return render_template("calc/lighting/index.html")
+
+@app.route('/htm/calc/motors/')
+def motors_index():
+    return render_template("calc/motors/index.html")
+
+@app.route('/htm/calc/cables/')
+def cables_index():
+    return render_template("calc/cables/index.html")
