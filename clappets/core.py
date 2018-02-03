@@ -29,101 +29,121 @@ def xisMissing(data, key):
 
 class validator:
 
-    def xChoice(value, choices):
+    def xRequired(data, key, fName=None):
+        if (key not in data):
+            raise ValidationError('Field is required', fName)
+
+    def xNotEmpty(value, fName=None):
+        val = value['_val']
+        if (isinstance(val, str)):
+            val = val.strip()
+        if (val==""):
+            raise ValidationError("Field can't be empty", fName)
+
+
+    def xChoice(value, choices, fName=None):
         if value['_val'] in choices:
             return True
         else:
-            raise ValidationError("Invalid Choice")
+            raise ValidationError("Invalid Choice", fName)
 
-
-    def xNumber(value):
+    def xNumber(value, fName=None):
         try:
             val = float(value['_val'])
             return True
         except Exception:
-            raise ValidationError('invalid number')
+            raise ValidationError('invalid number', fName)
 
-    def xGrtThan(value, setVal):
+
+    def xInteger(value, fName=None):
+        try:
+            val = int(value['_val'])
+            return True
+        except Exception:
+            raise ValidationError('invalid integer', fName)
+
+
+    def xGrtThan(value, setVal, fName=None):
         val = float(value['_val'])
         if (val > setVal):
             return True
         else:
-            raise ValidationError('> {} reqd'.format(setVal))
+            raise ValidationError('> {} reqd'.format(setVal), fName)
 
-    def xGrtThanEq(value, setVal):
+    def xGrtThanEq(value, setVal, fName=None):
         val = float(value['_val'])
         if (val >= setVal):
             return True
         else:
-            raise ValidationError('>= {} reqd'.format(setVal))
+            raise ValidationError('>= {} reqd'.format(setVal), fName)
 
-    def xLessThan(value, setVal):
+    def xLessThan(value, setVal, fName=None):
         val = float(value['_val'])
         if (val < setVal):
             return True
         else:
-            raise ValidationError('< {} reqd'.format(setVal))
+            raise ValidationError('< {} reqd'.format(setVal), fName)
 
-    def xLessThanEq(value, setVal):
+    def xLessThanEq(value, setVal, fName=None):
         val = float(value['_val'])
         if (val <= setVal):
             return True
         else:
-            raise ValidationError('<= {} reqd'.format(setVal))
+            raise ValidationError('<= {} reqd'.format(setVal), fName)
 
-    def fGrtThan(value, setVal):
+    def fGrtThan(value, setVal, fName=None):
         val = float(value)
         if (val > setVal):
             return True
         else:
-            raise ValidationError('> {} reqd'.format(setVal))
+            raise ValidationError('> {} reqd'.format(setVal), fName)
 
-    def fGrtThanEq(value, setVal):
+    def fGrtThanEq(value, setVal, fName=None):
         val = float(value)
         if (val >= setVal):
             return True
         else:
-            raise ValidationError('>= {} reqd'.format(setVal))
+            raise ValidationError('>= {} reqd'.format(setVal), fName)
 
-    def fLessThan(value, setVal):
+    def fLessThan(value, setVal, fName=None):
         val = float(value)
         if (val < setVal):
             return True
         else:
-            raise ValidationError('< {} reqd'.format(setVal))
+            raise ValidationError('< {} reqd'.format(setVal), fName)
 
-    def fLessThanEq(value, setVal):
+    def fLessThanEq(value, setVal, fName=None):
         val = float(value)
         if (val <= setVal):
             return True
         else:
-            raise ValidationError('<= {} reqd'.format(setVal))
+            raise ValidationError('<= {} reqd'.format(setVal), fName)
 
-    def xString(value):
+    def xString(value, fName=None):
         val = value['_val']
         if (isinstance(value['_val'], str)):
             return True
         else:
-            raise ValidationError("Invalid String")
+            raise ValidationError("Invalid String", fName)
 
 
-    def xDim(value, dimensions):
+    def xDim(value, dimensions, fName=None):
         if ('_dim' in value):
             dim = value['_dim']
             if (dim in dimensions):
                 return True
             else:
-                raise ValidationError("Invalid Dimension")
+                raise ValidationError("Invalid Dimension", fName)
         else:
-            raise ValidationError("Missing '_dim' Key")
+            raise ValidationError("Missing '_dim' Key", fName)
 
 
-    def xPrm(value, permissions):
+    def xPrm(value, permissions, fName=None):
         prm = value['_prm']
         if (prm in permissions):
             return True
         else:
-            raise ValidationError("Invalid Permissions")
+            raise ValidationError("Invalid Permissions", fName)
 
 
 class sXfld(Schema):

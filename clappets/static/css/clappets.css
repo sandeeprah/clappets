@@ -255,3 +255,17 @@ span.result {
 .datasheet .w30 {
     width: 30em;
 }
+
+.datasheet .w32 {
+    width: 32em;
+}
+.datasheet .w34 {
+    width: 34em;
+}
+.datasheet .w36 {
+    width: 36em;
+}
+
+.datasheet .w40 {
+    width: 40em;
+}
