@@ -1,5 +1,16 @@
-{% extends "document/document.html" %} {% block content %}
+{% extends "document/document.html" %}
+{% block content %}
+<div style="overflow:auto;">
 <div class="datasheet">
+  <nav class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/calculations/">Calculations</a></li>
+      <li><a href="/calculations/mechanical/">Mechanical</a></li>
+      <li><a href="/calculations/mechanical/pumps/">Pumps</a></li>
+      <li class="is-active"><a href="#">Viscous2Water</a></li>
+    </ul>
+  </nav>
   <table class="main">
     <thead>
       <tr>
@@ -219,7 +230,9 @@
     </tbody>
   </table>
 </div>
-{% endblock content %} {% block script_vueapp %}
+</div>
+{% endblock content %}
+{% block script_vueapp %}
 <script type="text/javascript">
   var app = new Vue({
     el: '#app',

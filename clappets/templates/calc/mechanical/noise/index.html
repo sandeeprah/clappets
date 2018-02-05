@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Calculations{% endblock %}
+{% block content %}
+
+<div class="section">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/calculations/">Calculations</a></li>
+        <li><a href="/calculations/mechanical/">Mechanical</a></li>
+        <li class="is-active"><a href="#">Noise</a></li>
+      </ul>
+    </nav>
+
+    <div class="box">
+      <h4 class="title is-4">Noise</h4>
+    </div>
+
+    <div class="box">
+      <div class="content">
+        <ul>
+          <li><a href="distance_attenuation/">Noise Attenuation with Distance</a></li>
+          <li><a href="conversions/">Common Noise Conversions</a></li>
+          <li><a href="Aweighted_spectrum/">A-weighting of Noise Spectrum</a></li>
+          <li><a href="background_correction/">Background Noise Correction</a></li>
+          <li><a href="map/">Noise map due to multiple noise sources</a></li>
+          <li><a href="sum/">Noise Addition</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

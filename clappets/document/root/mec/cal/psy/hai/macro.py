@@ -7,6 +7,8 @@ from copy import deepcopy
 def calculate(doc_original):
     doc = deepcopy(doc_original)
     treeUnitConvert(doc, doc['units'], SI_UNITS)
+    doc['errors'] =[]
+
 
     calculation_option = doc['input']['calculation_option']['_val']
     Tdb = parseFloat(doc['input']['Tdb']['_val'])
@@ -39,7 +41,7 @@ def calculate(doc_original):
         Tdp = CP.HAPropsSI('Tdp','Tdb', Tdb, 'P', P, 'R', RH)
     except Exception:
         Twb = math.nan
-        Tdp = math.nan 
+        Tdp = math.nan
 
     try:
         v = CP.HAPropsSI('Vha','Tdb', Tdb, 'P', P, 'R', RH)
@@ -82,18 +84,21 @@ def calculate(doc_original):
     Cp = roundit(Cp,4)
     Cp_ha = roundit(Cp_ha,4)
 
-    doc['result']['RH']['_val'] = str(RH)
-    doc['result']['Twb']['_val'] = str(Twb)
-    doc['result']['Tdp']['_val'] = str(Tdp)
-    doc['result']['W']['_val'] = str(W)
-    doc['result']['rho']['_val'] = str(rho)
-    doc['result']['v']['_val'] = str(v)
-    doc['result']['h']['_val'] = str(h)
-    doc['result']['u']['_val'] = str(u)
-    doc['result']['s']['_val'] = str(s)
-    doc['result']['Cp']['_val'] = str(Cp)
-    doc['result']['Cp_ha']['_val'] = str(Cp_ha)
+    doc['result'].update({'RH':{'_val':str(RH)}})
+    doc['result'].update({'Twb':{'_val':str(Twb), '_dim':'temperature'}})
+    doc['result'].update({'Tdp':{'_val':str(Tdp), '_dim':'temperature'}})
+    doc['result'].update({'W':{'_val':str(W)}})
+    doc['result'].update({'rho':{'_val':str(rho), '_dim':'density'}})
+    doc['result'].update({'v':{'_val':str(v), '_dim':'specificVolume'}})
+    doc['result'].update({'h':{'_val':str(h), '_dim':'specificEnergy'}})
+    doc['result'].update({'u':{'_val':str(u), '_dim':'specificEnergy'}})
+    doc['result'].update({'s':{'_val':str(s), '_dim':'specificHeat'}})
+    doc['result'].update({'Cp':{'_val':str(Cp), '_dim':'specificHeat'}})
+    doc['result'].update({'Cp_ha':{'_val':str(Cp_ha), '_dim':'specificHeat'}})
 
-    treeUnitConvert(doc, SI_UNITS, doc['units'])
+
+    treeUnitConvert(doc, SI_UNITS, doc['units'], autoRoundOff=True)
     doc_original['result'].update(doc['result'])
+    doc_original['errors'] = doc['errors']
+
     return True

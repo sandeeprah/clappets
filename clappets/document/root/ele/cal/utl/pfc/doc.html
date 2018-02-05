@@ -1,7 +1,17 @@
 {% extends "document/document.html" %}
 {% block content %}
+<div style="overflow:auto;">
 <div style="width:100%; overflow:auto;">
 <div class="datasheet">
+  <nav class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/calculations/">Calculations</a></li>
+      <li><a href="/calculations/electrical/">Electrical</a></li>
+      <li><a href="/calculations/electrical/miscellaneous/">Miscellaneous</a></li>
+      <li class="is-active"><a href="#">PFC</a></li>
+    </ul>
+  </nav>
   <table class="main">
     <thead>
         <tr>
@@ -129,6 +139,7 @@
       </tr>
     </tbody>
   </table>
+</div>
 </div>
 </div>
 {% endblock content %}

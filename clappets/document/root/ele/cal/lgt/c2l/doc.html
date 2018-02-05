@@ -1,5 +1,16 @@
-{% extends "document/document.html" %} {% block content %}
+{% extends "document/document.html" %}
+{% block content %}
+<div style="overflow:auto;">
 <div class="datasheet">
+  <nav class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/calculations/">Calculations</a></li>
+      <li><a href="/calculations/electrical/">Electrical</a></li>
+      <li><a href="/calculations/electrical/lighting/">Lighting</a></li>
+      <li class="is-active"><a href="#">Candela2Lumens</a></li>
+    </ul>
+  </nav>
   <table class="main">
     <thead>
       <tr>
@@ -148,77 +159,10 @@
         </td>
         <td></td>
       </tr>
-
     </tbody>
-
-      <!--
-
-      <tr>
-        <td>2.2</td>
-        <td colspan="4">
-          <span class="w20">Visc. Correctn. Factor - Flow (Cq) </span>
-          <span class="w4 result">[[ retSilent(doc, ['result','Cq','_val']) ]]</span>
-        </td>
-        <td colspan="4">
-        </td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>2.3</td>
-        <td colspan="4">
-          <span class="w20">Visc. Correctn. Factor - Head (Ch) </span>
-          <span class="w4 result">[[ retSilent(doc, ['result','Ch','_val']) ]]</span>
-        </td>
-        <td colspan="4">
-        </td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>2.4</td>
-        <td colspan="4">
-          <span class="w20">Visc. Correctn. Factor - Efficiency (Ceta) </span>
-          <span class="w4 result">[[ retSilent(doc, ['result','Ceta','_val']) ]]</span>
-        </td>
-        <td colspan="4">
-        </td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>2.5</td>
-        <td colspan="4">
-          <span class="w20">Flow (Viscous)</span>
-          <span class="w4 result">[[ retSilent(doc, ['result','Qvis','_val']) ]]</span>
-          <span class="w4">[[ gUL('flow') ]]</span>
-        </td>
-        <td colspan="4">
-        </td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>2.6</td>
-        <td colspan="4">
-          <span class="w20">Head (Viscous)</span>
-          <span class="w4 result">[[ retSilent(doc, ['result','Hvis','_val']) ]]</span>
-          <span class="w4">[[ gUL('length') ]]</span>
-        </td>
-        <td colspan="4">
-        </td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>2.7</td>
-        <td colspan="4">
-          <span class="w20">Efficiency (Viscous)</span>
-          <span class="w4 result">[[ retSilent(doc, ['result','etavis','_val']) ]]</span>
-          <span class="w4">%</span>
-        </td>
-        <td colspan="4">
-        </td>
-        <td></td>
-      </tr>
-    -->
-    </tbody>
+</tbody>
   </table>
+</div>
 </div>
 {% endblock content %} {% block script_vueapp %}
 <script type="text/javascript">
