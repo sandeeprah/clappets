@@ -1,4 +1,4 @@
-from flask import request, render_template, jsonify, abort
+from flask import request, render_template, jsonify, abort, redirect
 from clappets import app
 
 @app.route('/htm/calc/')
@@ -48,3 +48,53 @@ def motors_index():
 @app.route('/htm/calc/cables/')
 def cables_index():
     return render_template("calc/cables/index.html")
+
+
+@app.route('/calculations/')
+def calc_index():
+    return render_template("calc/index.html")
+
+@app.route('/calculations/process/')
+def calc_process_index():
+    return render_template("calc/process/index.html")
+
+@app.route('/calculations/process/thermophysical/')
+def calc_process_thermophysical_index():
+    return render_template("calc/process/thermophysical/index.html")
+
+
+@app.route('/calculations/process/thermophysical/chemical_fluid/')
+def calc_process_thermophysical_fluid():
+    return redirect("/htm/document/tpl/root/pro/cal/tch/flu/")
+
+@app.route('/calculations/process/thermophysical/hydrocarbon_mixture/')
+def calc_process_thermophysical_hydrocarbon_mixture():
+    return redirect("/htm/document/tpl/root/pro/cal/tch/mix/")
+
+@app.route('/calculations/process/thermophysical/water_steam/')
+def calc_process_thermophysical_water_steam():
+    return redirect("/htm/document/tpl/root/pro/cal/tch/wtr/")
+
+@app.route('/calculations/process/pressure_drop/')
+def calc_process_pressure_drop_index():
+    return render_template("calc/process/pressure_drop/index.html")
+
+@app.route('/calculations/mechanical/')
+def calc_mechanical_index():
+    return render_template("calc/mechanical/index.html")
+
+@app.route('/calculations/mechanical/pumps/')
+def calc_mechanical_pump_index():
+    return render_template("calc/mechanical/pumps/index.html")
+
+@app.route('/calculations/mechanical/engines/')
+def calc_mechanical_engines_index():
+    return render_template("calc/mechanical/engines/index.html")
+
+@app.route('/calculations/mechanical/noise/')
+def calc_mechanical_noise_index():
+    return render_template("calc/mechanical/noise/index.html")
+
+@app.route('/calculations/mechanical/psychrometry/')
+def calc_mechanical_psychrometry_index():
+    return render_template("calc/mechanical/psychrometry/index.html")

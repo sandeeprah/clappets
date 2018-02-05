@@ -88,6 +88,11 @@ var app_doc = {
         newDoc: function() {
             this.execQuery("/api/document/tpl/");
             app.selectionModalisActive = true;
+            burgerMain = document.getElementById('burgerMain');
+            navMenu = document.getElementById('navMenu');
+            burgerMain.classList.remove('is-active');
+            navMenu.classList.remove('is-active');
+
         },
 
         saveDoc: function() {
@@ -96,11 +101,19 @@ var app_doc = {
             save_anchor.download = "formData-" + new Date().getTime();
             save_anchor.href = "data:text/plain," + encodeURIComponent(mydata);
             save_anchor.click();
+            burgerMain = document.getElementById('burgerMain');
+            navMenu = document.getElementById('navMenu');
+            burgerMain.classList.remove('is-active');
+            navMenu.classList.remove('is-active');
         },
 
         openDocDB: function() {
             this.execQuery("/api/document/query/");
             app.selectionModalisActive = true;
+            burgerMain = document.getElementById('burgerMain');
+            navMenu = document.getElementById('navMenu');
+            burgerMain.classList.remove('is-active');
+            navMenu.classList.remove('is-active');
         },
 
         saveDocDB: function() {
@@ -109,11 +122,19 @@ var app_doc = {
             } else {
                 this.update_resource("doc", this.doc['_id'], "/api/document/db/" )
             }
+            burgerMain = document.getElementById('burgerMain');
+            navMenu = document.getElementById('navMenu');
+            burgerMain.classList.remove('is-active');
+            navMenu.classList.remove('is-active');
         },
 
         saveAsDocDB: function() {
             this.saveAsModalisActive = false;
             this.add_resource("doc", "/api/document/db/");
+            burgerMain = document.getElementById('burgerMain');
+            navMenu = document.getElementById('navMenu');
+            burgerMain.classList.remove('is-active');
+            navMenu.classList.remove('is-active');
         },
 
         deleteDocDB: function() {
@@ -123,13 +144,21 @@ var app_doc = {
             } else {
                 this.delete_resource("doc", this.doc["_id"], "/api/document/db/");
             }
+            burgerMain = document.getElementById('burgerMain');
+            navMenu = document.getElementById('navMenu');
+            burgerMain.classList.remove('is-active');
+            navMenu.classList.remove('is-active');
         },
 
         calculate : function(){
             fn_success =function(){};
             this.doc['result'] ={};
             this.doc['errors'] =[];
-            this.process_resource("doc", "/api/document/calculate/", fn_success)
+            this.process_resource("doc", "/api/document/calculate/", fn_success);
+            burgerMain = document.getElementById('burgerMain');
+            navMenu = document.getElementById('navMenu');
+            burgerMain.classList.remove('is-active');
+            navMenu.classList.remove('is-active');
         },
 
         runMacros : function(){

@@ -1,25 +1,59 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block home_active %}is-active{% endblock home_active %}
-
 {% block content %}
 <section class="section">
   <div class="container">
     <div class="columns">
       <div class="column">
         <div class="box" style="width:100%">
-          <h1 class="title is-3">Clappets.com</h1>
-          <p>Clappets.com aims at developing high quality productivity tools and resources for common process and mechanical engineering activities in the Chemical and Hydrocarbon Industry.
+          <p><span style="color:blue; font-weight:bold; font-size:1.5em;" class="is-medium"> Clappets.com </span> aims at supporting engineers in chemical process industries with online calculations, property databases and tables, technical articles and equipment directory services.
           </p>
           <br/>
           <p>
-            These tools include day to day calculations and templates which are tailored to automate the generation, validation, storage, analysis, transformation and exchange of technical documents.
+            The calculation tools available provide full flexibilty to user, by providing the option to save and reload the input data, change the units and generate PDF file reports with user defined document numbers and titles. <a href="/static/tutorials/calculation_use.html">Read more...</a>
           </p>
           <br/>
-          <span><a href="/calcs/index" class="button is-primary">Launch >></a></span>
+          <p>
+            There are multiple ways in which the calculations available on this website can be used. They could be used in your browser or  in an automated manner from a calling program  using REST API framework.
+            <a href="/static/content/tutorials/rest_api_tutorial.html">Read more...</a>.
+          </p>
         </div>
       </div>
     </div>
+    <div class="columns">
+      <div class="column is-4">
+        <div class="box">
+          <div class="content">
+            <h3 class="title is-5">Calculations</h3>
+          </div>
+            <ul>
+              <li style="margin-top:0.5em;"><a href="/calculations/process/">Process</a></li>
+              <li style="margin-top:0.5em;"><a href="/calculations/mechanical/">Mechanical</a></li>
+              <li style="margin-top:0.5em;"><a href="/calculations/electrical/">Electrical</a></li>
+              <li style="margin-top:1em;"><a href="/calculations/instrumentation/">Instrumentation</a></li>
+              <li style="margin-top:1em;"><a href="/calculations/civil/">Civil/Structural</a></li>
+              <li style="margin-top:1em;"><a href="/calculations/general/">General</a></li>
+            </ul>
+        </div>
+      </div>
+      <div class="column is-8">
+        <div class="box">
+          <div class="content">
+            <h3 class="title is-5">Recently Added Calculations</h3>
+            <ul>
+              <li style="margin-top:0.5em;"><a href="/calculations/process/">Cable Sizing Calculations based on IEC 30634</a></li>
+              <li style="margin-top:0.5em;"><a href="/calculations/process/">Electrical Three phase parameter calculation</a></li>
+              <li style="margin-top:0.5em;"><a href="/calculations/process/">Motor Starting Time Calculation</a></li>
+              <li style="margin-top:1em;"><a href="/calculations/process/">Common unit conversions in lighting/photometry</a></li>
+              <li style="margin-top:1em;"><a href="/calculations/process/">Gas Turbine Deration Calculation</a></li>
+              <li style="margin-top:1em;"><a href="/calculations/process/">Steam Turbine Calculations</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 {% endblock content %}

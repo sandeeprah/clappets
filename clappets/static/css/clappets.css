@@ -26,6 +26,10 @@
       -webkit-appearance: none;
       -moz-appearance: none;
     }
+
+    .datasheet nav{
+      display: none;
+    }
 }
 
 @media screen {

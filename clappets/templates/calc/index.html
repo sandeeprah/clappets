@@ -1,11 +1,31 @@
-{% extends "base.html" %}
-{% block title %}Calculations{% endblock %}
-{% block content %}
+{% extends "base.html" %} {% block title %}Calculations{% endblock %} {% block content %}
 <div class="section">
-    <div class="container">
-        <div class="box">
-            <h4 class="title is-4">Calculations</h4>
-        </div>
+  <div class="container">
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li class="is-active"><a href="#">Calculations</a></li>
+      </ul>
+    </nav>
+    <div class="box">
+      <h4 class="title is-4">Calculations</h4>
+    </div>
+    <div class="box">
+      <div class="content">
+        <ul>
+          <li style="margin-top:0.5em;"><a href="/calculations/process/">Process</a></li>
+          <li style="margin-top:0.5em;"><a href="/calculations/mechanical/">Mechanical</a></li>
+          <li style="margin-top:0.5em;"><a href="/calculations/electrical/">Electrical</a></li>
+          <li style="margin-top:0.5em;"><a href="/calculations/instrumentation/">Instrumentation</a></li>
+          <li style="margin-top:0.5em;"><a href="/calculations/civil/">Civil/Structural</a></li>
+          <li style="margin-top:0.5em;"><a href="/calculations/general/">General</a></li>
+        </ul>
+      </div>
+    </div>
+
+
+
+    <!--
         <div class="columns">
           <div class="column">
             <div class="card" style="margin:auto;">
@@ -50,6 +70,11 @@
             </div>
           </div>
         </div>
+
+
+
+
+
         <div class="columns">
           <div class="column">
             <div class="card" style="margin:auto;">
@@ -262,9 +287,10 @@
             </div>
           </div>
         </div>
+      -->
 
 
-    </div>
+  </div>
 </div>
 
 {% endblock content %}

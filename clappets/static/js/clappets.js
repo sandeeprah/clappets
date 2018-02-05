@@ -51,6 +51,11 @@ var app_common = {
         openModal: function(modalisActive) {
             this[modalisActive] = true;
             this.resetMessages();
+            burgerMain = document.getElementById('burgerMain');
+            navMenu = document.getElementById('navMenu');
+            burgerMain.classList.remove('is-active');
+            navMenu.classList.remove('is-active');
+
         },
 
         closeModal: function(modalisActive) {
@@ -451,6 +456,11 @@ var app_common = {
 
         print: function() {
             window.print();
+            burgerMain = document.getElementById('burgerMain');
+            navMenu = document.getElementById('navMenu');
+            burgerMain.classList.remove('is-active');
+            navMenu.classList.remove('is-active');
+  
         },
 
         pdf_download: function(resource_name, pdf_url) {
@@ -488,6 +498,11 @@ var app_common = {
                 app.loadingModalisActive =false;
             };
             xhr.send(json_data);
+            burgerMain = document.getElementById('burgerMain');
+            navMenu = document.getElementById('navMenu');
+            burgerMain.classList.remove('is-active');
+            navMenu.classList.remove('is-active');
+
         },
 
         addListItem: function(targetList, list_entry) {
