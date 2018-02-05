@@ -1,24 +1,6 @@
 from flask import request, render_template, jsonify, abort, redirect
 from clappets import app
 
-@app.route('/htm/calc/')
-def calculation_index():
-    return render_template("calc/index.html")
-
-
-@app.route('/htm/calc/lighting/')
-def lighting_index():
-    return render_template("calc/lighting/index.html")
-
-@app.route('/htm/calc/motors/')
-def motors_index():
-    return render_template("calc/motors/index.html")
-
-@app.route('/htm/calc/cables/')
-def cables_index():
-    return render_template("calc/cables/index.html")
-
-
 @app.route('/calculations/')
 def calc_index():
     return render_template("calc/index.html")
@@ -30,7 +12,6 @@ def calc_process_index():
 @app.route('/calculations/process/thermophysical/')
 def calc_process_thermophysical_index():
     return render_template("calc/process/thermophysical/index.html")
-
 
 @app.route('/calculations/process/thermophysical/chemical_fluid/')
 def calc_process_thermophysical_fluid():

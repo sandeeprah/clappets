@@ -21,6 +21,11 @@ def admin():
 def login():
     return render_template("login.html")
 
+@app.route('/google5ca5209499debead.html')
+def google_verify():
+    return render_template("google5ca5209499debead.html")
+
+
 @app.route('/forgot/', methods=['GET'])
 def forgot_password():
     return render_template("forgot_password.html")
