@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- saved from url=(0064)https://dansup.github.io/bulma-templates/templates/skeleton.html -->
 <html class="has-navbar-fixed-top">
 
 <head>
@@ -7,15 +6,17 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>
-    {% block title %} {% endblock title %}
-  </title>
+  <title>{% block title %} {% endblock title %}</title>
   <meta name="author" content="Sandeep Raheja">
   <meta name="description" content="{% block meta_description %}{% endblock meta_description %}" />
-  <meta name="keywords" content="{% block meta_keywords %}{% endblock meta_keywords %}" /> {% endblock head %} {% block css %}
+  <meta name="keywords" content="{% block meta_keywords %}{% endblock meta_keywords %}" /> {% endblock head %}
+  {% block css %}
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css', _external=True) }}">
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bulma.css', _external=True) }}">
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/clappets.css', _external=True) }}"> {% endblock css %} {% block extra_styles %} {% endblock extra_styles %} {% block script_top %} {% endblock script_top %}
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/clappets.css', _external=True) }}">
+  {% endblock css %}
+  {% block extra_styles %}{% endblock extra_styles %}
+  {% block script_top %}{% endblock script_top %}
 </head>
 
 <body>
@@ -32,9 +33,7 @@
       </div>
       <div class="navbar-menu" id="navMenu">
         <div class="navbar-start">
-          <a href="/index" class="navbar-item">Home</a>
-
-          {% block navbar_left %}
+          <a href="/index" class="navbar-item">Home</a> {% block navbar_left %}
           <a href="/htm/document/" class="navbar-item">docuMentor</a>
           <a href="/calculations/" class="navbar-item">Calculations</a>
           <!--
@@ -93,19 +92,7 @@
         </article>
       </div>
     </div>
-    {% endblock messages %}
-
-    {% block modals %}
-    {% endblock modals %}
-
-    {% block pagetitle %}
-    {% endblock pagetitle %}
-
-
-    {% block content %}
-    {% endblock content %}
-
-    {% block page_footer %}
+    {% endblock messages %} {% block modals %} {% endblock modals %} {% block pagetitle %} {% endblock pagetitle %} {% block content %} {% endblock content %} {% block page_footer %}
     <div class="container">
       <footer>
         <p></p>
@@ -119,20 +106,19 @@
   <script type="text/javascript" src="{{ url_for('static', filename='js/vue.js', _external=True) }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/units.js', _external=True) }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/clappets.js', _external=True) }}"></script>
-  {% endblock script_bottom %}
-
-  {% block script_vueapp %}
+  {% endblock script_bottom %} {% block script_vueapp %}
   <script type="text/javascript">
     var app = new Vue({
       el: '#app',
       delimiters: ['[[', ']]'],
       mixins: [app_common],
       data: {},
-      computed : {},
-      methods : {}
+      computed: {},
+      methods: {}
     })
   </script>
   {% endblock script_vueapp %}
 
 </body>
+
 </html>
