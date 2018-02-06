@@ -32,6 +32,12 @@ def google_sitemap():
     response.headers['Content-Type'] = 'application/xml'
     return response
 
+@app.route('/robots.txt')
+def google_robots():
+    template = render_template('robots.txt')
+    response = make_response(template)
+    response.headers['Content-Type'] = 'text/plain'
+    return response
 
 @app.route('/forgot/', methods=['GET'])
 def forgot_password():
