@@ -1,4 +1,4 @@
-from flask import request, render_template, jsonify, abort
+from flask import request, render_template, jsonify, abort, make_response
 from flask_httpauth import HTTPBasicAuth
 from clappets import app
 from clappets.project import views
@@ -24,6 +24,13 @@ def login():
 @app.route('/google5ca5209499debead.html')
 def google_verify():
     return render_template("google5ca5209499debead.html")
+
+@app.route('/sitemap.xml')
+def google_sitemap():
+    template = render_template('sitemap.xml')
+    response = make_response(template)
+    response.headers['Content-Type'] = 'application/xml'
+    return response
 
 
 @app.route('/forgot/', methods=['GET'])
