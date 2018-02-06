@@ -1,5 +1,6 @@
-from flask import request, render_template, jsonify, abort, redirect
+from flask import request, render_template, jsonify, abort
 from clappets import app
+from clappets.document.utils import render_document
 
 @app.route('/calculations/')
 def calc_index():
@@ -15,15 +16,15 @@ def calc_process_thermophysical_index():
 
 @app.route('/calculations/process/thermophysical/chemical_fluid/')
 def calc_process_thermophysical_fluid():
-    return redirect("/htm/document/tpl/root/pro/cal/tch/flu/")
+    return render_document("pro","cal","tch","flu")
 
 @app.route('/calculations/process/thermophysical/hydrocarbon_mixture/')
 def calc_process_thermophysical_hydrocarbon_mixture():
-    return redirect("/htm/document/tpl/root/pro/cal/tch/mix/")
+    return render_document("pro","cal","tch","mix")
 
 @app.route('/calculations/process/thermophysical/water_steam/')
 def calc_process_thermophysical_water_steam():
-    return redirect("/htm/document/tpl/root/pro/cal/tch/wtr/")
+    return render_document("pro","cal","tch","wtr")
 
 @app.route('/calculations/process/pressure_drop/')
 def calc_process_pressure_drop_index():
@@ -31,10 +32,7 @@ def calc_process_pressure_drop_index():
 
 @app.route('/calculations/process/pressure_drop/hooper_2K/')
 def calc_process_pressure_drop_hooper():
-    return redirect("/htm/document/tpl/root/pro/cal/prd/h2k/")
-
-
-
+    return render_document("pro","cal","prd","h2k")
 
 @app.route('/calculations/mechanical/')
 def calc_mechanical_index():
@@ -46,15 +44,15 @@ def calc_mechanical_pump_index():
 
 @app.route('/calculations/mechanical/pumps/water2viscous/')
 def calc_mechanical_pump_water2viscous():
-    return redirect("/htm/document/tpl/root/mec/cal/pmp/w2v/")
+    return render_document("mec","cal","pmp","w2v")
 
 @app.route('/calculations/mechanical/pumps/viscous2water/')
 def calc_mechanical_pump_viscous2water():
-    return redirect("/htm/document/tpl/root/mec/cal/pmp/v2w/")
+    return render_document("mec","cal","pmp","v2w")
 
 @app.route('/calculations/mechanical/pumps/viscosity_conversions/')
 def calc_mechanical_pump_viscosity_conversions():
-    return redirect("/htm/document/tpl/root/mec/cal/pmp/vcn/")
+    return render_document("mec","cal","pmp","vcn")
 
 @app.route('/calculations/mechanical/engines/')
 def calc_mechanical_engines_index():
@@ -63,16 +61,15 @@ def calc_mechanical_engines_index():
 
 @app.route('/calculations/mechanical/engines/gas_turbine_deration/')
 def calc_mechanical_engines_gt_derate():
-    return redirect("/htm/document/tpl/root/mec/cal/eng/gtd/")
+    return render_document("mec","cal","eng","gtd")
 
 @app.route('/calculations/mechanical/engines/steam_turbine_performance/')
 def calc_mechanical_engines_st_performance():
-    return redirect("/htm/document/tpl/root/mec/cal/eng/stc/")
+    return render_document("mec","cal","eng","stc")
 
 @app.route('/calculations/mechanical/engines/diesel_fuel_consumption/')
 def calc_mechanical_engines_dfc():
-    return redirect("/htm/document/tpl/root/mec/cal/eng/dfc/")
-
+    return render_document("mec","cal","eng","dfc")
 
 @app.route('/calculations/mechanical/noise/')
 def calc_mechanical_noise_index():
@@ -80,27 +77,27 @@ def calc_mechanical_noise_index():
 
 @app.route('/calculations/mechanical/noise/distance_attenuation/')
 def calc_mechanical_noise_attenuation():
-    return redirect("/htm/document/tpl/root/mec/cal/nos/atn/")
+    return render_document("mec","cal","nos","atn")
 
 @app.route('/calculations/mechanical/noise/conversions/')
 def calc_mechanical_noise_conversions():
-    return redirect("/htm/document/tpl/root/mec/cal/nos/con/")
+    return render_document("mec","cal","nos","con")
 
 @app.route('/calculations/mechanical/noise/Aweighted_spectrum/')
 def calc_mechanical_noise_Aweighting():
-    return redirect("/htm/document/tpl/root/mec/cal/nos/awt/")
+    return render_document("mec","cal","nos","awt")
 
 @app.route('/calculations/mechanical/noise/background_correction/')
 def calc_mechanical_noise_background_correction():
-    return redirect("/htm/document/tpl/root/mec/cal/nos/bcr/")
+    return render_document("mec","cal","nos","bcr")
 
 @app.route('/calculations/mechanical/noise/map/')
 def calc_mechanical_noise_map():
-    return redirect("/htm/document/tpl/root/mec/cal/nos/map/")
+    return render_document("mec","cal","nos","map")
 
 @app.route('/calculations/mechanical/noise/sum/')
 def calc_mechanical_noise_sum():
-    return redirect("/htm/document/tpl/root/mec/cal/nos/sum/")
+    return render_document("mec","cal","nos","sum")
 
 @app.route('/calculations/mechanical/piping/')
 def calc_mechanical_piping_index():
@@ -108,7 +105,7 @@ def calc_mechanical_piping_index():
 
 @app.route('/calculations/mechanical/piping/pipe_dimensions/')
 def calc_mechanical_piping_pipe_dimensions():
-    return redirect("/htm/document/tpl/root/mec/cal/pip/sch/")
+    return render_document("mec","cal","pip","sch")
 
 @app.route('/calculations/mechanical/psychrometry/')
 def calc_mechanical_psychrometry_index():
@@ -116,9 +113,7 @@ def calc_mechanical_psychrometry_index():
 
 @app.route('/calculations/mechanical/psychrometry/humid_air_props/')
 def calc_mechanical_psychrometry_ha_props():
-    return redirect("/htm/document/tpl/root/mec/cal/psy/hai/")
-
-
+    return render_document("mec","cal","psy","hai")
 
 @app.route('/calculations/instrumentation/')
 def calc_instrumentation_index():
@@ -130,11 +125,11 @@ def calc_instrumentation_controlvalves():
 
 @app.route('/calculations/instrumentation/control_valves/liquid_service/')
 def calc_instrumentation_controlvalves_liquid():
-    return redirect("/htm/document/tpl/root/ins/cal/ctv/cvl/")
+    return render_document("ins","cal","ctv","cvl")
 
 @app.route('/calculations/instrumentation/control_valves/gas_service/')
 def calc_instrumentation_controlvalves_gas():
-    return redirect("/htm/document/tpl/root/ins/cal/ctv/cvg/")
+    return render_document("ins","cal","ctv","cvg")
 
 @app.route('/calculations/instrumentation/relief_valves/')
 def calc_instrumentation_reliefvalves():
@@ -142,15 +137,15 @@ def calc_instrumentation_reliefvalves():
 
 @app.route('/calculations/instrumentation/relief_valves/liquid_service/')
 def calc_instrumentation_reliefvalves_liquid():
-    return redirect("/htm/document/tpl/root/ins/cal/prv/prl/")
+    return render_document("ins","cal","prv","prl")
 
 @app.route('/calculations/instrumentation/relief_valves/gas_service/')
 def calc_instrumentation_reliefvalves_gas():
-    return redirect("/htm/document/tpl/root/ins/cal/prv/prg/")
+    return render_document("ins","cal","prv","prg")
 
 @app.route('/calculations/instrumentation/relief_valves/steam_service/')
 def calc_instrumentation_reliefvalves_steam():
-    return redirect("/htm/document/tpl/root/ins/cal/prv/prs/")
+    return render_document("ins","cal","prv","prs")
 
 @app.route('/calculations/electrical/')
 def calc_electrical_index():
@@ -162,7 +157,7 @@ def calc_electrical_cables():
 
 @app.route('/calculations/electrical/cables/iec_sizing/')
 def calc_electrical_cables_iec_sizing():
-    return redirect("/htm/document/tpl/root/ele/cal/cab/iec/")
+    return render_document("ele","cal","cab","iec")
 
 @app.route('/calculations/electrical/miscellaneous/')
 def calc_electrical_miscellaneous_index():
@@ -170,11 +165,11 @@ def calc_electrical_miscellaneous_index():
 
 @app.route('/calculations/electrical/miscellaneous/three_phase/')
 def calc_electrical_miscellaneous_three_phase():
-    return redirect("/htm/document/tpl/root/ele/cal/utl/phs/")
+    return render_document("ele","cal","utl","phs")
 
 @app.route('/calculations/electrical/miscellaneous/power_factor_correction/')
 def calc_electrical_miscellaneous_pfc():
-    return redirect("/htm/document/tpl/root/ele/cal/utl/pfc/")
+    return render_document("ele","cal","utl","pfc")
 
 @app.route('/calculations/electrical/lighting/')
 def calc_electrical_lighting_index():
@@ -182,23 +177,23 @@ def calc_electrical_lighting_index():
 
 @app.route('/calculations/electrical/lighting/candela2lumens/')
 def calc_electrical_lighting_candela2lumens():
-    return redirect("/htm/document/tpl/root/ele/cal/lgt/c2l/")
+    return render_document("ele","cal","lgt","c2l")
 
 @app.route('/calculations/electrical/lighting/candela2lux/')
 def calc_electrical_lighting_candela2lux():
-    return redirect("/htm/document/tpl/root/ele/cal/lgt/c2x/")
+    return render_document("ele","cal","lgt","c2x")
 
 @app.route('/calculations/electrical/lighting/lumens2lux/')
 def calc_electrical_lighting_lumens2lux():
-    return redirect("/htm/document/tpl/root/ele/cal/lgt/l2x/")
+    return render_document("ele","cal","lgt","l2x")
 
 @app.route('/calculations/electrical/lighting/watts2lumens/')
 def calc_electrical_lighting_watts2lumens():
-    return redirect("/htm/document/tpl/root/ele/cal/lgt/w2l/")
+    return render_document("ele","cal","lgt","w2l")
 
 @app.route('/calculations/electrical/lighting/watts2lux/')
 def calc_electrical_lighting_watts2lux():
-    return redirect("/htm/document/tpl/root/ele/cal/lgt/w2x/")
+    return render_document("ele","cal","lgt","w2x")
 
 @app.route('/calculations/electrical/motors/')
 def calc_electrical_motors_index():
@@ -206,4 +201,4 @@ def calc_electrical_motors_index():
 
 @app.route('/calculations/electrical/motors/starting_time/')
 def calc_electrical_motors_starting_time():
-    return redirect("/htm/document/tpl/root/ele/cal/mtr/str/")
+    return render_document("ele","cal","mtr","str")

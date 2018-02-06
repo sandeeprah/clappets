@@ -2,8 +2,10 @@ import os
 import imp
 import json
 import pymongo
-from clappets import mongodb
+from clappets import mongodb, app
 from collections import OrderedDict
+from flask import request, render_template, jsonify, abort, redirect
+
 
 def generate_breadcrumbs(bcpath, rootname):
     # generate an array from path of levels in heirarchial sequence
@@ -140,3 +142,22 @@ def load_schema(filepath):
 
 def get_repository(projectID):
     return "root"
+
+
+def render_document(discipline,docCategory,docSubCategory,docClass):
+    path= app.root_path
+    project_path = os.path.sep.join(app.instance_path.split(os.path.sep)[:-1])
+    folderpath = os.path.join(project_path, 'clappets','document','root', discipline, docCategory, docSubCategory, docClass)
+    try:
+        doc_html_path = os.path.join(folderpath, "doc.html")
+        doc_json_path = os.path.join(folderpath, "doc.json")
+        doc_html = open(doc_html_path)
+        doc_json = json.load(open(doc_json_path), object_pairs_hook=OrderedDict)
+        doc = json.dumps(doc_json, indent=4)
+    except Exception as e:
+        return "Error Occured" + str(e)
+
+    ostemplatepath = os.path.join('root', discipline, docCategory, docSubCategory, docClass, "doc.html")
+    template = "/".join(ostemplatepath.split(os.sep))
+
+    return render_template(template, doc=doc, authenticated=False)
