@@ -1,0 +1,4 @@
+User-Agent: *
+Disallow:
+
+Sitemap: https://www.clappets.com/sitemap.xml
