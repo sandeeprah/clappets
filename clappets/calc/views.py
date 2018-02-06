@@ -58,7 +58,6 @@ def calc_mechanical_pump_viscosity_conversions():
 def calc_mechanical_engines_index():
     return render_template("calc/mechanical/engines/index.html")
 
-
 @app.route('/calculations/mechanical/engines/gas_turbine_deration/')
 def calc_mechanical_engines_gt_derate():
     return render_document("mec","cal","eng","gtd")
