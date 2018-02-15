@@ -9,258 +9,218 @@
 
 <url>
   <loc>https://www.clappets.com/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/index/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/htm/document/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/calculations/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://www.clappets.com/static/content/tutorials/rest_api_tutorial.html</loc>
-  <lastmod>2018-02-05T09:12:42+00:00</lastmod>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/calculations/process/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/calculations/mechanical/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/calculations/electrical/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/calculations/instrumentation/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/calculations/electrical/cables/iec-sizing/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/calculations/electrical/miscellaneous/three-phase/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/calculations/electrical/motors/starting-time/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://www.clappets.com/calculations/electrical/lighting/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/calculations/mechanical/engines/gas-turbine-deration/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/calculations/mechanical/engines/steam-turbine-performance/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://www.clappets.com/calculations/mechanical/pumps/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
+  <loc>https://www.clappets.com/calculations/process/thermophysical/chemical-fluid/</loc>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
-  <loc>https://www.clappets.com/calculations/mechanical/engines/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
+  <loc>https://www.clappets.com/calculations/process/thermophysical/water-steam/</loc>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
-  <loc>https://www.clappets.com/calculations/mechanical/noise/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
+  <loc>https://www.clappets.com/calculations/process/thermophysical/hydrocarbon-mixture/</loc>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
-  <loc>https://www.clappets.com/calculations/mechanical/piping/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://www.clappets.com/calculations/mechanical/psychrometry/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://www.clappets.com/calculations/electrical/cables/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://www.clappets.com/calculations/electrical/motors/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://www.clappets.com/calculations/electrical/miscellaneous/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://www.clappets.com/calculations/instrumentation/control-valves/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://www.clappets.com/calculations/instrumentation/relief-valves/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://www.clappets.com/calculations/electrical/lighting/candela2lumens/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://www.clappets.com/calculations/electrical/lighting/candela2lux/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://www.clappets.com/calculations/electrical/lighting/lumens2lux/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://www.clappets.com/calculations/electrical/lighting/watts2lumens/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://www.clappets.com/calculations/electrical/lighting/watts2lux/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
+  <loc>https://www.clappets.com/calculations/process/pressure-drop/hooper-2K/</loc>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/calculations/mechanical/pumps/water2viscous/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.51</priority>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/calculations/mechanical/pumps/viscous2water/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.51</priority>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/calculations/mechanical/pumps/viscosity-conversions/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.51</priority>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/calculations/mechanical/engines/diesel-fuel-consumption/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.51</priority>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/calculations/mechanical/noise/distance-attenuation/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.51</priority>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/calculations/mechanical/noise/conversions/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.51</priority>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/calculations/mechanical/noise/Aweighted-spectrum/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.51</priority>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/calculations/mechanical/noise/background-correction/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.51</priority>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/calculations/mechanical/noise/map/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.51</priority>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/calculations/mechanical/noise/sum/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.51</priority>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/calculations/mechanical/piping/pipe-dimensions/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.51</priority>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/calculations/mechanical/psychrometry/humid-air-props/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.51</priority>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.clappets.com/calculations/electrical/lighting/candela2lumens/</loc>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.clappets.com/calculations/electrical/lighting/candela2lux/</loc>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.clappets.com/calculations/electrical/lighting/lumens2lux/</loc>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.clappets.com/calculations/electrical/lighting/watts2lumens/</loc>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.clappets.com/calculations/electrical/lighting/watts2lux/</loc>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/calculations/electrical/miscellaneous/power-factor-correction/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.51</priority>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/calculations/instrumentation/control-valves/liquid-service/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.51</priority>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/calculations/instrumentation/control-valves/gas-service/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.51</priority>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/calculations/instrumentation/relief-valves/liquid-service/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.51</priority>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/calculations/instrumentation/relief-valves/gas-service/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.51</priority>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/calculations/instrumentation/relief-valves/steam-service/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.51</priority>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/htm/document/tpl/root/mec/cal/nos/con/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.41</priority>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
+  <priority>0.51</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/htm/document/tpl/root/mec/cal/nos/sum/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.41</priority>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
+  <priority>0.51</priority>
 </url>
 <url>
   <loc>https://www.clappets.com/htm/document/tpl/root/mec/cal/psy/hai/</loc>
-  <lastmod>2018-02-06T18:00:25+00:00</lastmod>
-  <priority>0.41</priority>
+  <lastmod>2018-02-15T10:44:06+00:00</lastmod>
+  <priority>0.51</priority>
 </url>
 
 
