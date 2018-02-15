@@ -1,4 +1,15 @@
 {% extends "document/document.html" %}
+
+{% block title %}Nearest Pipe Dimensions to ANSI/ASME B36.10/19{% endblock title %}
+
+{% block meta_description %}
+Enter either pipe size in NPS, an approximate inner dia or an approximate outer dia together with schedule to get the standard pipe dimensions as per ANSI/ASME B36.10/19.
+{% endblock meta_description %}
+
+{% block meta_keywords %}
+pipe dimensions ANSI ASME B36.10 B36.19
+{% endblock meta_keywords %}
+
 {% block content %}
 <div style="overflow:auto;">
 <div class="datasheet">
@@ -7,8 +18,7 @@
       <li><a href="/">Home</a></li>
       <li><a href="/calculations/">Calculations</a></li>
       <li><a href="/calculations/mechanical/">Mechanical</a></li>
-      <li><a href="/calculations/mechanical/piping/">Piping</a></li>
-      <li class="is-active"><a href="#">Pipe Dimensions</a></li>
+      <li class="is-active"><a href="#">Piping - Pipe Dimensions</a></li>
     </ul>
   </nav>
   <table class="main">
@@ -35,15 +45,15 @@
     <tbody>
       <tr>
         <td>S#</td>
-        <td colspan="8" style="text-align:center;">
-          <span class="title is-6">[[ doc['meta']['docClass_title'] ]]</span>
+        <td colspan="8" class="has-text-centered">
+            <h1 class="title is-5">[[ doc['meta']['docClass_title'] ]]</h1>
         </td>
         <td>R#</td>
       </tr>
       <tr>
         <td>1</td>
         <td colspan="8">
-          <span class="w16"><b>Inputs</b></span>
+          <h2 class="title is-6">Inputs</h2>
         </td>
         <td></td>
       </tr>
@@ -160,7 +170,7 @@
       <tr>
         <td>2</td>
         <td colspan="8">
-          <span class="w16"><b>Results</b></span>
+          <h2 class="title is-6">Results</h2>
         </td>
         <td></td>
       </tr>

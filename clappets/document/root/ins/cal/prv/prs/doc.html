@@ -1,4 +1,14 @@
 {% extends "document/document.html" %}
+{% block title %}Relief Valve Sizing - Steam Service{% endblock title %}
+
+{% block meta_description %}
+Relief valve sizing for steam service as per API 520
+{% endblock meta_description %}
+
+{% block meta_keywords %}
+relief valves sizing calculation steam service API 520
+{% endblock meta_keywords %}
+
 {% block content %}
 <div style="overflow:auto;">
 <div class="datasheet">
@@ -7,8 +17,7 @@
       <li><a href="/">Home</a></li>
       <li><a href="/calculations/">Calculations</a></li>
       <li><a href="/calculations/instrumentation/">Instrumentation</a></li>
-      <li><a href="/calculations/instrumentation/relief-valves/">Relief Valves</a></li>
-      <li class="is-active"><a href="#">Steam Service</a></li>
+      <li class="is-active"><a href="#">Relief Valves - Steam Service</a></li>
     </ul>
   </nav>
   <table class="main">
@@ -34,15 +43,15 @@
     <tbody>
       <tr>
         <td>S#</td>
-        <td colspan="8" style="text-align:center;">
-          <span class="w30 title is-6">[[ doc['meta']['docClass_title'] ]]</span>
+        <td colspan="8" class="has-text-centered">
+            <h1 class="title is-5">[[ doc['meta']['docClass_title'] ]]</h1>
         </td>
         <td>R#</td>
       </tr>
       <tr>
         <td>1</td>
         <td colspan="8">
-          <span class="w16"><b>Inputs</b></span>
+          <h2 class="title is-6">Inputs</h2>
         </td>
         <td></td>
       </tr>
@@ -353,7 +362,7 @@
       <tr>
         <td>2</td>
         <td colspan="8">
-          <span class="w16"><b>Results</b></span>
+          <h2 class="title is-6">Results</h2>
         </td>
         <td></td>
       </tr>

@@ -1,4 +1,15 @@
 {% extends "document/document.html" %}
+{% block title %}Power Factor Correction{% endblock title %}
+
+{% block meta_description %}
+Using either of current, active power, apparent power or reactive power as inputs other parameters can be obtained for a three phase system where line to line voltage(VLL) and power factor are known.
+{% endblock meta_description %}
+
+{% block meta_keywords %}
+calculation power factor correction PFC
+{% endblock meta_keywords %}
+
+
 {% block content %}
 <div style="overflow:auto;">
 <div style="width:100%; overflow:auto;">
@@ -8,7 +19,6 @@
       <li><a href="/">Home</a></li>
       <li><a href="/calculations/">Calculations</a></li>
       <li><a href="/calculations/electrical/">Electrical</a></li>
-      <li><a href="/calculations/electrical/miscellaneous/">Miscellaneous</a></li>
       <li class="is-active"><a href="#">PFC</a></li>
     </ul>
   </nav>
@@ -35,15 +45,15 @@
     <tbody>
       <tr>
         <td>S#</td>
-        <td colspan="8" style="text-align:center;">
-          <span class="w20 title is-6">[[ doc['meta']['docClass_title'] ]]</span>
+        <td colspan="8" class="has-text-centered">
+            <h1 class="title is-5">[[ doc['meta']['docClass_title'] ]]</h1>
         </td>
         <td>R#</td>
       </tr>
       <tr>
         <td>1</td>
         <td colspan="8">
-          <span class="w16"><b>Inputs</b></span>
+          <h2 class="title is-6">Inputs</h2>
         </td>
         <td></td>
       </tr>
@@ -123,7 +133,7 @@
       <tr>
         <td>2</td>
         <td colspan="8">
-          <span class="w16"><b>Results</b></span>
+          <h2 class="title is-6">Results</h2>
         </td>
         <td></td>
       </tr>

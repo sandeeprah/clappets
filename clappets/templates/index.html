@@ -2,18 +2,13 @@
 {% block title %}clappets.com: Home{% endblock title %}
 
 {% block meta_description %}
-clappets.com aims at supporting engineers in chemical/hydrocarbon process industries with online engineering calculations, property databases and tables, technical articles and equipment directory services.
-
-The calculation tools available provide full flexibilty to user, by providing the option to save and reload the input data, change the units and generate PDF file reports with user defined document numbers and titles.
-
-There are multiple ways in which the calculations available on this website can be used. They could be used in your browser or  in an automated manner from a calling program  using REST API framework.
-
-To learn more about the calculations available for your discipline - process, mechanical, electrical, instrumentation or civil refer to the respective discipline calculation page.
-
-Made By: Sandeep Raheja
+clappets.com aims at supporting engineers in chemical/hydrocarbon process industries with online engineering calculations, property databases
+and tables, technical articles and equipment directory services. Use these calculations through your browser or using REST API calls.
 {% endblock meta_description %}
 
-{% block meta_keywords %}Engineering Calculations mechanical process electrical instrumentation civil custom units Oil and Gas Chemical Process Hydrocarbon {% endblock meta_keywords %}
+{% block meta_keywords %}
+Engineering Calculations mechanical process electrical instrumentation civil custom units Oil and Gas Chemical Process Hydrocarbon
+{% endblock meta_keywords %}
 
 {% block content %}
 <section class="section">
@@ -21,34 +16,34 @@ Made By: Sandeep Raheja
     <div class="columns">
       <div class="column">
         <div class="box" style="width:100%">
-          <p><span style="color:blue; font-weight:bold; font-size:1.5em;" class="is-medium"> Clappets.com </span> aims at supporting engineers in chemical process industries with online calculations, property databases and tables, technical articles and equipment directory services.
+          <h1 class="title is-3"> Engineering Calculations and Resources</h1>
+          <p><span class="is-size-4"> clappets.com </span> aims at supporting engineers in chemical process industries with online calculations, property databases and tables, technical articles and equipment directory services.
           </p>
           <br/>
           <p>
-            The calculation tools available provide full flexibilty to user, by providing the option to save and reload the input data, change the units and generate PDF file reports with user defined document numbers and titles. <a href="/static/tutorials/calculation_use.html">Read more...</a>
+            The calculation tools available provide full flexibilty to user, by providing the option to save and reload the input data, change the units and generate PDF file reports with user defined document numbers and titles.
           </p>
           <br/>
           <p>
-            There are multiple ways in which the calculations available on this website can be used. They could be used in your browser or  in an automated manner from a calling program  using REST API framework.
-            <a href="/static/content/tutorials/rest_api_tutorial.html">Read more...</a>.
+            There are multiple ways in which the calculations available on this website can be used. They could be used in your browser or in an automated manner from a calling program using REST API framework.
           </p>
         </div>
       </div>
     </div>
-    <div class="columns">
+    <div class="columns" style="display:none;">
       <div class="column is-4">
         <div class="box">
           <div class="content">
             <h3 class="title is-5">Calculations</h3>
           </div>
-            <ul>
-              <li style="margin-top:0.5em;"><a href="/calculations/process/">Process</a></li>
-              <li style="margin-top:0.5em;"><a href="/calculations/mechanical/">Mechanical</a></li>
-              <li style="margin-top:0.5em;"><a href="/calculations/electrical/">Electrical</a></li>
-              <li style="margin-top:0.5em;"><a href="/calculations/instrumentation/">Instrumentation</a></li>
-              <li style="margin-top:0.5em;">Civil/Structural</li>
-              <li style="margin-top:0.5em;">General</li>
-            </ul>
+          <ul>
+            <li style="margin-top:0.5em;"><a href="/calculations/process/">Process</a></li>
+            <li style="margin-top:0.5em;"><a href="/calculations/mechanical/">Mechanical</a></li>
+            <li style="margin-top:0.5em;"><a href="/calculations/electrical/">Electrical</a></li>
+            <li style="margin-top:0.5em;"><a href="/calculations/instrumentation/">Instrumentation</a></li>
+            <li style="margin-top:0.5em;">Civil/Structural</li>
+            <li style="margin-top:0.5em;">General</li>
+          </ul>
         </div>
       </div>
       <div class="column is-8">
@@ -67,6 +62,79 @@ Made By: Sandeep Raheja
         </div>
       </div>
     </div>
+
+    <div class="columns">
+      <div class="column is-4">
+        <div class="card">
+          <div class="card-content">
+            <h2 class="title is-5">Process</h2>
+            <div class="content">
+              Calculations include thermophysical property database for various chemical substances, water and steam, hydrocarbon mixtures, pressure drop calculations and equipment sizing calculations.
+            </div>
+          </div>
+          <footer class="card-footer">
+            <a href="/calculations/process/" class="card-footer-item">Explore</a>
+          </footer>
+        </div>
+      </div>
+      <div class="column is-4">
+        <div class="card">
+          <div class="card-content">
+            <h2 class="title is-5">Mechanical</h2>
+            <div class="content">
+              Calculations include getting sizing estimates for pumps, Hydraulic Institute pump viscosity correction calculation, compressor sizing and staging calculations, gas turbine site deration, steam turbine performance calculation, air property and psychrometric
+              calculations, pipe dimensions lookup etc.
+            </div>
+          </div>
+          <footer class="card-footer">
+            <a href="/calculations/mechanical/" class="card-footer-item">Explore</a>
+          </footer>
+        </div>
+      </div>
+      <div class="column is-4">
+        <div class="card">
+          <div class="card-content">
+            <h2 class="title is-5">Electrical</h2>
+            <div class="content">
+              Calculations include cable sizing calculations as per IEC 30634, lighting related calculations involving conversion between photometric quantities (candela, lumens, lux and watts), motor starting time estimation, power factor compensation, three phase
+              system parameters calculation etc.
+            </div>
+          </div>
+          <footer class="card-footer">
+            <a href="/calculations/electrical/" class="card-footer-item">Explore</a>
+          </footer>
+        </div>
+      </div>
+    </div>
+    <div class="columns">
+      <div class="column is-4">
+        <div class="card">
+          <div class="card-content">
+            <h2 class="title is-5">Instrumentation</h2>
+            <div class="content">
+              Calculations include sizing of relief valves in liquid, gas and steam service as per API 521 and sizing of control valves in liquid and gas service.
+            </div>
+          </div>
+          <footer class="card-footer">
+            <a href="/calculations/instrumentation/" class="card-footer-item">Explore</a>
+          </footer>
+        </div>
+      </div>
+      <div class="column is-4">
+        <div class="card">
+          <div class="card-content">
+            <h2 class="title is-5">Civil/Structural</h2>
+            <div class="content">
+              Upcoming.
+            </div>
+          </div>
+            <footer class="card-footer">
+              <span class="card-footer-item">Explore</span>
+            </footer>
+          </div>
+      </div>
+    </div>
+  </div>
   </div>
 </section>
 {% endblock content %}

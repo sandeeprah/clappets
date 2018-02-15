@@ -20,26 +20,122 @@ Perform mechanial engineering calculations related to pumps, turbines, noise, pi
     </nav>
 
     <div class="box">
-      <h4 class="title is-4">Mechanical Calculations</h4>
+      <h1 class="title is-3">Mechanical Calculations</h1>
     </div>
 
     <div class="box">
+      <h2 class="title is-5">Pumps</h2>
       <div class="content">
         <ul>
           <li>
-            <a href="pumps/">Pumps</a>
+            <a href="pumps/water2viscous/">Determine pump performance on viscous liquid when water performance is known</a>
+            <p>
+              Calculation based on Hydraulic Institute Standard, ANSI/HI 9.6.7. Inputs include flow, head, efficiency,speed, best efficiency point head and flow for water along with viscosity value. Outputs include correction factors on head, flow and efficiency and the viscous head and flow.
+            </p>
           </li>
           <li>
-            <a href="engines/">Engines, Gas Turbines and Steam Turbine</a>
+            <a href="pumps/viscous2water/">Determine pump performance on water when viscous performance is known</a>
+            <p>
+              Calculation based on Hydraulic Institute Standard, ANSI/HI 9.6.7. Inputs include viscous flow, viscous head and viscosity. Outputs include correction factors on head, flow and efficiency and the viscous head and flow.
+            </p>
           </li>
           <li>
-            <a href="noise/">Noise</a>
+            <a href="pumps/viscosity-conversions/">Viscosity Conversions</a>
+            <p>
+              Calculation based on Hydraulic Institute Standard, ANSI/HI 9.6.7 Appendix A.
+              Conversions of viscosity units between kinematic viscosity, dynamic viscosity and SSU viscosity units.
+            </p>
+          </li>
+        </ul>
+      </div>
+
+      <h2 class="title is-5">Engines, Gas Turbines and Steam Turbine</h2>
+      <div class="content">
+        <ul>
+          <li>
+            <a href="engines/gas-turbine-deration/">Gas Turbine Deration Calculations</a>
+            <p>
+              Estimate the site power of Gas Turbine, if the ISO power and site conditions (including temperature, altitude, humidity, inlet and exhaust losses and fuel type) are known.
+            </p>
           </li>
           <li>
-            <a href="piping/">Piping</a>
+            <a href="engines/steam-turbine-performance/">Steam Turbine Performance Calculations</a>
+            <p>
+              Calculate isentropic efficiency of steam turbine using the inlet and outlet steam conditions or vice versa. Either power or mass flow can be used to define turbine parameters.
+            </p>
           </li>
           <li>
-            <a href="psychrometry/">Psychrometry</a>
+            <a href="engines/diesel-fuel-consumption/">Diesel Engine Fuel Consumption Estimation</a>
+            <p>
+              Calculate diesel engine fuel consumption based on estimated specific fuel consumption rates. Use the default/typical value if specific fuel consumption is not known.
+            </p>
+          </li>
+        </ul>
+      </div>
+      <h2 class="title is-5">Noise</h2>
+      <div class="content">
+        <ul>
+          <li>
+            <a href="noise/distance-attenuation/">Noise Attenuation with Distance</a>
+            <p>
+              Calculate Sound Pressure Level (SPL) at a distance R2 when the sound pressure level at distance R1 is known. The source of sound can be either a point, a line or a planar wall.
+            </p>
+          </li>
+          <li>
+            <a href="noise/conversions/">Common Noise Conversions</a>
+            <p>
+              Calculate Sound Pressure Level if Sound Power Level, distance and directivity factor are known.
+              <br/>
+              Calculate Sound Power Level if Sound Pressure Level, distance and directivity factor are known.
+              <br/>
+              Calculate distance if Sound Pressure Level, Sound Power Level and directivity factor are known.
+            </p>
+          </li>
+          <li>
+            <a href="noise/Aweighted-spectrum/">A-weighting of Noise Spectrum</a>
+            <p>
+              Get A-weighted noise spectrum from unfiltered noise spectrum.
+            </p>
+          </li>
+          <li>
+            <a href="noise/background-correction/">Background Noise Correction</a>
+            <p>
+              Get corrected noise levels from total noise levels and background noise levels. Correction can be performed either on the overall noise levels or on spectrum levels.
+            </p>
+          </li>
+          <li>
+            <a href="noise/map/">Noise map due to multiple noise sources</a>
+            <p>
+              Get noise levels on a predifined area(grid) due to multiple noise sources located on ground. Inputs include the sound power level, directivity factor and the x & y coordinate locations.
+            </p>
+          </li>
+          <li>
+            <a href="noise/sum/">Noise Addition</a>
+            <p>
+              Perform logarithmic addition of noise levels. Sound pressure levels at a point can be added up using logarithmic addition. Similarly if addition of sound power levels for various octave bands is done, the overall sound power level can be obtained.
+            </p>
+          </li>
+        </ul>
+      </div>
+      <h2 class="title is-5">Piping</h2>
+      <div class="content">
+        <ul>
+          <li>
+            <a href="piping/pipe-dimensions/">Nearest Pipe Dimensions to ANSI/ASME B36.10/19</a>
+            <p>
+              Enter either pipe size in NPS, an approximate inner dia or an approximate outer dia together with schedule to get the standard pipe dimensions as per ANSI/ASME B36.10/19.
+            </p>
+          </li>
+        </ul>
+      </div>
+      <h2 class="title is-5">Psychrometry</h2>
+      <div class="content">
+        <ul>
+          <li>
+            <a href="psychrometry/humid-air-props/">Humid Air Properties</a>
+            <p>
+              Input Air Dry Bulb temperature, temperature and either of wet bulb, dew point, humidity ratio or enthalphy to obtain thermophysical properties of humid air. 
+            </p>
           </li>
         </ul>
       </div>

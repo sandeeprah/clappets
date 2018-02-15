@@ -10,9 +10,6 @@ def calc_index():
 def calc_process_index():
     return render_template("calc/process/index.html")
 
-@app.route('/calculations/process/thermophysical/')
-def calc_process_thermophysical_index():
-    return render_template("calc/process/thermophysical/index.html")
 
 @app.route('/calculations/process/thermophysical/chemical-fluid/')
 def calc_process_thermophysical_fluid():
@@ -26,10 +23,6 @@ def calc_process_thermophysical_hydrocarbon_mixture():
 def calc_process_thermophysical_water_steam():
     return render_document("pro","cal","tch","wtr")
 
-@app.route('/calculations/process/pressure-drop/')
-def calc_process_pressure_drop_index():
-    return render_template("calc/process/pressure_drop/index.html")
-
 @app.route('/calculations/process/pressure-drop/hooper-2K/')
 def calc_process_pressure_drop_hooper():
     return render_document("pro","cal","prd","h2k")
@@ -38,9 +31,6 @@ def calc_process_pressure_drop_hooper():
 def calc_mechanical_index():
     return render_template("calc/mechanical/index.html")
 
-@app.route('/calculations/mechanical/pumps/')
-def calc_mechanical_pump_index():
-    return render_template("calc/mechanical/pumps/index.html")
 
 @app.route('/calculations/mechanical/pumps/water2viscous/')
 def calc_mechanical_pump_water2viscous():
@@ -54,10 +44,6 @@ def calc_mechanical_pump_viscous2water():
 def calc_mechanical_pump_viscosity_conversions():
     return render_document("mec","cal","pmp","vcn")
 
-@app.route('/calculations/mechanical/engines/')
-def calc_mechanical_engines_index():
-    return render_template("calc/mechanical/engines/index.html")
-
 @app.route('/calculations/mechanical/engines/gas-turbine-deration/')
 def calc_mechanical_engines_gt_derate():
     return render_document("mec","cal","eng","gtd")
@@ -69,10 +55,6 @@ def calc_mechanical_engines_st_performance():
 @app.route('/calculations/mechanical/engines/diesel-fuel-consumption/')
 def calc_mechanical_engines_dfc():
     return render_document("mec","cal","eng","dfc")
-
-@app.route('/calculations/mechanical/noise/')
-def calc_mechanical_noise_index():
-    return render_template("calc/mechanical/noise/index.html")
 
 @app.route('/calculations/mechanical/noise/distance-attenuation/')
 def calc_mechanical_noise_attenuation():
@@ -98,17 +80,9 @@ def calc_mechanical_noise_map():
 def calc_mechanical_noise_sum():
     return render_document("mec","cal","nos","sum")
 
-@app.route('/calculations/mechanical/piping/')
-def calc_mechanical_piping_index():
-    return render_template("calc/mechanical/piping/index.html")
-
 @app.route('/calculations/mechanical/piping/pipe-dimensions/')
 def calc_mechanical_piping_pipe_dimensions():
     return render_document("mec","cal","pip","sch")
-
-@app.route('/calculations/mechanical/psychrometry/')
-def calc_mechanical_psychrometry_index():
-    return render_template("calc/mechanical/psychrometry/index.html")
 
 @app.route('/calculations/mechanical/psychrometry/humid-air-props/')
 def calc_mechanical_psychrometry_ha_props():

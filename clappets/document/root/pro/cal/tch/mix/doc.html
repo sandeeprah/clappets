@@ -1,4 +1,15 @@
 {% extends "document/document.html" %}
+{% block title %}Thermophysical properties - Hydrocarbon Mixtures{% endblock title %}
+
+{% block meta_description %}
+Get thermophysical properties of hydrocarbon mixtures. The inputs include state variables of pressure and temperature. Typical composition list of API 617 gas compressors is used. The input include state variables of pressure and temperature. The outputs include crtiical pressure, temperature, compressibility
+factor (Z), ideal gas specific heat etc. The compressibility factor is determined using Nelson-Obert, LeeKesler and PengRobinson equation of state.
+{% endblock meta_description %}
+
+{% block meta_keywords %}
+thermophysical properties hydrocarbon mixture
+{% endblock meta_keywords %}
+
 {% block content %}
 <div style="overflow:auto;">
 <div class="datasheet">
@@ -7,11 +18,9 @@
       <li><a href="/">Home</a></li>
       <li><a href="/calculations/">Calculations</a></li>
       <li><a href="/calculations/process/">Process</a></li>
-      <li><a href="/calculations/process/thermophysical/">Thermophysical</a></li>
-      <li class="is-active"><a href="#">Hydrocarbons Mixture</a></li>
+      <li class="is-active"><a href="#">Thermophysical-Hydrocarbons Mixture</a></li>
     </ul>
   </nav>
-
   <table class="main">
     <thead>
         <tr>
@@ -35,15 +44,15 @@
     <tbody>
       <tr>
         <td>S#</td>
-        <td colspan="8" style="text-align:center;">
-          <span class="title is-6">[[ doc['meta']['docClass_title'] ]]</span>
+        <td colspan="8" class="has-text-centered">
+            <h1 class="title is-5">[[ doc['meta']['docClass_title'] ]]</h1>
         </td>
         <td>R#</td>
       </tr>
       <tr>
         <td>1</td>
         <td colspan="8">
-          <span class="w16"><b>Inputs</b></span>
+          <h2 class="title is-6">Inputs</h2>
         </td>
         <td></td>
       </tr>
@@ -387,7 +396,7 @@
       <tr>
         <td>2</td>
         <td colspan="8">
-          <span class="w16"><b>Results</b></span>
+          <h2 class="title is-6">Results</h2>
         </td>
         <td></td>
       </tr>

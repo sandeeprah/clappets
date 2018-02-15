@@ -1,4 +1,17 @@
 {% extends "document/document.html" %}
+
+{% block title %}Thermophysical properties - chemical fluid{% endblock title %}
+
+{% block meta_description %}
+The inputs include state variables of pressure and temperature. Outputs include several properties including critical presssure, temperature, acentric factor, specific volume, enthalphy, entropy, internal energy, specific heat, global warming potential,
+ozone depletion potential etc,
+
+{% endblock meta_description %}
+
+{% block meta_keywords %}
+thermophysical properties fluid
+{% endblock meta_keywords %}
+
 {% block content %}
 <div style="overflow:auto;">
   <div class="datasheet">
@@ -7,8 +20,7 @@
         <li><a href="/">Home</a></li>
         <li><a href="/calculations/">Calculations</a></li>
         <li><a href="/calculations/process/">Process</a></li>
-        <li><a href="/calculations/process/thermophysical/">Thermophysical</a></li>
-        <li class="is-active"><a href="#">Fluid</a></li>
+        <li class="is-active"><a href="#">Thermophysical-Fluid</a></li>
       </ul>
     </nav>
 
@@ -35,15 +47,15 @@
       <tbody>
         <tr>
           <td>S#</td>
-          <td colspan="8" style="text-align:center;">
-            <span class="w16 title is-6">Thermophysical Property of Fluid</span>
+          <td colspan="8" class="has-text-centered">
+              <h1 class="title is-5">[[ doc['meta']['docClass_title'] ]]</h1>
           </td>
           <td>R#</td>
         </tr>
         <tr>
           <td>1</td>
           <td colspan="8">
-            <span class="w16"><b>Inputs</b></span>
+            <h2 class="title is-6">Inputs</h2>
           </td>
           <td></td>
         </tr>
@@ -123,7 +135,7 @@
         <tr>
           <td>2</td>
           <td colspan="8">
-            <span class="w16"><b>Results</b></span>
+            <h2 class="title is-6">Results</h2>
           </td>
           <td></td>
         </tr>

@@ -1,6 +1,6 @@
 server {
     listen 443 ssl;
-    server_name clappets.com 138.197.27.59 ;
+    server_name clappets.com www.clappets.com 138.197.27.59 ;
     ssl_certificate /home/appadmin/keys/cert.pem;
     ssl_certificate_key /home/appadmin/keys/key.pem;
 
@@ -13,7 +13,7 @@ server {
 
 server {
     listen 80;
-    server_name clappets.com 138.197.27.59;
+    server_name clappets.com www.clappets.com 138.197.27.59;
     location / {
         return 301 https://$host$request_uri;
     }

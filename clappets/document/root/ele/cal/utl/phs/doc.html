@@ -1,4 +1,14 @@
 {% extends "document/document.html" %}
+{% block title %}3 Phase Parameters{% endblock title %}
+
+{% block meta_description %}
+Obtain the required power factor compensation in kVAr if active power and the actual and desired power factors are known.
+{% endblock meta_description %}
+
+{% block meta_keywords %}
+calculation three phase active power reactive apparent current power factor
+{% endblock meta_keywords %}
+
 {% block content %}
 <div style="overflow:auto;">
 <div class="datasheet">
@@ -7,7 +17,6 @@
       <li><a href="/">Home</a></li>
       <li><a href="/calculations/">Calculations</a></li>
       <li><a href="/calculations/electrical/">Electrical</a></li>
-      <li><a href="/calculations/electrical/miscellaneous/">Miscellaneous</a></li>
       <li class="is-active"><a href="#">3-Phase</a></li>
     </ul>
   </nav>
@@ -27,22 +36,22 @@
         </tr>
     </thead>
     <tfoot>
-        <td colspan="10" style="text-align:right;">
+        <td colspan="10">
             <i>Calculation Performed at www.clappets.com</i>
         </td>
     </tfoot>
     <tbody>
       <tr>
         <td>S#</td>
-        <td colspan="8" style="text-align:center;">
-          <span class="w20 title is-6">[[ doc['meta']['docClass_title'] ]]</span>
+        <td colspan="8" class="has-text-centered">
+            <h1 class="title is-5">[[ doc['meta']['docClass_title'] ]]</h1>
         </td>
         <td>R#</td>
       </tr>
       <tr>
         <td>1</td>
         <td colspan="8">
-          <span class="w16"><b>Inputs</b></span>
+          <h2 class="title is-6">Inputs</h2>
         </td>
         <td></td>
       </tr>
@@ -64,6 +73,18 @@
         </td>
         <td colspan="4">
           <p class="help is-danger" v-for="err in getErrs(['schema','input','solve_using'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.2</td>
+        <td colspan="4">
+          <span class="w14">Line to Line Voltage (VLL)</span>
+          <span class="w6"><input type="number" v-model="doc['input']['VLL']['_val']"/></span>
+          <span class="w6">V</span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','VLL'])">[[err]]</p>
         </td>
         <td></td>
       </tr>
@@ -166,7 +187,7 @@
       <tr>
         <td>2</td>
         <td colspan="8">
-          <span class="w16"><b>Results</b></span>
+          <h2 class="title is-6">Results</h2>
         </td>
         <td></td>
       </tr>
