@@ -1,5 +1,15 @@
 {% extends "document/document.html" %}
+
 {% block title %}Pump Design Estimation{% endblock title %}
+
+{% block meta_description %}
+Determine pump estimated design parameters in terms of predicted efficiency, power, motor rating, NPSHR, impeller diameter, nozzle size, weights and dimensions etc.
+{% endblock meta_description %}
+
+{% block meta_keywords %}
+pump design estimate prediction efficiency npshr size weights
+{% endblock meta_keywords %}
+
 {% block content %}
 <div style="overflow:auto;">
 <div class="datasheet">
@@ -7,9 +17,8 @@
     <ul>
       <li><a href="/">Home</a></li>
       <li><a href="/calculations/">Calculations</a></li>
-      <li><a href="/calculations/electrical/">Electrical</a></li>
-      <li><a href="/calculations/electrical/miscellaneous/">Miscellaneous</a></li>
-      <li class="is-active"><a href="#">3-Phase</a></li>
+      <li><a href="/calculations/electrical/">Mechanical</a></li>
+      <li class="is-active"><a href="#">Pump Design Estimate</a></li>
     </ul>
   </nav>
   <table class="main">
@@ -35,15 +44,15 @@
     <tbody>
       <tr>
         <td>S#</td>
-        <td colspan="8" style="text-align:center;">
-          <span class="w20 title is-6">[[ doc['meta']['docClass_title'] ]]</span>
+        <td colspan="8" class="has-text-centered">
+            <h1 class="title is-5">[[ doc['meta']['docClass_title'] ]]</h1>
         </td>
         <td>R#</td>
       </tr>
       <tr>
         <td>1</td>
         <td colspan="8">
-          <span class="w16"><b>Inputs</b></span>
+          <h2 class="title is-6">Inputs</h2>
         </td>
         <td></td>
       </tr>
@@ -54,77 +63,84 @@
       <tr>
         <td>1.1</td>
         <td colspan="4">
-          <span class="w14">Solve Using </span>
-          <span class="w14">
-            <select v-model="doc['input']['solve_using']['_val']">
-              <option value="current">Current (I)</option>
-              <option value="active_power">Active Power (kW)</option>
-              <option value="apparent_power">Apparent Power (kVA)</option>
-              <option value="reactive_power">Reactive Power (kVAr)</option>
-            </select>
+          <span class="w14">Flow Rate</span>
+          <span class="w6"><input type="number" v-model="doc['input']['Q']['_val']"/></span>
+          <span class="w6">[[ gUL('flow') ]]</span>
         </td>
         <td colspan="4">
-          <p class="help is-danger" v-for="err in getErrs(['schema','input','solve_using'])">[[err]]</p>
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','Q'])">[[err]]</p>
         </td>
         <td></td>
       </tr>
       <tr>
         <td>1.2</td>
         <td colspan="4">
-          <span class="w14">Power Factor (pf)</span>
-          <span class="w6"><input type="number" v-model="doc['input']['pf']['_val']"/></span>
-          <span class="w6">V</span>
+          <span class="w14">Head </span>
+          <span class="w6"><input type="number" v-model="doc['input']['H']['_val']"/></span>
+          <span class="w6">[[ gUL('length') ]]</span>
         </td>
         <td colspan="4">
-          <p class="help is-danger" v-for="err in getErrs(['schema','input','pf'])">[[err]]</p>
-        </td>
-        <td></td>
-      </tr>
-      <tr v-show="solve_using=='current'">
-        <td>1.2</td>
-        <td colspan="4">
-          <span class="w14">Current (I)</span>
-          <span class="w6"><input type="number" v-model="doc['input']['I']['_val']"/></span>
-          <span class="w6">A</span>
-        </td>
-        <td colspan="4">
-          <p class="help is-danger" v-for="err in getErrs(['schema','input','I'])">[[err]]</p>
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','H'])">[[err]]</p>
         </td>
         <td></td>
       </tr>
-      <tr v-show="solve_using=='active_power'">
-        <td>1.2</td>
+      <tr>
+        <td>1.3</td>
         <td colspan="4">
-          <span class="w14">Active Power (kW)</span>
-          <span class="w6"><input type="number" v-model="doc['input']['kW']['_val']"/></span>
-          <span class="w6">A</span>
+          <span class="w14">Density </span>
+          <span class="w6"><input type="number" v-model="doc['input']['rho']['_val']"/></span>
+          <span class="w6">[[ gUL('density') ]]</span>
         </td>
         <td colspan="4">
-          <p class="help is-danger" v-for="err in getErrs(['schema','input','kW'])">[[err]]</p>
-        </td>
-        <td></td>
-      </tr>
-      <tr v-show="solve_using=='apparent_power'">
-        <td>1.2</td>
-        <td colspan="4">
-          <span class="w14">Apparent Power (kVA)</span>
-          <span class="w6"><input type="number" v-model="doc['input']['kVA']['_val']"/></span>
-          <span class="w6">kVA</span>
-        </td>
-        <td colspan="4">
-          <p class="help is-danger" v-for="err in getErrs(['schema','input','kVA'])">[[err]]</p>
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','rho'])">[[err]]</p>
         </td>
         <td></td>
       </tr>
-      <tr v-show="solve_using=='reactive_power'">
-        <td>1.2</td>
+      <tr>
+        <td>1.4</td>
         <td colspan="4">
-          <span class="w14">Reactive Power (kVAr)</span>
-          <span class="w6"><input type="number" v-model="doc['input']['kVAr']['_val']"/></span>
-          <span class="w6">kVA</span>
+          <span class="w14">Dynamic Viscosity</span>
+          <span class="w6"><input type="number" v-model="doc['input']['mu']['_val']"/></span>
+          <span class="w6">[[ gUL('dynViscosity') ]]</span>
         </td>
         <td colspan="4">
-          <p class="help is-danger" v-for="err in getErrs(['schema','input','kVAr'])">[[err]]</p>
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','mu'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.5</td>
+        <td colspan="4">
+          <span class="w14">No. of motor poles</span>
+          <span class="w6">
+            <select v-model="doc['input']['poles']['_val']">
+              <option value="2">2</option>
+              <option value="4">4</option>
+              <option value="6">6</option>
+            </select>
+          </span>
+          <span class="w6"></span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','poles'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>1.6</td>
+        <td colspan="4">
+          <span class="w14">Pump Design</span>
+          <span class="w16">
+            <select v-model="doc['input']['design_type']['_val']">
+              <option value="OH">Overhung</option>
+              <option value="DS1">Single Stage Double Suction</option>
+              <option value="SS2">Two Stage Single Suction</option>
+              <option value="DS2">Two Stage Double Suction</option>
+            </select>
+          </span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','design_type'])">[[err]]</p>
         </td>
         <td></td>
       </tr>
@@ -167,48 +183,192 @@
       <tr>
         <td>2</td>
         <td colspan="8">
-          <span class="w16"><b>Results</b></span>
+          <h2 class="title is-6">Results</h2>
         </td>
         <td></td>
       </tr>
-      <tr v-show="solve_using!='current'">
-        <td>2.2</td>
+      <tr>
+        <td>2.1</td>
         <td colspan="4">
-          <span class="w14">Current (I)</span>
-          <span class="w6 result">[[ retSilent(doc,['result','I', '_val']) ]]</span>
-          <span class="w6">A</span>
+          <span class="w14">Specific Speed</span>
+          <span class="w4 result">[[ retSilent(doc, ['result','Nq','_val']) ]]</span>
+          <span class="w4"></span>
         </td>
-        <td colspan="4"></td>
+        <td colspan="4">
+        </td>
         <td></td>
       </tr>
-      <tr v-show="solve_using!='active_power'">
+      <tr>
         <td>2.2</td>
         <td colspan="4">
-          <span class="w14">Active Power (kW)</span>
-          <span class="w6 result">[[ retSilent(doc,['result','kW', '_val']) ]]</span>
-          <span class="w6">kW</span>
+          <span class="w14">Estimated Impeller Dia</span>
+          <span class="w4 result">[[ retSilent(doc, ['result','d2','_val']) ]]</span>
+          <span class="w4">[[ gUL('length') ]]</span>
         </td>
-        <td colspan="4"></td>
+        <td colspan="4">
+        </td>
         <td></td>
       </tr>
-      <tr v-show="solve_using!='apparent_power'">
-        <td>2.2</td>
+      <tr>
+        <td>2.3</td>
         <td colspan="4">
-          <span class="w14">Apparent Power (kW)</span>
-          <span class="w6 result">[[ retSilent(doc,['result','kVA', '_val']) ]]</span>
-          <span class="w6">kVA</span>
+          <span class="w14">Estimated Efficiency</span>
+          <span class="w4 result">[[ retSilent(doc, ['result','eta','_val']) ]]</span>
+          <span class="w4"></span>
         </td>
-        <td colspan="4"></td>
+        <td colspan="4">
+        </td>
         <td></td>
       </tr>
-      <tr v-show="solve_using!='reactive_power'">
-        <td>2.2</td>
+      <tr>
+        <td>2.4</td>
         <td colspan="4">
-          <span class="w14">Reactive Power (kW)</span>
-          <span class="w6 result">[[ retSilent(doc,['result','kVAr', '_val']) ]]</span>
-          <span class="w6">kVA</span>
+          <span class="w14">Hydraulic Power</span>
+          <span class="w4 result">[[ retSilent(doc, ['result','Phydraulic','_val']) ]]</span>
+          <span class="w4">[[ gUL('power') ]]</span>
         </td>
-        <td colspan="4"></td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.5</td>
+        <td colspan="4">
+          <span class="w14">Motor Rated Power</span>
+          <span class="w4 result">[[ retSilent(doc, ['result','Pmotor','_val']) ]]</span>
+          <span class="w4">[[ gUL('power') ]]</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.6</td>
+        <td colspan="4">
+          <span class="w14">Shaft Absorbed Power</span>
+          <span class="w4 result">[[ retSilent(doc, ['result','P','_val']) ]]</span>
+          <span class="w4">[[ gUL('power') ]]</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.7</td>
+        <td colspan="4">
+          <span class="w14">Estimated NPSHR</span>
+          <span class="w4 result">[[ retSilent(doc, ['result','NPSHR','_val']) ]]</span>
+          <span class="w4">[[ gUL('length') ]]</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.8</td>
+        <td colspan="4">
+          <span class="w14">Tentative Market Availability </span>
+          <span class="w12 result">[[ retSilent(doc, ['result','tentative_availability','_val']) ]]</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.9</td>
+        <td colspan="4">
+          <span class="w14">NPS (Suction)</span>
+          <span class="w12 result">[[ retSilent(doc, ['result','NPS_suction','_val']) ]]</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.10</td>
+        <td colspan="4">
+          <span class="w14">NPS (Discharge)</span>
+          <span class="w12 result">[[ retSilent(doc, ['result','NPS_discharge','_val']) ]]</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.11</td>
+        <td colspan="4">
+          <span class="w14">Estimated Skid Length </span>
+          <span class="w4 result">[[ retSilent(doc, ['result','L','_val']) ]]</span>
+          <span class="w4">[[ gUL('length') ]]</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.12</td>
+        <td colspan="4">
+          <span class="w14">Estimated Skid Width</span>
+          <span class="w4 result">[[ retSilent(doc, ['result','W','_val']) ]]</span>
+          <span class="w4">[[ gUL('length') ]]</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.13</td>
+        <td colspan="4">
+          <span class="w14">Estimated Skid Height</span>
+          <span class="w4 result">[[ retSilent(doc, ['result','H','_val']) ]]</span>
+          <span class="w4">[[ gUL('length') ]]</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.14</td>
+        <td colspan="4">
+          <span class="w14">Estimated Weight - Pump</span>
+          <span class="w4 result">[[ retSilent(doc, ['result','Wpump','_val']) ]]</span>
+          <span class="w4">[[ gUL('mass') ]]</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.15</td>
+        <td colspan="4">
+          <span class="w14">Estimated Weight - Baseplate</span>
+          <span class="w4 result">[[ retSilent(doc, ['result','Wbase','_val']) ]]</span>
+          <span class="w4">[[ gUL('mass') ]]</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.16</td>
+        <td colspan="4">
+          <span class="w14">Estimated Weight - Motor</span>
+          <span class="w4 result">[[ retSilent(doc, ['result','Wmotor','_val']) ]]</span>
+          <span class="w4">[[ gUL('mass') ]]</span>
+        </td>
+        <td colspan="4">
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.17</td>
+        <td colspan="4">
+          <span class="w14">Estimated Weight - Total</span>
+          <span class="w4 result">[[ retSilent(doc, ['result','Wtotal','_val']) ]]</span>
+          <span class="w4">[[ gUL('mass') ]]</span>
+        </td>
+        <td colspan="4">
+        </td>
         <td></td>
       </tr>
     </tbody>

@@ -20,8 +20,10 @@
   },
 
   "units": {
+    "mass":"kg",
     "flow":"m3/hr",
     "length":"m",
+    "speed":"m/s",
     "density":"kg/m3",
     "power": "kW",
     "dynViscosity":"cP"
@@ -32,20 +34,16 @@
     "H": {"_val":"40", "_dim":"length"},
     "rho": {"_val":"1000","_dim":"density"},
     "mu": {"_val":"1","_dim":"dynViscosity"},
-    "NPSHA": {"_val":"9", "_dim":"length"},
-    "Nss_limit": {"_val":"20"},
     "design_type": {"_val":"OH"},
-    "poles": {"_val":"2"}
+    "poles": {"_val":"2"},
+    "frequency": {"_val":"50"}
   },
 
   "result": {
     "eta": {"_val":""},
     "d2": {"_val":"", "_dim":"length"},
     "P": {"_val":"", "_dim":"power"},
-    "ns": {"_val":""},
-    "nss": {"_val":""},
-    "Ds": {"_val":""},
-    "Dd": {"_val":""}
+    "Nq":{"_val":""}
   },
 
   "errors": []

@@ -9,15 +9,14 @@ class docInput(Schema):
     H = fields.Nested(sXfld, required=True)
     rho = fields.Nested(sXfld, required=True)
     mu = fields.Nested(sXfld, required=True)
-    NPSHA = fields.Nested(sXfld, required=True)
-    Nss_limit = fields.Nested(sXfld, required=True)
     design_type = fields.Nested(sXfld, required=True)
     poles = fields.Nested(sXfld, required=True)
+    frequency = fields.Nested(sXfld, required=True)
 
     @validates('design_type')
     def check_design_type(self, value):
         vd.xString(value)
-        item_options = ["OH", "DS1", "DS2","SSMulti", "DSMulti"]
+        item_options = ["OH", "DS1", "SS2","DS2"]
         vd.xChoice(value, item_options)
 
     @validates('Q')
@@ -44,16 +43,6 @@ class docInput(Schema):
         vd.xGrtThan(value, 0)
         vd.xDim(value,'dynViscosity')
 
-    @validates('NPSHA')
-    def check_NPSHA(self, value):
-        vd.xNumber(value)
-        vd.xGrtThan(value, 0)
-        vd.xDim(value,'length')
-
-    @validates('Nss_limit')
-    def check_Nss_limit(self, value):
-        vd.xNumber(value)
-        vd.xGrtThan(value, 0)
 
     @validates('poles')
     def check_poles(self, value):
@@ -62,29 +51,32 @@ class docInput(Schema):
         item_options = [2, 4, 6]
         vd.xChoice(value, item_options)
 
-    '''
-    @validates_schema()
-    def check_I(self,data):
-        if ('solve_using' not in data):
-            return
-        solve_using = data['solve_using']['_val']
-        if (solve_using != "current"):
-            return
+    @validates('frequency')
+    def check_frequency(self, value):
+        vd.xNumber(value)
+        vd.xGrtThan(value, 0)
 
-        fName = "I"
-        vd.xRequired(data,fName,fName)
-        value = data[fName]
-        vd.xNumber(value,fName)
-    '''
-    
+
 
 class docResult(Schema):
+    Nq = fields.Nested(sXfld)
     eta = fields.Nested(sXfld)
+    psi = fields.Nested(sXfld)
+    u2 = fields.Nested(sXfld)
     d2 = fields.Nested(sXfld)
-    ns = fields.Nested(sXfld)
-    nss = fields.Nested(sXfld)
-    Ds = fields.Nested(sXfld)
-    Dd = fields.Nested(sXfld)
+    NPSHR = fields.Nested(sXfld)
+    Phydraulic = fields.Nested(sXfld)
+    P = fields.Nested(sXfld)
+    Pmotor = fields.Nested(sXfld)
+    tentative_availability = fields.Nested(sXfld)
+    NPS_suction = fields.Nested(sXfld)
+    NPS_discharge = fields.Nested(sXfld)
+    L = fields.Nested(sXfld)
+    W = fields.Nested(sXfld)
+    H = fields.Nested(sXfld)
+    Wpump = fields.Nested(sXfld)
+    Wbase = fields.Nested(sXfld)
+    Wtotal = fields.Nested(sXfld)
 
 
 class docSchema(sDocPrj):

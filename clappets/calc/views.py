@@ -44,6 +44,10 @@ def calc_mechanical_pump_viscous2water():
 def calc_mechanical_pump_viscosity_conversions():
     return render_document("mec","cal","pmp","vcn")
 
+@app.route('/calculations/mechanical/pumps/design-estimate/')
+def calc_mechanical_pump_design_estimate():
+    return render_document("mec","cal","pmp","est")
+
 @app.route('/calculations/mechanical/engines/gas-turbine-deration/')
 def calc_mechanical_engines_gt_derate():
     return render_document("mec","cal","eng","gtd")
@@ -175,3 +179,7 @@ def calc_electrical_motors_index():
 @app.route('/calculations/electrical/motors/starting-time/')
 def calc_electrical_motors_starting_time():
     return render_document("ele","cal","mtr","str")
+
+@app.route('/calculations/electrical/motors/estimated-parameters/')
+def calc_electrical_motors_estimated_parameters():
+    return render_document("ele","cal","mtr","prm")
