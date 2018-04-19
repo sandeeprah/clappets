@@ -2,7 +2,7 @@ from math import *
 from clappets.units import treeUnitConvert, SI_UNITS
 from copy import deepcopy
 from clappets.utils import roundit
-from techclappets.electrical.motor import motor_starting_time
+from techclappets.electrical.motor.core import motor_starting_time
 
 def calculate(doc_original):
     doc = deepcopy(doc_original)

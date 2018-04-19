@@ -27,7 +27,7 @@
 
   "input": {
     "convert" : {"_val":"watts2lumens"},
-    "watts": {"_val":""},
+    "watts": {"_val":"24"},
     "lumens": {"_val":""},
     "luminous_efficacy": {"_val":""}
   },

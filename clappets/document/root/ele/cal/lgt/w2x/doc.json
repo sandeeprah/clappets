@@ -27,9 +27,9 @@
 
   "input": {
     "convert" : {"_val":"watts2lux"},
-    "watts": {"_val":""},
+    "watts": {"_val":"24"},
     "lux": {"_val":""},
-    "luminous_efficacy": {"_val":""},
+    "luminous_efficacy": {"_val":"60"},
     "area_basis" : {"_val":"radius"},
     "radius": {"_val":"2", "_dim":"length"},
     "area": {"_val":"2", "_dim":"area"}

@@ -27,10 +27,10 @@
 
   "input": {
     "convert" : {"_val":"nu2mu"},
-    "nu" :{"_val":"", "_dim":"kinViscosity"},
+    "nu" :{"_val":"1", "_dim":"kinViscosity"},
     "mu" :{"_val":"", "_dim":"dynViscosity"},
     "ssu" :{"_val":""},
-    "rho": {"_val":"", "_dim":"density"}
+    "rho": {"_val":"1000", "_dim":"density"}
   },
 
   "result": {

@@ -4,7 +4,6 @@ from clappets.units import treeUnitConvert, SI_UNITS, unitConvert
 from clappets.utils import roundit
 from copy import deepcopy
 from techclappets.conversions import dyn2kinVisc, kin2dynVisc, SSU2cSt, cSt2SSU
-from techclappets.pump.pumputils import viscSel
 
 def calculate(doc_original):
     doc = deepcopy(doc_original)
