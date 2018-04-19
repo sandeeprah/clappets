@@ -48,6 +48,11 @@ def calc_mechanical_pump_viscosity_conversions():
 def calc_mechanical_pump_design_estimate():
     return render_document("mec","cal","pmp","est")
 
+@app.route('/calculations/mechanical/compressors/centrifugal-estimate/')
+def calc_mechanical_compressor_centrifugal_estimate():
+    return render_document("mec","cal","cmp","est")
+
+
 @app.route('/calculations/mechanical/engines/gas-turbine-deration/')
 def calc_mechanical_engines_gt_derate():
     return render_document("mec","cal","eng","gtd")

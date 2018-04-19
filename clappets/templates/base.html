@@ -13,38 +13,28 @@
   {% block css %}
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css', _external=True) }}">
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bulma.min.css', _external=True) }}">
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/clappets.min.css', _external=True) }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/codecalculation.min.css', _external=True) }}">
 
   <!--
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bulma.css', _external=True) }}">
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/clappets.css', _external=True) }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/codecalculation.css', _external=True) }}">
   -->
   <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.png', _external=True) }}"/>
   {% endblock css %}
   {% block extra_styles %}{% endblock extra_styles %}
-  {% block script_top %}{% endblock script_top %}
+  {% block script_top %}
+
+  <script type="text/javascript" src="http://platform-api.sharethis.com/js/sharethis.js#property=5ad5c157d0b9d300137e39ca&product=inline-share-buttons"></script>
+
+  {% endblock script_top %}
 </head>
 
 <body>
-  <div id="fb-root"></div>
-  <script>(function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = 'https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.12';
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
-  </script>
-  <script src="https://apis.google.com/js/platform.js" async defer></script>
-  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-
-
   <div id="app">
     {% block page_header %}
     <nav class="navbar is-fixed-top is-primary" id="top" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
-        <a class="navbar-item" href="#">clappets.com</a>
+        <a class="navbar-item" href="#">codecalculation</a>
         <button class="button navbar-burger" data-target="navMenu" id='burgerMain'>
             <span></span>
             <span></span>
@@ -123,20 +113,21 @@
      {% block page_footer %}
     <div class="container">
       <footer>
-
-
         <br/>
         <br/>
         <hr/>
-        <div class="columns">
+        <div class="columns ">
           <div class="column is-4">
           </div>
-          <div class="column is-4 has-text-centered">
-            <g:plusone size="large" href="https://www.clappets.com"></g:plusone>
-            <div class="fb-like" data-href="https://www.clappets.com" data-width="200" data-layout="standard" data-action="like" data-size="small" data-show-faces="false" data-share="true"></div>
-          </div>
-          <div class="column is-4">
 
+          <div class="column is-4 ">
+            <div class="hideprint">
+              <div class="has-text-centered sharethis-inline-share-buttons">
+
+              </div>
+            </div>
+          </div>
+          <div class="column is-4">
           </div>
         </div>
       </footer>
@@ -145,13 +136,13 @@
   </div>
 
   {% block script_bottom %}
-  <script type="text/javascript" src="{{ url_for('static', filename='js/clappets-combined.min.js', _external=True) }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/codecalculation-combined.min.js', _external=True) }}"></script>
 
   <!--
   <script type="text/javascript" src="{{ url_for('static', filename='js/bulma.js', _external=True) }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/vue.js', _external=True) }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/units.js', _external=True) }}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='js/clappets.js', _external=True) }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/codecalculation.js', _external=True) }}"></script>
   -->
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114226801-1"></script>

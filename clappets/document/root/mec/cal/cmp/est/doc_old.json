@@ -1,0 +1,92 @@
+{
+  "_id": "",
+  "meta": {
+    "projectID": "0000",
+    "project_title": "Local",
+    "discipline" : "mec",
+    "docCategory": "cal",
+    "docSubCategory": "cmp",
+    "docClass": "est",
+    "docClass_title": "Centrifugal Compressor Estimations",
+    "docInstance": "1",
+    "docInstance_title": "Centrifugal Compressor Estimations",
+    "doc_no":"0000-MEC-CAL-CMP-EST-01",
+    "rev": "A",
+    "date":"",
+    "status": "",
+    "performer": "",
+    "reviewer": "",
+    "approver": ""
+  },
+
+  "units": {
+    "length": "m",
+    "pressure": "bar",
+    "temperature": "C",
+    "flow": "m3/hr",
+    "massflow": "kg/hr",
+    "molecularMass" : "kg/mol",
+    "density":"kg/m3",
+  },
+
+  "input": {
+    "Psuction": {"_val":"100", "_dim":"pressure"},
+    "Tsuction": {"_val":"34", "_dim":"temperature"},
+    "Pdischarge": {"_val":"270", "_dim":"pressure"},
+    "MassFlow": {"_val":"68000", "_dim":"massflow"},
+    "kZ_basis" : {"_val":"D"},
+    "MW" : {"_val":"0.02896", "_dim":"molecularMass"},
+    "kavg": {"_val":"1.4"},
+    "Zavg": {"_val":"1"},
+    "predict_polyeff" : {"_val":"No"},
+    "polyeff": {"_val":"0.77"},
+
+    "mixture":[
+      {"fluid" : "Air", "molefraction" :"0"},
+      {"fluid" : "Oxygen", "molefraction" :"0"},
+      {"fluid" : "Nitrogen", "molefraction" :"0"},
+      {"fluid" : "Water", "molefraction" :"0"},
+      {"fluid" : "CarbonMonoxide", "molefraction" :"0"},
+      {"fluid" : "CarbonDioxide", "molefraction" :"0"},
+      {"fluid" : "HydrogenSulfide", "molefraction" :"0"},
+      {"fluid" : "Hydrogen", "molefraction" :"0"},
+      {"fluid" : "Methane", "molefraction" :"0.70"},
+      {"fluid" : "Ethylene", "molefraction" :"0"},
+      {"fluid" : "Ethane", "molefraction" :"0.20"},
+      {"fluid" : "Propylene", "molefraction" :"0"},
+      {"fluid" : "n-Propane", "molefraction" :"0.10"},
+      {"fluid" : "IsoButane", "molefraction" :"0"},
+      {"fluid" : "n-Butane", "molefraction" :"0"},
+      {"fluid" : "Isopentane", "molefraction" :"0"},
+      {"fluid" : "n-Pentane", "molefraction" :"0"},
+      {"fluid" : "n-Hexane", "molefraction" :"0"}
+
+    ],
+    "Psuction": {"_val":"1", "_dim":"pressure"},
+    "Tsuction": {"_val":"35", "_dim":"temperature"},
+    "Pdischarge": {"_val":"100", "_dim":"pressure"},
+    "MassFlow": {"_val":"20000", "_dim":"massflow"},
+    "MW" : {"_val":"1.4", "_dim":"molecularMass"},
+    "kavg": {"_val":"1.4"},
+    "Zavg": {"_val":"0.94"}
+    },
+
+  "result": {
+    "MW": {"_val":"", "_dim":"molecularMass"},
+    "Pcritical": {"_val":"", "_dim":"pressure"},
+    "Tcritical": {"_val":"", "_dim":"temperature"},
+    "Pr": {"_val":""},
+    "Tr": {"_val":""},
+    "acentric": {"_val":""},
+    "Z_PR": {"_val":""},
+    "Z_LKP": {"_val":""},
+    "Z_NO": {"_val":""},
+    "Cp0mass": {"_val":"", "_dim":"specificHeat"},
+    "Cv0mass": {"_val":"", "_dim":"specificHeat"},
+    "Cp0molar": {"_val":"", "_dim":"specificHeatMolar"},
+    "Cv0molar": {"_val":"", "_dim":"specificHeatMolar"}
+  },
+
+
+  "errors": []
+}

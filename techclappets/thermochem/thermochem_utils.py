@@ -114,6 +114,8 @@ def mixture_props(mixture, P=None, T=None):
         Cv0mass_mix = round(Cv0mass_mix, 1)
         Cp0molar_mix = round(Cp0molar_mix, 1)
         Cv0molar_mix = round(Cv0molar_mix, 1)
+        k = Cp0molar_mix/(Cp0molar_mix - 8.314)
+        k = round(k,2)
 
 
         properties.update({"Pr":Pr_mix})
@@ -122,6 +124,7 @@ def mixture_props(mixture, P=None, T=None):
         properties.update({"Cp0molar":Cp0molar_mix})
         properties.update({"Cv0mass":Cv0mass_mix})
         properties.update({"Cv0molar":Cv0molar_mix})
+        properties.update({"k":k})
         properties.update({"Z_PR":Z_mix_PR})
         properties.update({"Z_LKP":Z_mix_LKP})
         properties.update({"Z_NO":Z_mix_NO})
@@ -399,7 +402,6 @@ def Z_NelsonObert_reduced(Pr,Tr):
 
     #except:
     #    Z = None
-
     return Z
 
 
