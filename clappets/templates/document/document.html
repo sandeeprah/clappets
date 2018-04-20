@@ -329,10 +329,33 @@
       <p>
         Open a new or existing document, located in the cloud or on your local disk to start.
       </p>
+
     </div>
   </div>
 </div>
 {% endblock content %}
+
+
+{% block disclaimers %}
+<div class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-one-quarter">
+        <p class="is-size-5">Contributors</p>
+        <a href="//www.linkedin.com/in/sandeep-raheja">Sandeep Raheja</a>
+        {% block contributors %}
+        {% endblock contributors %}
+      </div>
+      <div class="column is-one-quarter">
+        <p class="is-size-5">Feedback</p>
+        <a href="mailto:contact@codecalculation.com">contact@codecalculation.com</a>.
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock disclaimers %}
+
+
 
 {% block script_bottom %}
 {{ super()}}
