@@ -93,6 +93,10 @@ def calc_mechanical_noise_sum():
 def calc_mechanical_piping_pipe_dimensions():
     return render_document("mec","cal","pip","sch")
 
+@app.route('/calculations/mechanical/piping/pipe-wall-thickness/')
+def calc_mechanical_piping_pipe_wallthickness():
+    return render_document("mec","cal","pip","wth")
+
 @app.route('/calculations/mechanical/psychrometry/humid-air-props/')
 def calc_mechanical_psychrometry_ha_props():
     return render_document("mec","cal","psy","hai")

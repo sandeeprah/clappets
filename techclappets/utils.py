@@ -3,6 +3,11 @@ import numpy as np
 
 def linarray_interp(x,y,x_interp):
     index_lower, index_higher = getindex(x,x_interp)
+    if (index_lower < 0):
+        raise Exception('Interpolation failed as parameter beyond range')
+    if (index_lower == None):
+        raise Exception('Interpolation failed as parameter beyond range')
+
     x_lower = x[index_lower]
     x_higher = x[index_higher]
     y_lower = y[index_lower]

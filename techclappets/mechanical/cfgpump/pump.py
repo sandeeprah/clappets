@@ -48,8 +48,6 @@ def viscSel(Qvis, Hvis, nu):
     _nu = unitConvert(nu,'kinViscosity', 'm2/s','cSt')
 
     B = 2.80*(pow(_nu,0.5)/(pow(_Qvis, 0.25)*pow(_Hvis, 0.125)))
-    print('B')
-    print(B)
 
     if (B <= 1):
         Cq = 1
