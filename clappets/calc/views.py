@@ -52,6 +52,9 @@ def calc_mechanical_pump_design_estimate():
 def calc_mechanical_compressor_centrifugal_estimate():
     return render_document("mec","cal","cmp","est")
 
+@app.route('/calculations/mechanical/compressors/fad-calculate/')
+def calc_mechanical_compressor_fad():
+    return render_document("mec","cal","cmp","fad")
 
 @app.route('/calculations/mechanical/engines/gas-turbine-deration/')
 def calc_mechanical_engines_gt_derate():
