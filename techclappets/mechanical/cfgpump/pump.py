@@ -202,6 +202,7 @@ def model_select(d2, Q, poles, pump_design_type):
     try:
         THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
         data_file_path = os.path.join(THIS_FOLDER, data_file)
+        print(data_file)
         pmp_df = pd.read_csv(data_file_path)
         pmp_df = pmp_df.set_index('Model')
         for index, row in pmp_df.iterrows():
@@ -214,6 +215,7 @@ def model_select(d2, Q, poles, pump_design_type):
 
     if (selected_model=='None'):
         raise Exception('Pump Model could not be selected')
+
 
     return selected_model
 
@@ -236,6 +238,8 @@ def API610_motor_size(Pabsorbed, Poverloading=None):
 
 
 def pump_dimensions(pump_model, design_type):
+    print('reached one')
+    print(pump_model)
 
     if (design_type=="OH"):
         data_file = "UCW_Dimensions.csv"
@@ -247,22 +251,38 @@ def pump_dimensions(pump_model, design_type):
         raise Exception("Invalid Design Type")
 
     try:
-
+        print('reached Dimensions')
         THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
         data_file_path = os.path.join(THIS_FOLDER, data_file)
         pmpdimensions_df = pd.read_csv(data_file_path)
         pmpdimensions_df = pmpdimensions_df.set_index('Model')
+        print('reached 2')
         L = pmpdimensions_df.loc[pump_model, "BL"]/1000
+
         W = pmpdimensions_df.loc[pump_model, "BW"]/1000
+        print('reached 3')
+
         H1 = pmpdimensions_df.loc[pump_model, "H1"]/1000
+        print('reached 4')
+
         H2 = pmpdimensions_df.loc[pump_model, "H2"]/1000
         H = H1 + H2
-        Wpump = pmpdimensions_df.loc[pump_model, "Wpump"]
-        Wbase = pmpdimensions_df.loc[pump_model, "Wbase"]
-        Ds = pmpdimensions_df.loc[pump_model, "Suction"]
-        Dd = pmpdimensions_df.loc[pump_model, "Discharge"]
+        print('reached 5')
 
-    except Exception:
+        Wpump = pmpdimensions_df.loc[pump_model, "Wpump"]
+        print('reached 6')
+
+        Wbase = pmpdimensions_df.loc[pump_model, "Wbase"]
+        print('reached 7')
+
+        Ds = pmpdimensions_df.loc[pump_model, "Suction"]
+        print('reached 8')
+
+        Dd = pmpdimensions_df.loc[pump_model, "Discharge"]
+        print('reached 9')
+
+    except Exception as e:
+        print(str(e))
         raise Exception("Pump Dimensions could not be found for the model")
 
     return Ds, Dd, L, W, H, Wpump, Wbase
