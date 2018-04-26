@@ -65,6 +65,7 @@ var app_doc = {
         gUL: function(dimension) {
             try {
                 unitUsed = this.doc.units[dimension]
+                console.log(unitUsed)
                 unitLabel = getUnitLabel(dimension, unitUsed)
                 return unitLabel
             } catch (err) {

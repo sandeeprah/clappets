@@ -499,6 +499,16 @@ unitLib = OrderedDict({
                 "label" : "kg/mol",
                 "cf" : 1,
                 "off" : 0
+            },
+            "g/mol" : {
+                "label" : "g/mol",
+                "cf" : 0.001,
+                "off" : 0
+            },
+            "kg/kmol" : {
+                "label" : "g/mol",
+                "cf" : 0.001,
+                "off" : 0
             }
         }
     },
@@ -643,6 +653,21 @@ unitLib = OrderedDict({
                 "off": 0
             }
         }
+    },
+    "intensity" : {
+        "dimtitle": "Energy Intensity",
+        "units": {
+            "W/m2": {
+                "label": "W/m²",
+                "cf": 1,
+                "off": 0
+            },
+            "kW/m2": {
+                "label": "kW/m²",
+                "cf": 1000,
+                "off": 0
+            }
+        }
     }
 })
 
@@ -674,7 +699,9 @@ SI_UNITS = {
     "thermalConductivity": "W/m.K",
     "dynViscosity": "Pa.s",
     "kinViscosity": "m2/s",
-    "specificFuelConsumption" : "m3/W.s"
+    "specificFuelConsumption" : "m3/W.s",
+    "intensity" : "W/m2"
+
 }
 
 def getDimensions():

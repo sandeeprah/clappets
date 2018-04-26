@@ -1,0 +1,627 @@
+{
+    "length_kilo": {
+        "units": {
+            "mm": {
+                "label": "mm",
+                "off": 0,
+                "cf": 0.001
+            },
+            "yd": {
+                "label": "yd",
+                "off": 0,
+                "cf": 0.9144
+            },
+            "ft": {
+                "label": "ft",
+                "off": 0,
+                "cf": 0.3048
+            },
+            "um": {
+                "label": "\u03bcm",
+                "off": 0,
+                "cf": 1e-06
+            },
+            "m": {
+                "label": "m",
+                "off": 0,
+                "cf": 1
+            }
+        },
+        "dimtitle": "Length Kilo"
+    },
+    "specificHeatMolar": {
+        "units": {
+            "J/mol.K": {
+                "label": "J/mol.K",
+                "off": 0,
+                "cf": 1
+            },
+            "kJ/kmol.K": {
+                "label": "J/mol.K",
+                "off": 0,
+                "cf": 1
+            }
+        },
+        "dimtitle": "Molar Specific Heat"
+    },
+    "density": {
+        "units": {
+            "kg/m3": {
+                "label": "kg/m\u00b3",
+                "off": 0,
+                "cf": 1
+            },
+            "lb/ft3": {
+                "label": "lb/ft\u00b3",
+                "off": 0,
+                "cf": 16.018
+            },
+            "g/cm3": {
+                "label": "g/cm\u00b3",
+                "off": 0,
+                "cf": 1000.0
+            }
+        },
+        "dimtitle": "Density"
+    },
+    "molecularMass": {
+        "units": {
+            "kg/mol": {
+                "label": "kg/mol",
+                "off": 0,
+                "cf": 1
+            },
+            "g/mol": {
+                "label": "g/mol",
+                "off": 0,
+                "cf": 0.001
+            },
+            "kg/kmol": {
+                "label": "g/mol",
+                "off": 0,
+                "cf": 0.001
+            }
+        },
+        "dimtitle": "Molecular Mass"
+    },
+    "flow": {
+        "units": {
+            "m3/hr": {
+                "label": "m\u00b3/hr",
+                "off": 0,
+                "cf": 0.0002777777777777778
+            },
+            "m3/s": {
+                "label": "m\u00b3/s",
+                "off": 0,
+                "cf": 1
+            },
+            "lpm": {
+                "label": "lpm",
+                "off": 0,
+                "cf": 1.666667e-05
+            },
+            "lph": {
+                "label": "lph",
+                "off": 0,
+                "cf": 2.7777777777777776e-07
+            },
+            "usgpm": {
+                "label": "usgpm",
+                "off": 0,
+                "cf": 6.309e-05
+            },
+            "bbl/day": {
+                "label": "bbl/day",
+                "off": 0,
+                "cf": 1.84e-06
+            },
+            "m3/min": {
+                "label": "m\u00b3/min",
+                "off": 0,
+                "cf": 0.016666666666666666
+            }
+        },
+        "dimtitle": "Flow"
+    },
+    "specificEnergy": {
+        "units": {
+            "J/kg": {
+                "label": "J/kg",
+                "off": 0,
+                "cf": 1
+            },
+            "kJ/kg": {
+                "label": "kJ/kg",
+                "off": 0,
+                "cf": 1000
+            }
+        },
+        "dimtitle": "Specific Energy"
+    },
+    "pressure": {
+        "units": {
+            "Pa": {
+                "label": "Pa",
+                "off": 0,
+                "cf": 1
+            },
+            "kPa": {
+                "label": "kPa",
+                "off": 0,
+                "cf": 1000.0
+            },
+            "MPa": {
+                "label": "MPa",
+                "off": 0,
+                "cf": 1000000.0
+            },
+            "bar": {
+                "label": "bar",
+                "off": 0,
+                "cf": 100000.0
+            },
+            "atm": {
+                "label": "atm",
+                "off": 0,
+                "cf": 101325
+            },
+            "kg/cm2": {
+                "label": "kg/cm\u00b2",
+                "off": 0,
+                "cf": 98066.5
+            }
+        },
+        "dimtitle": "Pressure"
+    },
+    "thermalConductivity": {
+        "units": {
+            "W/m.K": {
+                "label": "W/m.K",
+                "off": 0,
+                "cf": 1
+            }
+        },
+        "dimtitle": "Thermal Conductivity"
+    },
+    "angle": {
+        "units": {
+            "radians": {
+                "label": "radians",
+                "off": 0,
+                "cf": 1
+            },
+            "degrees": {
+                "label": "degrees",
+                "off": 0,
+                "cf": 0.0174533
+            }
+        },
+        "dimtitle": "Angle"
+    },
+    "specificFuelConsumption": {
+        "units": {
+            "m3/W.s": {
+                "label": "m\u00b3/W.s",
+                "off": 0,
+                "cf": 1
+            },
+            "litre/kW.h": {
+                "label": "litre/kW.h",
+                "off": 0,
+                "cf": 2.7777777777777777e-10
+            }
+        },
+        "dimtitle": "Specific Fuel Consumption"
+    },
+    "force": {
+        "units": {
+            "N": {
+                "label": "N",
+                "off": 0,
+                "cf": 1
+            },
+            "lbf": {
+                "label": "lbf",
+                "off": 0,
+                "cf": 4.44822
+            },
+            "kN": {
+                "label": "kN",
+                "off": 0,
+                "cf": 1000.0
+            }
+        },
+        "dimtitle": "Force"
+    },
+    "speed": {
+        "units": {
+            "m/s": {
+                "label": "m/s",
+                "off": 0,
+                "cf": 1
+            },
+            "ft/s": {
+                "label": "ft/s",
+                "off": 0,
+                "cf": 0.3048
+            },
+            "km/hr": {
+                "label": "km/hr",
+                "off": 0,
+                "cf": 0.277778
+            }
+        },
+        "dimtitle": "Speed"
+    },
+    "length_mili": {
+        "units": {
+            "mm": {
+                "label": "mm",
+                "off": 0,
+                "cf": 0.001
+            },
+            "yd": {
+                "label": "yd",
+                "off": 0,
+                "cf": 0.9144
+            },
+            "ft": {
+                "label": "ft",
+                "off": 0,
+                "cf": 0.3048
+            },
+            "um": {
+                "label": "\u03bcm",
+                "off": 0,
+                "cf": 1e-06
+            },
+            "m": {
+                "label": "m",
+                "off": 0,
+                "cf": 1
+            }
+        },
+        "dimtitle": "Length Mili"
+    },
+    "length_micro": {
+        "units": {
+            "mm": {
+                "label": "mm",
+                "off": 0,
+                "cf": 0.001
+            },
+            "yd": {
+                "label": "yd",
+                "off": 0,
+                "cf": 0.9144
+            },
+            "ft": {
+                "label": "ft",
+                "off": 0,
+                "cf": 0.3048
+            },
+            "um": {
+                "label": "\u03bcm",
+                "off": 0,
+                "cf": 1e-06
+            },
+            "m": {
+                "label": "m",
+                "off": 0,
+                "cf": 1
+            }
+        },
+        "dimtitle": "Length Micro"
+    },
+    "temperature": {
+        "units": {
+            "F": {
+                "label": "\u00b0F",
+                "off": 255.3722222222222,
+                "cf": 0.5555555555555556
+            },
+            "R": {
+                "label": "\u00b0R",
+                "off": 0,
+                "cf": 0.5555555555555556
+            },
+            "C": {
+                "label": "\u00b0C",
+                "off": 273.15,
+                "cf": 1
+            },
+            "K": {
+                "label": "K",
+                "off": 0,
+                "cf": 1
+            }
+        },
+        "dimtitle": "Temperature"
+    },
+    "length": {
+        "units": {
+            "mm": {
+                "label": "mm",
+                "off": 0,
+                "cf": 0.001
+            },
+            "yd": {
+                "label": "yd",
+                "off": 0,
+                "cf": 0.9144
+            },
+            "ft": {
+                "label": "ft",
+                "off": 0,
+                "cf": 0.3048
+            },
+            "um": {
+                "label": "\u03bcm",
+                "off": 0,
+                "cf": 1e-06
+            },
+            "m": {
+                "label": "m",
+                "off": 0,
+                "cf": 1
+            }
+        },
+        "dimtitle": "Length"
+    },
+    "energy": {
+        "units": {
+            "kJ": {
+                "label": "kJ",
+                "off": 0,
+                "cf": 1000.0
+            },
+            "J": {
+                "label": "J",
+                "off": 0,
+                "cf": 1
+            },
+            "Btu": {
+                "label": "Btu",
+                "off": 0,
+                "cf": 1055.06
+            }
+        },
+        "dimtitle": "Energy"
+    },
+    "power": {
+        "units": {
+            "kW": {
+                "label": "kW",
+                "off": 0,
+                "cf": 1000.0
+            },
+            "W": {
+                "label": "W",
+                "off": 0,
+                "cf": 1
+            },
+            "hp": {
+                "label": "hp",
+                "off": 0,
+                "cf": 746
+            }
+        },
+        "dimtitle": "Power"
+    },
+    "acceleration": {
+        "units": {
+            "m/s2": {
+                "label": "m/s\u00b2",
+                "off": 0,
+                "cf": 1
+            },
+            "ft/s2": {
+                "label": "ft/s\u00b2",
+                "off": 0,
+                "cf": 0.3048
+            }
+        },
+        "dimtitle": "Acceleration"
+    },
+    "specificEnergyMolar": {
+        "units": {
+            "kJ/kmol": {
+                "label": "J/mol",
+                "off": 0,
+                "cf": 1
+            },
+            "J/mol": {
+                "label": "J/mol",
+                "off": 0,
+                "cf": 1
+            }
+        },
+        "dimtitle": "Specific Energy Molar"
+    },
+    "dynViscosity": {
+        "units": {
+            "mPa.s": {
+                "label": "mPa.s",
+                "off": 0,
+                "cf": 0.001
+            },
+            "Pa.s": {
+                "label": "Pa.s",
+                "off": 0,
+                "cf": 1
+            },
+            "cP": {
+                "label": "cP",
+                "off": 0,
+                "cf": 0.001
+            }
+        },
+        "dimtitle": "Dynamic Viscosity"
+    },
+    "kinViscosity": {
+        "units": {
+            "St": {
+                "label": "St",
+                "off": 0,
+                "cf": 0.0001
+            },
+            "cSt": {
+                "label": "cSt",
+                "off": 0,
+                "cf": 1e-06
+            },
+            "m2/s": {
+                "label": "m\u00b2/s",
+                "off": 0,
+                "cf": 1
+            }
+        },
+        "dimtitle": "Kinematic Viscosity"
+    },
+    "specificVolume": {
+        "units": {
+            "m3/kg": {
+                "label": "m\u00b3/kg",
+                "off": 0,
+                "cf": 1
+            }
+        },
+        "dimtitle": "Specific Volume"
+    },
+    "time": {
+        "units": {
+            "us": {
+                "label": "\u03bcs",
+                "off": 0,
+                "cf": 1e-06
+            },
+            "hr": {
+                "label": "hr",
+                "off": 0,
+                "cf": 3600
+            },
+            "ms": {
+                "label": "ms",
+                "off": 0,
+                "cf": 0.001
+            },
+            "day": {
+                "label": "day",
+                "off": 0,
+                "cf": 86400
+            },
+            "min": {
+                "label": "min",
+                "off": 0,
+                "cf": 60
+            },
+            "s": {
+                "label": "\u03bcs",
+                "off": 0,
+                "cf": 1
+            }
+        },
+        "dimtitle": "Time"
+    },
+    "massflow": {
+        "units": {
+            "kg/hr": {
+                "label": "kg/hr",
+                "off": 0,
+                "cf": 0.0002777777777777778
+            },
+            "kg/s": {
+                "label": "kg/s",
+                "off": 0,
+                "cf": 1
+            },
+            "kg/min": {
+                "label": "kg/min",
+                "off": 0,
+                "cf": 0.016666666666666666
+            },
+            "lb/hr": {
+                "label": "lb/hr",
+                "off": 0,
+                "cf": 0.000125998
+            }
+        },
+        "dimtitle": "Mass Flow"
+    },
+    "mass": {
+        "units": {
+            "lb": {
+                "label": "lb",
+                "off": 0,
+                "cf": 0.453592
+            },
+            "ton": {
+                "label": "ton",
+                "off": 0,
+                "cf": 1000.0
+            },
+            "mg": {
+                "label": "mg",
+                "off": 0,
+                "cf": 1e-06
+            },
+            "ug": {
+                "label": "\u03bcg",
+                "off": 0,
+                "cf": 1e-09
+            },
+            "g": {
+                "label": "g",
+                "off": 0,
+                "cf": 0.001
+            },
+            "kg": {
+                "label": "kg",
+                "off": 0,
+                "cf": 1
+            }
+        },
+        "dimtitle": "Mass"
+    },
+    "area": {
+        "units": {
+            "mm2": {
+                "label": "mm\u00b2",
+                "off": 0,
+                "cf": 1e-06
+            },
+            "ft2": {
+                "label": "ft\u00b2",
+                "off": 0,
+                "cf": 0.092903
+            },
+            "m2": {
+                "label": "m\u00b2",
+                "off": 0,
+                "cf": 1
+            },
+            "in2": {
+                "label": "in\u00b2",
+                "off": 0,
+                "cf": 0.00064516
+            }
+        },
+        "dimtitle": "Area"
+    },
+    "specificHeat": {
+        "units": {
+            "J/kg.K": {
+                "label": "J/kg.K",
+                "off": 0,
+                "cf": 1
+            },
+            "kJ/kg.K": {
+                "label": "kJ/kg.K",
+                "off": 0,
+                "cf": 1000
+            }
+        },
+        "dimtitle": "Specific Heat"
+    }
+}

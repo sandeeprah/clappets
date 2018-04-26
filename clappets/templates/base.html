@@ -5,6 +5,7 @@
   {% block head %}
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="cache-control" content="no-cache" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %} {% endblock title %}</title>
   <meta name="author" content="Sandeep Raheja">
@@ -13,12 +14,11 @@
   {% block css %}
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css', _external=True) }}">
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bulma.min.css', _external=True) }}">
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/codecalculation.min.css', _external=True) }}">
-
-  <!--
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/codecalculation01.min.css', _external=True) }}">
+<!--
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bulma.css', _external=True) }}">
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/codecalculation.css', _external=True) }}">
-  -->
+-->
   <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.png', _external=True) }}"/>
   {% endblock css %}
   {% block extra_styles %}{% endblock extra_styles %}
@@ -142,25 +142,19 @@
   </div>
 
   {% block script_bottom %}
-  <script type="text/javascript" src="{{ url_for('static', filename='js/codecalculation-combined.min.js', _external=True) }}"></script>
 
-  <!--
+  <script type="text/javascript" src="{{ url_for('static', filename='js/codecalculation-combined01.min.js', _external=True) }}"></script>
+<!--
   <script type="text/javascript" src="{{ url_for('static', filename='js/bulma.js', _external=True) }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/vue.js', _external=True) }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/units.js', _external=True) }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/codecalculation.js', _external=True) }}"></script>
-  -->
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114226801-1"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+  <script type="text/javascript" src="{{ url_for('static', filename='js/clappetsDoc.js', _external=True) }}"></script>
+-->
 
-    gtag('config', 'UA-114226801-1');
-  </script>
+  {% endblock script_bottom %}
 
-  {% endblock script_bottom %} {% block script_vueapp %}
+  {% block script_vueapp %}
   <script type="text/javascript">
     var app = new Vue({
       el: '#app',

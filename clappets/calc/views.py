@@ -68,6 +68,10 @@ def calc_mechanical_engines_st_performance():
 def calc_mechanical_engines_dfc():
     return render_document("mec","cal","eng","dfc")
 
+@app.route('/calculations/mechanical/flare/stack-height-estimation/')
+def calc_mechanical_flare_stk():
+    return render_document("mec","cal","flr","stk")
+
 @app.route('/calculations/mechanical/noise/distance-attenuation/')
 def calc_mechanical_noise_attenuation():
     return render_document("mec","cal","nos","atn")

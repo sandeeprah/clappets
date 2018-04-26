@@ -337,7 +337,7 @@
 
 
 {% block disclaimers %}
-<div class="section">
+<div class="section hideprint">
   <div class="container">
     <div class="columns is-centered">
       <div class="column is-one-quarter">
@@ -359,7 +359,6 @@
 
 {% block script_bottom %}
 {{ super()}}
-<script type="text/javascript" src="{{ url_for('static', filename='js/clappetsDoc.js', _external=True) }}"></script>
 {% endblock script_bottom %}
 
 {% block script_vueapp %}

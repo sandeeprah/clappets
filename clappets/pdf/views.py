@@ -46,6 +46,7 @@ def pdf_report():
     path = os.path.join(repository, discipline, docCategory, docSubCategory, docClass, "doc.html")
     template = "/".join(path.split(os.sep))
     doc = json.dumps(doc, indent=4)
+    print(doc)
     main_content = render_template(template, doc=doc)
 
     options = {
@@ -61,7 +62,7 @@ def pdf_report():
         'header-font-size' : '8',
         'header-font-name' : 'Calibri',
         'header-spacing' : '5',
-        'footer-left' : "template_url : http://www.clappets.com/htm/document/tpl/mec/dat/pmp/c01/",
+        'footer-left' : "www.codecalculation.com",
         'footer-line' : None,
         'footer-font-size' : '8',
         'footer-font-name' : 'Calibri',

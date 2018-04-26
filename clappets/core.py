@@ -211,6 +211,8 @@ class sUnits(Schema):
     kinViscosity = fields.String(validate=validate.OneOf(kinViscosity_units))
     specificFuelConsumption_units = units.getUnits('specificFuelConsumption')
     specificFuelConsumption = fields.String(validate=validate.OneOf(specificFuelConsumption_units))
+    intensity_units = units.getUnits('intensity')
+    intensity = fields.String(validate=validate.OneOf(intensity_units))
 
 
 
