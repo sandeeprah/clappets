@@ -47,9 +47,10 @@ def calculate(doc_original):
             h = round(CP.PropsSI('H','T', T, 'P', P, 'Water'),1)
             u = round(CP.PropsSI('U','T', T, 'P', P, 'Water'),1)
             s = round(CP.PropsSI('S','T', T, 'P', P, 'Water'),1)
-            doc['result']['Psat']['_val'] = ""
-            doc['result']['Tsat']['_val'] = ""
+            doc['result'].update({'Psat':{'_val' : '', '_dim':'pressure'}})
+            doc['result'].update({'Tsat':{'_val' : '', '_dim':'temperature'}})
     except Exception as e:
+        raise e
         doc['errors'].append(str(e))
         doc['errors'].append('Failed to calculate Water/Steam Properties. Check Inputs')
         phase = ""

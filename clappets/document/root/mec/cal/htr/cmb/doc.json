@@ -1,0 +1,91 @@
+{
+  "_id": "",
+  "meta": {
+    "projectID": "0000",
+    "project_title": "Local",
+    "discipline" : "mec",
+    "docCategory": "cal",
+    "docSubCategory": "htr",
+    "docClass": "cmb",
+    "docClass_title": "Fired Heaters - Gas Fuel Combustion Calculation(API 560)",
+    "docInstance": "1",
+    "docInstance_title": "Fired Heaters - Gas Fuel Combustion Calculation(API 560)",
+    "doc_no":"0000-MEC-CAL-HTR-CMB-01",
+    "rev": "A",
+    "date":"",
+    "status": "",
+    "performer": "",
+    "reviewer": "",
+    "approver": ""
+  },
+
+  "units": {
+    "length": "m",
+    "mass": "kg",
+    "pressure": "bar",
+    "temperature": "C",
+    "massflow":"kg/hr",
+    "intensity":"kW/m2",
+    "molecularMass":"g/mol",
+    "energy":"kJ",
+    "specificEnergy":"kJ/kg",
+    "specificHeat":"kJ/kg.K",
+    "speed":"m/s",
+    "power":"kW",
+    "density":"kg/m3",
+    "flow":"m3/s"
+  },
+
+  "input": {
+    "Ta" : {"_val": "-2.2", "_dim":"temperature"},
+    "RH" : {"_val": "50"},
+    "excess_O2" : {"_val": "3.5"},
+    "radiation_loss_pc" : {"_val": "2.5"},
+    "Texit" : {"_val": "148.9", "_dim":"temperature"},
+    "fraction_type" : {"_val": "mole_fraction"},
+
+    "gasfuel":[
+      {"fluid" : "Carbon", "fraction" :"0"},
+      {"fluid" : "Hydrogen", "fraction" :"0.0382"},
+      {"fluid" : "Oxygen", "fraction" :"0"},
+      {"fluid" : "Nitrogen", "fraction" :"0.0996"},
+      {"fluid" : "CarbonMonoxide", "fraction" :"0"},
+      {"fluid" : "CarbonDioxide", "fraction" :"0"},
+      {"fluid" : "Methane", "fraction" :"0.7541"},
+      {"fluid" : "Ethane", "fraction" :"0.0233"},
+      {"fluid" : "Ethylene", "fraction" :"0.0508"},
+      {"fluid" : "Acetylene", "fraction" :"0"},
+      {"fluid" : "Propane", "fraction" :"0.0154"},
+      {"fluid" : "Propylene", "fraction" :"0.0186"},
+      {"fluid" : "Butane", "fraction" :"0"},
+      {"fluid" : "Butylene", "fraction" :"0"},
+      {"fluid" : "Pentane", "fraction" :"0"},
+      {"fluid" : "Hexane", "fraction" :"0"},
+      {"fluid" : "Benzene", "fraction" :"0"},
+      {"fluid" : "Methanol", "fraction" :"0"},
+      {"fluid" : "Ammonia", "fraction" :"0"},
+      {"fluid" : "Sulphur", "fraction" :"0"},
+      {"fluid" : "HydrogenSulphide", "fraction" :"0"},
+      {"fluid" : "Water", "fraction" :"0"}
+    ],
+    "Tf" : {"_val": "37.8", "_dim":"temperature"}
+  },
+
+  "result": {
+    "d" : {"_val": "", "_dim":"length"},
+    "Q" : {"_val": "", "_dim":"power"},
+    "L" : {"_val": "","_dim":"length"},
+    "q_vap" : {"_val": "","_dim":"flow"},
+    "Uj" : {"_val": "", "_dim":"speed"},
+    "Uinf_by_Uj" : {"_val": ""},
+    "Sdy_by_L" : {"_val": ""},
+    "Sdx_by_L" : {"_val": ""},
+    "Sdy" : {"_val": "", "_dim":"length"},
+    "Sdx" : {"_val": "", "_dim":"length"},
+    "R_prime" : {"_val": "", "_dim":"length"},
+    "H_prime" : {"_val": "", "_dim":"length"},
+    "H" : {"_val": "", "_dim":"length"}
+  },
+
+  "errors": []
+}

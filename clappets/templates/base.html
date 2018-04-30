@@ -142,8 +142,8 @@
   </div>
 
   {% block script_bottom %}
+  <script type="text/javascript" src="{{ url_for('static', filename='js/codecalculation-combined02.min.js', _external=True) }}"></script>
 
-  <script type="text/javascript" src="{{ url_for('static', filename='js/codecalculation-combined01.min.js', _external=True) }}"></script>
 <!--
   <script type="text/javascript" src="{{ url_for('static', filename='js/bulma.js', _external=True) }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/vue.js', _external=True) }}"></script>
@@ -151,7 +151,6 @@
   <script type="text/javascript" src="{{ url_for('static', filename='js/codecalculation.js', _external=True) }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/clappetsDoc.js', _external=True) }}"></script>
 -->
-
   {% endblock script_bottom %}
 
   {% block script_vueapp %}

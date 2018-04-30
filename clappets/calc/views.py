@@ -72,6 +72,10 @@ def calc_mechanical_engines_dfc():
 def calc_mechanical_flare_stk():
     return render_document("mec","cal","flr","stk")
 
+@app.route('/calculations/mechanical/heater/gas-fuel-combustion/')
+def calc_mechanical_heater_gascomb():
+    return render_document("mec","cal","htr","cmb")
+
 @app.route('/calculations/mechanical/noise/distance-attenuation/')
 def calc_mechanical_noise_attenuation():
     return render_document("mec","cal","nos","atn")
