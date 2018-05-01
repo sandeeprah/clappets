@@ -72,7 +72,7 @@ def calc_mechanical_engines_dfc():
 def calc_mechanical_flare_stk():
     return render_document("mec","cal","flr","stk")
 
-@app.route('/calculations/mechanical/heater/efficiency-measurement/')
+@app.route('/calculations/mechanical/heater/efficiency-measurements/')
 def calc_mechanical_heater_gascomb():
     return render_document("mec","cal","htr","efm")
 
