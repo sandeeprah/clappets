@@ -6,7 +6,7 @@ from techclappets.mechanical.utils.psychrometrics import humidityRatio
 from techclappets.utils import linarray_interp, linear_interp
 
 
-def gasfuelProperties(gasfuel, fraction_type):
+def gasfuelProperties(gasfuel, composition_type):
     mass_total = 0
     moles_total = 0
     h_L_total = 0
@@ -19,13 +19,14 @@ def gasfuelProperties(gasfuel, fraction_type):
     fraction_normalised = []
     fraction_total = 0
     for component in gasfuel:
-        fraction = component['fraction']
-        #fraction_total += fraction
+        percent = component['percent']
+
+        fraction = percent/100
 
         fluid = component['fluid']
         MW, h_L, Cp, specificAir, specificCO2, specificH2O, specificN2 = componentProperties(fluid)
 
-        if fraction_type =='mole_fraction':
+        if composition_type =='mole_percent':
             mass = MW*fraction
             moles = fraction
         else:
@@ -83,10 +84,15 @@ def wetAirRequired(air_reqd, X_wet):
     wet_air_reqd = air_reqd/(1-X_wet)
     return wet_air_reqd
 
-def excessAir(excess_O2, air_reqd, N2_formed, CO2_formed, H2O_formed_RHcorrected, moisture):
-    A = (N2_formed/28) + (CO2_formed/44) + (H2O_formed_RHcorrected/18)
-    B = 1.6028*(moisture/air_reqd) + 1
-    EA = 28.85*excess_O2*A/(20.95 - excess_O2*B)
+def excessAir(flue_O2, air_reqd, N2_formed, CO2_formed, H2O_formed_RHcorrected, moisture, sampling_basis):
+    if (sampling_basis=='dry'):
+        A = (N2_formed/28) + (CO2_formed/44)
+        B = 1
+        EA = 28.85*flue_O2*A/(20.95 - flue_O2*B)
+    else:
+        A = (N2_formed/28) + (CO2_formed/44) + (H2O_formed_RHcorrected/18)
+        B = 1.6028*(moisture/air_reqd) + 1
+        EA = 28.85*flue_O2*A/(20.95 - flue_O2*B)
     return EA
 
 def excessAir_pc(excess_Air, air_reqd):
@@ -101,12 +107,6 @@ def flueMassicHeatContent(CO2_formed, H2O_formed, N2_formed, excess_Air, Texit_f
     Patm = 101325
     Tdatum = 273.15 + 15
 
-    '''
-    h_CO2 = getEnthalphy('CarbonDioxide', Patm, Texit_flue) - getEnthalphy('CarbonDioxide', Patm, Tdatum)
-    h_H2O = getEnthalphy('Water', Patm, Texit_flue) - getEnthalphy('Water', Patm, Tdatum)
-    h_N2 = getEnthalphy('Nitrogen', Patm, Texit_flue) - getEnthalphy('Nitrogen', Patm, Tdatum)
-    h_EA = getEnthalphy('Air', Patm, Texit_flue) - getEnthalphy('Air', Patm, Tdatum)
-    '''
     h_CO2 = getEnthalphy('CarbonDioxide', Texit_flue)
     h_H2O = getEnthalphy('Water',Texit_flue)
     h_N2 = getEnthalphy('Nitrogen',Texit_flue)
@@ -125,7 +125,7 @@ def getEnthalphy(component,T):
 
     try:
         P = 101325
-        h =  CP.PropsSI('H', 'T',T, 'P',P, component) - CP.PropsSI('H', 'T',288, 'P',P, component)
+        h =  CP.PropsSI('H', 'T',T, 'P',P, component) - CP.PropsSI('H', 'T', 288, 'P',P, component)
 
         if (component=='Water'):
             h =  CP.PropsSI('H', 'T',T, 'P',P, component) - 2464900 -65000
@@ -144,49 +144,15 @@ def getEnthalphy(component,T):
     except:
         h = nan
 
-    '''
-    if (component=='Water'):
-        data_file = "enthalpy_water_vapor.csv"
-    elif (component=='CarbonMonoxide'):
-        data_file = "enthalpy_carbon_monoxide.csv"
-    elif (component=='CarbonDioxide'):
-        data_file = "enthalpy_carbon_dioxide.csv"
-    elif (component=='SulfurDioxide'):
-        data_file = "enthalpy_sulfur_dioxide.csv"
-    elif (component=='Nitrogen'):
-        data_file = "enthalpy_nitrogen.csv"
-    elif (component=='Air'):
-        data_file = "enthalpy_air.csv"
-    elif (component=='Oxygen'):
-        data_file = "enthalpy_oxygen.csv"
-
-    else:
-        raise Exception('Invalid Component Entered')
-
-    try:
-        THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
-        data_file_path = os.path.join(THIS_FOLDER, data_file)
-        enthalpy_df = pd.read_csv(data_file_path)
-        T_array = enthalpy_df['T'].tolist()
-        h_array = enthalpy_df['h'].tolist()
-        T_C = T -273.15
-        print("T_C is {}".format(T_C))
-        h = linarray_interp(T_array,h_array,T_C)*1000
-
-    except Exception as e:
-        raise e
-        raise Exception('h could not be determined')
-    '''
-
     return h
 
-def radiationLoss(radiation_loss_pc, h_L):
-    radiation_loss = (radiation_loss_pc/100)*h_L
-    return radiation_loss
+def radiationLoss(loss_radiation, h_L):
+    h_r = (loss_radiation/100)*h_L
+    return h_r
 
 def enthalpySteam(P,T):
-    h_steam = CP.PropsSI('H','T', T, 'P', P, 'Water')
-    return h_steam
+    h_m = CP.PropsSI('H','T', T, 'P', P, 'Water')
+    return h_m
 
 def netThermalEfficiency(h_L, delh_a, delh_f, delh_m, h_r, h_s):
     heat_input = h_L + delh_a + delh_f + delh_m

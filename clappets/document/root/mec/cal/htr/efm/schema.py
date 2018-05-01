@@ -27,29 +27,25 @@ class schema_fluidfraction(Schema):
                 "HydrogenSulphide",
                 "Water"]
     fluid = fields.String(required=True, validate=validate.OneOf(choices=fluid_list))
-    fraction = fields.Float(required=True)
+    percent = fields.Float(required=True)
     class Meta:
         ordered = True
 
-    @validates('fraction')
-    def check_fraction(self, value):
+    @validates('percent')
+    def check_percent(self, value):
         vd.fGrtThanEq(value,0)
-        vd.fLessThanEq(value,1)
+        vd.fLessThanEq(value,100)
 
 
 
 class docInput(Schema):
     Ta = fields.Nested(sXfld)
     RH = fields.Nested(sXfld)
-    excess_O2 = fields.Nested(sXfld)
-    m_st = fields.Nested(sXfld)
-    Pm = fields.Nested(sXfld)
-    Tm = fields.Nested(sXfld)
-    radiation_loss_pc = fields.Nested(sXfld)
+    flue_O2 = fields.Nested(sXfld)
+    sampling_basis = fields.Nested(sXfld)
+    loss_radiation = fields.Nested(sXfld)
     Texit = fields.Nested(sXfld)
-
-    fraction_type = fields.Nested(sXfld)
-
+    composition_type = fields.Nested(sXfld)
     gasfuel = fields.Nested(schema_fluidfraction, many=True, required=True)
     Tf = fields.Nested(sXfld)
 
@@ -74,17 +70,25 @@ class docInput(Schema):
         vd.xLessThanEq(value, 100, fName)
 
     @validates_schema()
-    def check_excess_O2(self, data):
-        fName = 'excess_O2'
+    def check_flue_O2(self, data):
+        fName = 'flue_O2'
         vd.xRequired(data,fName,fName)
         value = data[fName]
         vd.xNumber(value, fName)
         vd.xGrtThanEq(value, 0, fName)
 
+    @validates_schema()
+    def check_sampling_basis(self, data):
+        fName = 'sampling_basis'
+        vd.xRequired(data,fName,fName)
+        value = data[fName]
+        vd.xString(value, fName)
+        sampling_basis_options = ["wet","dry"]
+        vd.xChoice(value, sampling_basis_options, fName)
 
     @validates_schema()
-    def check_radiation_loss_pc(self, data):
-        fName = 'radiation_loss_pc'
+    def check_loss_radiation(self, data):
+        fName = 'loss_radiation'
         vd.xRequired(data,fName,fName)
         value = data[fName]
         vd.xNumber(value, fName)
@@ -100,13 +104,13 @@ class docInput(Schema):
         vd.xDim(value, ['temperature'], fName)
 
     @validates_schema()
-    def check_fraction_type(self, data):
-        fName = 'fraction_type'
+    def check_composition_type(self, data):
+        fName = 'composition_type'
         vd.xRequired(data,fName,fName)
         value = data[fName]
         vd.xString(value, fName)
-        fraction_type_options = ["mole_fraction","mass_fraction"]
-        vd.xChoice(value, fraction_type_options, fName)
+        composition_type_options = ["mole_percent","mass_percent"]
+        vd.xChoice(value, composition_type_options, fName)
 
 
     @validates_schema()
@@ -115,8 +119,8 @@ class docInput(Schema):
             gasfuel = data['gasfuel']
             sigma_y = 0
             for component in gasfuel:
-                if ('fraction' in component):
-                    sigma_y = sigma_y + component['fraction']
+                if ('percent' in component):
+                    sigma_y = sigma_y + component['percent']
 
             if (sigma_y <=0):
                 raise ValidationError('No gas composition entered. Total > 0 reqd','schema_gasfuel')

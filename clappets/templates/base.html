@@ -10,7 +10,13 @@
   <title>{% block title %} {% endblock title %}</title>
   <meta name="author" content="Sandeep Raheja">
   <meta name="description" content="{% block meta_description %}{% endblock meta_description %}" />
-  <meta name="keywords" content="{% block meta_keywords %}{% endblock meta_keywords %}" /> {% endblock head %}
+  <meta name="keywords" content="{% block meta_keywords %}{% endblock meta_keywords %}" />
+  {% block sharing %}
+
+  {% endblock sharing %}
+
+  {% endblock head %}
+
   {% block css %}
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css', _external=True) }}">
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bulma.min.css', _external=True) }}">

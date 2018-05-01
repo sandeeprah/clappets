@@ -16,18 +16,23 @@ def calculate(doc_original):
 
     Ta = parseFloat(doc['input']['Ta']['_val'])
     RH = parseFloat(doc['input']['RH']['_val'])
-    excess_O2 = parseFloat(doc['input']['excess_O2']['_val'])
-    radiation_loss_pc = parseFloat(doc['input']['radiation_loss_pc']['_val'])
-    fraction_type = doc['input']['fraction_type']['_val']
+    flue_O2 = parseFloat(doc['input']['flue_O2']['_val'])
+    sampling_basis = doc['input']['sampling_basis']['_val']
+    loss_radiation = parseFloat(doc['input']['loss_radiation']['_val'])
+    composition_type = doc['input']['composition_type']['_val']
     gasfuel = doc['input']['gasfuel']
     Tf = parseFloat(doc['input']['Tf']['_val'])
 
-    MW,h_L,Cp_f, air_reqd, CO2_formed, H2O_formed, N2_formed = gasfuelProperties(gasfuel, fraction_type)
+    MW,h_L,Cp_f, air_reqd, CO2_formed, H2O_formed, N2_formed = gasfuelProperties(gasfuel, composition_type)
+    MW_str = format(MW,'0.6f')
+    MW = float(MW_str)
+    print("MW is {}".format(MW))
     X_wet = airMoistureContent(Ta, RH)
     air_reqd_RHcorrected = wetAirRequired(air_reqd, X_wet)
     moisture= air_reqd_RHcorrected - air_reqd
     H2O_formed_RHcorrected = H2O_formed + moisture
-    excess_Air = excessAir(excess_O2, air_reqd, N2_formed, CO2_formed, H2O_formed_RHcorrected, moisture)
+
+    excess_Air = excessAir(flue_O2, air_reqd, N2_formed, CO2_formed, H2O_formed_RHcorrected, moisture, sampling_basis)
     excess_Air_pc = excessAir_pc(excess_Air, air_reqd)
     total_air = air_reqd_RHcorrected + excess_Air
     H2O_formed_EAcorrected =  H2OformedEAcorrected(excess_Air_pc, moisture, H2O_formed_RHcorrected)
@@ -47,7 +52,7 @@ def calculate(doc_original):
     H_EA = h_EA*excess_Air
 
     h_s = flueMassicHeatContent(CO2_formed, H2O_formed_EAcorrected, N2_formed, excess_Air, Texit_flue)
-    h_r =  radiationLoss(radiation_loss_pc, h_L)
+    h_r =  radiationLoss(loss_radiation, h_L)
     Cp_a = 1005
 
     delh_a = Cp_a*(Ta-Td)*total_air
@@ -62,8 +67,9 @@ def calculate(doc_original):
 
 
 
-    doc['result'].update({'MW':{'_val' : str(roundit(MW)), '_dim':'molecularMass'}})
+    doc['result'].update({'MW':{'_val' : format(MW,'0.5f'), '_dim':'molecularMass'}})
     doc['result'].update({'h_L':{'_val' : str(roundit(h_L)), '_dim':'specificEnergy'}})
+    doc['result'].update({'h_H':{'_val' : str(roundit(h_H)), '_dim':'specificEnergy'}})
     doc['result'].update({'Cp_f':{'_val' : str(roundit(Cp_f)), '_dim':'specificHeat'}})
     doc['result'].update({'air_reqd':{'_val' : str(roundit(air_reqd))}})
     doc['result'].update({'CO2_formed':{'_val' : str(roundit(CO2_formed))}})
