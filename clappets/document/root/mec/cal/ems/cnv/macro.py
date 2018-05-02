@@ -71,13 +71,19 @@ def calculate(doc_original):
 
 
     # check if oxygen correction is to be applied
-    if (oxygen_correction=='yes'):
-        O2_measured = parseFloat(doc['input']['O2_measured']['_val'])
-        O2_reference = parseFloat(doc['input']['O2_reference']['_val'])
-        O2_measured_dry = O2_measured*Fm
-        Fo = (20.9 - O2_reference)/(20.9 - O2_measured_dry)
-    else:
-        Fo = 1
+    try:
+        if (oxygen_correction=='yes'):
+            O2_measured = parseFloat(doc['input']['O2_measured']['_val'])
+            O2_reference = parseFloat(doc['input']['O2_reference']['_val'])
+            O2_measured_dry = O2_measured*Fm
+            Fo = (20.9 - O2_reference)/(20.9 - O2_measured_dry)
+        else:
+            O2_measured_dry = nan
+            Fo = 1
+    except Exception as e:
+        Fo = nan
+        O2_measured_dry = nan 
+
 
     concentration_dry_corrected = concentration_dry*Fo
 

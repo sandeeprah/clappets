@@ -312,7 +312,7 @@ emissions convert ppmv mg/Nm3 mg/Sm3 oxygen wet dry basis reference
         </td>
         <td></td>
       </tr>
-      <tr>
+      <tr v-show="oxygen_correction=='yes'">
         <td>2.4</td>
         <td colspan="5">
           <span class="w20">O2 measured Dry</span>

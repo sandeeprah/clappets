@@ -76,6 +76,7 @@ class docInput(Schema):
         value = data[fName]
         vd.xNumber(value, fName)
         vd.xGrtThanEq(value, 0, fName)
+        vd.xLessThan(value, 100, fName)
 
     @validates_schema()
     def check_oxygen_correction(self, data):
