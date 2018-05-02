@@ -100,6 +100,16 @@ def calc_mechanical_noise_map():
 def calc_mechanical_noise_sum():
     return render_document("mec","cal","nos","sum")
 
+
+@app.route('/calculations/mechanical/emissions/conversions/')
+def calc_mechanical_emission_conversions():
+    return render_document("mec","cal","ems","cnv")
+
+@app.route('/calculations/mechanical/emissions/gas-combustion-SOx/')
+def calc_mechanical_emission_gas_combustion():
+    return render_document("mec","cal","ems","cmg")
+
+
 @app.route('/calculations/mechanical/piping/pipe-dimensions/')
 def calc_mechanical_piping_pipe_dimensions():
     return render_document("mec","cal","pip","sch")
