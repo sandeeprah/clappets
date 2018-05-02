@@ -67,22 +67,25 @@ def calculate(doc_original):
         Fm = 1
 
 
+    concentration_dry = concentration_wet*Fm
+
 
     # check if oxygen correction is to be applied
     if (oxygen_correction=='yes'):
         O2_measured = parseFloat(doc['input']['O2_measured']['_val'])
         O2_reference = parseFloat(doc['input']['O2_reference']['_val'])
-        Fo = (20.9 - O2_reference)/(20.9 - O2_measured)
+        O2_measured_dry = O2_measured*Fm
+        Fo = (20.9 - O2_reference)/(20.9 - O2_measured_dry)
     else:
         Fo = 1
 
-    concentration_dry = concentration_wet*Fm
     concentration_dry_corrected = concentration_dry*Fo
 
     doc['result'].update({'concentration_wet':{'_val' : str(roundit(concentration_wet))}})
     doc['result'].update({'units':{'_val' : to_units}})
     doc['result'].update({'Fm':{'_val' : str(roundit(Fm))}})
     doc['result'].update({'concentration_dry':{'_val' : str(roundit(concentration_dry))}})
+    doc['result'].update({'O2_measured_dry':{'_val' : str(roundit(O2_measured_dry))}})
     doc['result'].update({'Fo':{'_val' : str(roundit(Fo))}})
     doc['result'].update({'concentration_dry_corrected':{'_val' : str(roundit(concentration_dry_corrected))}})
 

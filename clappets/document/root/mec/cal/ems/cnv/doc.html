@@ -312,14 +312,13 @@ emissions convert ppmv mg/Nm3 mg/Sm3 oxygen wet dry basis reference
         </td>
         <td></td>
       </tr>
-
       <tr>
         <td>2.4</td>
         <td colspan="5">
-          <span class="w20">Oxygen Correction Factor</span>
-          <span class="w8">F<sub>o</sub></span>
-          <span class="w4 result">[[ retSilent(doc, ['result', 'Fo', '_val']) ]]</span>
-          <span class="w4"></span>
+          <span class="w20">O2 measured Dry</span>
+          <span class="w8">O<sub>2_dry</sub></span>
+          <span class="w4 result">[[ retSilent(doc, ['result', 'O2_measured_dry', '_val']) ]]</span>
+          <span class="w4"> [[ retSilent(doc, ['result', 'units', '_val']) ]] </span>
         </td>
         <td colspan="3">
           <p class="has-text-info">Refer Note-4</p>
@@ -329,13 +328,26 @@ emissions convert ppmv mg/Nm3 mg/Sm3 oxygen wet dry basis reference
       <tr>
         <td>2.5</td>
         <td colspan="5">
-          <span class="w20">Concentration Dry & O2 Corrected</span>
-          <span class="w8">C<sub>dry_O2corr</sub></span>
+          <span class="w20">Oxygen Correction Factor</span>
+          <span class="w8">F<sub>o</sub></span>
+          <span class="w4 result">[[ retSilent(doc, ['result', 'Fo', '_val']) ]]</span>
+          <span class="w4"></span>
+        </td>
+        <td colspan="3">
+          <p class="has-text-info">Refer Note-5</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>2.6</td>
+        <td colspan="5">
+          <span class="w20"><b>Concentration Dry & O2 Corrected</b></span>
+          <span class="w8"><b>C<sub>dry_O2corr</sub></b></span>
           <span class="w4 result">[[ retSilent(doc, ['result', 'concentration_dry_corrected', '_val']) ]]</span>
           <span class="w4"> [[ retSilent(doc, ['result', 'units', '_val']) ]] </span>
         </td>
         <td colspan="3">
-          <p class="has-text-info">Refer Note-5</p>
+          <p class="has-text-info">Refer Note-6</p>
         </td>
         <td></td>
       </tr>
@@ -364,7 +376,14 @@ emissions convert ppmv mg/Nm3 mg/Sm3 oxygen wet dry basis reference
       <tr>
         <td></td>
         <td colspan="8">
-          <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Concentration(mg/Sm3) = Concentration(mg/Nm3)*(273.15/Tstandard), where Tstandard is as specified by regulation</span>
+          <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MW for NOx (as NO<sub>2</sub>) is 46.0, SOx (as SO<sub>2</sub>) is 64.1, CO is 28.01</span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td colspan="8">
+          <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Concentration(mg/Sm3) = Concentration(mg/Nm3)*(273.15/Tstandard), where Tstandard is as specified by regulation</span>
         </td>
         <td></td>
       </tr>
@@ -385,14 +404,21 @@ emissions convert ppmv mg/Nm3 mg/Sm3 oxygen wet dry basis reference
       <tr>
         <td></td>
         <td colspan="8">
-          <span>&nbsp;&nbsp;4) Oxygen Correction Factor (F<sub>o</sub>) = (20.9 - O<sub>2</sub> reference%)/(20.9 - O<sub>2</sub> measured%)</span>
+          <span>&nbsp;&nbsp;4) O2 measured Dry (O<sub>2_dry</sub>) = O2 measured(O<sub>2</sub>)*F<sub>m</sub></span>
         </td>
         <td></td>
       </tr>
       <tr>
         <td></td>
         <td colspan="8">
-          <span>&nbsp;&nbsp;5) Concentration Dry and Corrected (C<sub>dry_O2corr</sub>) = Concentration Dry(C<sub>dry</sub>)*F<sub>o</sub></span>
+          <span>&nbsp;&nbsp;5) Oxygen Correction Factor (F<sub>o</sub>) = (20.9 - O<sub>2</sub> reference%)/(20.9 - O<sub>2</sub> measured Dry%)</span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td colspan="8">
+          <span>&nbsp;&nbsp;6) Concentration Dry and Corrected (C<sub>dry_O2corr</sub>) = Concentration Dry(C<sub>dry</sub>)*F<sub>o</sub></span>
         </td>
         <td></td>
       </tr>
