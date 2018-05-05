@@ -45,8 +45,6 @@ def gasCombustion(gasfuel, fuel_as='mole_percent', flue_as='mole_per_fuelmole', 
         N2_formed_total = N2_formed_total + moles*N2_moles + moles*air_moles*(1+excessAir/100)*0.791
 
 
-    print("Mass total is {}".format(mass_total))
-    print("Moles total is {}".format(moles_total))
     MW_fuel = mass_total/moles_total
     air_reqd_total = (1+excessAir/100)*theoritical_air_reqd_total
     O2_excess = theoritical_air_reqd_total*(excessAir/100)*0.209

@@ -166,6 +166,14 @@ def calc_electrical_cables():
 def calc_electrical_cables_iec_sizing():
     return render_document("ele","cal","cab","iec")
 
+@app.route('/calculations/electrical/ups-battery/ups-sizing/')
+def calc_electrical_ups_sizing():
+    return render_document("ele","cal","upb","ups")
+
+@app.route('/calculations/electrical/ups-battery/battery-sizing/')
+def calc_electrical_battery_sizing():
+    return render_document("ele","cal","upb","bat")
+
 @app.route('/calculations/electrical/miscellaneous/')
 def calc_electrical_miscellaneous_index():
     return render_template("calc/electrical/utilities/index.html")
