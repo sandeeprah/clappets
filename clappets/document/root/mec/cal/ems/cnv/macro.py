@@ -42,9 +42,12 @@ def calculate(doc_original):
             concentration_base = concentration_measured
         if (from_units=='mg/Sm3'):
             Ts = parseFloat(doc['input']['Ts']['_val'])
+            Ps = parseFloat(doc['input']['Ps']['_val'])
             Tn = 273.15
+            Pn = 101325
             Ft = Ts/Tn
-            concentration_base = concentration_measured*Ft
+            Fp = Pn/Ps
+            concentration_base = concentration_measured*Ft*Fp
 
         if (to_units=='ppmv'):
             concentration_wet = concentration_base/Ku
@@ -52,9 +55,12 @@ def calculate(doc_original):
             concentration_wet = concentration_base
         if (to_units=='mg/Sm3'):
             Ts = parseFloat(doc['input']['Ts']['_val'])
+            Ps = parseFloat(doc['input']['Ps']['_val'])
             Tn = 273.15
+            Pn = 101325
             Ft = Tn/Ts
-            concentration_wet = concentration_base*Ft
+            Fp = Ps/Pn
+            concentration_wet = concentration_base*Ft*Fp
     else:
         concentration_wet = concentration_measured
 
@@ -82,7 +88,7 @@ def calculate(doc_original):
             Fo = 1
     except Exception as e:
         Fo = nan
-        O2_measured_dry = nan 
+        O2_measured_dry = nan
 
 
     concentration_dry_corrected = concentration_dry*Fo

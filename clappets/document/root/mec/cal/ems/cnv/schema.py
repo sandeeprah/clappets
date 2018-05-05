@@ -14,6 +14,7 @@ class docInput(Schema):
     O2_reference = fields.Nested(sXfld)
     to_units = fields.Nested(sXfld)
     Ts = fields.Nested(sXfld)
+    Ps = fields.Nested(sXfld)
 
     class Meta:
         ordered = True
@@ -143,6 +144,30 @@ class docInput(Schema):
         value = data[fName]
         vd.xNumber(value, fName)
         vd.xDim(value,['temperature'],fName)
+
+    @validates_schema()
+    def check_Ps(self, data):
+        if ('from_units' not in data):
+            return
+        if ('to_units' not in data):
+            return
+
+        Ps_reqd = False
+        if (data['from_units']['_val'] =='mg/Sm3'):
+            Ps_reqd = True
+        if (data['to_units']['_val'] =='mg/Sm3'):
+            Ps_reqd = True
+        if ((data['from_units']['_val'] =='mg/Sm3') and (data['to_units']['_val'] =='mg/Sm3')):
+            Ps_reqd = False
+
+        if (not Ps_reqd):
+            return
+
+        fName = 'Ps'
+        vd.xRequired(data,fName,fName)
+        value = data[fName]
+        vd.xNumber(value, fName)
+        vd.xDim(value,['pressure'],fName)
 
 class docResult(Schema):
     concentration = fields.Nested(sXfld)

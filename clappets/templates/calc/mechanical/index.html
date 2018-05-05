@@ -2,10 +2,12 @@
 {% block title %}Mechanical Engineering Calculations{% endblock title %}
 
 {% block meta_description %}
-Perform mechanial engineering calculations related to pumps, turbines, noise, piping and psychrometry.
+Perform mechanial engineering calculations related to pumps, turbines, noise, piping, flare, fired heater, combustion, emissions and psychrometry.
 {% endblock meta_description %}
 
-{% block meta_keywords %}mechanical engineering calculation pumps turbines noise piping psychrometry{% endblock meta_keywords %}
+{% block meta_keywords %}
+mechanical engineering calculation pumps turbines noise piping psychrometry flare fired heater combustion emissions
+{% endblock meta_keywords %}
 
 {% block content %}
 
@@ -176,14 +178,12 @@ Perform mechanial engineering calculations related to pumps, turbines, noise, pi
               Convert emissions from ppm units to mg/m3 units, from wet basis to dry basis and perform corrections to reference Oxygen levels from measured Oxygen levels.
             </p>
           </li>
-          <!--
           <li>
-            <a href="emissions/gas-combustion-SOx/">Estimation of SO2 emissions in combustion of sulphur bound gaseous fuels</a>
+            <a href="emissions/gas-combustion-SOx/">Combustion and SOx emissions</a>
             <p>
-              Calculate estimated SOx emissions as SO2, when sulphur containing gaseous fuels are burnt.
+              Perform combustion calculations with full flexibility. Fuel can be specified in mole percent or in mass percent. Flue gas composition can be obtained, in 'mole per mole of fuel' or in 'kg per kg of fuel'. The calculations also calculate the SOx emissions in the required units, while correcting for moisture and oxygen levels. The program also provides the flexibility to set the standard conditions for reporting of emission levels if 'mg/Sm3' are chosen as the emission units.
             </p>
           </li>
-        -->
         </ul>
       </div>
 

@@ -39,26 +39,56 @@ class schema_fluidfraction(Schema):
 
 
 class docInput(Schema):
-    Ta = fields.Nested(sXfld)
-    RH = fields.Nested(sXfld)
-    flue_O2 = fields.Nested(sXfld)
-    sampling_basis = fields.Nested(sXfld)
-    loss_radiation = fields.Nested(sXfld)
-    Texit = fields.Nested(sXfld)
-    composition_type = fields.Nested(sXfld)
+    fuel_as = fields.Nested(sXfld)
+    flue_as = fields.Nested(sXfld)
     gasfuel = fields.Nested(schema_fluidfraction, many=True, required=True)
-    Tf = fields.Nested(sXfld)
+    emission_units = fields.Nested(sXfld)
+    Tair = fields.Nested(sXfld)
+    Pair = fields.Nested(sXfld)
+    RH = fields.Nested(sXfld)
+    excess_air = fields.Nested(sXfld)
+    Ts = fields.Nested(sXfld)
+    Ps = fields.Nested(sXfld)
+    O2_reference = fields.Nested(sXfld)
 
     class Meta:
         ordered = True
 
     @validates_schema()
-    def check_Ta(self, data):
-        fName = 'Ta'
+    def check_fuel_as(self, data):
+        fName = 'fuel_as'
+        vd.xRequired(data,fName,fName)
+        value = data[fName]
+        vd.xString(value, fName)
+        fuel_as_options = ["mole_percent","mass_percent"]
+        vd.xChoice(value, fuel_as_options, fName)
+
+    @validates_schema()
+    def check_flue_as(self, data):
+        fName = 'flue_as'
+        vd.xRequired(data,fName,fName)
+        value = data[fName]
+        vd.xString(value, fName)
+        fuel_as_options = ["mole_per_fuelmole","mass_per_fuelmass"]
+        vd.xChoice(value, fuel_as_options, fName)
+
+    @validates_schema()
+    def check_Tair(self, data):
+        fName = 'Tair'
         vd.xRequired(data,fName,fName)
         value = data[fName]
         vd.xNumber(value, fName)
         vd.xDim(value, ['temperature'], fName)
+
+    @validates_schema()
+    def check_Pair(self, data):
+        fName = 'Pair'
+        vd.xRequired(data,fName,fName)
+        value = data[fName]
+        vd.xNumber(value, fName)
+        vd.xDim(value, ['pressure'], fName)
+        vd.xGrtThanEq(value, 0, fName)
+
 
     @validates_schema()
     def check_RH(self, data):
@@ -70,47 +100,46 @@ class docInput(Schema):
         vd.xLessThanEq(value, 100, fName)
 
     @validates_schema()
-    def check_flue_O2(self, data):
-        fName = 'flue_O2'
+    def check_excess_air(self, data):
+        fName = 'excess_air'
         vd.xRequired(data,fName,fName)
         value = data[fName]
         vd.xNumber(value, fName)
         vd.xGrtThanEq(value, 0, fName)
 
     @validates_schema()
-    def check_sampling_basis(self, data):
-        fName = 'sampling_basis'
+    def check_emission_units(self, data):
+        fName = 'emission_units'
         vd.xRequired(data,fName,fName)
         value = data[fName]
         vd.xString(value, fName)
-        sampling_basis_options = ["wet","dry"]
-        vd.xChoice(value, sampling_basis_options, fName)
+        unit_options = ["ppmv","mg/Nm3","mg/Sm3"]
+        vd.xChoice(value, unit_options, fName)
 
     @validates_schema()
-    def check_loss_radiation(self, data):
-        fName = 'loss_radiation'
-        vd.xRequired(data,fName,fName)
-        value = data[fName]
-        vd.xNumber(value, fName)
-        vd.xGrtThanEq(value, 0, fName)
-        vd.xLessThanEq(value, 100, fName)
-
-    @validates_schema()
-    def check_Texit(self, data):
-        fName = 'Texit'
+    def check_Ts(self, data):
+        fName = 'Ts'
         vd.xRequired(data,fName,fName)
         value = data[fName]
         vd.xNumber(value, fName)
         vd.xDim(value, ['temperature'], fName)
 
     @validates_schema()
-    def check_composition_type(self, data):
-        fName = 'composition_type'
+    def check_Ps(self, data):
+        fName = 'Ps'
         vd.xRequired(data,fName,fName)
         value = data[fName]
-        vd.xString(value, fName)
-        composition_type_options = ["mole_percent","mass_percent"]
-        vd.xChoice(value, composition_type_options, fName)
+        vd.xNumber(value, fName)
+        vd.xDim(value, ['pressure'], fName)
+        vd.xGrtThan(value, 0, fName)
+
+    @validates_schema()
+    def check_O2_reference(self, data):
+        fName = 'O2_reference'
+        vd.xRequired(data,fName,fName)
+        value = data[fName]
+        vd.xNumber(value, fName)
+        vd.xGrtThanEq(value, 0, fName)
 
 
     @validates_schema()
@@ -125,19 +154,12 @@ class docInput(Schema):
             if (sigma_y <=0):
                 raise ValidationError('No gas composition entered. Total > 0 reqd','schema_gasfuel')
 
-    @validates_schema()
-    def check_Tf(self, data):
-        fName = 'Tf'
-        vd.xRequired(data,fName,fName)
-        value = data[fName]
-        vd.xNumber(value, fName)
-        vd.xDim(value, ['temperature'], fName)
-
 
 
 class docResult(Schema):
-    MW = fields.Nested(sXfld)
-    LHV = fields.Nested(sXfld)
+    concentration = fields.Nested(sXfld)
+    units = fields.Nested(sXfld)
+    O2_reference = fields.Nested(sXfld)
 
     class Meta:
         ordered = True

@@ -208,7 +208,7 @@ emissions convert ppmv mg/Nm3 mg/Sm3 oxygen wet dry basis reference
         </td>
         <td></td>
       </tr>
-      <tr v-show="get_Ts">
+      <tr v-show="get_Std">
         <td>1.10</td>
         <td colspan="4">
           <span class="w14">Temperature @ stand.condns</span>
@@ -220,7 +220,7 @@ emissions convert ppmv mg/Nm3 mg/Sm3 oxygen wet dry basis reference
         </td>
         <td></td>
       </tr>
-      <tr v-show="get_Ts">
+      <tr v-show="get_Std">
         <td></td>
         <td colspan="8">
           <span class="w2"></span>
@@ -228,6 +228,27 @@ emissions convert ppmv mg/Nm3 mg/Sm3 oxygen wet dry basis reference
         </td>
         <td></td>
       </tr>
+      <tr v-show="get_Std">
+        <td>1.11</td>
+        <td colspan="4">
+          <span class="w14">Pressure @ stand.condns</span>
+          <span class="w6"><input class="inp" type="number" type="number" v-model="doc['input']['Ps']['_val']"/></span>
+          <span class="w6">[[gUL('pressure')]]</span>
+        </td>
+        <td colspan="4">
+          <p class="help is-danger" v-for="err in getErrs(['schema','input','Ps'])">[[err]]</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr v-show="get_Std">
+        <td></td>
+        <td colspan="8">
+          <span class="w2"></span>
+          <span class="has-text-info">Reference condition of pressure for <i>mg/Sm3</i> units. Check as per statutory regulations</span>
+        </td>
+        <td></td>
+      </tr>
+
       </tbody>
 
       <tbody class="hideprint">
@@ -383,7 +404,14 @@ emissions convert ppmv mg/Nm3 mg/Sm3 oxygen wet dry basis reference
       <tr>
         <td></td>
         <td colspan="8">
-          <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Concentration(mg/Sm3) = Concentration(mg/Nm3)*(273.15/Tstandard), where Tstandard is as specified by regulation</span>
+          <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Concentration(mg/Sm3) = Concentration(mg/Nm3)*(273.15/Tstandard)*(Pstandard/101.325)</span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td colspan="8">
+          <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>mg/Nm3</b> is defined at T=273.15K, P = 101.325kPa. <b>mg/Sm3</b> is defined at Tstandard(K) and Pstandard(kPa) as per regulations.</span>
         </td>
         <td></td>
       </tr>
@@ -458,20 +486,20 @@ emissions convert ppmv mg/Nm3 mg/Sm3 oxygen wet dry basis reference
             var oc = this.doc['input']['oxygen_correction']['_val'];
             return oc;
           },
-          get_Ts : function(){
+          get_Std : function(){
             frm = this.doc['input']['from_units']['_val'];
             to = this.doc['input']['to_units']['_val'];
-            Ts_reqd = false;
+            Std_reqd = false;
             if (frm=='mg/Sm3'){
-              Ts_reqd = true;
+              Std_reqd = true;
             }
             if (to=='mg/Sm3'){
-              Ts_reqd = true;
+              Std_reqd = true;
             }
             if ((frm=='mg/Sm3') && (to=='mg/Sm3')){
-              Ts_reqd = false;
+              Std_reqd = false;
             }
-            return Ts_reqd
+            return Std_reqd
           }
 
         },
