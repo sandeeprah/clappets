@@ -1,0 +1,55 @@
+{
+  "_id": "",
+  "meta": {
+    "projectID": "0000",
+    "project_title": "Local",
+    "discipline" : "ele",
+    "docCategory": "cal",
+    "docSubCategory": "upb",
+    "docClass": "bat",
+    "docClass_title": "Battery Sizing Calculation",
+    "docInstance": "1",
+    "docInstance_title": "Battery Sizing Calculation",
+    "doc_no":"0000-ELE-CAL-UPB-BAT-01",
+    "rev": "A",
+    "date":"",
+    "status": "",
+    "performer": "",
+    "reviewer": "",
+    "approver": ""
+  },
+
+  "units": {
+  },
+
+  "input": {
+    "sizing_method" : {"_val": "constant_power"},
+    "Vmin" : {"_val": "210"},
+    "Vmax" : {"_val": "270"},
+    "Vnominal" : {"_val": "240"},
+    "charge_method" : {"_val": "single_level"},
+    "load_profile" : [
+      {"load_kW":50, "duration_min":30},
+      {"load_kW":20, "duration_min":40},
+      {"load_kW":10, "duration_min":50}
+      ],
+    "Vfloat" : {"_val": "269.8"},
+    "Vcell_final" : {"_val": "1.105"},
+    "Tmax" : {"_val": "40"},
+    "Tmin" : {"_val": "5"},
+    "Tnominal" : {"_val": "25"},
+    "design_margin" : {"_val": "1.0"},
+    "aging_factor" : {"_val": "1.1"},
+    "cell_range" : {"_val": "VTX1M"},
+    "Ncell" : {"_val": "190"}
+  },
+
+  "result": {
+    "AH_uncorrected" : {"_val": "554.61"},
+    "AH_corrected" : {"_val": "610.07"},
+    "Cell_selected" : {"_val": "VTX 1M 640"},
+    "AH_selected" : {"_val": "640"}
+  },
+
+  "errors": []
+}
