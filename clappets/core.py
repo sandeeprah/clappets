@@ -91,6 +91,22 @@ class validator:
         else:
             raise ValidationError('<= {} reqd'.format(setVal), fName)
 
+
+    def fNumber(value, fName=None):
+        try:
+            val = float(value)
+            return True
+        except Exception:
+            raise ValidationError('invalid number', fName)
+
+    def fInteger(value, fName=None):
+        try:
+            val = int(value)
+            return True
+        except Exception:
+            raise ValidationError('invalid integer', fName)
+
+
     def fGrtThan(value, setVal, fName=None):
         val = float(value)
         if (val > setVal):

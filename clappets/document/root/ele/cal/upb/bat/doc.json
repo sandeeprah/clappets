@@ -7,9 +7,9 @@
     "docCategory": "cal",
     "docSubCategory": "upb",
     "docClass": "bat",
-    "docClass_title": "Battery Sizing Calculation",
+    "docClass_title": "Ni-Cad Battery Sizing Calculation(IEEE 1115)",
     "docInstance": "1",
-    "docInstance_title": "Battery Sizing Calculation",
+    "docInstance_title": "Ni-Cad Battery Sizing Calculation(IEEE 1115)",
     "doc_no":"0000-ELE-CAL-UPB-BAT-01",
     "rev": "A",
     "date":"",
@@ -23,32 +23,37 @@
   },
 
   "input": {
-    "sizing_method" : {"_val": "constant_power"},
-    "Vmin" : {"_val": "210"},
-    "Vmax" : {"_val": "270"},
-    "Vnominal" : {"_val": "240"},
-    "charge_method" : {"_val": "single_level"},
-    "load_profile" : [
-      {"load_kW":50, "duration_min":30},
-      {"load_kW":20, "duration_min":40},
-      {"load_kW":10, "duration_min":50}
+    "Vmin" : {"_val": "105"},
+    "Vmax" : {"_val": "140"},
+    "Vnominal" : {"_val": "120"},
+    "loads_known" : [
+      {"load_desc":"L1", "load":"40",  "unit" : "A",  "begin":"0",     "end":"180"},
+      {"load_desc":"L2", "load":"280", "unit" : "A",  "begin":"0",     "end":"0.083"},
+      {"load_desc":"L3", "load":"60",  "unit" : "A",  "begin":"0.083", "end":"120"},
+      {"load_desc":"L4", "load":"100", "unit" : "A",  "begin":"30",    "end":"120"},
+      {"load_desc":"L5", "load":"80",  "unit" : "A",  "begin":"30",    "end":"60"},
+      {"load_desc":"L6", "load":"80",  "unit" : "A",  "begin":"179.41","end":"180"}
       ],
-    "Vfloat" : {"_val": "269.8"},
-    "Vcell_final" : {"_val": "1.105"},
+    "loads_random" : [
+      {"load_desc":"L7", "load":"100",  "unit" : "A",  "duration":"1"}
+      ],
+
+    "Vc_max" : {"_val": "1.47"},
     "Tmax" : {"_val": "40"},
-    "Tmin" : {"_val": "5"},
+    "Tmin" : {"_val": "0"},
     "Tnominal" : {"_val": "25"},
-    "design_margin" : {"_val": "1.0"},
-    "aging_factor" : {"_val": "1.1"},
-    "cell_range" : {"_val": "VTX1M"},
-    "Ncell" : {"_val": "190"}
+    "design_margin" : {"_val": "1.1"},
+    "aging_factor" : {"_val": "1.25"},
+    "cell_range" : {"_val": "M"},
+    "Ncell_basis" : {"_val": "max_possible"},
+    "Ncell_manual" : {"_val": "92"}
   },
 
   "result": {
-    "AH_uncorrected" : {"_val": "554.61"},
-    "AH_corrected" : {"_val": "610.07"},
-    "Cell_selected" : {"_val": "VTX 1M 640"},
-    "AH_selected" : {"_val": "640"}
+    "AH_uncorrected" : {"_val": ""},
+    "AH_corrected" : {"_val": ""},
+    "Cell_selected" : {"_val": ""},
+    "AH_selected" : {"_val": ""}
   },
 
   "errors": []

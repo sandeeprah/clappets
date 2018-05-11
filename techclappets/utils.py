@@ -19,7 +19,7 @@ def linarray_interp(x,y,x_interp):
 def getindex(ascending_sorted_list, searchval):
     '''
     Given a list which is sorted in ascending order and a float value (searchval), this function returns the index position of the first item encountered in the list,
-    which is just lower or equal to searchval. In other words, the item at position index+1 would be the first item higher than searchval.
+    which is just lower or equal to searchval and the index just next higher to it. In other words, the item at position index+1 would be the first item higher than searchval.
 
     arguments:
     ----------
@@ -28,7 +28,8 @@ def getindex(ascending_sorted_list, searchval):
 
     returns:
     -------
-    integer index in list where item is just lower or equal to searchval.
+    integer index_lower in list where item is just lower or equal to searchval.
+    integer index_higher in list where item is just higher to searchval.
     '''
 
     index = 0
@@ -61,7 +62,6 @@ def linear_interp(x, x1, y1, x2, y2):
     --------
     y : float value given by equation y = y1 + (y2-y1)*(x-x1)/(x2-x1)
     '''
-
     y = y1 + (y2-y1)*(x-x1)/(x2-x1)
     return y
 
