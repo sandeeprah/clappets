@@ -9,12 +9,13 @@ def getCellSize(amp_data_known, amp_data_random, cell_range, Veod, T, design_mar
     size = 0
     AH_calculated = getInitialAH(amp_data_known, amp_data_random)
     cellAh_selected, strings = selectCellAh(AH_calculated, cell_range)
+#    print("Cell Ah selected is {}".format(cellAh_selected))
     iterate = True
     iteration = 0
 
     while (iterate):
         iteration = iteration + 1
-        print("iteration is {}".format(iteration))
+#        print("iteration is {}".format(iteration))
         # no of sections is the same as the number of Periods hence
         N = len(amp_data_known)
         #loop through all Sections to get Fs_max
@@ -38,7 +39,7 @@ def getCellSize(amp_data_known, amp_data_random, cell_range, Veod, T, design_mar
 #                print("t is {}".format(t))
                 Kt = getKt(cellAh_selected, t, cell_range, Veod)
 #                print("Kt is {}".format(Kt))
-                Td = getTd(T, t)
+                Td = getTd(T, t, cell_range)
 #                print("Td is {}".format(Td))
                 Fs = Fs + delA*Kt*Td
 
@@ -52,7 +53,7 @@ def getCellSize(amp_data_known, amp_data_random, cell_range, Veod, T, design_mar
             t = row['duration']
             A =  row['A']/float(strings)
             Kt = getKt(cellAh_selected, t, cell_range, Veod)
-            Td = getTd(T, t)
+            Td = getTd(T, t, cell_range)
             Fs_random = Fs_random + Kt*A*Td
 #        print("Fs_random is {}".format(Fs_random))
 
@@ -169,7 +170,7 @@ def selectCellAh(calculatedAH, cell_range):
     cellAh = -1
     if (cell_range=='L'):
         data_file = "L_Cell_1000mV_EOD.csv"
-    elif (cell_range=='L'):
+    elif (cell_range=='H'):
         data_file = "H_Cell_1000mV_EOD.csv"
     else:
         data_file = "M_Cell_1000mV_EOD.csv"
@@ -233,6 +234,80 @@ def getKt(AH_Rating, time, cell_range, Veod):
     return Kt
 
 
+def getTd(temperature, time, cell_range):
+    if (temperature > 25):
+        Td = 1
+        return Td
+
+    if (cell_range =='L'):
+        data_file = 'L_cell_deration.csv'
+        time_values = [60, 300]
+        if time < 60:
+            time = 60
+        if time > 300:
+            time = 300
+
+        index_lower, index_higher = getindex(time_values, time)
+        time_lower = time_values[index_lower]
+        time_higher = time_values[index_higher]
+    elif(cell_range=='H'):
+        data_file='H_cell_deration.csv'
+        time_values = [1, 30, 300]
+        if time < 1:
+            time = 1
+        if time > 300:
+            time = 300
+        index_lower, index_higher = getindex(time_values, time)
+        time_lower = time_values[index_lower]
+        time_higher = time_values[index_higher]
+    else:
+        data_file ='M_cell_deration.csv'
+        time_values = [15, 60, 300]
+        if time < 15:
+            time = 15
+        if time > 300:
+            time = 300
+        index_lower, index_higher = getindex(time_values, time)
+        time_lower = time_values[index_lower]
+        time_higher = time_values[index_higher]
+
+    '''
+    data_file = "T_derate.csv"
+    time_values = [10, 30, 60, 180, 300]
+    '''
+
+    T_lower = "T_"+str(time_values[index_lower])
+    C_lower = "C_"+str(time_values[index_lower])
+
+    T_higher = "T_"+str(time_values[index_higher])
+    C_higher = "C_"+str(time_values[index_higher])
+    try:
+        THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+        data_file_path = os.path.join(THIS_FOLDER, data_file)
+        rates_df = pd.read_csv(data_file_path)
+        rates_df = rates_df.set_index('S_No')
+        T_lower_values = rates_df[T_lower].tolist()
+        C_lower_values = rates_df[C_lower].tolist()
+        deration_lower = linarray_interp(T_lower_values, C_lower_values, temperature)
+
+        T_higher_values = rates_df[T_higher].tolist()
+        C_higher_values = rates_df[C_higher].tolist()
+        deration_higher = linarray_interp(T_higher_values, C_higher_values, temperature)
+
+        deration = linear_interp(time, time_lower, deration_lower, time_higher, deration_higher)
+
+    except Exception as e:
+        raise e
+        raise Exception('Td could not be calculated')
+
+    Td = (1/deration)
+
+    return Td
+
+
+
+
+'''
 def getTd(temperature, time):
     deration = 1
     data_file = "T_derate.csv"
@@ -269,6 +344,8 @@ def getTd(temperature, time):
     Td = (100/deration)
 
     return Td
+
+    '''
 
 def readDischargeRate(data_file, AH_Rating, time):
     try:
