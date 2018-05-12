@@ -2,6 +2,7 @@ import os
 from math import *
 import pandas as pd
 from collections import OrderedDict
+from clappets.utils import roundit
 from techclappets.utils import getindex, linear_interp, linarray_interp
 
 
@@ -78,63 +79,58 @@ def getCellSize(amp_data_known, amp_data_random, cell_range, Veod, T, design_mar
 
 
 def getAmpDataKnown(loads_known, Vmin):
-        time = []
-        for ld in loads_known:
-            try:
-                t= float(ld['begin'])
-                if (t not in time):
-                    time.append(t)
-            except:
-                pass
+    time = []
+    for ld in loads_known:
+        try:
+            t= float(ld['begin'])
+            if (t not in time):
+                time.append(t)
+        except:
+            pass
 
-            try:
-                t= float(ld['end'])
-                if (t not in time):
-                    time.append(t)
-            except:
-                pass
+        try:
+            t= float(ld['end'])
+            if (t not in time):
+                time.append(t)
+        except:
+            pass
 
-        time.sort()
-        n_period = len(time)-1
-        cell_data = []
-        for i in range(0, n_period):
-            period_begins_at = time[i]
-            period_ends_at = time[i+1]
-            period_midval = (period_begins_at + period_ends_at)/2
+    time.sort()
+    n_period = len(time)-1
+    cell_data = []
 
-            duration = period_ends_at - period_begins_at
-            cell_data_entry = OrderedDict()
-            cell_data_entry['period'] = i+1
-            cell_data_entry['duration'] = duration
-            #cell_data_entry['begin'] = period_begins_at
-            #cell_data_entry['end'] = period_ends_at
-            cell_data_entry['A']= getInstantAmpereLoad(loads_known, period_midval, Vmin)
-            cell_data.append(cell_data_entry)
+    df = pd.DataFrame(columns=['period','duration','A'])
+    df = df.set_index('period')
 
-        df = pd.DataFrame(cell_data)
-        df = df.set_index('period')
-        return df
+    for i in range(0, n_period):
+        period_begins_at = time[i]
+        period_ends_at = time[i+1]
+        period_midval = (period_begins_at + period_ends_at)/2
+        duration = period_ends_at - period_begins_at
+        period = i+1
+        A= getInstantAmpereLoad(loads_known, period_midval, Vmin)
+        df.loc[period] = [duration, A]
+    return df
 
 
 def getAmpDataRandom(loads_random, Vmin):
     cell_data=[]
     n = len(loads_random)
+    df = pd.DataFrame(columns=['No.','duration','A'])
+    df = df.set_index('No.')
 
     for index, ld in enumerate(loads_random):
-        cell_data_entry = OrderedDict()
-        cell_data_entry['No.'] = index+1
-        cell_data_entry['duration'] = float(ld['duration'])
+        no = index+1
+        duration = float(ld['duration'])
         if (ld['unit']=='A'):
-            cell_data_entry['A'] = float(ld['load'])
+            A = float(ld['load'])
         elif(ld['unit']=='W'):
-            cell_data_entry['A'] = float(ld['load'])/Vmin
+            A = float(ld['load'])/Vmin
         else:
             raise Exception('Invalid Units')
 
-        cell_data.append(cell_data_entry)
+        df.loc[no] = [duration, A]
 
-    df = pd.DataFrame(cell_data)
-    df = df.set_index('No.')
     return df
 
 
@@ -170,10 +166,12 @@ def selectCellAh(calculatedAH, cell_range):
     cellAh = -1
     if (cell_range=='L'):
         data_file = "L_Cell_1000mV_EOD.csv"
+    elif(cell_range=='M'):
+        data_file = "M_Cell_1000mV_EOD.csv"
     elif (cell_range=='H'):
         data_file = "H_Cell_1000mV_EOD.csv"
     else:
-        data_file = "M_Cell_1000mV_EOD.csv"
+        raise Exception('Invalid choice of cell range')
 
     try:
         THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
@@ -204,12 +202,14 @@ def selectCellAh(calculatedAH, cell_range):
 def getKt(AH_Rating, time, cell_range, Veod):
     Kt = 0
     #data_file = "cell_discharge_rates.csv"
-    if (cell_range=='H'):
-        a = "H_Cell_"
-    elif (cell_range=='L'):
+    if (cell_range=='L'):
         a = "L_Cell_"
-    else:
+    elif (cell_range=='M'):
         a = "M_Cell_"
+    elif (cell_range=='H'):
+        a = "H_Cell_"
+    else:
+        raise Exception('Invalid choice of cell range')
 
     if (Veod<1) or (Veod>1.14):
         raise Exception('End of discharge voltage not in acceptable range (1V to 1.14V). Can not calculate Kt. Check if the no. of cells in series are in permitted range.')
@@ -224,6 +224,8 @@ def getKt(AH_Rating, time, cell_range, Veod):
 
     Veod_lower = Veod_values[index_lower]
     Veod_higher = Veod_values[index_higher]
+
+
     t1_lower, A1_lower, t2_lower, A2_lower = readDischargeRate(data_file_lower, AH_Rating, time)
     t1_higher, A1_higher, t2_higher, A2_higher = readDischargeRate(data_file_higher, AH_Rating, time)
 
@@ -265,7 +267,7 @@ def getTd(temperature, time, cell_range):
         index_lower, index_higher = getindex(time_values, time)
         time_lower = time_values[index_lower]
         time_higher = time_values[index_higher]
-    else:
+    elif(cell_range=='M'):
         data_file ='M_cell_deration.csv'
         time_values = [15, 60, 300]
         if time < 15:
@@ -275,12 +277,13 @@ def getTd(temperature, time, cell_range):
         index_lower, index_higher = getindex(time_values, time)
         time_lower = time_values[index_lower]
         time_higher = time_values[index_higher]
+    else:
+        raise Exception('Failed to calculate Td. Invalid choice of cell range')
 
     '''
     data_file = "T_derate.csv"
     time_values = [10, 30, 60, 180, 300]
     '''
-
     T_lower = "T_"+str(time_values[index_lower])
     C_lower = "C_"+str(time_values[index_lower])
 
@@ -312,46 +315,6 @@ def getTd(temperature, time, cell_range):
 
 
 
-'''
-def getTd(temperature, time):
-    deration = 1
-    data_file = "T_derate.csv"
-    time_values = [10, 30, 60, 180, 300]
-    index_lower, index_higher = getindex(time_values, time)
-    time_lower = time_values[index_lower]
-    time_higher = time_values[index_higher]
-
-
-    T_lower = "T_"+str(time_values[index_lower])
-    C_lower = "C_"+str(time_values[index_lower])
-
-    T_higher = "T_"+str(time_values[index_higher])
-    C_higher = "C_"+str(time_values[index_higher])
-    try:
-        THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
-        data_file_path = os.path.join(THIS_FOLDER, data_file)
-        rates_df = pd.read_csv(data_file_path)
-        rates_df = rates_df.set_index('S_No')
-        T_lower_values = rates_df[T_lower].tolist()
-        C_lower_values = rates_df[C_lower].tolist()
-        deration_lower = linarray_interp(T_lower_values, C_lower_values, temperature)
-
-        T_higher_values = rates_df[T_higher].tolist()
-        C_higher_values = rates_df[C_higher].tolist()
-        deration_higher = linarray_interp(T_higher_values, C_higher_values, temperature)
-
-        deration = linear_interp(time, time_lower, deration_lower, time_higher, deration_higher)
-
-    except Exception as e:
-        raise e
-        raise Exception('Kt could not be calculated')
-
-    Td = (100/deration)
-
-    return Td
-
-    '''
-
 def readDischargeRate(data_file, AH_Rating, time):
     try:
         THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
@@ -374,10 +337,15 @@ def readDischargeRate(data_file, AH_Rating, time):
         t2 = time_values[index_higher]
         A1 = current_values[index_lower]
         A2 = current_values[index_higher]
+        A1 = roundit(A1)
+        A2 = roundit(A2)
+    except KeyError:
+        raise Exception('Error occured while reading cell discharge rates. Ah rating not found in cell range selected.')
+    except TypeError:
+        raise Exception('Error occured while reading cell discharge rates. Time used to obtain cell discharge rate outside defined range for the cell.')
+    except FileNotFoundError:
+        raise Exception('Error occured while reading cell discharge rates. File for cell range selected could not be found. Check if correct cell range and cell End of Discharge values are used.')
     except Exception as e:
-        raise e
-        t1 = nan
-        t2 = nan
-        A1 = nan
-        A2 = nan
+        raise Exception('Error occured while reading cell discharge rates. ' + str(e))
+
     return t1, A1, t2, A2

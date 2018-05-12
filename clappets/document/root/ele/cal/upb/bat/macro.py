@@ -54,6 +54,7 @@ def calculate(doc_original):
 
     Vmin_attained = Veod*Ncell
     amp_data_known  = getAmpDataKnown(loads_known, Vmin)
+    print(amp_data_known)
     amp_data_random = getAmpDataRandom(loads_random, Vmin)
     try:
         Fs_max, Fs_random, Fs_uncorrected, Fs_corrected, cell_selected, strings = getCellSize(amp_data_known, amp_data_random,  cell_range, Veod, Tmin, design_margin, aging_factor)

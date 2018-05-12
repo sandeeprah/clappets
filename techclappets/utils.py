@@ -40,6 +40,8 @@ def getindex(ascending_sorted_list, searchval):
         val = float(item)
         if val > searchval:
             index_lower = index-1
+            if (index_lower < 0 ):
+                index_lower = None
             index_higher = index
             break
         index +=1
@@ -51,7 +53,7 @@ def getindex(ascending_sorted_list, searchval):
         val = ascending_sorted_list[n-1]
         if searchval == val:
             index_lower = n-2
-            index_higher = n-1 
+            index_higher = n-1
 
 
     return index_lower, index_higher
