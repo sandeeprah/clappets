@@ -211,6 +211,9 @@ def getKt(AH_Rating, time, cell_range, Veod):
     else:
         a = "M_Cell_"
 
+    if (Veod<1) or (Veod>1.14):
+        raise Exception('End of discharge voltage not in acceptable range (1V to 1.14V). Can not calculate Kt. Check if the no. of cells in series are in permitted range.')
+
     Veod_values = [1,1.05, 1.1, 1.14]
     Veod_labels = ["1000mV", "1050mV", "1100mV", "1140mV"]
     index_lower, index_higher =getindex(Veod_values, Veod)
@@ -231,6 +234,8 @@ def getKt(AH_Rating, time, cell_range, Veod):
     Kt1 = AH_Rating/A1
     Kt2 = AH_Rating/A2
     Kt = linear_interp(time, t1, Kt1, t2, Kt2)
+
+
     return Kt
 
 

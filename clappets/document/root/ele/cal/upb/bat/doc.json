@@ -46,7 +46,7 @@
     "aging_factor" : {"_val": "1.25"},
     "cell_range" : {"_val": "M"},
     "Ncell_basis" : {"_val": "max_possible"},
-    "Ncell_manual" : {"_val": "92"}
+    "Ncell_manual" : {"_val": ""}
   },
 
   "result": {

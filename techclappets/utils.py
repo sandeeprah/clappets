@@ -43,6 +43,17 @@ def getindex(ascending_sorted_list, searchval):
             index_higher = index
             break
         index +=1
+
+
+    #check for the case when the length of the list is more than one and the value searched is equal to the highest item in the list.
+    n = len(ascending_sorted_list)
+    if (n>1):
+        val = ascending_sorted_list[n-1]
+        if searchval == val:
+            index_lower = n-2
+            index_higher = n-1 
+
+
     return index_lower, index_higher
 
 

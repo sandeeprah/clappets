@@ -12,12 +12,12 @@ Battery Sizing IEEE Std 1115
 {% endblock meta_keywords %}
 
 {% block sharing %}
-<meta property='og:title' content='Battery Sizing Calculation'/>
+<meta property='og:title' content='NiCad Battery Sizing Calculation (IEEE 1115)'/>
 <!--
 <meta property='og:image' content='http://www.codecalculation.com/static/images/thumbnail.png'/>
 -->
-<meta property='og:description' content='Online Calculation for Battery Sizing'/>
-<meta property='og:url' content='https://www.codecalculation.com/calculations/electrical/ups-battery/battery-sizing/' />
+<meta property='og:description' content='Online Calculation for NiCad Battery Sizing as per the guidelines of IEEE 1115 for stationary applications.'/>
+<meta property='og:url' content='https://www.codecalculation.com/calculations/electrical/ups-battery/NiCad-battery-sizing/' />
 {% endblock sharing %}
 
 
@@ -301,6 +301,13 @@ Battery Sizing IEEE Std 1115
         <td></td>
       </tr>
       <tr>
+        <td></td>
+        <td colspan="8">
+          <span class="has-text-info">Maximum, minimum and nominal temperatures pertain to site ambient/installation conditions.</span>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
         <td>1.9</td>
         <td colspan="4">
           <span class="w14">Design Margin</span>
@@ -413,14 +420,16 @@ Battery Sizing IEEE Std 1115
       </tr>
       <tr>
         <td>2.1</td>
-        <td colspan="5">
+        <td colspan="6">
           <span class="w20">Possible No of cells in series </span>
           <span class="w4 result">[[ retSilent(doc, ['result', 'Ncell_min', '_val']) ]]</span>
-          <span class="w2">to</span>
+          <span class="w4"> (min)</span>
+          <span class="w2"> to</span>
           <span class="w4 result">[[ retSilent(doc, ['result', 'Ncell_max', '_val']) ]]</span>
-          <span class="w6">per string</span>
+          <span class="w4"> (max)</span>
+          <span class="w6"> per string</span>
         </td>
-        <td colspan="3">
+        <td colspan="2">
         </td>
         <td></td>
       </tr>

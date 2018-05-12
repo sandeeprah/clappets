@@ -170,7 +170,7 @@ def calc_electrical_cables_iec_sizing():
 def calc_electrical_ups_sizing():
     return render_document("ele","cal","upb","ups")
 
-@app.route('/calculations/electrical/ups-battery/battery-sizing/')
+@app.route('/calculations/electrical/ups-battery/NiCad-battery-sizing/')
 def calc_electrical_battery_sizing():
     return render_document("ele","cal","upb","bat")
 

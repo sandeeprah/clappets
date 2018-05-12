@@ -52,16 +52,12 @@ def calculate(doc_original):
     if (Ncell < Ncell_min):
         doc['errors'].append('No. of cells selected below min. Please choose withing range.')
 
-
-
     Vmin_attained = Veod*Ncell
-
     amp_data_known  = getAmpDataKnown(loads_known, Vmin)
     amp_data_random = getAmpDataRandom(loads_random, Vmin)
     try:
         Fs_max, Fs_random, Fs_uncorrected, Fs_corrected, cell_selected, strings = getCellSize(amp_data_known, amp_data_random,  cell_range, Veod, Tmin, design_margin, aging_factor)
     except Exception as e:
-        raise e
         doc['errors'].append(str(e))
         Fs_max = nan
         Fs_random = nan
