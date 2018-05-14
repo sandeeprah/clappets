@@ -2,7 +2,7 @@ server {
         listen 80;
         listen [::]:80;
 
-        root /home/appadmin/clappets/docs;
+        root /home/appadmin/agora;
         index index.html index.htm index.nginx-debian.html;
 
         server_name docs.codecalculation.com;

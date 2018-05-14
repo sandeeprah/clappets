@@ -9,7 +9,6 @@ def calculate(doc_original):
     treeUnitConvert(doc, doc['units'], SI_UNITS)
     doc['errors'] =[]
 
-
     calculation_option = doc['input']['calculation_option']['_val']
     Tdb = parseFloat(doc['input']['Tdb']['_val'])
     P = parseFloat(doc['input']['P']['_val'])

@@ -460,7 +460,7 @@ var app_common = {
             navMenu = document.getElementById('navMenu');
             burgerMain.classList.remove('is-active');
             navMenu.classList.remove('is-active');
-  
+
         },
 
         pdf_download: function(resource_name, pdf_url) {
@@ -514,8 +514,6 @@ var app_common = {
             targetList.splice(index, 1);
         },
 
-
-
         retSilent: function(obj, path_array) {
             val = obj;
             total_length = path_array.length;
@@ -529,6 +527,13 @@ var app_common = {
             catch (err) {
                 return "";
             }
+        },
+        launchHelp : function(){
+          hurl = this.help_url;
+          if (hurl==null){
+            hurl = 'http://docs.codecalculation.com/'
+          }
+          window.open(hurl, 'helpwindow',"height=640,width=960,toolbar=no,menubar=no,scrollbars=no,location=no,status=no");
         }
     },
 

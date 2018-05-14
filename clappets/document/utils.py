@@ -53,6 +53,23 @@ def get_subfolder_list(folderpath):
     abs_folderpath = os.path.join(this_folderpath, folderpath)
     subfolder_list = []
     subfolder_names = get_subfolder_names(abs_folderpath)
+
+    print('folderpath is {}'.format(folderpath))
+    if (folderpath != ''):
+        entry = OrderedDict()
+        entry["name"] = ".."
+        entry["title"] = " ^^ Level Up ^^"
+        entry["type"] = "folder"
+        prefix_split = ["api", "document", "tpl"]
+        folderpath_split = folderpath.split(os.sep)
+        if ("" in folderpath_split):
+            folderpath_split.remove("")
+        url_split = prefix_split + folderpath_split + [".."]
+        url = "/".join(url_split)
+        url = "/" + url + "/"
+        entry["url"] = url
+        subfolder_list.append(entry)
+
     for subfolder in subfolder_names:
         subfolder_path = os.path.join(abs_folderpath, subfolder)
         subfolder_type = "N"
@@ -72,6 +89,7 @@ def get_subfolder_list(folderpath):
             pass
 
         entry = OrderedDict()
+
         entry["name"] = subfolder
         entry["title"] = subfolder_title
         entry["type"] = subfolder_type

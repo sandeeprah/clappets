@@ -211,18 +211,14 @@
         <table class="table is-bordered" style="width:100%;">
           <tr>
             <th style="width:20%;">Name</th>
-            <th style="width:60%;">Title</th>
-            <th style="width:20%;">Action</th>
+            <th style="width:80%;">Title</th>
           </tr>
           <tr v-for="subfolder in selectionMenu['subfolder_list']">
             <td>
               [[ subfolder['name'] ]]
             </td>
             <td>
-              [[ subfolder['title'] ]]
-            </td>
-            <td>
-              <a @click="execQuery(subfolder['url'])"> Select >> </a>
+            <a @click="execQuery(subfolder['url'])">[[ subfolder['title'] ]]</a>
             </td>
           </tr>
         </table>
@@ -230,7 +226,6 @@
       <div>
         <p class="help is-danger">[[ errorMessage]]</p>
       </div>
-
     <div class="field is-grouped is-grouped-centered">
       <p class="control">
         <button class="button is-primary" @click="closeModal('selectionModalisActive')" style="width:6em">Cancel</a>
