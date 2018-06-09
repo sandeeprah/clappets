@@ -33,7 +33,10 @@ def calculate(doc_original):
     # set the available thickness after deducting corrosion
     ta = tn - ca
 
-    S = pv.getAllowableStress(MOC, Ti)
+    if (MOC=='Other'):
+        S = parseFloat(doc['input']['S']['_val'])
+    else:
+        S = pv.getAllowableStress(MOC, Ti)
 
     # calculate R or Ro for results if not provided
     if (R is not None):
@@ -43,33 +46,73 @@ def calculate(doc_original):
         R_calc = Ro - tn
         Ro_calc = Ro
 
-    # Circumferential Stress Evaluation
-    if (R is not None):
-        tc, condn_Pc = pv.thicknessCylinderCircumStress(S, E, Pi, R)
-        MAWPc, condn_tc = pv.pressureCylinderCircumStress(S, E, ta, R)
-    else:
-        tc, condn_Pc = pv.thicknessCylinderCircumStress(S, E, Pi, Ro)
-        MAWPc, condn_tc = pv.pressureCylinderCircumStress(S, E, ta,Ro)
-
-    # Longitudinal Stress Evaluation
-    if (R is not None):
-        tl, condn_Pl = pv.thicknessCylinderLongStress(S, E, Pi, R)
-        MAWPl, condn_tl = pv.pressureCylinderLongStress(S, E, ta, R)
-    else:
-        tl, condn_Pl = pv.thicknessCylinderLongStress(S, E, Pi, Ro)
-        MAWPl, condn_tl = pv.pressureCylinderLongStress(S, E, ta, Ro)
-
     # set the minimum required thickness as per UG-15
     tu = 1.5/1000
 
-    # get the highest of the shell thickness determined as per circumferential analysis, longitudinal analysis and UG-15 requirement
-    t = max([tu,tc,tl])
+    # check whether the geometry is sphere or cylinder
+    Shape = doc['input']['Shape']['_val']
+
+    if (Shape=='cylindrical'):
+
+        # Circumferential Stress Evaluation
+        if (R is not None):
+            tc, condn_Pc = pv.thicknessCylinderCircumStress(S, E, Pi, R)
+            MAWPc, condn_tc = pv.pressureCylinderCircumStress(S, E, ta, R)
+        else:
+            tc, condn_Pc = pv.thicknessCylinderCircumStress(S, E, Pi, Ro)
+            MAWPc, condn_tc = pv.pressureCylinderCircumStress(S, E, ta,Ro)
+
+        # Longitudinal Stress Evaluation
+        if (R is not None):
+            tl, condn_Pl = pv.thicknessCylinderLongStress(S, E, Pi, R)
+            MAWPl, condn_tl = pv.pressureCylinderLongStress(S, E, ta, R)
+        else:
+            tl, condn_Pl = pv.thicknessCylinderLongStress(S, E, Pi, Ro)
+            MAWPl, condn_tl = pv.pressureCylinderLongStress(S, E, ta, Ro)
+
+        # get the highest of the shell thickness determined as per circumferential analysis, longitudinal analysis and UG-15 requirement
+        t = max([tu,tc,tl])
+
+        # get the least of the MAWP from circumferential and longitudinal analysis to get governing MAWP
+        MAWP = min([MAWPc,MAWPl])
+
+        doc['result'].update({'condn_Pc':{'_val' : condn_Pc}})
+        doc['result'].update({'tc':{'_val' : str(roundit(tc)), '_dim':'length'}})
+        doc['result'].update({'condn_tc'  :{'_val' : condn_tc}})
+        doc['result'].update({'MAWPc':{'_val' : str(roundit(MAWPc)), '_dim':'pressure'}})
+
+        doc['result'].update({'condn_Pl':{'_val' : condn_Pl}})
+        doc['result'].update({'tl':{'_val' : str(roundit(tl)), '_dim':'length'}})
+        doc['result'].update({'condn_tl'  :{'_val' : condn_tl}})
+        doc['result'].update({'MAWPl':{'_val' : str(roundit(MAWPl)), '_dim':'pressure'}})
+
+    elif (Shape=='spherical'):
+        # Spherical Stress Evaluation
+        if (R is not None):
+            ts, condn_Ps = pv.thicknessSphere(S, E, Pi, R)
+            MAWPs, condn_ts = pv.pressureSphere(S, E, ta, R)
+        else:
+            ts, condn_Ps = pv.thicknessSphere(S, E, Pi, Ro)
+            MAWPs, condn_ts = pv.pressureSphere(S, E, ta, Ro)
+
+        # get the highest of the shell thickness determined as per circumferential analysis, longitudinal analysis and UG-15 requirement
+        t = max([tu,ts])
+
+        MAWP = MAWPs
+
+        doc['result'].update({'condn_Ps':{'_val' : condn_Ps}})
+        doc['result'].update({'ts':{'_val' : str(roundit(ts)), '_dim':'length'}})
+        doc['result'].update({'condn_ts'  :{'_val' : condn_ts}})
+        doc['result'].update({'MAWPs':{'_val' : str(roundit(MAWPs)), '_dim':'pressure'}})
+
+    else:
+        doc['errors'].append('Invalid Shape')
+
+
 
     # add the corrosion allowance to get minimum thickness requirement
     tr = t + ca
 
-    # get the least of the MAWP from circumferential and longitudinal analysis to get governing MAWP
-    MAWP = min([MAWPc,MAWPl])
 
     if (tn >= tr):
         tn_adequate = "Yes"
@@ -83,15 +126,6 @@ def calculate(doc_original):
 
     doc['result'].update({'ta':{'_val' : str(roundit(ta)), '_dim':'length'}})
 
-    doc['result'].update({'condn_Pc':{'_val' : condn_Pc}})
-    doc['result'].update({'tc':{'_val' : str(roundit(tc)), '_dim':'length'}})
-    doc['result'].update({'condn_tc'  :{'_val' : condn_tc}})
-    doc['result'].update({'MAWPc':{'_val' : str(roundit(MAWPc)), '_dim':'pressure'}})
-
-    doc['result'].update({'condn_Pl':{'_val' : condn_Pl}})
-    doc['result'].update({'tl':{'_val' : str(roundit(tl)), '_dim':'length'}})
-    doc['result'].update({'condn_tl'  :{'_val' : condn_tl}})
-    doc['result'].update({'MAWPl':{'_val' : str(roundit(MAWPl)), '_dim':'pressure'}})
 
     doc['result'].update({'tu':{'_val' : str(roundit(tu)), '_dim':'length'}})
     doc['result'].update({'t' :{'_val' : str(roundit(t)),  '_dim':'length'}})

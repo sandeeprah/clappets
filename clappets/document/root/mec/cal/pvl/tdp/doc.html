@@ -442,141 +442,209 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
           </td>
           <td></td>
         </tr>
-        <tr>
-          <td></td>
-          <td colspan="6">
-            <span class="w30"><em>Cylindrical Shell Circumferential Stress Evaluation</em></span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info">Refer UG-27 (c)(1)</p>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>3.1</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Pressure Condition</span>
-            <span class="w10"><i>P<0.385SE</i></sub></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'condn_Pc', '_val']) ]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>3.2</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Thickness (Circumferential Stress)</span>
-            <span class="w10"><i>t<sub>c</sub></i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'tc', '_val']) ]]</span>
-            <span class="w6">[[gUL('length')]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>3.3</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Thickness Condition</span>
-            <span class="w10">t<sub>a</sub>< R/2</span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'condn_tc', '_val']) ]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>3.4</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">MAWP (Circumferential Stress)</span>
-            <span class="w10"><i>MAWP<sub>c</sub></i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'MAWPc', '_val']) ]]</span>
-            <span class="w6">[[gUL('pressure')]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td colspan="6">
-            <span class="w30"><em>Cylindrical Shell Longitudinal Stress Evaluation</em></span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info">Refer UG-27 (c)(2)</p>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>3.5</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Pressure Condition</span>
-            <span class="w10"><i>P<1.25SE</i></sub></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'condn_Pl', '_val']) ]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>3.6</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Thickness (Longitudinal Stress)</span>
-            <span class="w10"><i>t<sub>l</sub></i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'tl', '_val']) ]]</span>
-            <span class="w6">[[gUL('length')]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>3.7</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Thickness Condition</span>
-            <span class="w10">t<sub>a</sub>< R/2</span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'condn_tl', '_val']) ]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>3.8</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">MAWP (Longitudinal Stress)</span>
-            <span class="w10"><i>MAWP<sub>l</sub></i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'MAWPl', '_val']) ]]</span>
-            <span class="w6">[[gUL('pressure')]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
+        <tbody v-show="Shape=='cylindrical'">
+          <tr>
+            <td></td>
+            <td colspan="6">
+              <span class="w30"><em>Cylindrical Shell Circumferential Stress Evaluation</em></span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info">Refer UG-27 (c)(1)</p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>3.1</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Pressure Condition</span>
+              <span class="w10"><i>P<0.385SE</i></sub></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'condn_Pc', '_val']) ]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>3.2</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Thickness (Circumferential Stress)</span>
+              <span class="w10"><i>t<sub>c</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'tc', '_val']) ]]</span>
+              <span class="w6">[[gUL('length')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>3.3</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Thickness Condition</span>
+              <span class="w10">t<sub>a</sub>< R/2</span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'condn_tc', '_val']) ]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>3.4</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">MAWP (Circumferential Stress)</span>
+              <span class="w10"><i>MAWP<sub>c</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'MAWPc', '_val']) ]]</span>
+              <span class="w6">[[gUL('pressure')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td colspan="6">
+              <span class="w30"><em>Cylindrical Shell Longitudinal Stress Evaluation</em></span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info">Refer UG-27 (c)(2)</p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>3.5</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Pressure Condition</span>
+              <span class="w10"><i>P<1.25SE</i></sub></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'condn_Pl', '_val']) ]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>3.6</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Thickness (Longitudinal Stress)</span>
+              <span class="w10"><i>t<sub>l</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'tl', '_val']) ]]</span>
+              <span class="w6">[[gUL('length')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>3.7</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Thickness Condition</span>
+              <span class="w10">t<sub>a</sub>< R/2</span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'condn_tl', '_val']) ]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>3.8</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">MAWP (Longitudinal Stress)</span>
+              <span class="w10"><i>MAWP<sub>l</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'MAWPl', '_val']) ]]</span>
+              <span class="w6">[[gUL('pressure')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+        </tbody>
+        <tbody v-show="Shape=='spherical'">
+          <tr>
+            <td></td>
+            <td colspan="6">
+              <span class="w30"><em>Spherical Shell Stress Evaluation</em></span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info">Refer UG-27 (d)(3)</p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>3.1</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Pressure Condition</span>
+              <span class="w10"><i>P<0.665SE</i></sub></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'condn_Ps', '_val']) ]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>3.2</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Thickness</span>
+              <span class="w10"><i>t<sub>sph</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'ts', '_val']) ]]</span>
+              <span class="w6">[[gUL('length')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>3.3</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Thickness Condition</span>
+              <span class="w10">t<sub>a</sub>< 0.356R</span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'condn_ts', '_val']) ]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>3.4</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">MAWP</span>
+              <span class="w10"><i>MAWP<sub>sph</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'MAWPs', '_val']) ]]</span>
+              <span class="w6">[[gUL('pressure')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+        </tbody>
         <tr>
           <td>4</td>
           <td colspan="6">
             <span class="w30"><strong>Overall Evaluation</strong></span>
           </td>
           <td colspan="2">
-            <p class="has-text-info">Refer UG-27 (c)(2)</p>
+            <p class="has-text-info"></p>
           </td>
           <td></td>
         </tr>

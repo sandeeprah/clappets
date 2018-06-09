@@ -34,6 +34,12 @@ def getAllowableStress(materialSpec, T):
     return S
 
 
+
+# Equations for Cylinder
+# ======================
+# ======================
+
+
 def thicknessCylinderCircumStress(S, E, P, R=None, Ro=None):
     # check for invalid inputs for optional parameters R and Ro. Only one amongst these two must be provided
     if (R is None) and (Ro is None):
@@ -70,8 +76,9 @@ def pressureCylinderCircumStress(S, E, t, R=None, Ro=None):
     if (R is not None):
         Ri = R
     else:
-        Ri = R - t
+        Ri = Ro - t
 
+#    if (t <= 0.469*Ri):
     if (t <= (Ri/2)):
         condn_tc = True
         if (R is not None):
@@ -124,7 +131,7 @@ def pressureCylinderLongStress(S, E, t, R=None, Ro=None):
     if (R is not None):
         Ri = R
     else:
-        Ri = R - t
+        Ri = Ro - t
 
     if (t <= (Ri/2)):
         condn_tl = True
@@ -143,3 +150,66 @@ def pressureCylinderLongStress(S, E, t, R=None, Ro=None):
         Pl = S*E*(Z-1)
 
     return Pl, condn_tl
+
+# Equations for Sphere
+# ====================
+# ====================
+
+def thicknessSphere(S, E, P, R=None, Ro=None):
+    # check for invalid inputs for optional parameters R and Ro. Only one amongst these two must be provided
+    if (R is None) and (Ro is None):
+        raise Exception("Invalid inputs. Either 'R' or 'Ro' should be provided")
+    if (R is not None) and (Ro is not None):
+        raise Exception("Invalid inputs. Both 'R' and 'Ro' should not be provided")
+
+    #check if thin spherical equations are to be used or thick spherical  as per supplementary equations of ASME
+    if (P <= 0.665*S*E):
+        condn_Ps = True
+        if (R is not None):
+            ts = (P*R)/(2*S*E -0.2*P)
+        else:
+            pass
+        #    ts = ??
+    else:
+        condn_Ps = False
+        if (R is not None):
+            pass
+            #ts = ???
+        else:
+            pass
+            #ts = ???
+
+
+    return ts, condn_Ps
+
+def pressureSphere(S, E, t, R=None, Ro=None):
+    # check for invalid inputs for optional parameters R and Ro. Only one amongst these two must be provided
+    if (R is None) and (Ro is None):
+        raise Exception("Invalid inputs. Either 'R' or 'Ro' should be provided")
+    if (R is not None) and (Ro is not None):
+        raise Exception("Invalid inputs. Both 'R' and 'Ro' should not be provided")
+
+    # Get the inner radius
+    if (R is not None):
+        Ri = R
+    else:
+        Ri = Ro - t
+
+    if (t <= 0.356*R):
+        condn_ts = True
+        if (R is not None):
+            Ps = (2*S*E*t)/(R+0.2*t)
+        else:
+            pass
+            #Ps = ??
+    else:
+        condn_ts = False
+
+        if (R is not None):
+            pass
+            #Ps = ??
+        else:
+            pass
+            #Ps = ??
+
+    return Ps, condn_ts
