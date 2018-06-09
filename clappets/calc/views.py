@@ -76,6 +76,10 @@ def calc_mechanical_flare_stk():
 def calc_mechanical_heater_gascomb():
     return render_document("mec","cal","htr","efm")
 
+@app.route('/calculations/mechanical/pressure-vessel/thickness-calculation-pressure/')
+def calc_mechanical_vessel_thickness():
+    return render_document("mec","cal","pvl","tdp")
+
 @app.route('/calculations/mechanical/noise/distance-attenuation/')
 def calc_mechanical_noise_attenuation():
     return render_document("mec","cal","nos","atn")

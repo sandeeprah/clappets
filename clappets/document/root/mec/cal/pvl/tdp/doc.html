@@ -1,0 +1,701 @@
+{% extends "document/document.html" %} {% block title %}Pressure Vessel Shell Thickness Calculation - Internal Pressure{% endblock title %} {% block meta_description %} Calculate thickness of vessel shell under internal design pressure in accordance with
+the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description %} {% block meta_keywords %} pressure vessel shell thickness UG-27 ASME Section-VIII Div-1 {% endblock meta_keywords %} {% block sharing %}
+<meta property='og:title' content='Pressure Vessel Shell Thickness Calculation - Internal Pressure' />
+<!--
+<meta property='og:image' content='http://www.codecalculation.com/static/images/thumbnail.png'/>
+-->
+<meta property='og:description' content='Online calculation to obtain thickness of pressure vessel shell under internal design pressure in accordance with the provisions of UG-27 of ASME Section VIII Div-1.
+' />
+<meta property='og:url' content='https://www.codecalculation.com/calculations/mechanical/pressure-vessel/thickness-calculation-pressure/' /> {% endblock sharing %} {% block content %}
+<div class="overflowme">
+
+  <div class="datasheet">
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/calculations/">Calculations</a></li>
+        <li><a href="/calculations/mechanical/">Mechanical</a></li>
+        <li class="is-active"><a href="#">Vessel-Thickness</a></li>
+      </ul>
+    </nav>
+    <table class="main">
+      <thead>
+        <tr>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+          <th style="border:0px;">&nbsp;</th>
+        </tr>
+      </thead>
+      <tfoot>
+        <td colspan="10" style="text-align:right;">
+          <i>Calculation Performed at www.codecalculation.com</i>
+        </td>
+      </tfoot>
+      <tbody>
+        <tr>
+          <td>S#</td>
+          <td colspan="8" class="has-text-centered">
+            <h1 class="title is-5">[[ doc['meta']['docClass_title'] ]]</h1>
+          </td>
+          <td>R#</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td colspan="8" class="has-text-centered">
+            <h1 class="title is-5" style="background-color:red;">Under Development (Not for Use)</h1>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td colspan="8">
+            <h2 class="title is-6">Inputs</h2>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>1.1</td>
+          <td colspan="5">
+            <span class="w14">Vessel Shape</span>
+            <span></span>
+            <span class="w12">
+            <select class="inp" v-model="doc['input']['Shape']['_val']">
+              <option value="cylindrical">Cylindrical</option>
+              <option value="spherical">Spherical</option>
+            </select>
+          </span>
+            <span class="w6"></span>
+          </td>
+          <td colspan="3">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','Shape'])">[[err]]</p>
+          </td>
+          <td></td>
+        </tr>
+        <tr v-show="Shape=='cylindrical'">
+          <td>1.2</td>
+          <td colspan="5">
+            <span class="w14">Vessel Orientation</span>
+            <span></span>
+            <span class="w12">
+            <select class="inp" v-model="doc['input']['Orientation']['_val']">
+              <option value="horizontal">Horizontal</option>
+              <option value="vertical">Vertical</option>
+            </select>
+          </span>
+            <span class="w6"></span>
+          </td>
+          <td colspan="3">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','Orientation'])">[[err]]</p>
+          </td>
+          <td></td>
+        </tr>
+        <tr v-show="Shape=='cylindrical'">
+          <td>1.3</td>
+          <td colspan="5">
+            <span class="w14">Head -<span v-show="Orientation=='horizontal'">Side A</span><span v-show="Orientation=='vertical'">Top</span></span>
+            <span></span>
+            <span class="w12">
+            <select class="inp" v-model="doc['input']['Head_A']['_val']">
+              <option value="ellipsoidal">Ellipsoidal</option>
+              <option value="torispherical">Torispherical</option>
+              <option value="hemispherical">Hemispherical</option>
+              <option value="conical">Conical</option>
+              <option value="toriconical">Toriconical</option>
+            </select>
+          </span>
+            <span class="w6"></span>
+          </td>
+          <td colspan="3">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','Head_A'])">[[err]]</p>
+          </td>
+          <td></td>
+        </tr>
+        <tr v-show="Shape=='cylindrical'">
+          <td>1.4</td>
+          <td colspan="5">
+            <span class="w14">Head -<span v-show="Orientation=='horizontal'">Side B</span><span v-show="Orientation=='vertical'">Bottom</span></span>
+            <span></span>
+            <span class="w12">
+            <select class="inp" v-model="doc['input']['Head_B']['_val']">
+              <option value="ellipsoidal">Ellipsoidal</option>
+              <option value="torispherical">Torispherical</option>
+              <option value="hemispherical">Hemispherical</option>
+              <option value="conical">Conical</option>
+              <option value="toriconical">Toriconical</option>
+            </select>
+          </span>
+            <span class="w6"></span>
+          </td>
+          <td colspan="3">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','Head_B'])">[[err]]</p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>1.5</td>
+          <td colspan="5">
+            <span class="w14">Shell Diameter given as </span>
+            <span></span>
+            <span class="w12">
+            <select class="inp" v-model="doc['input']['D_basis']['_val']">
+              <option value="inner">Inner Diameter</option>
+              <option value="outer">Outer Diameter</option>
+            </select>
+          </span>
+            <span class="w6"></span>
+          </td>
+          <td colspan="3">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','D_basis'])">[[err]]</p>
+          </td>
+          <td></td>
+        </tr>
+        <tr v-show="D_basis=='inner'">
+          <td>1.6</td>
+          <td colspan="5">
+            <span class="w14">Shell Inner Diameter</span>
+            <span class="w4"><i>D</i></span>
+            <span class="w6"><input class="inp" type="number" type="number" v-model="doc['input']['D']['_val']"/></span>
+            <span class="w6">[[gUL('length')]]</span>
+          </td>
+          <td colspan="3">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','D'])">[[err]]</p>
+          </td>
+          <td></td>
+        </tr>
+        <tr v-show="D_basis=='outer'">
+          <td>1.7</td>
+          <td colspan="5">
+            <span class="w14">Shell Outer Diameter</span>
+            <span class="w4"><i>D<sub>o</sub></i></span>
+            <span class="w6"><input class="inp" type="number" type="number" v-model="doc['input']['Do']['_val']"/></span>
+            <span class="w6">[[gUL('length')]]</span>
+          </td>
+          <td colspan="3">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','Do'])">[[err]]</p>
+          </td>
+          <td></td>
+        </tr>
+        <tr v-show="Shape=='cylindrical'">
+          <td>1.8</td>
+          <td colspan="5">
+            <span class="w14">Shell Length (WL to WL)</span>
+            <span class="w4"><i>L</i></span>
+            <span class="w6"><input class="inp" type="number" type="number" v-model="doc['input']['L']['_val']"/></span>
+            <span class="w6">[[gUL('length')]]</span>
+          </td>
+          <td colspan="3">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','L'])">[[err]]</p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>1.9</td>
+          <td colspan="5">
+            <span class="w14">Internal Design Pressure </span>
+            <span class="w4"><i>P<sub>i</sub></i></span>
+            <span class="w6"><input class="inp" type="number" type="number" v-model="doc['input']['Pi']['_val']"/></span>
+            <span class="w6">[[gUL('pressure')]]g</span>
+          </td>
+          <td colspan="3">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','Pi'])">[[err]]</p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>1.10</td>
+          <td colspan="5">
+            <span class="w14">Internal Design Temperature </span>
+            <span class="w4"><i>T<sub>i</sub></i></span>
+            <span class="w6"><input class="inp" type="number" type="number" v-model="doc['input']['Ti']['_val']"/></span>
+            <span class="w6">[[gUL('temperature')]]</span>
+          </td>
+          <td colspan="3">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','Ti'])">[[err]]</p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>1.11</td>
+          <td colspan="5">
+            <span class="w14">Design for Full Vacuum</span>
+            <span></span>
+            <span class="w12">
+            <select class="inp" v-model="doc['input']['full_vacuum']['_val']">
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </span>
+            <span class="w6"></span>
+          </td>
+          <td colspan="3">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','full_vacuum'])">[[err]]</p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>1.12</td>
+          <td colspan="5">
+            <span class="w14">Corrosion Allowance</span>
+            <span class="w4"><i>ca</i></span>
+            <span class="w6"><input class="inp" type="number" type="number" v-model="doc['input']['ca']['_val']"/></span>
+            <span class="w6">[[gUL('length')]]</span>
+          </td>
+          <td colspan="3">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','ca'])">[[err]]</p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>1.13</td>
+          <td colspan="5">
+            <span class="w14">Joint Efficiency</span>
+            <span class="w4"><i>E</i></span>
+            <span class="w6"><input class="inp" type="number" type="number" v-model="doc['input']['E']['_val']"/></span>
+            <span class="w6"></span>
+          </td>
+          <td colspan="3">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','E'])">[[err]]</p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>1.14</td>
+          <td colspan="5">
+            <span class="w14">Material of Construction</span>
+            <span></span>
+            <span class="w12" style="vertical-align:top">
+            <select class="inp" v-model="doc['input']['MOC']['_val']">
+              <option value="SA285-GrC">SA-285 Grade C</option>
+              <option value="SA516-Gr55">SA-516 Grade 55</option>
+              <option value="SA516-Gr60">SA-516 Grade 60</option>
+              <option value="SA516-Gr70">SA-516 Grade 70</option>
+              <option value="SA240-Tp304L">SA-240 Type 304L</option>
+              <option value="SA240-Tp316L">SA-240 Type 316L</option>
+              <option value="Other">Other</option>
+            </select>
+          </span>
+            <span class="w6"></span>
+          </td>
+          <td colspan="3">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','MOC'])">[[err]]</p>
+          </td>
+          <td></td>
+        </tr>
+        <tr v-show="MOC=='Other'">
+          <td>1.15</td>
+          <td colspan="5">
+            <span class="w14">Max Allowable Stress @ T<sub>i</sub></span>
+            <span class="w4"><i>S</i></span>
+            <span class="w6"><input class="inp" type="number" type="number" v-model="doc['input']['S']['_val']"/></span>
+            <span class="w6">[[gUL('pressure')]]</span>
+          </td>
+          <td colspan="3">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','S'])">[[err]]</p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>1.16</td>
+          <td colspan="5">
+            <span class="w14">Shell Thickness Provided</span>
+            <span class="w4"><i>t<sub>n</sub></i></span>
+            <span class="w6"><input class="inp" type="number" type="number" v-model="doc['input']['tn']['_val']"/></span>
+            <span class="w6">[[gUL('length')]]</span>
+          </td>
+          <td colspan="3">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','tn'])">[[err]]</p>
+          </td>
+          <td></td>
+        </tr>
+
+      </tbody>
+      <tbody class="hideprint">
+        <tr>
+          <td></td>
+          <td colspan="8">
+            <span class="w8">
+            <button class="button is-small is-primary" @click="calculate" style="width:100%">Calculate</button>
+          </span>
+            <span class="w8">
+            <button class="button is-small is-primary" @click="openModal('unitsModalisActive')" style="width:100%">Units</button>
+          </span>
+            <span class="w8">
+            <button class="button is-small is-primary" @click="openModal('infoModalisActive')" style="width:100%">Info</button>
+          </span>
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
+
+      <tbody v-if="doc['errors'].length > 0">
+        <tr>
+          <td></td>
+          <td colspan="8">
+            <p class="help is-danger"><b>Errors</b></p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td colspan="8">
+            <p class="help is-danger" v-for="err in doc['errors']">[[ err ]]</p>
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr>
+          <td></td>
+          <td colspan="8">
+            <h2 class="title is-6">Results</h2>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td colspan="8">
+            <span class="w20"><strong>General</strong></span>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>2.1</td>
+          <td colspan="6">
+            <span class="w2"></span>
+            <span class="w18">Inner Radius</span>
+            <span class="w10">
+              <span v-show="D_basis=='inner'">
+                R = D/2
+              </span>
+              <span v-show="D_basis=='outer'">
+                R=R<sub>o</sub>-t<sub>n</sub>
+              </span>
+            </span>
+            <span class="w6 result">[[ retSilent(doc, ['result', 'R_calc', '_val']) ]]</span>
+            <span class="w4">[[gUL('length')]]</span>
+          </td>
+          <td colspan="2">
+            <p class="has-text-info"></p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>2.2</td>
+          <td colspan="6">
+            <span class="w2"></span>
+            <span class="w18">Outer Radius</span>
+            <span class="w10">
+              <span v-show="D_basis=='inner'">
+                R<sub>o</sub>= R+t<sub>n</sub>
+              </span>
+              <span v-show="D_basis=='outer'">
+                R<sub>o</sub> = D<sub>o</sub>/2
+              </span>
+            </span>
+            <span class="w6 result">[[ retSilent(doc, ['result', 'Ro_calc', '_val']) ]]</span>
+            <span class="w4">[[gUL('length')]]</span>
+          </td>
+          <td colspan="2">
+            <p class="has-text-info"></p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>2.3</td>
+          <td colspan="6">
+            <span class="w2"></span>
+            <span class="w18">Maximum Allowable Stress @ T<sub>i</sub></span>
+            <span class="w10"><i>S</i></span>
+            <span class="w6 result">[[ retSilent(doc, ['result', 'S', '_val']) ]]</span>
+            <span class="w4">[[gUL('pressure')]]</span>
+          </td>
+          <td colspan="2">
+            <p class="has-text-info"></p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>2.4</td>
+          <td colspan="6">
+            <span class="w2"></span>
+            <span class="w18">Thickness Available (Corroded)</span>
+            <span class="w10">t<sub>a</sub> = t<sub>n</sub> - ca</span>
+            <span class="w6 result">[[ retSilent(doc, ['result', 'ta', '_val']) ]]</span>
+            <span class="w4">[[gUL('length')]]</span>
+          </td>
+          <td colspan="2">
+            <p class="has-text-info"></p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td colspan="8">
+            <span class="w20"><strong>Shell Evaluation (Internal Pressure)</strong></span>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td colspan="6">
+            <span class="w30"><em>Cylindrical Shell Circumferential Stress Evaluation</em></span>
+          </td>
+          <td colspan="2">
+            <p class="has-text-info">Refer UG-27 (c)(1)</p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>3.1</td>
+          <td colspan="6">
+            <span class="w2"></span>
+            <span class="w18">Pressure Condition</span>
+            <span class="w10"><i>P<0.385SE</i></sub></span>
+            <span class="w6 result">[[ retSilent(doc, ['result', 'condn_Pc', '_val']) ]]</span>
+          </td>
+          <td colspan="2">
+            <p class="has-text-info"></p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>3.2</td>
+          <td colspan="6">
+            <span class="w2"></span>
+            <span class="w18">Thickness (Circumferential Stress)</span>
+            <span class="w10"><i>t<sub>c</sub></i></span>
+            <span class="w6 result">[[ retSilent(doc, ['result', 'tc', '_val']) ]]</span>
+            <span class="w6">[[gUL('length')]]</span>
+          </td>
+          <td colspan="2">
+            <p class="has-text-info"></p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>3.3</td>
+          <td colspan="6">
+            <span class="w2"></span>
+            <span class="w18">Thickness Condition</span>
+            <span class="w10">t<sub>a</sub>< R/2</span>
+            <span class="w6 result">[[ retSilent(doc, ['result', 'condn_tc', '_val']) ]]</span>
+          </td>
+          <td colspan="2">
+            <p class="has-text-info"></p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>3.4</td>
+          <td colspan="6">
+            <span class="w2"></span>
+            <span class="w18">MAWP (Circumferential Stress)</span>
+            <span class="w10"><i>MAWP<sub>c</sub></i></span>
+            <span class="w6 result">[[ retSilent(doc, ['result', 'MAWPc', '_val']) ]]</span>
+            <span class="w6">[[gUL('pressure')]]</span>
+          </td>
+          <td colspan="2">
+            <p class="has-text-info"></p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td colspan="6">
+            <span class="w30"><em>Cylindrical Shell Longitudinal Stress Evaluation</em></span>
+          </td>
+          <td colspan="2">
+            <p class="has-text-info">Refer UG-27 (c)(2)</p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>3.5</td>
+          <td colspan="6">
+            <span class="w2"></span>
+            <span class="w18">Pressure Condition</span>
+            <span class="w10"><i>P<1.25SE</i></sub></span>
+            <span class="w6 result">[[ retSilent(doc, ['result', 'condn_Pl', '_val']) ]]</span>
+          </td>
+          <td colspan="2">
+            <p class="has-text-info"></p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>3.6</td>
+          <td colspan="6">
+            <span class="w2"></span>
+            <span class="w18">Thickness (Longitudinal Stress)</span>
+            <span class="w10"><i>t<sub>l</sub></i></span>
+            <span class="w6 result">[[ retSilent(doc, ['result', 'tl', '_val']) ]]</span>
+            <span class="w6">[[gUL('length')]]</span>
+          </td>
+          <td colspan="2">
+            <p class="has-text-info"></p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>3.7</td>
+          <td colspan="6">
+            <span class="w2"></span>
+            <span class="w18">Thickness Condition</span>
+            <span class="w10">t<sub>a</sub>< R/2</span>
+            <span class="w6 result">[[ retSilent(doc, ['result', 'condn_tl', '_val']) ]]</span>
+          </td>
+          <td colspan="2">
+            <p class="has-text-info"></p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>3.8</td>
+          <td colspan="6">
+            <span class="w2"></span>
+            <span class="w18">MAWP (Longitudinal Stress)</span>
+            <span class="w10"><i>MAWP<sub>l</sub></i></span>
+            <span class="w6 result">[[ retSilent(doc, ['result', 'MAWPl', '_val']) ]]</span>
+            <span class="w6">[[gUL('pressure')]]</span>
+          </td>
+          <td colspan="2">
+            <p class="has-text-info"></p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td colspan="6">
+            <span class="w30"><strong>Overall Evaluation</strong></span>
+          </td>
+          <td colspan="2">
+            <p class="has-text-info">Refer UG-27 (c)(2)</p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>4.1</td>
+          <td colspan="6">
+            <span></span>
+            <span class="w20">Min required thickness as per UG-16</span>
+            <span class="w10">t<sub>u</sub></span>
+            <span class="w6 result">[[ retSilent(doc, ['result', 'tu', '_val']) ]]</span>
+            <span class="w4">[[gUL('length')]]</span>
+          </td>
+          <td colspan="2">
+            <p class="has-text-info"></p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>4.2</td>
+          <td colspan="6">
+            <span></span>
+            <span class="w20">Required Thickness excl. CA</span>
+            <span class="w10"><i>t</i></span>
+            <span class="w6 result">[[ retSilent(doc, ['result', 't', '_val']) ]]</span>
+            <span class="w6">[[gUL('length')]]</span>
+          </td>
+          <td colspan="2">
+            <p class="has-text-info"></p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>4.3</td>
+          <td colspan="6">
+            <span></span>
+            <span class="w20">Required Thickness</span>
+            <span class="w10"><i>t<sub>r</sub>=t+CA</i></span>
+            <span class="w6 result">[[ retSilent(doc, ['result', 'tr', '_val']) ]]</span>
+            <span class="w6">[[gUL('length')]]</span>
+          </td>
+          <td colspan="2">
+            <p class="has-text-info"></p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>4.4</td>
+          <td colspan="6">
+            <span></span>
+            <span class="w20">Provided thickness >= required thickness </span>
+            <span class="w10">t<sub>n</sub> >= t<sub>r</sub></span>
+            <span class="w6 result">[[ retSilent(doc, ['result', 'tn_adequate', '_val']) ]]</span>
+          </td>
+          <td colspan="2">
+            <p class="has-text-info"></p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>4.5</td>
+          <td colspan="6">
+            <span></span>
+            <span class="w20">MAWP</span>
+            <span class="w10"><i>MAWP</i></span>
+            <span class="w6 result">[[ retSilent(doc, ['result', 'MAWP', '_val']) ]]</span>
+            <span class="w6">[[gUL('pressure')]]</span>
+          </td>
+          <td colspan="2">
+            <p class="has-text-info"></p>
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="datasheet" style="text-align:left;">
+  </div>
+
+
+</div>
+
+{% endblock content %}
+
+{% block contributors %}
+<p>
+  <a href="https://www.linkedin.com/in/rakesh-wani-61a55120/">Rakesh Wani</a>
+</p>
+{% endblock contributors %}
+
+{% block script_vueapp %}
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    delimiters: ['[[', ']]'],
+    mixins: [app_common, app_doc],
+    data: {
+      doc: {{doc | safe}},
+      fixed: {}
+    },
+    computed: {
+      Shape: function() {
+        var shp = this.doc['input']['Shape']['_val'];
+        return shp;
+      },
+      Orientation: function() {
+        var ortn = this.doc['input']['Orientation']['_val'];
+        return ortn;
+      },
+      D_basis: function() {
+        var dbs = this.doc['input']['D_basis']['_val'];
+        return dbs;
+      },
+      MOC: function() {
+        var matl = this.doc['input']['MOC']['_val'];
+        return matl;
+      }
+    },
+    methods: {}
+  });
+</script>
+{% endblock script_vueapp %}
