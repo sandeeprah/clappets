@@ -29,6 +29,20 @@
   "input": {
     "Shape" : {"_val": "cylindrical"},
     "Orientation" : {"_val": "horizontal"},
+    "Head1" : {"_val": "ellipsoidal"},
+    "ar1" : {"_val": "2"},
+    "L1" : {"_val": "1200", "_dim":"length"},
+    "r1" : {"_val": "92", "_dim":"length"},
+    "alpha1" : {"_val": "30", "_dim":"angle"},
+    "tn1" : {"_val": "6", "_dim":"length"},
+
+    "Head2" : {"_val": "ellipsoidal"},
+    "ar2" : {"_val": "2"},
+    "L2" : {"_val": "1200", "_dim":"length"},
+    "r2" : {"_val": "72", "_dim":"length"},
+    "alpha2" : {"_val": "30"},
+    "tn2" : {"_val": "6", "_dim":"length"},
+
     "D_basis" : {"_val": "inner"},
     "D" : {"_val": "1200", "_dim":"length"},
     "Do" : {"_val": "1200", "_dim":"length"},
@@ -40,22 +54,7 @@
     "E" : {"_val": "1.0"},
     "MOC" : {"_val": "SA516-Gr60"},
     "S" : {"_val": "1380", "_dim":"pressure"},
-    "tn" : {"_val": "6", "_dim":"length"},
-
-    "Head1" : {"_val": "ellipsoidal"},
-    "ar1" : {"_val": "2"},
-    "L1" : {"_val": "1200", "_dim":"length"},
-    "r1" : {"_val": "100", "_dim":"length"},
-    "alpha1" : {"_val": "30", "_dim":"angle"},
-    "tn1" : {"_val": "6", "_dim":"length"},
-
-    "Head2" : {"_val": "ellipsoidal"},
-    "ar2" : {"_val": "2"},
-    "L2" : {"_val": "", "_dim":"length"},
-    "r2" : {"_val": "", "_dim":"length"},
-    "alpha2" : {"_val": ""},
-    "tn2" : {"_val": "6", "_dim":"length"}
-
+    "tn" : {"_val": "6", "_dim":"length"}
   },
 
   "result": {

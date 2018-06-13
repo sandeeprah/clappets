@@ -5,8 +5,6 @@ from clappets.core import validator as vd
 class docInput(Schema):
     Shape = fields.Nested(sXfld)
     Orientation = fields.Nested(sXfld)
-    Head_A = fields.Nested(sXfld)
-    Head_B = fields.Nested(sXfld)
     D_basis = fields.Nested(sXfld)
     D = fields.Nested(sXfld)
     Do = fields.Nested(sXfld)
@@ -19,6 +17,18 @@ class docInput(Schema):
     MOC = fields.Nested(sXfld)
     S = fields.Nested(sXfld)
     tn = fields.Nested(sXfld)
+    Head1 = fields.Nested(sXfld)
+    ar1 = fields.Nested(sXfld)
+    L1 = fields.Nested(sXfld)
+    r1 = fields.Nested(sXfld)
+    alpha1 = fields.Nested(sXfld)
+    tn1 = fields.Nested(sXfld)
+    Head2 = fields.Nested(sXfld)
+    ar2 = fields.Nested(sXfld)
+    L2 = fields.Nested(sXfld)
+    r2 = fields.Nested(sXfld)
+    alpha2 = fields.Nested(sXfld)
+    tn2 = fields.Nested(sXfld)
 
     class Meta:
         ordered = True
@@ -41,23 +51,6 @@ class docInput(Schema):
         Orientation_options = ["horizontal", "vertical"]
         vd.xChoice(value, Orientation_options, fName)
 
-    @validates_schema()
-    def check_Head_A(self, data):
-        fName = 'Head_A'
-        vd.xRequired(data,fName,fName)
-        value = data[fName]
-        vd.xString(value, fName)
-        head_options = ["ellipsoidal", "torispherical", "hemispherical", "conical", "toriconical"]
-        vd.xChoice(value, head_options, fName)
-
-    @validates_schema()
-    def check_Head_B(self, data):
-        fName = 'Head_B'
-        vd.xRequired(data,fName,fName)
-        value = data[fName]
-        vd.xString(value, fName)
-        head_options = ["ellipsoidal", "torispherical", "hemispherical", "conical", "toriconical"]
-        vd.xChoice(value, head_options, fName)
 
     @validates_schema()
     def check_D_basis(self, data):
@@ -78,8 +71,8 @@ class docInput(Schema):
         vd.xRequired(data,fName,fName)
         value = data[fName]
         vd.xNumber(value, fName)
-        vd.xGrtThan(value, 0, fName)
         vd.xDim(value,['length'],fName)
+        vd.xGrtThan(value, 0, fName)
 
 
     @validates_schema()
@@ -138,6 +131,7 @@ class docInput(Schema):
         value = data[fName]
         vd.xNumber(value, fName)
         vd.xDim(value,['length'],fName)
+        vd.xGrtThan(value, 0, fName)
 
     @validates_schema()
     def check_E(self, data):
@@ -145,6 +139,7 @@ class docInput(Schema):
         vd.xRequired(data,fName,fName)
         value = data[fName]
         vd.xNumber(value, fName)
+        vd.xGrtThan(value, 0, fName)
 
     @validates_schema()
     def check_MOC(self, data):
@@ -172,6 +167,193 @@ class docInput(Schema):
         vd.xNumber(value, fName)
         vd.xGrtThanEq(value, 0, fName)
         vd.xDim(value,['length'],fName)
+
+    @validates_schema()
+    def check_Head1(self, data):
+        if ('Shape' not in data):
+            return
+        if (data['Shape']['_val'] !='cylindrical'):
+            return
+        fName = 'Head1'
+        vd.xRequired(data,fName,fName)
+        value = data[fName]
+        vd.xString(value, fName)
+        head_options = ["ellipsoidal", "torispherical", "hemispherical", "conical", "toriconical"]
+        vd.xChoice(value, head_options, fName)
+
+    @validates_schema()
+    def check_ar1(self, data):
+        if ('Shape' not in data):
+            return
+        if (data['Shape']['_val'] !='cylindrical'):
+            return
+        if ('Head1' not in data):
+            return
+        if (data['Head1']['_val'] !='ellipsoidal'):
+            return
+
+        fName = 'ar1'
+        vd.xRequired(data,fName,fName)
+        value = data[fName]
+        vd.xNumber(value, fName)
+        vd.xGrtThan(value, 0, fName)
+
+    @validates_schema()
+    def check_L1(self, data):
+        if ('Shape' not in data):
+            return
+        if (data['Shape']['_val'] !='cylindrical'):
+            return
+        if ('Head1' not in data):
+            return
+        if (data['Head1']['_val'] !='torispherical'):
+            return
+
+        fName = 'L1'
+        vd.xRequired(data,fName,fName)
+        value = data[fName]
+        vd.xNumber(value, fName)
+        vd.xGrtThan(value, 0, fName)
+        vd.xDim(value,['length'],fName)
+
+    @validates_schema()
+    def check_r1(self, data):
+        if ('Shape' not in data):
+            return
+        if (data['Shape']['_val'] !='cylindrical'):
+            return
+        if ('Head1' not in data):
+            return
+        if (data['Head1']['_val'] !='torispherical') and (data['Head1']['_val'] !='toriconical'):
+            return
+
+        fName = 'r1'
+        vd.xRequired(data,fName,fName)
+        value = data[fName]
+        vd.xNumber(value, fName)
+        vd.xGrtThan(value, 0, fName)
+        vd.xDim(value,['length'],fName)
+
+    @validates_schema()
+    def check_alpha1(self, data):
+        if ('Shape' not in data):
+            return
+        if (data['Shape']['_val'] !='cylindrical'):
+            return
+        if ('Head1' not in data):
+            return
+        if (data['Head1']['_val'] !='conical') and (data['Head1']['_val'] !='toriconical'):
+            return
+
+        fName = 'alpha1'
+        vd.xRequired(data,fName,fName)
+        value = data[fName]
+        vd.xNumber(value, fName)
+        vd.xGrtThan(value, 0, fName)
+
+    @validates_schema()
+    def check_tn1(self, data):
+        fName = 'tn1'
+        vd.xRequired(data,fName,fName)
+        value = data[fName]
+        vd.xNumber(value, fName)
+        vd.xGrtThan(value, 0, fName)
+        vd.xDim(value,['length'],fName)
+
+    @validates_schema()
+    def check_Head2(self, data):
+        if ('Shape' not in data):
+            return
+        if (data['Shape']['_val'] !='cylindrical'):
+            return
+
+        fName = 'Head2'
+        vd.xRequired(data,fName,fName)
+        value = data[fName]
+        vd.xString(value, fName)
+        head_options = ["ellipsoidal", "torispherical", "hemispherical", "conical", "toriconical"]
+        vd.xChoice(value, head_options, fName)
+
+    @validates_schema()
+    def check_ar2(self, data):
+        if ('Shape' not in data):
+            return
+        if (data['Shape']['_val'] !='cylindrical'):
+            return
+        if ('Head2' not in data):
+            return
+        if (data['Head2']['_val'] !='ellipsoidal'):
+            return
+
+
+        fName = 'ar2'
+        vd.xRequired(data,fName,fName)
+        value = data[fName]
+        vd.xNumber(value, fName)
+        vd.xGrtThan(value, 0, fName)
+
+    @validates_schema()
+    def check_L2(self, data):
+        if ('Shape' not in data):
+            return
+        if (data['Shape']['_val'] !='cylindrical'):
+            return
+        if ('Head2' not in data):
+            return
+        if (data['Head2']['_val'] !='torispherical'):
+            return
+
+        fName = 'L2'
+        vd.xRequired(data,fName,fName)
+        value = data[fName]
+        vd.xNumber(value, fName)
+        vd.xGrtThan(value, 0, fName)
+        vd.xDim(value,['length'],fName)
+
+    @validates_schema()
+    def check_r2(self, data):
+        if ('Shape' not in data):
+            return
+        if (data['Shape']['_val'] !='cylindrical'):
+            return
+        if ('Head2' not in data):
+            return
+        if (data['Head2']['_val'] !='torispherical') and (data['Head2']['_val'] !='toriconical'):
+            return
+
+        fName = 'r2'
+        vd.xRequired(data,fName,fName)
+        value = data[fName]
+        vd.xNumber(value, fName)
+        vd.xGrtThan(value, 0, fName)
+        vd.xDim(value,['length'],fName)
+
+    @validates_schema()
+    def check_alpha2(self, data):
+        if ('Shape' not in data):
+            return
+        if (data['Shape']['_val'] !='cylindrical'):
+            return
+        if ('Head2' not in data):
+            return
+        if (data['Head2']['_val'] !='conical') and (data['Head2']['_val'] !='toriconical'):
+            return
+
+        fName = 'alpha2'
+        vd.xRequired(data,fName,fName)
+        value = data[fName]
+        vd.xNumber(value, fName)
+        vd.xGrtThan(value, 0, fName)
+
+    @validates_schema()
+    def check_tn2(self, data):
+        fName = 'tn2'
+        vd.xRequired(data,fName,fName)
+        value = data[fName]
+        vd.xNumber(value, fName)
+        vd.xGrtThan(value, 0, fName)
+        vd.xDim(value,['length'],fName)
+
 
 class docResult(Schema):
     R_calc = fields.Nested(sXfld)
