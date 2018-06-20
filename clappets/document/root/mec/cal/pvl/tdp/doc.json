@@ -7,9 +7,9 @@
     "docCategory": "cal",
     "docSubCategory": "pvl",
     "docClass": "tdp",
-    "docClass_title": "Pressure Vessel Thickness/MAWP/Weight Calculation",
+    "docClass_title": "Pressure Vessel Thickness/MAWP/Weight Estimation",
     "docInstance": "1",
-    "docInstance_title": "Pressure Vessel Thickness/MAWP/Weight Calculation",
+    "docInstance_title": "Pressure Vessel Thickness/MAWP/Weight Estimation",
     "doc_no":"0000-MEC-CAL-PVL-TDP-01",
     "rev": "A",
     "date":"",
@@ -64,7 +64,7 @@
     "tn2" : {"_val": "6", "_dim":"length"},
 
     "zeta" : {"_val": "10"}
-    
+
   },
 
   "result": {
