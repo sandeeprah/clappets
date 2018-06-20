@@ -8,27 +8,32 @@ class docInput(Schema):
     D_basis = fields.Nested(sXfld)
     D = fields.Nested(sXfld)
     Do = fields.Nested(sXfld)
-    L = fields.Nested(sXfld)
+    Z = fields.Nested(sXfld)
     Pi = fields.Nested(sXfld)
     Ti = fields.Nested(sXfld)
+    Tt = fields.Nested(sXfld)
     full_vacuum = fields.Nested(sXfld)
     ca = fields.Nested(sXfld)
     E = fields.Nested(sXfld)
+    Ec = fields.Nested(sXfld)
+    El = fields.Nested(sXfld)
     MOC = fields.Nested(sXfld)
     S = fields.Nested(sXfld)
+    St = fields.Nested(sXfld)
     tn = fields.Nested(sXfld)
     Head1 = fields.Nested(sXfld)
-    ar1 = fields.Nested(sXfld)
+    beta1 = fields.Nested(sXfld)
     L1 = fields.Nested(sXfld)
     r1 = fields.Nested(sXfld)
     alpha1 = fields.Nested(sXfld)
     tn1 = fields.Nested(sXfld)
     Head2 = fields.Nested(sXfld)
-    ar2 = fields.Nested(sXfld)
+    beta2 = fields.Nested(sXfld)
     L2 = fields.Nested(sXfld)
     r2 = fields.Nested(sXfld)
     alpha2 = fields.Nested(sXfld)
     tn2 = fields.Nested(sXfld)
+    zeta = fields.Nested(sXfld)
 
     class Meta:
         ordered = True
@@ -89,8 +94,8 @@ class docInput(Schema):
         vd.xDim(value,['length'],fName)
 
     @validates_schema()
-    def check_L(self, data):
-        fName = 'L'
+    def check_Z(self, data):
+        fName = 'Z'
         vd.xRequired(data,fName,fName)
         value = data[fName]
         vd.xNumber(value, fName)
@@ -116,9 +121,17 @@ class docInput(Schema):
         vd.xDim(value,['temperature'],fName)
 
     @validates_schema()
+    def check_Tt(self, data):
+        fName = 'Tt'
+        vd.xRequired(data,fName,fName)
+        value = data[fName]
+        vd.xNumber(value, fName)
+        vd.xDim(value,['temperature'],fName)
+
+    @validates_schema()
     def check_full_vacuum(self, data):
         fName = 'full_vacuum'
-        vd.xRequired(data,fName,fName)
+#        vd.xRequired(data,fName,fName)
         value = data[fName]
         vd.xString(value, fName)
         full_vacuum_options = ["yes", "no"]
@@ -135,11 +148,42 @@ class docInput(Schema):
 
     @validates_schema()
     def check_E(self, data):
+        if ('Shape' not in data):
+            return
+        if (data['Shape']['_val'] !='spherical'):
+            return
         fName = 'E'
         vd.xRequired(data,fName,fName)
         value = data[fName]
         vd.xNumber(value, fName)
         vd.xGrtThan(value, 0, fName)
+        vd.xLessThanEq(value, 1, fName)
+
+    @validates_schema()
+    def check_Ec(self, data):
+        if ('Shape' not in data):
+            return
+        if (data['Shape']['_val'] !='cylindrical'):
+            return
+        fName = 'Ec'
+        vd.xRequired(data,fName,fName)
+        value = data[fName]
+        vd.xNumber(value, fName)
+        vd.xGrtThan(value, 0, fName)
+        vd.xLessThanEq(value, 1, fName)
+
+    @validates_schema()
+    def check_El(self, data):
+        if ('Shape' not in data):
+            return
+        if (data['Shape']['_val'] !='cylindrical'):
+            return
+        fName = 'El'
+        vd.xRequired(data,fName,fName)
+        value = data[fName]
+        vd.xNumber(value, fName)
+        vd.xGrtThan(value, 0, fName)
+        vd.xLessThanEq(value, 1, fName)
 
     @validates_schema()
     def check_MOC(self, data):
@@ -152,7 +196,24 @@ class docInput(Schema):
 
     @validates_schema()
     def check_S(self, data):
+        if ('MOC' not in data):
+            return
+        if (data['MOC']['_val'] !='Other'):
+            return
         fName = 'S'
+        vd.xRequired(data,fName,fName)
+        value = data[fName]
+        vd.xNumber(value, fName)
+        vd.xGrtThanEq(value, 0, fName)
+        vd.xDim(value,['pressure'],fName)
+
+    @validates_schema()
+    def check_St(self, data):
+        if ('MOC' not in data):
+            return
+        if (data['MOC']['_val'] !='Other'):
+            return
+        fName = 'St'
         vd.xRequired(data,fName,fName)
         value = data[fName]
         vd.xNumber(value, fName)
@@ -182,7 +243,7 @@ class docInput(Schema):
         vd.xChoice(value, head_options, fName)
 
     @validates_schema()
-    def check_ar1(self, data):
+    def check_beta1(self, data):
         if ('Shape' not in data):
             return
         if (data['Shape']['_val'] !='cylindrical'):
@@ -192,7 +253,7 @@ class docInput(Schema):
         if (data['Head1']['_val'] !='ellipsoidal'):
             return
 
-        fName = 'ar1'
+        fName = 'beta1'
         vd.xRequired(data,fName,fName)
         value = data[fName]
         vd.xNumber(value, fName)
@@ -275,7 +336,7 @@ class docInput(Schema):
         vd.xChoice(value, head_options, fName)
 
     @validates_schema()
-    def check_ar2(self, data):
+    def check_beta2(self, data):
         if ('Shape' not in data):
             return
         if (data['Shape']['_val'] !='cylindrical'):
@@ -286,7 +347,7 @@ class docInput(Schema):
             return
 
 
-        fName = 'ar2'
+        fName = 'beta2'
         vd.xRequired(data,fName,fName)
         value = data[fName]
         vd.xNumber(value, fName)
@@ -353,6 +414,14 @@ class docInput(Schema):
         vd.xNumber(value, fName)
         vd.xGrtThan(value, 0, fName)
         vd.xDim(value,['length'],fName)
+
+    @validates_schema()
+    def check_zeta(self, data):
+        fName = 'zeta'
+        vd.xRequired(data,fName,fName)
+        value = data[fName]
+        vd.xNumber(value, fName)
+        vd.xGrtThanEq(value, 0, fName)
 
 
 class docResult(Schema):

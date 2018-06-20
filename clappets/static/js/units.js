@@ -149,6 +149,22 @@ unitLib = {
         }
     },
 
+    "volume": {
+        "dimtitle": "Volume",
+        "units": {
+            "m3": {
+                "label": "m³",
+                "cf": 1,
+                "off": 0
+            },
+            "ft3": {
+                "label": "ft³",
+                "cf": 0.0283168,
+                "off": 0
+            }
+        }
+    },
+
     "angle": {
         "dimtitle": "Angle",
         "units": {

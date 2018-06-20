@@ -5,7 +5,6 @@ from collections import OrderedDict
 from clappets import units
 
 
-
 def xisBlank(value):
     val = value['_val']
     if (val==""):
@@ -181,6 +180,8 @@ class sUnits(Schema):
     length_kilo = fields.String(validate=validate.OneOf(length_units))
     area_units = units.getUnits('area')
     area = fields.String(validate=validate.OneOf(area_units))
+    volume_units = units.getUnits('volume')
+    volume = fields.String(validate=validate.OneOf(volume_units))
     angle_units = units.getUnits('angle')
     angle = fields.String(validate=validate.OneOf(angle_units))
     mass_units = units.getUnits('mass')
@@ -229,8 +230,6 @@ class sUnits(Schema):
     specificFuelConsumption = fields.String(validate=validate.OneOf(specificFuelConsumption_units))
     intensity_units = units.getUnits('intensity')
     intensity = fields.String(validate=validate.OneOf(intensity_units))
-
-
 
     class Meta:
         ordered = True

@@ -6,7 +6,7 @@ from techclappets.utils import linarray_interp
 from collections import OrderedDict
 
 def getAllowableStress(materialSpec, T):
-    data_file = "ASME_VIII_table_5A.csv"
+    data_file = "ASME_VIII_table_1A.csv"
 
     try:
         THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
@@ -14,7 +14,7 @@ def getAllowableStress(materialSpec, T):
         stress_df = pd.read_csv(data_file_path)
         stress_df = stress_df.set_index('MatlSpec')
         matl_stress = stress_df.loc[materialSpec]
-        matl_stress = matl_stress.drop(['St', 'Sy', 'Tmax', 'Chart'])
+        matl_stress = matl_stress.drop(['Density','St', 'Sy', 'Tmax', 'Chart'])
         temperature_values = matl_stress.index.tolist()
         stress_values = matl_stress.values
 
@@ -34,6 +34,9 @@ def getAllowableStress(materialSpec, T):
     return S
 
 
+def pressureHydroUG99(MAWP, S, St):
+    Phydro = 1.3*MAWP*(St/S)
+    return Phydro
 
 # Equations for Cylinder
 # ======================
@@ -271,7 +274,7 @@ def thicknessTorisphericalHead(S, E, P, Do, L, r):
     if (L > Do):
         raise Exception("Inner crown radius (L) should not be greater than outer skirt diameter (Do)")
     if (r < 0.06*Do):
-        raise Exception("Knuckle radius (r) should not be less than to 0.06Do")
+        raise Exception("Knuckle radius (r) should not be less than 0.06 times outer skirt diamter (Do)")
 
     # evaluate the M factor
     M = (1/4)*(3 + sqrt(L/r))
@@ -286,7 +289,7 @@ def pressureTorisphericalHead(S, E, t, Do, L, r ):
     if (L > Do):
         raise Exception("Inner crown radius (L) should not be greater than outer skirt diameter (Do)")
     if (r < 0.06*Do):
-        raise Exception("Knuckle radius (r) should not be less than to 0.06Do")
+        raise Exception("Knuckle radius (r) should not be less than 0.06 times outer skirt diamter (Do)")
 
     # evaluate the M factor
     M = (1/4)*(3 + sqrt(L/r))
@@ -313,7 +316,7 @@ def thicknessConicalHead(S, E, P, D=None, Do=None, alpha=30):
         raise Exception("Invalid inputs. Both 'R' and 'Ro' should not be provided")
 
     #check the validity of alpha
-    if (alpha > 30):
+    if (alpha > 0.524):
         raise Exception("Apex angle alpha exceeds 30 degrees")
 
     if (D is not None):
@@ -333,7 +336,7 @@ def pressureConicalHead(S, E, t, D=None, Do=None, alpha=30):
         raise Exception("Invalid inputs. Both 'D' and 'Do' should not be provided")
 
     #check the validity of P
-    if (alpha > 30):
+    if (alpha > 0.524):
         raise Exception("Apex angle alpha exceeds 30 degrees")
 
     if (D is not None):
@@ -350,7 +353,7 @@ def thicknessToriConicalHead(S, E, P, Do, tn, Di, r, alpha=30):
     # check for invalid inputs for optional parameters D and Do. Only one amongst these two must be provided
     # check for validity of L and r
     if (r < 0.06*Do):
-        raise Exception("Knuckle radius (r) should not be less than  0.06Do")
+        raise Exception("Knuckle radius (r) should not be less than 0.06 times outer skirt diamter (Do)")
 
     if (r < 3*tn):
         raise Exception("Knuckle radius (r) should not be less than three times knuckle thickness")
@@ -371,10 +374,10 @@ def pressureToriConicalHead(S, E, t, Do, tn, Di, r, alpha=30):
     # check for invalid inputs for optional parameters D and Do. Only one amongst these two must be provided
     # check for validity of L and r
     if (r < 0.06*Do):
-        raise Exception("Knuckle radius (r) should not be less than  0.06Do")
+        raise Exception("Knuckle radius (r) should not be less than 0.06 times outer skirt diamter (Do)")
 
     if (r < 3*tn):
-        raise Exception("Knuckle radius (r) should not be less than three times knuckle thickness")
+        raise Exception("Knuckle radius should not be less than three times knuckle thickness")
 
     #check the validity of alpha
     if (alpha > 30):
@@ -386,3 +389,188 @@ def pressureToriConicalHead(S, E, t, Do, tn, Di, r, alpha=30):
     P = min([Pcone,Pknuckle])
 
     return P, Pcone, eqn_ref_cone, Pknuckle, L, M, eqn_ref_knuckle
+
+
+# volumes and weight formulas
+
+#material weight for cylindrical shell
+def cylindricalShellVolume(tn, L, D=None, Do=None):
+    # check for invalid inputs for optional parameters D and Do. Only one amongst these two must be provided
+    if (D is None) and (Do is None):
+        raise Exception("Invalid inputs. Either 'R' or 'Ro' should be provided")
+    if (D is not None) and (Do is not None):
+        raise Exception("Invalid inputs. Both 'R' and 'Ro' should not be provided")
+
+    if (D is None):
+        D = Do -2*tn
+
+    R = D/2
+    Vinner = pi*(R**2)*L
+
+    Ro = R + tn
+    Vouter = pi*(Ro**2)*L
+
+    matlVol = Vouter - Vinner
+
+    return Vinner, matlVol
+
+
+#material weight for spherical shell
+def sphericalShellVolume(tn, D=None, Do=None):
+    # check for invalid inputs for optional parameters D and Do. Only one amongst these two must be provided
+    if (D is None) and (Do is None):
+        raise Exception("Invalid inputs. Either 'R' or 'Ro' should be provided")
+    if (D is not None) and (Do is not None):
+        raise Exception("Invalid inputs. Both 'R' and 'Ro' should not be provided")
+
+    if (D is None):
+        D = Do - 2*tn
+
+    R  = D/2
+    Ro = R + tn
+    Vinner = (4/3)*pi*(R**3)
+    Vouter = (4/3)*pi*(Ro**3)
+
+    matlVol = Vouter - Vinner
+    return Vinner, matlVol
+
+# internal and material volume for ellipsoidal head
+def volumeEllipsoidalHead(tn, ar, D=None, Do=None):
+    # check for invalid inputs for optional parameters D and Do. Only one amongst these two must be provided
+    if (D is None) and (Do is None):
+        raise Exception("Invalid inputs. Either 'R' or 'Ro' should be provided")
+    if (D is not None) and (Do is not None):
+        raise Exception("Invalid inputs. Both 'R' and 'Ro' should not be provided")
+
+    # get the inner diameter if not available
+    if (D is None):
+        D = Do - 2*tn
+
+    # get the inner radius
+    R = D/2
+    # get inner height using aspect ratio provided
+    h = R/ar
+    # volume of an ellipsoid is V=(4/3)*pi*a*b*c where a,b,c are semi principal axis
+    # for the inner semi-ellipsoid
+    a = R
+    b = R
+    c = h
+    Vinner = (2/3)*pi*a*b*c
+    # for the outer semi-ellipsoid
+    ao = R + tn
+    bo = R + tn
+    co = h + tn
+    Vouter = (2/3)*pi*ao*bo*co
+    # net volume is obtained by subtracting the inner volume from outer volume
+    matlVol = Vouter - Vinner
+    return Vinner, matlVol
+
+# internal and material volume for hemispherical head
+def volumeHemisphericalHead(tn, D=None, Do=None):
+    # check for invalid inputs for optional parameters D and Do. Only one amongst these two must be provided
+    if (D is None) and (Do is None):
+        raise Exception("Invalid inputs. Either 'R' or 'Ro' should be provided")
+    if (D is not None) and (Do is not None):
+        raise Exception("Invalid inputs. Both 'R' and 'Ro' should not be provided")
+
+    if (D is None):
+        D = Do - 2*tn
+
+    R  = D/2
+    Ro = R + tn
+    Vinner = (4/6)*pi*(R**3)
+    Vouter = (4/6)*pi*(Ro**3)
+
+    matlVol = Vouter - Vinner
+    return Vinner, matlVol
+
+
+# internal and material volume for torispherical head
+def volumeTorisphericalHead(tn, L, r, D=None, Do=None):
+    # check for invalid inputs for optional parameters D and Do. Only one amongst these two must be provided
+    if (D is None) and (Do is None):
+        raise Exception("Invalid inputs. Either 'R' or 'Ro' should be provided")
+    if (D is not None) and (Do is not None):
+        raise Exception("Invalid inputs. Both 'R' and 'Ro' should not be provided")
+
+    if (D is None):
+        D = Do -2*tn
+
+    Vinner = volToriDome(L,r,D)
+    Lo = L + tn
+    ro = r + tn
+    Do = D + 2*tn
+
+    Vouter = volToriDome(Lo, ro, Do)
+    matlVol = Vouter - Vinner
+    return Vinner, matlVol
+
+
+# internal and material volume for conical head
+def volumeConicalHead(tn, alpha, D=None, Do=None):
+    # check for invalid inputs for optional parameters D and Do. Only one amongst these two must be provided
+    if (D is None) and (Do is None):
+        raise Exception("Invalid inputs. Either 'R' or 'Ro' should be provided")
+    if (D is not None) and (Do is not None):
+        raise Exception("Invalid inputs. Both 'R' and 'Ro' should not be provided")
+
+    if (D is None):
+        D = Do -2*tn
+
+    R = D/2
+    # get cone height h
+    h = R/tan(alpha)
+    Vinner = (1/3)*pi*(R**2)*h
+
+    Ro = R + tn
+    ho = Ro/tan(alpha)
+    Vouter = (1/3)*pi*(Ro**2)*ho
+
+    matlVol = Vouter - Vinner
+    return Vinner, matlVol
+
+
+# internal and material volume for toriconical head
+def volumeToriconicalHead(tn, r, alpha, D=None, Do=None):
+    # check for invalid inputs for optional parameters D and Do. Only one amongst these two must be provided
+    if (D is None) and (Do is None):
+        raise Exception("Invalid inputs. Either 'R' or 'Ro' should be provided")
+    if (D is not None) and (Do is not None):
+        raise Exception("Invalid inputs. Both 'R' and 'Ro' should not be provided")
+
+    if (D is None):
+        D = Do -2*tn
+
+    R = D/2
+    # get cone height h
+    h = R/tan(alpha)
+    Vinner = (1/3)*pi*(R**2)*h
+
+    Ro = R + tn
+    ho = Ro/tan(alpha)
+    Vouter = (1/3)*pi*(Ro**2)*ho
+
+    matlVol = Vouter - Vinner
+    return Vinner, matlVol
+
+def volToriDome(R,a,D):
+    '''
+    R : inner crown radius
+    a : knuckle radius
+    D : inner dome diameter at base
+    '''
+
+    # get c the distance between center of torus to center of torus tube
+    c = (D/2) - a
+
+    # get the inner height of the head
+    h = R - sqrt((a+c-R)*(a-c-R))
+
+    # get the volume
+    u = 2*h*(R**2)
+    v = 2*(a**2) + c**2 + 2*a*R
+    w = R - h
+    x = 3*(a**2)*c
+    y = asin((R-h)/(R-a))
+    Volume = (pi/3)*(u - v*w +x*y)
+    return Volume

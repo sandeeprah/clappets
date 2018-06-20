@@ -157,6 +157,22 @@ unitLib = OrderedDict({
         }
     },
 
+    "volume": {
+        "dimtitle": "Volume",
+        "units": {
+            "m3": {
+                "label": "m³",
+                "cf": 1,
+                "off": 0
+            },
+            "ft3": {
+                "label": "ft³",
+                "cf": 0.0283168,
+                "off": 0
+            }
+        }
+    },
+
     "angle": {
         "dimtitle": "Angle",
         "units": {
@@ -677,6 +693,7 @@ SI_UNITS = {
     "length_mili": "m",
     "length_kilo": "m",
     "area": "m2",
+    "volume": "m3",
     "angle": "radians",
     "mass": "kg",
     "time": "s",

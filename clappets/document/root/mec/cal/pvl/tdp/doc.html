@@ -1,14 +1,19 @@
-{% extends "document/document.html" %} {% block title %}Pressure Vessel Shell Thickness Calculation - Internal Pressure{% endblock title %} {% block meta_description %} Calculate thickness of vessel shell under internal design pressure in accordance with
-the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description %} {% block meta_keywords %} pressure vessel shell thickness UG-27 ASME Section-VIII Div-1 {% endblock meta_keywords %} {% block sharing %}
+{% extends "document/document.html" %}
+{% block title %}Pressure Vessel Shell Thickness Calculation - Internal Pressure
+{% endblock title %}
+{% block meta_description %}
+Online calculation for the thickness of vessel shell under internal desgin pressure in accordance with the provisions of UG-27, UG-32 and the supplementary design formulas in Appendix-1 of ASME Section VIII Div-1.
+{% endblock meta_description %}
+{% block meta_keywords %} pressure vessel shell thickness UG-27 ASME Section-VIII Div-1
+{% endblock meta_keywords %}
+{% block sharing %}
 <meta property='og:title' content='Pressure Vessel Shell Thickness Calculation - Internal Pressure' />
-<!--
-<meta property='og:image' content='http://www.codecalculation.com/static/images/thumbnail.png'/>
--->
-<meta property='og:description' content='Online calculation to obtain thickness of pressure vessel shell under internal design pressure in accordance with the provisions of UG-27 of ASME Section VIII Div-1.
-' />
-<meta property='og:url' content='https://www.codecalculation.com/calculations/mechanical/pressure-vessel/thickness-calculation-pressure/' /> {% endblock sharing %} {% block content %}
+<meta property='og:image' content='http://docs.codecalculation.com/_images/vessel.jpg'/>
+<meta property='og:description' content='Online calculation to obtain thickness of pressure vessel shell under internal design pressure in accordance with the provisions of UG-27 of ASME Section VIII Div-1.'/>
+<meta property='og:url' content='https://www.codecalculation.com/calculations/mechanical/pressure-vessel/thickness-calculation-pressure/' />
+{% endblock sharing %}
+{% block content %}
 <div class="overflowme">
-
   <div class="datasheet">
     <nav class="breadcrumb" aria-label="breadcrumbs">
       <ul>
@@ -45,13 +50,6 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
             <h1 class="title is-5">[[ doc['meta']['docClass_title'] ]]</h1>
           </td>
           <td>R#</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td colspan="8" class="has-text-centered">
-            <h1 class="title is-5" style="background-color:red;">Under Development (Not for Use)</h1>
-          </td>
-          <td></td>
         </tr>
         <tr>
           <td>1</td>
@@ -143,13 +141,13 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
         <tr v-show="Shape=='cylindrical'">
           <td>1.6</td>
           <td colspan="5">
-            <span class="w14">Shell Length (WL to WL)</span>
-            <span class="w4"><i>L</i></span>
-            <span class="w6"><input class="inp" type="number" type="number" v-model="doc['input']['L']['_val']"/></span>
+            <span class="w14">Shell Length (TL to TL)</span>
+            <span class="w4"><i>Z</i></span>
+            <span class="w6"><input class="inp" type="number" type="number" v-model="doc['input']['Z']['_val']"/></span>
             <span class="w6">[[gUL('length')]]</span>
           </td>
           <td colspan="3">
-            <p class="help is-danger" v-for="err in getErrs(['schema','input','L'])">[[err]]</p>
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','Z'])">[[err]]</p>
           </td>
           <td></td>
         </tr>
@@ -182,6 +180,21 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
         <tr>
           <td>1.9</td>
           <td colspan="5">
+            <span class="w14">Hydrostatic Test Temperature </span>
+            <span class="w4"><i>T<sub>t</sub></i></span>
+            <span class="w6"><input class="inp" type="number" type="number" v-model="doc['input']['Tt']['_val']"/></span>
+            <span class="w6">[[gUL('temperature')]]</span>
+          </td>
+          <td colspan="3">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','Tt'])">[[err]]</p>
+          </td>
+          <td></td>
+        </tr>
+
+        <!--
+        <tr>
+          <td>1.10</td>
+          <td colspan="5">
             <span class="w14">Design for Full Vacuum</span>
             <span></span>
             <span class="w12">
@@ -197,8 +210,9 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
           </td>
           <td></td>
         </tr>
+      -->
         <tr>
-          <td>1.10</td>
+          <td>1.11</td>
           <td colspan="5">
             <span class="w14">Corrosion Allowance</span>
             <span class="w4"><i>ca</i></span>
@@ -210,8 +224,8 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
           </td>
           <td></td>
         </tr>
-        <tr>
-          <td>1.11</td>
+        <tr v-show="Shape=='spherical'">
+          <td>1.12</td>
           <td colspan="5">
             <span class="w14">Joint Efficiency</span>
             <span class="w4"><i>E</i></span>
@@ -223,8 +237,34 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
           </td>
           <td></td>
         </tr>
-        <tr>
+        <tr v-show="Shape=='cylindrical'">
           <td>1.12</td>
+          <td colspan="5">
+            <span class="w14">Circumferential Joint Efficiency</span>
+            <span class="w4"><i>E<sub>c</sub></i></span>
+            <span class="w6"><input class="inp" type="number" type="number" v-model="doc['input']['Ec']['_val']"/></span>
+            <span class="w6"></span>
+          </td>
+          <td colspan="3">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','Ec'])">[[err]]</p>
+          </td>
+          <td></td>
+        </tr>
+        <tr v-show="Shape=='cylindrical'">
+          <td>1.13</td>
+          <td colspan="5">
+            <span class="w14">Longitudinal Joint Efficiency</span>
+            <span class="w4"><i>E<sub>l</sub></i></span>
+            <span class="w6"><input class="inp" type="number" type="number" v-model="doc['input']['El']['_val']"/></span>
+            <span class="w6"></span>
+          </td>
+          <td colspan="3">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','El'])">[[err]]</p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>1.14</td>
           <td colspan="5">
             <span class="w14">Material of Construction</span>
             <span></span>
@@ -247,7 +287,7 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
           <td></td>
         </tr>
         <tr v-show="MOC=='Other'">
-          <td>1.13</td>
+          <td>1.15</td>
           <td colspan="5">
             <span class="w14">Max Allowable Stress @ T<sub>i</sub></span>
             <span class="w4"><i>S</i></span>
@@ -259,8 +299,21 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
           </td>
           <td></td>
         </tr>
+        <tr v-show="MOC=='Other'">
+          <td>1.16</td>
+          <td colspan="5">
+            <span class="w14">Max Allowable Stress @ T<sub>t</sub></span>
+            <span class="w4"><i>S<sub>t</sub></i></span>
+            <span class="w6"><input class="inp" type="number" type="number" v-model="doc['input']['St']['_val']"/></span>
+            <span class="w6">[[gUL('pressure')]]</span>
+          </td>
+          <td colspan="3">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','St'])">[[err]]</p>
+          </td>
+          <td></td>
+        </tr>
         <tr>
-          <td>1.14</td>
+          <td>1.17</td>
           <td colspan="5">
             <span class="w14">Shell Thickness Provided</span>
             <span class="w4"><i>t<sub>n</sub></i></span>
@@ -275,7 +328,7 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
       </tbody>
       <tbody v-show="Shape=='cylindrical'">
         <tr>
-          <td>1.15</td>
+          <td>1.18</td>
           <td colspan="5">
             <span class="w14">Head -<span v-show="Orientation=='horizontal'">Side 1</span><span v-show="Orientation=='vertical'">Top</span></span>
             <span></span>
@@ -295,17 +348,28 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
           </td>
           <td></td>
         </tr>
+        <tr>
+          <td style="text-align:right"></td>
+          <td colspan="8">
+            <img src="http://docs.codecalculation.com/_images/ellipsoidal.png" style="height:200px;" v-show="Head1=='ellipsoidal'"></img>
+            <img src="http://docs.codecalculation.com/_images/torispherical.png" style="height:200px;" v-show="Head1=='torispherical'"></img>
+            <img src="http://docs.codecalculation.com/_images/hemispherical.png" style="height:200px;" v-show="Head1=='hemispherical'"></img>
+            <img src="http://docs.codecalculation.com/_images/conical.png" style="height:200px;" v-show="Head1=='conical'"></img>
+            <img src="http://docs.codecalculation.com/_images/toriconical.png" style="height:200px;" v-show="Head1=='toriconical'"></img>
+          </td>
+          <td></td>
+        </tr>
         <tr v-show="Head1=='ellipsoidal'">
           <td style="text-align:right">a)</td>
           <td colspan="5">
             <span class="w2"></span>
-            <span class="w12">Aspect Ratio</span>
-            <span class="w4"><i>D/2h<sub>1</sub></i></span>
-            <span class="w6"><input class="inp" type="number" type="number" v-model="doc['input']['ar1']['_val']"/></span>
+            <span class="w12">Aspect Ratio (β)</span>
+            <span class="w4"><i>D<sub>1</sub>/2h<sub>1</sub></i></span>
+            <span class="w6"><input class="inp" type="number" type="number" v-model="doc['input']['beta1']['_val']"/></span>
             <span class="w6"></span>
           </td>
           <td colspan="3">
-            <p class="help is-danger" v-for="err in getErrs(['schema','input','ar1'])">[[err]]</p>
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','beta1'])">[[err]]</p>
           </td>
           <td></td>
         </tr>
@@ -366,7 +430,7 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
           <td></td>
         </tr>
         <tr>
-          <td>1.16</td>
+          <td>1.19</td>
           <td colspan="5">
             <span class="w14">Head -<span v-show="Orientation=='horizontal'">Side 2</span><span v-show="Orientation=='vertical'">Bottom</span></span>
             <span></span>
@@ -386,17 +450,28 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
           </td>
           <td></td>
         </tr>
+        <tr>
+          <td style="text-align:right"></td>
+          <td colspan="8">
+            <img src="http://docs.codecalculation.com/_images/ellipsoidal.png" style="height:200px;" v-show="Head2=='ellipsoidal'"></img>
+            <img src="http://docs.codecalculation.com/_images/torispherical.png" style="height:200px;" v-show="Head2=='torispherical'"></img>
+            <img src="http://docs.codecalculation.com/_images/hemispherical.png" style="height:200px;" v-show="Head2=='hemispherical'"></img>
+            <img src="http://docs.codecalculation.com/_images/conical.png" style="height:200px;" v-show="Head2=='conical'"></img>
+            <img src="http://docs.codecalculation.com/_images/toriconical.png" style="height:200px;" v-show="Head2=='toriconical'"></img>
+          </td>
+          <td></td>
+        </tr>
         <tr v-show="Head2=='ellipsoidal'">
           <td style="text-align:right">a)</td>
           <td colspan="5">
             <span class="w2"></span>
-            <span class="w12">Aspect Ratio</span>
-            <span class="w4"><i>D/2h<sub>2</sub></i></span>
-            <span class="w6"><input class="inp" type="number" type="number" v-model="doc['input']['ar2']['_val']"/></span>
+            <span class="w12">Aspect Ratio (β)</span>
+            <span class="w4"><i>D<sub>2</sub>/2h<sub>2</sub></i></span>
+            <span class="w6"><input class="inp" type="number" type="number" v-model="doc['input']['beta2']['_val']"/></span>
             <span class="w6"></span>
           </td>
           <td colspan="3">
-            <p class="help is-danger" v-for="err in getErrs(['schema','input','ar2'])">[[err]]</p>
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','beta2'])">[[err]]</p>
           </td>
           <td></td>
         </tr>
@@ -405,7 +480,7 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
           <td colspan="5">
             <span class="w2"></span>
             <span class="w12">Inner Crown Radius</span>
-            <span class="w4"><i>L</i></span>
+            <span class="w4"><i>L<sub>2</sub></i></span>
             <span class="w6"><input class="inp" type="number" type="number" v-model="doc['input']['L2']['_val']"/></span>
             <span class="w6">[[gUL('length')]]</span>
           </td>
@@ -419,7 +494,7 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
           <td colspan="5">
             <span class="w2"></span>
             <span class="w12">Knuckle Radius</span>
-            <span class="w4"><i>r</i></span>
+            <span class="w4"><i>r<sub>2</sub></i></span>
             <span class="w6"><input class="inp" type="number" type="number" v-model="doc['input']['r2']['_val']"/></span>
             <span class="w6">[[gUL('length')]]</span>
           </td>
@@ -433,7 +508,7 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
           <td colspan="5">
             <span class="w2"></span>
             <span class="w12">Half apex angle</span>
-            <span class="w4"><i>α</i></span>
+            <span class="w4"><i>α<sub>2</sub></i></span>
             <span class="w6"><input class="inp" type="number" type="number" v-model="doc['input']['alpha2']['_val']"/></span>
             <span class="w6">[[gUL('angle')]]</span>
           </td>
@@ -453,6 +528,23 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
           </td>
           <td colspan="3">
             <p class="help is-danger" v-for="err in getErrs(['schema','input','tn2'])">[[err]]</p>
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
+      <tbody>
+        <tr>
+          <td>1.20</td>
+          <td colspan="6">
+            <span></span>
+            <span class="w24">Markup Weight(Nozzle/Support/Insulation etc)</span>
+            <span class="w4"><i>ζ</i></span>
+            <span class="w6">
+              <input class="inp" type="number" type="number" v-model="doc['input']['zeta']['_val']"/></span>
+            <span class="w6">%</span>
+          </td>
+          <td colspan="2">
+            <p class="help is-danger" v-for="err in getErrs(['schema','input','zeta'])">[[err]]</p>
           </td>
           <td></td>
         </tr>
@@ -522,6 +614,34 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
           <td></td>
         </tr>
         <tr>
+          <td>2.2</td>
+          <td colspan="6">
+            <span></span>
+            <span class="w20">Maximum Allowable Stress @ T<sub>t</sub></span>
+            <span class="w10"><i>S<sub>t</sub></i></span>
+            <span class="w6 result">[[ retSilent(doc, ['result', 'St', '_val']) ]]</span>
+            <span class="w4">[[gUL('pressure')]]</span>
+          </td>
+          <td colspan="2">
+            <p class="has-text-info"></p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>2.3</td>
+          <td colspan="6">
+            <span></span>
+            <span class="w20">Min required thickness as per UG-16</span>
+            <span class="w10">t<sub>u</sub></span>
+            <span class="w6 result">[[ retSilent(doc, ['result', 'tu', '_val']) ]]</span>
+            <span class="w4">[[gUL('length')]]</span>
+          </td>
+          <td colspan="2">
+            <p class="has-text-info"></p>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
           <td>3</td>
           <td colspan="8">
             <span class="w20"><strong>Shell Evaluation (Internal Pressure)</strong></span>
@@ -541,7 +661,7 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
                 <i>D=D<sub>o</sub>-2t<sub>n</sub></i>
               </span>
             </span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'D_calc', '_val']) ]]</span>
+            <span class="w6 result">[[ retSilent(doc, ['result', 'D', '_val']) ]]</span>
             <span class="w4">[[gUL('length')]]</span>
           </td>
           <td colspan="2">
@@ -562,7 +682,7 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
                 <i>D<sub>o</sub></i>
               </span>
             </span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'Do_calc', '_val']) ]]</span>
+            <span class="w6 result">[[ retSilent(doc, ['result', 'Do', '_val']) ]]</span>
             <span class="w4">[[gUL('length')]]</span>
           </td>
           <td colspan="2">
@@ -574,11 +694,11 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
           <td>3.3</td>
           <td colspan="6">
             <span></span>
-            <span class="w20">Inner Radius</span>
+            <span class="w20">Inner Radius (Corroded)</span>
             <span class="w10">
-              <i>R = D/2</i>
+              <i>R<sub>cor</sub> = D/2 - ca</i>
             </span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'R_calc', '_val']) ]]</span>
+            <span class="w6 result">[[ retSilent(doc, ['result', 'Rcor', '_val']) ]]</span>
             <span class="w4">[[gUL('length')]]</span>
           </td>
           <td colspan="2">
@@ -590,25 +710,9 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
           <td>3.4</td>
           <td colspan="6">
             <span></span>
-            <span class="w20">Outer Radius</span>
-            <span class="w10">
-              <i>R<sub>o</sub> = D<sub>o</sub>/2</i>
-            </span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'Ro_calc', '_val']) ]]</span>
-            <span class="w4">[[gUL('length')]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>3.5</td>
-          <td colspan="6">
-            <span></span>
             <span class="w20">Thickness Available (Corroded)</span>
-            <span class="w10">t<sub>a</sub> = t<sub>n</sub> - ca</span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'ta', '_val']) ]]</span>
+            <span class="w10">t<sub>cor</sub> = t<sub>n</sub> - ca</span>
+            <span class="w6 result">[[ retSilent(doc, ['result', 'tcor', '_val']) ]]</span>
             <span class="w4">[[gUL('length')]]</span>
           </td>
           <td colspan="2">
@@ -628,7 +732,7 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
             <td></td>
           </tr>
           <tr>
-            <td>3.6</td>
+            <td>3.5</td>
             <td colspan="6">
               <span class="w2"></span>
               <span class="w18">Pressure Condition</span>
@@ -641,7 +745,7 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
             <td></td>
           </tr>
           <tr>
-            <td>3.7</td>
+            <td>3.6</td>
             <td colspan="6">
               <span class="w2"></span>
               <span class="w18">Thickness (Circumferential Stress)</span>
@@ -650,16 +754,16 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
               <span class="w6">[[gUL('length')]]</span>
             </td>
             <td colspan="2">
-              <p class="has-text-info">[[ retSilent(doc, ['result', 'eqn_reftc', '_val']) ]]</p>
+              <p class="has-text-info">[[ retSilent(doc, ['result', 'eqn_ref_tc', '_val']) ]]</p>
             </td>
             <td></td>
           </tr>
           <tr>
-            <td>3.8</td>
+            <td>3.7</td>
             <td colspan="6">
               <span class="w2"></span>
               <span class="w18">Thickness Condition</span>
-              <span class="w10">t<sub>a</sub>< R/2</span>
+              <span class="w10">t<sub>cor</sub>< R<sub>cor</sub>/2</span>
               <span class="w6 result">[[ retSilent(doc, ['result', 'condn_tc', '_val']) ]]</span>
             </td>
             <td colspan="2">
@@ -668,7 +772,7 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
             <td></td>
           </tr>
           <tr>
-            <td>3.9</td>
+            <td>3.8</td>
             <td colspan="6">
               <span class="w2"></span>
               <span class="w18">MAWP (Circumferential Stress)</span>
@@ -677,7 +781,7 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
               <span class="w6">[[gUL('pressure')]]</span>
             </td>
             <td colspan="2">
-              <p class="has-text-info">[[ retSilent(doc, ['result', 'eqn_refpc', '_val']) ]]</p>
+              <p class="has-text-info">[[ retSilent(doc, ['result', 'eqn_ref_pc', '_val']) ]]</p>
             </td>
             <td></td>
           </tr>
@@ -692,7 +796,7 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
             <td></td>
           </tr>
           <tr>
-            <td>3.10</td>
+            <td>3.9</td>
             <td colspan="6">
               <span class="w2"></span>
               <span class="w18">Pressure Condition</span>
@@ -705,7 +809,7 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
             <td></td>
           </tr>
           <tr>
-            <td>3.11</td>
+            <td>3.10</td>
             <td colspan="6">
               <span class="w2"></span>
               <span class="w18">Thickness (Longitudinal Stress)</span>
@@ -714,16 +818,16 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
               <span class="w6">[[gUL('length')]]</span>
             </td>
             <td colspan="2">
-              <p class="has-text-info">[[ retSilent(doc, ['result', 'eqn_reftl', '_val']) ]]</p>
+              <p class="has-text-info">[[ retSilent(doc, ['result', 'eqn_ref_tl', '_val']) ]]</p>
             </td>
             <td></td>
           </tr>
           <tr>
-            <td>3.12</td>
+            <td>3.11</td>
             <td colspan="6">
               <span class="w2"></span>
               <span class="w18">Thickness Condition</span>
-              <span class="w10">t<sub>a</sub>< R/2</span>
+              <span class="w10">t<sub>cor</sub>< R<sub>cor</sub>/2</span>
               <span class="w6 result">[[ retSilent(doc, ['result', 'condn_tl', '_val']) ]]</span>
             </td>
             <td colspan="2">
@@ -732,7 +836,7 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
             <td></td>
           </tr>
           <tr>
-            <td>3.13</td>
+            <td>3.12</td>
             <td colspan="6">
               <span class="w2"></span>
               <span class="w18">MAWP (Longitudinal Stress)</span>
@@ -741,7 +845,7 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
               <span class="w6">[[gUL('pressure')]]</span>
             </td>
             <td colspan="2">
-              <p class="has-text-info">[[ retSilent(doc, ['result', 'eqn_refpl', '_val']) ]]</p>
+              <p class="has-text-info">[[ retSilent(doc, ['result', 'eqn_ref_pl', '_val']) ]]</p>
             </td>
             <td></td>
           </tr>
@@ -758,7 +862,7 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
             <td></td>
           </tr>
           <tr>
-            <td>3.6</td>
+            <td>3.5</td>
             <td colspan="6">
               <span class="w2"></span>
               <span class="w18">Pressure Condition</span>
@@ -771,25 +875,25 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
             <td></td>
           </tr>
           <tr>
-            <td>3.7</td>
+            <td>3.6</td>
             <td colspan="6">
               <span class="w2"></span>
               <span class="w18">Thickness</span>
-              <span class="w10"><i>t<sub>sph</sub></i></span>
+              <span class="w10"><i>t<sub>s</sub></i></span>
               <span class="w6 result">[[ retSilent(doc, ['result', 'ts', '_val']) ]]</span>
               <span class="w6">[[gUL('length')]]</span>
             </td>
             <td colspan="2">
-              <p class="has-text-info">[[ retSilent(doc, ['result', 'eqn_refts', '_val']) ]]</p>
+              <p class="has-text-info">[[ retSilent(doc, ['result', 'eqn_ref_ts', '_val']) ]]</p>
             </td>
             <td></td>
           </tr>
           <tr>
-            <td>3.8</td>
+            <td>3.7</td>
             <td colspan="6">
               <span class="w2"></span>
               <span class="w18">Thickness Condition</span>
-              <span class="w10">t<sub>a</sub>< 0.356R</span>
+              <span class="w10">t<sub>cor</sub>< 0.356R<sub>cor</sub></span>
               <span class="w6 result">[[ retSilent(doc, ['result', 'condn_ts', '_val']) ]]</span>
             </td>
             <td colspan="2">
@@ -798,16 +902,16 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
             <td></td>
           </tr>
           <tr>
-            <td>3.9</td>
+            <td>3.8</td>
             <td colspan="6">
               <span class="w2"></span>
               <span class="w18">MAWP</span>
-              <span class="w10"><i>MAWP<sub>sph</sub></i></span>
+              <span class="w10"><i>MAWP<sub>s</sub></i></span>
               <span class="w6 result">[[ retSilent(doc, ['result', 'MAWPs', '_val']) ]]</span>
               <span class="w6">[[gUL('pressure')]]</span>
             </td>
             <td colspan="2">
-              <p class="has-text-info">[[ retSilent(doc, ['result', 'eqn_refps', '_val']) ]]</p>
+              <p class="has-text-info">[[ retSilent(doc, ['result', 'eqn_ref_ps', '_val']) ]]</p>
             </td>
             <td></td>
           </tr>
@@ -816,13 +920,14 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
           <td>3.14</td>
           <td colspan="6">
             <span></span>
-            <span class="w20">Min required thickness as per UG-16</span>
-            <span class="w10">t<sub>u</sub></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'tu', '_val']) ]]</span>
-            <span class="w4">[[gUL('length')]]</span>
+            <span class="w20">Required Thickness excl. CA</span>
+            <span class="w10"><i>t</i></span>
+            <span class="w6 result">[[ retSilent(doc, ['result', 't', '_val']) ]]</span>
+            <span class="w6">[[gUL('length')]]</span>
           </td>
           <td colspan="2">
-            <p class="has-text-info"></p>
+            <p class="has-text-info" v-show="Shape=='cylindrical'">max of <i>t<sub>c</sub></i>,<i>t<sub>l</sub></i> & <i>t<sub>u</sub></i> </p>
+            <p class="has-text-info" v-show="Shape=='spherical'">max of <i>t<sub>s</sub></i> & <i>t<sub>u</sub></i> </p>
           </td>
           <td></td>
         </tr>
@@ -830,9 +935,9 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
           <td>3.15</td>
           <td colspan="6">
             <span></span>
-            <span class="w20">Required Thickness excl. CA</span>
-            <span class="w10"><i>t</i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 't', '_val']) ]]</span>
+            <span class="w20">Required Thickness</span>
+            <span class="w10"><i>t<sub>r</sub>=t+ca</i></span>
+            <span class="w6 result">[[ retSilent(doc, ['result', 'tr', '_val']) ]]</span>
             <span class="w6">[[gUL('length')]]</span>
           </td>
           <td colspan="2">
@@ -844,21 +949,7 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
           <td>3.16</td>
           <td colspan="6">
             <span></span>
-            <span class="w20">Required Thickness</span>
-            <span class="w10"><i>t<sub>r</sub>=t+CA</i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'tr', '_val']) ]]</span>
-            <span class="w6">[[gUL('length')]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>3.17</td>
-          <td colspan="6">
-            <span></span>
-            <span class="w20">Provided thickness >= required thickness </span>
+            <span class="w20">Thickness Adequacy Check</span>
             <span class="w10">t<sub>n</sub> >= t<sub>r</sub></span>
             <span class="w6 result">[[ retSilent(doc, ['result', 'tn_adequate', '_val']) ]]</span>
           </td>
@@ -867,14 +958,28 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
           </td>
           <td></td>
         </tr>
+        <tr v-show="Shape=='cylindrical'">
+          <td>3.17</td>
+          <td colspan="6">
+            <span></span>
+            <span class="w20">MAWP of Shell</span>
+            <span class="w10"><i>MAWP<sub>sh</sub></i></span>
+            <span class="w6 result">[[ retSilent(doc, ['result', 'MAWPsh', '_val']) ]]</span>
+            <span class="w6">[[gUL('pressure')]]</span>
+          </td>
+          <td colspan="2">
+            <p class="has-text-info">min of <i>MAWP<sub>c</sub></i> & <i>MAWP<sub>l</sub></i></p>
+          </td>
+          <td></td>
+        </tr>
         <tr>
           <td>3.18</td>
           <td colspan="6">
             <span></span>
-            <span class="w20">MAWP</span>
-            <span class="w10"><i>MAWP</i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'MAWP', '_val']) ]]</span>
-            <span class="w6">[[gUL('pressure')]]</span>
+            <span class="w20">Shell Fabrication Weight</span>
+            <span class="w10"><i>W<sub>sh</sub></i></span>
+            <span class="w6 result">[[ retSilent(doc, ['result', 'shell_weight', '_val']) ]]</span>
+            <span class="w6">[[gUL('mass')]]</span>
           </td>
           <td colspan="2">
             <p class="has-text-info"></p>
@@ -882,71 +987,12 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
           <td></td>
         </tr>
         <tr>
-          <td>4</td>
-          <td colspan="8">
-            <span class="w20"><strong>Head Evaluation (Internal Pressure)</strong></span>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
+          <td>3.19</td>
           <td colspan="6">
-            <span class="w30"><em>Head - <span v-show="Orientation=='horizontal'">Side 1</span><span v-show="Orientation=='vertical'">Top</span></em></span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>4.1</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Inner Diameter</span>
-            <span class="w10"><i>D<sub>1</sub>=D</i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'D1', '_val']) ]]</span>
-            <span class="w6">[[gUL('length')]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>4.2</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Outer Diameter</span>
-            <span class="w10"><i>D<sub>o1</sub>=D<sub>1</sub>+2t<sub>n1</sub></i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'Do1', '_val']) ]]</span>
-            <span class="w6">[[gUL('length')]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>4.3</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Thickness Available(corroded)</span>
-            <span class="w10"><i>t<sub>a1</sub>=t<sub>n1</sub> - ca</i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'ta1', '_val']) ]]</span>
-            <span class="w6">[[gUL('length')]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr v-show="Head1=='ellipsoidal'">
-          <td>4.4</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">K Factor</span>
-            <span class="w10"><i>K<sub>1</sub></i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'K1', '_val']) ]]</span>
+            <span></span>
+            <span class="w20">Shell Volume</span>
+            <span class="w10"><i>V<sub>sh</sub></i></span>
+            <span class="w6 result">[[ retSilent(doc, ['result', 'shell_volume', '_val']) ]]</span>
             <span class="w6"></span>
           </td>
           <td colspan="2">
@@ -954,381 +1000,633 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
           </td>
           <td></td>
         </tr>
-        <tr v-show="Head1=='toriconical'">
-          <td>4.5</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Inner Dia (Cone) </span>
-            <span class="w10"><i>D<sub>i1</sub></i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'Di1', '_val']) ]]</span>
-            <span class="w6">[[gUL('length')]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr v-show="Head1=='toriconical'">
-          <td>4.6</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Inner Crown Radius </span>
-            <span class="w10"><i>L<sub>1</sub></i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'L1', '_val']) ]]</span>
-            <span class="w6">[[gUL('length')]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr v-show="Head1=='torispherical' || Head1=='toriconical' ">
-          <td>4.7</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">M Factor</span>
-            <span class="w10"><i>M<sub>1</sub></i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'M1', '_val']) ]]</span>
-            <span class="w6"></span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr v-show="Head1=='hemispherical'">
-          <td>4.8</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Pressure Condition</span>
-            <span class="w10"><i>P<sub>i</sub><=0.665SE</i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'condn_P1', '_val']) ]]</span>
-            <span class="w6"></span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr v-show="Head1=='toriconical'">
-          <td>4.9</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Thickness Conical Part excl. CA</span>
-            <span class="w10"><i>t<sub>1</sub></i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'tcone1', '_val']) ]]</span>
-            <span class="w6">[[gUL('length')]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info">[[ retSilent(doc, ['result', 'eqn_ref_conet1', '_val']) ]]</p>
-          </td>
-          <td></td>
-        </tr>
-        <tr v-show="Head1=='toriconical'">
-          <td>4.10</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Thickness Knuckle Part excl. CA</span>
-            <span class="w10"><i>t<sub>1</sub></i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'tknuckle1', '_val']) ]]</span>
-            <span class="w6">[[gUL('length')]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info">[[ retSilent(doc, ['result', 'eqn_ref_knucklet1', '_val']) ]]</p>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>4.11</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Thickness excl. CA</span>
-            <span class="w10"><i>t<sub>1</sub></i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 't1', '_val']) ]]</span>
-            <span class="w6">[[gUL('length')]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info">[[ retSilent(doc, ['result', 'eqn_reft1', '_val']) ]]</p>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>4.12</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Thickness required</span>
-            <span class="w10"><i>t<sub>r1</sub>=t<sub>1</sub>+ca</i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'tr1', '_val']) ]]</span>
-            <span class="w6">[[gUL('length')]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>4.13</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Thickness Adequacy Check</span>
-            <span class="w10"><i>t<sub>n1</sub> >= t<sub>r1</sub></i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'tn1_adequate', '_val']) ]]</span>
-            <span class="w6"></span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr v-show="Head1=='hemispherical'">
-          <td>4.14</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Thickness Condition</span>
-            <span class="w10"><i>t<sub>a1</sub><=0.356R1</i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'condn_P1', '_val']) ]]</span>
-            <span class="w6"></span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>4.15</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">MAWP</span>
-            <span class="w10"><i>MAWP<sub>1</sub></i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'MAWP1', '_val']) ]]</span>
-            <span class="w6">[[gUL('pressure')]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info">[[ retSilent(doc, ['result', 'eqn_refp1', '_val']) ]]</p>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td colspan="6">
-            <span class="w30"><em>Head - <span v-show="Orientation=='horizontal'">Side 2</span><span v-show="Orientation=='vertical'">Top</span></em></span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>4.1</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Inner Diameter</span>
-            <span class="w10"><i>D<sub>2</sub>=D</i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'D2', '_val']) ]]</span>
-            <span class="w6">[[gUL('length')]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>4.2</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Outer Diameter</span>
-            <span class="w10"><i>D<sub>o2</sub>=D<sub>2</sub>+2t<sub>n2</sub></i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'Do2', '_val']) ]]</span>
-            <span class="w6">[[gUL('length')]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>4.3</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Thickness Available(corroded)</span>
-            <span class="w10"><i>t<sub>a2</sub>=t<sub>n2</sub> - ca</i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'ta2', '_val']) ]]</span>
-            <span class="w6">[[gUL('length')]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr v-show="Head1=='ellipsoidal'">
-          <td>4.4</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">K Factor</span>
-            <span class="w10"><i>K<sub>2</sub></i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'K2', '_val']) ]]</span>
-            <span class="w6"></span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr v-show="Head1=='toriconical'">
-          <td>4.5</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Inner Dia (Cone) </span>
-            <span class="w10"><i>D<sub>i2</sub></i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'Di2', '_val']) ]]</span>
-            <span class="w6">[[gUL('length')]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr v-show="Head1=='toriconical'">
-          <td>4.6</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Inner Crown Radius </span>
-            <span class="w10"><i>L<sub>2</sub></i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'L2', '_val']) ]]</span>
-            <span class="w6">[[gUL('length')]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr v-show="Head1=='torispherical' || Head1=='toriconical' ">
-          <td>4.7</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">M Factor</span>
-            <span class="w10"><i>M<sub>2</sub></i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'M2', '_val']) ]]</span>
-            <span class="w6"></span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr v-show="Head1=='hemispherical'">
-          <td>4.8</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Pressure Condition</span>
-            <span class="w10"><i>P<sub>i</sub><=0.665SE</i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'condn_P2', '_val']) ]]</span>
-            <span class="w6"></span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr v-show="Head1=='toriconical'">
-          <td>4.9</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Thickness Conical Part excl. CA</span>
-            <span class="w10"><i>t<sub>2</sub></i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'tcone2', '_val']) ]]</span>
-            <span class="w6">[[gUL('length')]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info">[[ retSilent(doc, ['result', 'eqn_ref_conet2', '_val']) ]]</p>
-          </td>
-          <td></td>
-        </tr>
-        <tr v-show="Head1=='toriconical'">
-          <td>4.10</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Thickness Knuckle Part excl. CA</span>
-            <span class="w10"><i>t<sub>2</sub></i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'tknuckle2', '_val']) ]]</span>
-            <span class="w6">[[gUL('length')]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info">[[ retSilent(doc, ['result', 'eqn_ref_knucklet2', '_val']) ]]</p>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>4.11</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Thickness excl. CA</span>
-            <span class="w10"><i>t<sub>2</sub></i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 't2', '_val']) ]]</span>
-            <span class="w6">[[gUL('length')]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info">[[ retSilent(doc, ['result', 'eqn_reft2', '_val']) ]]</p>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>4.12</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Thickness required</span>
-            <span class="w10"><i>t<sub>r2</sub>=t<sub>2</sub>+ca</i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'tr2', '_val']) ]]</span>
-            <span class="w6">[[gUL('length')]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>4.13</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Thickness Adequacy Check</span>
-            <span class="w10"><i>t<sub>n2</sub> >= t<sub>r2</sub></i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'tn2_adequate', '_val']) ]]</span>
-            <span class="w6"></span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr v-show="Head1=='hemispherical'">
-          <td>4.14</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">Thickness Condition</span>
-            <span class="w10"><i>t<sub>a2</sub><=0.356R1</i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'condn_P2', '_val']) ]]</span>
-            <span class="w6"></span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info"></p>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>4.15</td>
-          <td colspan="6">
-            <span class="w2"></span>
-            <span class="w18">MAWP</span>
-            <span class="w10"><i>MAWP<sub>2</sub></i></span>
-            <span class="w6 result">[[ retSilent(doc, ['result', 'MAWP2', '_val']) ]]</span>
-            <span class="w6">[[gUL('pressure')]]</span>
-          </td>
-          <td colspan="2">
-            <p class="has-text-info">[[ retSilent(doc, ['result', 'eqn_refp2', '_val']) ]]</p>
-          </td>
-          <td></td>
-        </tr>
-      </tbody>
+        </tbody>
+        <tbody v-show="Shape=='cylindrical'">
+          <tr>
+            <td>4</td>
+            <td colspan="8">
+              <span class="w20"><strong>Head Evaluation (Internal Pressure)</strong></span>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td colspan="6">
+              <span class="w30"><em>Head - <span v-show="Orientation=='horizontal'">Side 1</span><span v-show="Orientation=='vertical'">Top</span></em></span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>4.1</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Inner Diameter</span>
+              <span class="w10"><i>D<sub>1</sub>=D</i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'D1', '_val']) ]]</span>
+              <span class="w6">[[gUL('length')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>4.2</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Outer Diameter</span>
+              <span class="w10"><i>D<sub>o1</sub>=D<sub>1</sub>+2t<sub>n1</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'Do1', '_val']) ]]</span>
+              <span class="w6">[[gUL('length')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>4.3</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Thickness Available(corroded)</span>
+              <span class="w10"><i>t<sub>cor1</sub>=t<sub>n1</sub> - ca</i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'tcor1', '_val']) ]]</span>
+              <span class="w6">[[gUL('length')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr v-show="Head1=='ellipsoidal'">
+            <td>4.4</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">K Factor</span>
+              <span class="w10"><i>K<sub>cor1</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'Kcor1', '_val']) ]]</span>
+              <span class="w6"></span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr v-show="Head1=='toriconical'">
+            <td>4.5</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Inner Dia (Cone) </span>
+              <span class="w10"><i>D<sub>i1</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'Di1', '_val']) ]]</span>
+              <span class="w6">[[gUL('length')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr v-show="Head1=='toriconical'">
+            <td>4.6</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Inner Crown Radius </span>
+              <span class="w10"><i>L<sub>1</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'L1', '_val']) ]]</span>
+              <span class="w6">[[gUL('length')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr v-show="Head1=='torispherical' || Head1=='toriconical' ">
+            <td>4.7</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">M Factor</span>
+              <span class="w10"><i>M<sub>cor1</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'Mcor1', '_val']) ]]</span>
+              <span class="w6"></span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr v-show="Head1=='hemispherical'">
+            <td>4.8</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Pressure Condition</span>
+              <span class="w10"><i>P<sub>i</sub><=0.665SE</i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'condn_P1', '_val']) ]]</span>
+              <span class="w6"></span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr v-show="Head1=='toriconical'">
+            <td>4.9</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Thickness Conical Part excl. CA</span>
+              <span class="w10"><i>t<sub>1</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'tcone1', '_val']) ]]</span>
+              <span class="w6">[[gUL('length')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info">[[ retSilent(doc, ['result', 'eqn_ref_conet1', '_val']) ]]</p>
+            </td>
+            <td></td>
+          </tr>
+          <tr v-show="Head1=='toriconical'">
+            <td>4.10</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Thickness Knuckle Part excl. CA</span>
+              <span class="w10"><i>t<sub>1</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'tknuckle1', '_val']) ]]</span>
+              <span class="w6">[[gUL('length')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info">[[ retSilent(doc, ['result', 'eqn_ref_knucklet1', '_val']) ]]</p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>4.11</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Thickness calculated</span>
+              <span class="w10"><i>t<sub>h1</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'th1', '_val']) ]]</span>
+              <span class="w6">[[gUL('length')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info">[[ retSilent(doc, ['result', 'eqn_ref_t1', '_val']) ]]</p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>4.12</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Reqd. Thickness excl. CA</span>
+              <span class="w10"><i>t<sub>1</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 't1', '_val']) ]]</span>
+              <span class="w6">[[gUL('length')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info">max of t<sub>h1</sub> & t<sub>u</sub> </p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>4.13</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Reqd. Thickness incl. CA</span>
+              <span class="w10"><i>t<sub>r1</sub>=t<sub>1</sub>+ca</i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'tr1', '_val']) ]]</span>
+              <span class="w6">[[gUL('length')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>4.14</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Thickness Adequacy Check</span>
+              <span class="w10"><i>t<sub>n1</sub> >= t<sub>r1</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'tn1_adequate', '_val']) ]]</span>
+              <span class="w6"></span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr v-show="Head1=='hemispherical'">
+            <td>4.15</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Thickness Condition</span>
+              <span class="w10"><i>t<sub>cor1</sub><=0.356R<sub>cor1</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'condn_P1', '_val']) ]]</span>
+              <span class="w6"></span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>4.16</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">MAWP</span>
+              <span class="w10"><i>MAWP<sub>1</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'MAWP1', '_val']) ]]</span>
+              <span class="w6">[[gUL('pressure')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info">[[ retSilent(doc, ['result', 'eqn_ref_p1', '_val']) ]]</p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>4.17</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Head Weight</span>
+              <span class="w10"><i>W<sub>1</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'head1_weight', '_val']) ]]</span>
+              <span class="w6">[[gUL('mass')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>4.18</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Head Volume</span>
+              <span class="w10"><i>V<sub>1</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'V1', '_val']) ]]</span>
+              <span class="w6"></span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td colspan="6">
+              <span class="w30"><em>Head - <span v-show="Orientation=='horizontal'">Side 2</span><span v-show="Orientation=='vertical'">Top</span></em></span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>4.19</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Inner Diameter</span>
+              <span class="w10"><i>D<sub>2</sub>=D</i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'D2', '_val']) ]]</span>
+              <span class="w6">[[gUL('length')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>4.20</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Outer Diameter</span>
+              <span class="w10"><i>D<sub>o2</sub>=D<sub>2</sub>+2t<sub>n2</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'Do2', '_val']) ]]</span>
+              <span class="w6">[[gUL('length')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>4.21</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Thickness Available(corroded)</span>
+              <span class="w10"><i>t<sub>cor2</sub>=t<sub>n2</sub> - ca</i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'tcor2', '_val']) ]]</span>
+              <span class="w6">[[gUL('length')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr v-show="Head1=='ellipsoidal'">
+            <td>4.22</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">K Factor</span>
+              <span class="w10"><i>K<sub>cor2</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'Kcor2', '_val']) ]]</span>
+              <span class="w6"></span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr v-show="Head1=='toriconical'">
+            <td>4.23</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Inner Dia (Cone) </span>
+              <span class="w10"><i>D<sub>i2</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'Di2', '_val']) ]]</span>
+              <span class="w6">[[gUL('length')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr v-show="Head1=='toriconical'">
+            <td>4.24</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Inner Crown Radius </span>
+              <span class="w10"><i>L<sub>2</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'L2', '_val']) ]]</span>
+              <span class="w6">[[gUL('length')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr v-show="Head1=='torispherical' || Head1=='toriconical' ">
+            <td>4.25</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">M Factor</span>
+              <span class="w10"><i>M<sub>cor2</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'Mcor2', '_val']) ]]</span>
+              <span class="w6"></span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr v-show="Head1=='hemispherical'">
+            <td>4.26</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Pressure Condition</span>
+              <span class="w10"><i>P<sub>i</sub><=0.665SE</i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'condn_P2', '_val']) ]]</span>
+              <span class="w6"></span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr v-show="Head1=='toriconical'">
+            <td>4.27</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Thickness Conical Part excl. CA</span>
+              <span class="w10"><i>t<sub>2</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'tcone2', '_val']) ]]</span>
+              <span class="w6">[[gUL('length')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info">[[ retSilent(doc, ['result', 'eqn_ref_conet2', '_val']) ]]</p>
+            </td>
+            <td></td>
+          </tr>
+          <tr v-show="Head1=='toriconical'">
+            <td>4.28</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Thickness Knuckle Part excl. CA</span>
+              <span class="w10"><i>t<sub>2</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'tknuckle2', '_val']) ]]</span>
+              <span class="w6">[[gUL('length')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info">[[ retSilent(doc, ['result', 'eqn_ref_knucklet2', '_val']) ]]</p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>4.29</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Thickness calculated</span>
+              <span class="w10"><i>t<sub>h2</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'th2', '_val']) ]]</span>
+              <span class="w6">[[gUL('length')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info">[[ retSilent(doc, ['result', 'eqn_ref_t2', '_val']) ]]</p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>4.30</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Reqd. Thickness excl. CA</span>
+              <span class="w10"><i>t<sub>2</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 't2', '_val']) ]]</span>
+              <span class="w6">[[gUL('length')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info">max of t<sub>h2</sub> & t<sub>u</sub></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>4.31</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Reqd. Thickness incl. CA</span>
+              <span class="w10"><i>t<sub>r2</sub>=t<sub>2</sub>+ca</i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'tr2', '_val']) ]]</span>
+              <span class="w6">[[gUL('length')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>4.32</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Thickness Adequacy Check</span>
+              <span class="w10"><i>t<sub>n2</sub> >= t<sub>r2</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'tn2_adequate', '_val']) ]]</span>
+              <span class="w6"></span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr v-show="Head1=='hemispherical'">
+            <td>4.33</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Thickness Condition</span>
+              <span class="w10"><i>t<sub>cor2</sub><=0.356R<sub>cor2</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'condn_P2', '_val']) ]]</span>
+              <span class="w6"></span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>4.34</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">MAWP</span>
+              <span class="w10"><i>MAWP<sub>2</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'MAWP2', '_val']) ]]</span>
+              <span class="w6">[[gUL('pressure')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info">[[ retSilent(doc, ['result', 'eqn_ref_p2', '_val']) ]]</p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>4.35</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Head Weight</span>
+              <span class="w10"><i>W<sub>2</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'head2_weight', '_val']) ]]</span>
+              <span class="w6">[[gUL('mass')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>4.36</td>
+            <td colspan="6">
+              <span class="w2"></span>
+              <span class="w18">Head Volume</span>
+              <span class="w10"><i>V<sub>2</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'V2', '_val']) ]]</span>
+              <span class="w6">[[gUL('volume')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+        </tbody>
+        <tbody>
+          <tr>
+            <td>5</td>
+            <td colspan="8">
+              <span class="w20"><strong>Vessel Overall</strong></span>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>5.1</td>
+            <td colspan="6">
+              <span></span>
+              <span class="w20">MAWP</span>
+              <span class="w10"><i>MAWP</i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'MAWP', '_val']) ]]</span>
+              <span class="w6">[[gUL('pressure')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>5.2</td>
+            <td colspan="6">
+              <span></span>
+              <span class="w20">Hydrotest Pressure</span>
+              <span class="w10"><i>P<sub>t</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'Pt', '_val']) ]]</span>
+              <span class="w6">[[gUL('pressure')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info">UG-99(b)</p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>5.3</td>
+            <td colspan="6">
+              <span></span>
+              <span class="w20">Vessel Volume</span>
+              <span class="w10"><i>V</i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'vessel_volume', '_val']) ]]</span>
+              <span class="w6">[[gUL('volume')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>5.4</td>
+            <td colspan="6">
+              <span></span>
+              <span class="w20">Shell plus Heads Weight</span>
+              <span class="w10"><i>W<sub>sh</sub>+W<sub>1</sub>+W<sub>2</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'vslhd_weight', '_val']) ]]</span>
+              <span class="w6">[[gUL('mass')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>5.5</td>
+            <td colspan="6">
+              <span></span>
+              <span class="w20">Vessel Fabricated Weight</span>
+              <span class="w10"><i>W</i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'vessel_weight', '_val']) ]]</span>
+              <span class="w6">[[gUL('mass')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info">includes nozzle/support etc.</p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>5.6</td>
+            <td colspan="6">
+              <span></span>
+              <span class="w20">Vessel Hydrotest Weight</span>
+              <span class="w10"><i>W<sub>t</sub></i></span>
+              <span class="w6 result">[[ retSilent(doc, ['result', 'vessel_weight_hydrotest', '_val']) ]]</span>
+              <span class="w6">[[gUL('mass')]]</span>
+            </td>
+            <td colspan="2">
+              <p class="has-text-info"></p>
+            </td>
+            <td></td>
+          </tr>
+        </tbody>
     </table>
   </div>
 
@@ -1354,7 +1652,8 @@ the provisions of UG-27 of ASME Section VIII Div-1. {% endblock meta_description
     mixins: [app_common, app_doc],
     data: {
       doc: {{doc | safe}},
-      fixed: {}
+      fixed: {},
+      help_url:"http://docs.codecalculation.com/mechanical/flare/stack-height-estimation.html",
     },
     computed: {
       Shape: function() {
