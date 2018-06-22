@@ -27,6 +27,10 @@ def calc_process_thermophysical_water_steam():
 def calc_process_pressure_drop_hooper():
     return render_document("pro","cal","prd","h2k")
 
+@app.route('/calculations/process/storage/receiver-sizing/')
+def calc_process_storage_receiver_sizing():
+    return render_document("pro","cal","sto","rcv")
+
 @app.route('/calculations/mechanical/')
 def calc_mechanical_index():
     return render_template("calc/mechanical/index.html")
