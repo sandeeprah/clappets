@@ -1,5 +1,5 @@
 # import the run_tests from relevant test module
-from clappets.document.root.mec.cal.ems.cnv.test  import run_tests
+from clappets.document.root.mec.cal.flu.olk.test  import run_tests
 
 #from techclappets.electrical.cable.cablesizing import run_tests
 
