@@ -66,7 +66,7 @@ Orifice leakage rate
             <span class="w16">Pressure Upstream of Orifice</span>
             <span class="w4"><i>P<sub>i</sub></i></span>
             <span class="w6"><input class="inp" type="number" type="number" v-model="doc['input']['Pi']['_val']"/></span>
-            <span class="w6">[[gUL('pressure')]]</span>
+            <span class="w6">[[gUL('pressure')]],a</span>
           </td>
           <td colspan="3">
             <p class="help is-danger" v-for="err in getErrs(['schema','input','Pi'])">[[err]]</p>
@@ -79,7 +79,7 @@ Orifice leakage rate
             <span class="w16">Pressure Downstream of Orifice</span>
             <span class="w4"><i>P<sub>e</sub></i></span>
             <span class="w6"><input class="inp" type="number" type="number" v-model="doc['input']['Pe']['_val']"/></span>
-            <span class="w6">[[gUL('pressure')]]</span>
+            <span class="w6">[[gUL('pressure')]],a</span>
           </td>
           <td colspan="3">
             <p class="help is-danger" v-for="err in getErrs(['schema','input','Pe'])">[[err]]</p>

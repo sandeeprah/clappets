@@ -34,8 +34,8 @@
 
 
   "input": {
-    "Pi" : {"_val": "1.2135", "_dim":"pressure"},
-    "Pe" : {"_val": "1.00835", "_dim":"pressure"},
+    "Pi" : {"_val": "4", "_dim":"pressure"},
+    "Pe" : {"_val": "1.01325", "_dim":"pressure"},
     "Ti" : {"_val": "25", "_dim":"temperature"},
     "MW" : {"_val": "28", "_dim":"molecularMass"},
     "k" : {"_val": "1.4"},
