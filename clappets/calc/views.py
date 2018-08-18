@@ -10,7 +10,6 @@ def calc_index():
 def calc_process_index():
     return render_template("calc/process/index.html")
 
-
 @app.route('/calculations/process/thermophysical/chemical-fluid/')
 def calc_process_thermophysical_fluid():
     return render_document("pro","cal","tch","flu")
@@ -129,6 +128,10 @@ def calc_mechanical_piping_pipe_wallthickness():
 @app.route('/calculations/mechanical/psychrometry/humid-air-props/')
 def calc_mechanical_psychrometry_ha_props():
     return render_document("mec","cal","psy","hai")
+
+@app.route('/calculations/mechanical/flumech/orifice-leakage/')
+def calc_mechanical_flumech_orifice_leakage():
+    return render_document("mec","cal","flu","olk")
 
 @app.route('/calculations/instrumentation/')
 def calc_instrumentation_index():

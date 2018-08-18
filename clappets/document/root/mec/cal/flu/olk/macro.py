@@ -27,6 +27,7 @@ def calculate(doc_original):
     doc['result'].update({'v':{'_val' : str(roundit(v)), '_dim':'speed'}})
     doc['result'].update({'Q':{'_val' : str(roundit(Q)), '_dim':'flow'}})
     doc['result'].update({'G':{'_val' : str(roundit(G)), '_dim':'massflow'}})
+    doc['result'].update({'isChoked':{'_val' : isChoked}})
 
     treeUnitConvert(doc, SI_UNITS, doc['units'], autoRoundOff=True)
     doc_original['result'].update(doc['result'])

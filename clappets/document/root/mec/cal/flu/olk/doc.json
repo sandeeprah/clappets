@@ -3,10 +3,10 @@
   "meta": {
     "projectID": "0000",
     "project_title": "Local",
-    "discipline" : "pro",
+    "discipline" : "mec",
     "docCategory": "cal",
-    "docSubCategory": "sto",
-    "docClass": "rcv",
+    "docSubCategory": "flu",
+    "docClass": "olk",
     "docClass_title": "Orifice Leakage Rate",
     "docInstance": "1",
     "docInstance_title": "Orifice Leakage Rate",
@@ -34,7 +34,7 @@
 
 
   "input": {
-    "Pi" : {"_val": "3.2135", "_dim":"pressure"},
+    "Pi" : {"_val": "1.2135", "_dim":"pressure"},
     "Pe" : {"_val": "1.00835", "_dim":"pressure"},
     "Ti" : {"_val": "25", "_dim":"temperature"},
     "MW" : {"_val": "28", "_dim":"molecularMass"},
@@ -46,7 +46,8 @@
   "result": {
     "v" : {"_val": "", "_dim":"speed"},
     "Q" : {"_val": "", "_dim":"flow"},
-    "G" : {"_val": "", "_dim":"massflow"}
+    "G" : {"_val": "", "_dim":"massflow"},
+    "isChoked" : {"_val": ""}
   },
 
   "errors": []
